@@ -728,16 +728,18 @@ export function CoverProductCard({
             </span>
           )}
         </div>
-        {/* Founder direction 2026-09-30 · card meta stack ·
-              name → 2-line description → price → small View pill.
-            The View pill signals that tap opens the seller's chat with
-            the shop slider focused on this product (whole card is the
-            same link, pill is the visible affordance). */}
+        {/* Founder direction 2026-09-30 (revised) · card meta stack ·
+              name → 2-line description → price + round magnifier.
+            The magnifier signals tap-to-open without a text pill
+            hogging horizontal space (previous "VIEW" pill overflowed
+            on narrow cards with long prices). Whole card is still the
+            <Link>; the magnifier is the visible affordance. */}
         <div
           style={{
             padding: "10px 12px 12px",
             display: "grid",
             gap: 6,
+            minWidth: 0,
           }}
         >
           <div
@@ -746,10 +748,12 @@ export function CoverProductCard({
               fontWeight: 700,
               lineHeight: 1.25,
               letterSpacing: "-0.005em",
+              minWidth: 0,
               display: "-webkit-box",
               WebkitLineClamp: 1,
               WebkitBoxOrient: "vertical",
               overflow: "hidden",
+              wordBreak: "break-word",
             }}
           >
             {product.name}
@@ -760,10 +764,12 @@ export function CoverProductCard({
                 fontSize: 11,
                 lineHeight: 1.35,
                 color: "var(--nex-text-dim)",
+                minWidth: 0,
                 display: "-webkit-box",
                 WebkitLineClamp: 2,
                 WebkitBoxOrient: "vertical",
                 overflow: "hidden",
+                wordBreak: "break-word",
               }}
             >
               {product.description}
@@ -774,17 +780,19 @@ export function CoverProductCard({
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-              gap: 8,
+              gap: 6,
               marginTop: 2,
+              minWidth: 0,
             }}
           >
             <div
               style={{
-                fontSize: 13,
+                flex: "1 1 auto",
+                minWidth: 0,
+                fontSize: 12,
                 fontWeight: 800,
                 color: "var(--nex-accent)",
                 letterSpacing: "0.01em",
-                minWidth: 0,
                 overflow: "hidden",
                 textOverflow: "ellipsis",
                 whiteSpace: "nowrap",
@@ -796,18 +804,30 @@ export function CoverProductCard({
               aria-hidden
               style={{
                 flex: "0 0 auto",
-                padding: "5px 12px",
-                borderRadius: 999,
+                width: 26,
+                height: 26,
+                borderRadius: "50%",
                 background: "var(--nex-accent)",
                 color: "#03101D",
-                fontSize: 10,
-                fontWeight: 800,
-                letterSpacing: "0.08em",
-                textTransform: "uppercase",
+                display: "grid",
+                placeItems: "center",
                 boxShadow: "0 2px 6px rgba(0,0,0,0.35)",
               }}
             >
-              View
+              <svg
+                width={14}
+                height={14}
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden
+              >
+                <circle cx="11" cy="11" r="7" />
+                <line x1="21" y1="21" x2="16.5" y2="16.5" />
+              </svg>
             </span>
           </div>
         </div>
