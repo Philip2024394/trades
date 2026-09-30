@@ -994,9 +994,23 @@ export function CoverIdentityRail({
             fontSize: 11,
             color: "var(--nex-text-dim)",
             letterSpacing: "0.03em",
+            // Founder direction 2026-09-30 · long addresses (e.g.
+            // "Jl. Industri Raya No. 345, City West Park, Bali 80361")
+            // must hang-indent so wrapped lines align under the address
+            // text, NOT under the 📍 icon. Flex-row · icon in its own
+            // fixed-width cell · address flex-grows into its own column
+            // that wraps within its own left edge.
+            display: "flex",
+            alignItems: "flex-start",
+            gap: 6,
           }}
         >
-          📍 {location}
+          <span aria-hidden style={{ flex: "0 0 auto" }}>
+            📍
+          </span>
+          <span style={{ flex: "1 1 auto", minWidth: 0 }}>
+            {location}
+          </span>
         </div>
       )}
       <div
