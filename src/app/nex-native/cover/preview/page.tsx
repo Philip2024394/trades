@@ -63,6 +63,15 @@ const COVER_LAYOUT_BLURB: Record<CoverLayoutId, string> = {
     "Same identity as Template 03 · landscape product cards · 6 per page",
 };
 
+/** Founder direction 2026-09-30 · templates flagged as "done" show a
+ *  green tick + Done chip on the gallery card so the admin sees at a
+ *  glance which templates are shipped vs still in design. Toggle a
+ *  layout id in this set to update the badge. */
+const COVER_LAYOUT_DONE: ReadonlySet<CoverLayoutId> = new Set<CoverLayoutId>([
+  "product",
+  "product_landscape",
+]);
+
 const DEFAULT_THEME = "pink-dream";
 
 export default async function CoverPreviewGallery({
@@ -221,6 +230,7 @@ export default async function CoverPreviewGallery({
         >
           {COVER_LAYOUT_IDS.map((id, i) => {
             const num = String(i + 1).padStart(2, "0");
+            const isDone = COVER_LAYOUT_DONE.has(id);
             const href = `/nex-native/cover/preview/${id}?theme=${encodeURIComponent(themeId)}`;
             return (
               <Link
@@ -231,28 +241,77 @@ export default async function CoverPreviewGallery({
                   padding: "18px 18px 16px",
                   borderRadius: 14,
                   background: NEX.panel,
-                  border: `1px solid ${NEX.cyanSoft}`,
+                  border: isDone
+                    ? "1px solid rgba(34,197,94,0.55)"
+                    : `1px solid ${NEX.cyanSoft}`,
                   textDecoration: "none",
                   color: NEX.text,
                   position: "relative",
+                  boxShadow: isDone
+                    ? "0 0 0 1px rgba(34,197,94,0.15), 0 8px 20px rgba(34,197,94,0.08)"
+                    : undefined,
                 }}
               >
-                {/* Big template number · corner treatment */}
+                {/* Big template number + optional Done tick · corner cluster */}
                 <div
                   aria-hidden
                   style={{
                     position: "absolute",
                     top: 14,
                     right: 14,
-                    fontSize: 22,
-                    fontWeight: 800,
-                    letterSpacing: "0.02em",
-                    color: NEX.cyan,
-                    opacity: 0.85,
-                    fontVariantNumeric: "tabular-nums",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 8,
                   }}
                 >
-                  {num}
+                  {isDone && (
+                    <span
+                      aria-label="Template complete"
+                      title="Template complete"
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: 5,
+                        padding: "3px 8px 3px 6px",
+                        borderRadius: 999,
+                        background: "rgba(34,197,94,0.14)",
+                        border: "1px solid rgba(34,197,94,0.55)",
+                        color: "#22C55E",
+                        fontSize: 10,
+                        fontWeight: 800,
+                        letterSpacing: "0.08em",
+                        textTransform: "uppercase",
+                        lineHeight: 1,
+                      }}
+                    >
+                      <svg
+                        width={12}
+                        height={12}
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth={3.2}
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        aria-hidden
+                      >
+                        <polyline points="5 12 10 17 20 7" />
+                      </svg>
+                      Done
+                    </span>
+                  )}
+                  <span
+                    style={{
+                      fontSize: 22,
+                      fontWeight: 800,
+                      letterSpacing: "0.02em",
+                      color: isDone ? "#22C55E" : NEX.cyan,
+                      opacity: 0.9,
+                      fontVariantNumeric: "tabular-nums",
+                    }}
+                  >
+                    {num}
+                  </span>
                 </div>
                 <div
                   style={{
