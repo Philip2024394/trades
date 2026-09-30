@@ -275,7 +275,11 @@ export function CoverIdentityBadge(
           {(() => {
             const flag = countryCodeToFlagEmoji(props.countryCode);
             if (!flag) return null;
-            const badgeSize = 36;
+            // Founder direction 2026-09-30 (revised) · flag circle
+            // reduced 20% (36 -> 29) so it sits as a subtler accent
+            // rather than a competing badge. Unified across every
+            // template via the shared CoverIdentityBadge.
+            const badgeSize = 29;
             return (
               <div
                 aria-label={`Country ${props.countryCode}`}
@@ -293,7 +297,7 @@ export function CoverIdentityBadge(
                   placeItems: "center",
                   boxShadow: "0 4px 12px rgba(0,0,0,0.55)",
                   overflow: "hidden",
-                  fontSize: 24,
+                  fontSize: 19,
                   lineHeight: 1,
                 }}
               >
