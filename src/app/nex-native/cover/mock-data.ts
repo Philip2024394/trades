@@ -328,6 +328,18 @@ export const MARIA_MOCK: MockCoverContent = {
         "Buttery brioche coil with brown-butter cinnamon filling and cream-cheese glaze.",
     },
     {
+      id: "prod-brownie",
+      slug: "double-chocolate-brownie",
+      name: "Double Chocolate Brownie",
+      price_pence: 2800000,
+      currency: "IDR",
+      image_url: null,
+      stock_status: "in_stock",
+      section_id: "sec-snack",
+      description:
+        "Fudgy dark-chocolate brownie · Bali cacao · walnuts · flake-salt finish.",
+    },
+    {
       id: "prod-cold-brew",
       slug: "cold-brew",
       name: "Cold Brew · 300ml",
@@ -338,6 +350,30 @@ export const MARIA_MOCK: MockCoverContent = {
       section_id: "sec-drinks",
       description:
         "18-hour steeped Kintamani cold brew · served neat over big cubes, no dilution.",
+    },
+    {
+      id: "prod-coconut",
+      slug: "fresh-young-coconut",
+      name: "Fresh Young Coconut",
+      price_pence: 2500000,
+      currency: "IDR",
+      image_url: null,
+      stock_status: "in_stock",
+      section_id: "sec-drinks",
+      description:
+        "Chilled young coconut cracked to order · natural water inside · lime wedge on the side.",
+    },
+    {
+      id: "prod-iced-choc",
+      slug: "iced-chocolate",
+      name: "Iced Chocolate",
+      price_pence: 3500000,
+      currency: "IDR",
+      image_url: null,
+      stock_status: "in_stock",
+      section_id: "sec-drinks",
+      description:
+        "House-made cacao ganache stirred through cold milk · single-origin Bali cocoa.",
     },
     {
       id: "prod-tart",
@@ -438,6 +474,42 @@ export const PRODUCT_SELLER_MOCK: MockCoverContent = {
         "Legendary Japanese studio-monitor headphones · flat response, replaceable pads.",
     },
     {
+      id: "prod-turntable",
+      slug: "technics-sl1200",
+      name: "Technics SL-1200 MK2",
+      price_pence: 1850000000,
+      currency: "IDR",
+      image_url: null,
+      stock_status: "in_stock",
+      section_id: "sec-electronics",
+      description:
+        "Direct-drive turntable · pitch control · fully serviced · original Ortofon cart.",
+    },
+    {
+      id: "prod-tape-deck",
+      slug: "nakamichi-cr7",
+      name: "Nakamichi CR-7A Cassette Deck",
+      price_pence: 3200000000,
+      currency: "IDR",
+      image_url: null,
+      stock_status: "low_stock",
+      section_id: "sec-electronics",
+      description:
+        "Reference-class 3-head cassette deck · auto azimuth · calibrated bias · rare in this condition.",
+    },
+    {
+      id: "prod-polaroid",
+      slug: "polaroid-sx70",
+      name: "Polaroid SX-70 · Alpha Land",
+      price_pence: 895000000,
+      currency: "IDR",
+      image_url: null,
+      stock_status: "in_stock",
+      section_id: "sec-electronics",
+      description:
+        "Original folding SLR Polaroid · leather-clad body · working shutter · takes new film packs.",
+    },
+    {
       id: "prod-linen-shirt",
       slug: "italian-linen-shirt",
       name: "Italian Linen Shirt",
@@ -460,6 +532,30 @@ export const PRODUCT_SELLER_MOCK: MockCoverContent = {
       section_id: "sec-menswear",
       description:
         "Kaihara 14oz raw selvedge · tapered fit · natural indigo · size chart in About.",
+    },
+    {
+      id: "prod-oxford",
+      slug: "oxford-cotton-shirt",
+      name: "Oxford Cotton Shirt · White",
+      price_pence: 95000000,
+      currency: "IDR",
+      image_url: null,
+      stock_status: "in_stock",
+      section_id: "sec-menswear",
+      description:
+        "Heavyweight brushed cotton oxford · button-down collar · S / M / L / XL.",
+    },
+    {
+      id: "prod-loafers",
+      slug: "penny-loafers",
+      name: "Handmade Penny Loafers",
+      price_pence: 285000000,
+      currency: "IDR",
+      image_url: null,
+      stock_status: "in_stock",
+      section_id: "sec-menswear",
+      description:
+        "Bali-made full-grain leather · Goodyear-welted · natural cork footbed · EU 40-45.",
     },
     {
       id: "prod-omega",
@@ -496,6 +592,18 @@ export const PRODUCT_SELLER_MOCK: MockCoverContent = {
       section_id: "sec-watches",
       description:
         "Titanium bracelet · atomic sync · sapphire crystal · full accessories, sealed.",
+    },
+    {
+      id: "prod-hamilton",
+      slug: "hamilton-khaki-field",
+      name: "Hamilton Khaki Field · 38mm",
+      price_pence: 725000000,
+      currency: "IDR",
+      image_url: null,
+      stock_status: "in_stock",
+      section_id: "sec-watches",
+      description:
+        "Swiss automatic · hand-wound · sapphire crystal · classic military dial · box + papers.",
     },
   ],
 };

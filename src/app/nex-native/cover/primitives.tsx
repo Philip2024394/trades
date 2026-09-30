@@ -193,12 +193,11 @@ export function CoverIdentityBadge(
   props: CoverIdentityBadgeProps,
 ): React.JSX.Element {
   const isHero = props.size !== "compact";
-  // Founder direction 2026-09-30 · shrunk the portrait (hero 88→64,
-  // compact 44→36) so long business names have room to breathe. Flag
-  // badge + charm scale automatically via the isHero branch. Combined
-  // with the 2-line-clamp on the name below, "Maria's Fabulous Café
-  // & Vintage Ceramics" reads without overflow.
-  const portraitSize = isHero ? 64 : 36;
+  // Founder direction 2026-09-30 (revised twice) · portrait sized to
+  // hold long business names with the 2-line clamp AND read at a
+  // proper header weight. Hero=72 · Compact=44. Flag badge scales
+  // via the isHero branch.
+  const portraitSize = isHero ? 72 : 44;
   return (
     <>
       <style>{`
