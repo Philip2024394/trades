@@ -663,14 +663,21 @@ export function CoverProductCard({
   product,
   peerAccountId,
   eyebrow,
+  variant = "grid",
 }: {
   product: CoverProduct;
   peerAccountId: string;
   eyebrow?: string | null;
+  /** Founder direction 2026-09-30 · "grid" (default) renders the
+   *  square-image tile stacked above the meta column. "landscape"
+   *  renders the image on the LEFT (fixed square) and the meta column
+   *  on the RIGHT · used by Template 11 (Product Seller · Landscape). */
+  variant?: "grid" | "landscape";
 }): React.JSX.Element {
   const soldOut = product.stock_status === "sold_out";
   const priceLabel = formatMoney(product.currency, product.price_pence);
   const chatHref = `/nex-native/chat/peer/${peerAccountId}?product=${encodeURIComponent(product.id)}&auto=1`;
+  const isLandscape = variant === "landscape";
   return (
     <>
       <style>{`
@@ -688,7 +695,9 @@ export function CoverProductCard({
         href={chatHref}
         data-nex-cover-product-card
         style={{
-          display: "block",
+          display: isLandscape ? "flex" : "block",
+          flexDirection: isLandscape ? "row" : undefined,
+          alignItems: isLandscape ? "stretch" : undefined,
           position: "relative",
           borderRadius: "var(--nex-card-radius)",
           border: "var(--nex-card-border)",
@@ -706,7 +715,9 @@ export function CoverProductCard({
           aria-hidden
           style={{
             aspectRatio: "1 / 1",
-            width: "100%",
+            width: isLandscape ? 112 : "100%",
+            flex: isLandscape ? "0 0 112px" : undefined,
+            height: isLandscape ? 112 : undefined,
             backgroundImage: product.image_url
               ? `url(${product.image_url})`
               : undefined,
@@ -716,14 +727,12 @@ export function CoverProductCard({
             backgroundSize: "cover",
             backgroundPosition: "center",
             position: "relative",
-            // Founder direction 2026-09-30 · image bottom-left and
-            // bottom-right corners are rounded so the image reads as
-            // its own rounded panel · the meta stack below sits under
-            // a visible curve rather than butting up against a hard
-            // straight edge. Top corners still follow the card's
-            // outer clip.
-            borderBottomLeftRadius: 12,
-            borderBottomRightRadius: 12,
+            // Grid mode · image bottom corners rounded so meta stack
+            // sits under a curve. Landscape mode · right side rounded
+            // so meta column sits AGAINST the curve on its left edge.
+            borderBottomLeftRadius: isLandscape ? 0 : 12,
+            borderBottomRightRadius: isLandscape ? 12 : 12,
+            borderTopRightRadius: isLandscape ? 12 : 0,
             overflow: "hidden",
           }}
         >
@@ -775,10 +784,12 @@ export function CoverProductCard({
             <Link>; the magnifier is the visible affordance. */}
         <div
           style={{
-            padding: "10px 12px 12px",
+            padding: isLandscape ? "10px 12px" : "10px 12px 12px",
             display: "grid",
             gap: 6,
             minWidth: 0,
+            flex: isLandscape ? "1 1 auto" : undefined,
+            alignContent: isLandscape ? "center" : undefined,
           }}
         >
           <div
@@ -883,6 +894,7 @@ export function CoverProductGrid({
   peerAccountId,
   columns = 2,
   activeSectionId = ALL_TAB_ID,
+  variant = "grid",
 }: {
   products: CoverProduct[];
   peerAccountId: string;
@@ -892,16 +904,21 @@ export function CoverProductGrid({
    * (section_id === null). Any other value filters to strict match.
    */
   activeSectionId?: string;
+  /** Founder direction 2026-09-30 · "landscape" forces a single-column
+   *  list and asks each card to render horizontally · used by
+   *  Template 11 Product Seller · Landscape. */
+  variant?: "grid" | "landscape";
 }): React.JSX.Element {
   const visible =
     activeSectionId === ALL_TAB_ID
       ? products
       : products.filter((p) => p.section_id === activeSectionId);
+  const effectiveColumns = variant === "landscape" ? 1 : columns;
   return (
     <div
       style={{
         display: "grid",
-        gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`,
+        gridTemplateColumns: `repeat(${effectiveColumns}, minmax(0, 1fr))`,
         gap: 12,
       }}
     >
@@ -910,6 +927,7 @@ export function CoverProductGrid({
           key={p.id}
           product={p}
           peerAccountId={peerAccountId}
+          variant={variant}
         />
       ))}
     </div>

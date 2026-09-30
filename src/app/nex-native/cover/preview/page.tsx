@@ -59,6 +59,8 @@ const COVER_LAYOUT_BLURB: Record<CoverLayoutId, string> = {
     "Weighted display name · services + case studies + team credits",
   personal_brand:
     "Half-portrait hero · balanced products + services + content mix",
+  product_landscape:
+    "Same identity as Template 03 · landscape product cards · 6 per page",
 };
 
 const DEFAULT_THEME = "pink-dream";
@@ -109,7 +111,7 @@ export default async function CoverPreviewGallery({
               letterSpacing: "-0.01em",
             }}
           >
-            Cover Templates · 10
+            Cover Templates · {COVER_LAYOUT_IDS.length}
           </h1>
           <p
             style={{

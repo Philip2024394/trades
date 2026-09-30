@@ -34,16 +34,22 @@ export function CoverCatalog({
   products,
   peerAccountId,
   columns = 2,
-  pageSize = 4,
+  pageSize,
+  variant = "grid",
 }: {
   sections: CoverSection[];
   products: CoverProduct[];
   peerAccountId: string;
   columns?: 1 | 2 | 3;
-  /** Cards per page in the paginated grid. Default 4 per founder
-   *  ruling 2026-09-30. */
+  /** Cards per page in the paginated grid. Default 4 for grid variant
+   *  and 6 for landscape variant (founder direction 2026-09-30). */
   pageSize?: number;
+  /** Founder direction 2026-09-30 · "landscape" forces single-column
+   *  horizontal cards · used by Template 11. */
+  variant?: "grid" | "landscape";
 }): React.JSX.Element {
+  const effectivePageSize =
+    pageSize ?? (variant === "landscape" ? 6 : 4);
   // Founder direction 2026-09-30 · FIRST tab active on arrival · not
   // empty. Buyer lands filtered to the seller's first category, sees
   // its underline, taps it again (toggle) if they want to see all.
@@ -67,10 +73,10 @@ export function CoverCatalog({
     return products.filter((p) => p.section_id === activeId);
   }, [activeId, products]);
 
-  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
+  const totalPages = Math.max(1, Math.ceil(filtered.length / effectivePageSize));
   const safePage = Math.min(page, totalPages - 1);
-  const start = safePage * pageSize;
-  const visible = filtered.slice(start, start + pageSize);
+  const start = safePage * effectivePageSize;
+  const visible = filtered.slice(start, start + effectivePageSize);
 
   const handleTabSelect = React.useCallback(
     (nextId: string) => {
@@ -93,6 +99,7 @@ export function CoverCatalog({
         peerAccountId={peerAccountId}
         columns={columns}
         activeSectionId={ALL_TAB_ID}
+        variant={variant}
       />
       {totalPages > 1 && (
         <Pagination

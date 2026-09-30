@@ -481,6 +481,131 @@ export function LayoutProduct({ content, themeId }: LayoutProps): React.JSX.Elem
   );
 }
 
+// ─── 11 · Product Seller · Landscape ─────────────────────────────────
+// Founder direction 2026-09-30 · exact clone of Template 03 (Product
+// Seller) with a single deliberate difference · products render as
+// landscape rows (image left · meta right · 6 per page) instead of
+// the 4-per-page portrait grid. Every other block (identity badge,
+// Who-We-Are, All-products header, pagination, Dispatch Times,
+// identity rail, composer + info tray) is identical so a seller can
+// switch layouts without losing any of their configured data.
+
+export function LayoutProductLandscape({ content, themeId }: LayoutProps): React.JSX.Element {
+  return (
+    <>
+      <CoverPage>
+        <CoverIdentityBadge
+          portraitUrl={content.portraitUrl}
+          name={content.businessName}
+          subtitle={content.tagline}
+          themeId={themeId}
+          size="compact"
+          presenceOnline={content.presenceOnline}
+          countryCode={content.countryCode ?? null}
+        />
+        <div style={{ marginTop: 20 }}>
+          <WhoWeAreCollapsible
+            body={content.aboutUs ?? content.tagline ?? ""}
+            hoursLabel={formatTodayHoursLabel(
+              content.hoursByDay,
+              content.hours,
+            )}
+          />
+        </div>
+        <div style={{ marginTop: 20 }}>
+          <CoverSectionHeading
+            eyebrow="Shop"
+            title="All products"
+            rightSlot={
+              <div
+                aria-label={`${content.products.length} products live`}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 6,
+                  fontSize: 12,
+                  fontWeight: 700,
+                  color: "var(--nex-accent)",
+                  fontVariantNumeric: "tabular-nums",
+                }}
+              >
+                <span
+                  aria-hidden
+                  style={{ fontSize: 16, lineHeight: 1 }}
+                >
+                  📦
+                </span>
+                <span>{content.products.length} products live</span>
+              </div>
+            }
+          />
+          <CoverCatalog
+            sections={content.sections}
+            products={content.products}
+            peerAccountId={content.ownerAccountId}
+            variant="landscape"
+          />
+        </div>
+        {content.infoPages?.delivery_details && (
+          <section style={{ marginTop: 20 }}>
+            <div
+              style={{
+                fontSize: 10,
+                letterSpacing: "0.16em",
+                textTransform: "uppercase",
+                color: "var(--nex-accent)",
+                fontWeight: 700,
+                marginBottom: 4,
+              }}
+            >
+              Dispatch Times
+            </div>
+            <div
+              style={{
+                fontSize: 14,
+                lineHeight: 1.5,
+                color: "var(--nex-text, #F2F5F8)",
+                whiteSpace: "normal",
+              }}
+            >
+              {content.infoPages.delivery_details}
+            </div>
+          </section>
+        )}
+        <CoverIdentityRail
+          handle={content.handle}
+          location={content.location}
+          social={content.social}
+          themeId={themeId}
+        />
+      </CoverPage>
+      <CoverComposer
+        ownerAccountId={content.ownerAccountId}
+        ownerBusinessId={null}
+        ownerDisplayName={content.businessName}
+        infoTrayContent={{
+          pages: content.infoPages ?? null,
+          aboutUs: content.aboutUs ?? null,
+          yearEstablished: content.yearEstablished ?? null,
+          ownerName: content.ownerName ?? null,
+          ownerPosition: content.ownerPosition ?? null,
+          ownerAvatarUrl: content.ownerAvatarUrl ?? null,
+          hours: content.hours,
+          hoursByDay: content.hoursByDay ?? null,
+          address: content.address,
+          paymentMethodLabels: content.paymentMethodLabels ?? [],
+          qrCodeImageUrl: content.qrCodeImageUrl ?? null,
+          acceptsQrisDelivery: content.acceptsQrisDelivery ?? false,
+          returnPolicyBody: content.returnPolicyBody ?? null,
+          eventsBody: content.eventsBody ?? null,
+          galleryUrls: content.galleryUrls ?? [],
+          isVenue: content.isVenue ?? false,
+        }}
+      />
+    </>
+  );
+}
+
 // ─── 4 · Tradesperson ────────────────────────────────────────────────
 
 export function LayoutTradesperson({ content, themeId }: LayoutProps): React.JSX.Element {
