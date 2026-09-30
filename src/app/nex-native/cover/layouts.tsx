@@ -1670,6 +1670,167 @@ function QuickPill({ label }: { label: string }): React.JSX.Element {
   );
 }
 
+// ─── 13 · Personal Brand · Landscape ─────────────────────────────────
+// Founder direction 2026-09-30 · exact clone of Template 10 (Personal
+// Brand) with a single deliberate difference · product cards in the
+// Products tab render as landscape rows (image left · meta right · 6
+// per page) instead of the 2-column portrait grid. Every other block
+// (identity, Our Journey, tabs, Images, Sizes, Ordering, Visit Us,
+// identity rail, composer + info tray) is identical.
+
+export function LayoutPersonalBrandLandscape({
+  content,
+  themeId,
+}: LayoutProps): React.JSX.Element {
+  return (
+    <>
+      <CoverPage>
+        <CoverIdentityBadge
+          portraitUrl={content.portraitUrl}
+          name={content.businessName}
+          subtitle={content.tagline}
+          themeId={themeId}
+          presenceOnline={content.presenceOnline}
+          countryCode={content.countryCode ?? null}
+        />
+        <div style={{ marginTop: 20 }}>
+          <WhoWeAreCollapsible
+            title="Our Journey"
+            body={content.aboutUs ?? content.tagline ?? ""}
+          />
+        </div>
+        <div style={{ marginTop: 22 }}>
+          <PersonalBrandTabs
+            products={content.products}
+            peerAccountId={content.ownerAccountId}
+            orderingCopy={content.infoPages?.delivery_details ?? null}
+            productsVariant="landscape"
+            productsFooter={
+              <a
+                href={
+                  content.locationLat != null && content.locationLng != null
+                    ? `https://www.google.com/maps/dir/?api=1&destination=${content.locationLat},${content.locationLng}`
+                    : `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+                        content.address,
+                      )}`
+                }
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: "block",
+                  marginTop: 20,
+                  padding: "16px 18px",
+                  borderRadius: 14,
+                  border: "1px dashed var(--nex-accent-soft)",
+                  background:
+                    "linear-gradient(180deg, var(--nex-accent-faint), rgba(3,8,20,0.35))",
+                  textDecoration: "none",
+                  color: "inherit",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "baseline",
+                    justifyContent: "space-between",
+                    gap: 10,
+                    marginBottom: 6,
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: 10,
+                      letterSpacing: "0.14em",
+                      textTransform: "uppercase",
+                      color: "var(--nex-accent)",
+                      fontWeight: 700,
+                    }}
+                  >
+                    Visit Us
+                  </div>
+                  <div
+                    aria-hidden
+                    style={{
+                      fontSize: 10,
+                      letterSpacing: "0.08em",
+                      textTransform: "uppercase",
+                      color: "var(--nex-accent)",
+                      fontWeight: 700,
+                    }}
+                  >
+                    Directions ↗
+                  </div>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "flex-start",
+                    gap: 8,
+                    fontFamily: "var(--nex-font-display)",
+                    fontSize: 15,
+                    lineHeight: 1.35,
+                    fontWeight: 600,
+                    color: "var(--nex-text)",
+                  }}
+                >
+                  <span aria-hidden style={{ flex: "0 0 auto" }}>📍</span>
+                  <span style={{ flex: 1 }}>{content.address}</span>
+                </div>
+                <div
+                  style={{
+                    marginTop: 8,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 6,
+                    fontSize: 12,
+                    color: "var(--nex-text-dim)",
+                  }}
+                >
+                  <span aria-hidden>🕐</span>
+                  <span>
+                    {formatTodayHoursLabel(content.hoursByDay, content.hours) ??
+                      content.hours ??
+                      "Hours to be confirmed"}
+                  </span>
+                </div>
+              </a>
+            }
+          />
+        </div>
+        <CoverIdentityRail
+          handle={content.handle}
+          location={content.location}
+          social={content.social}
+          themeId={themeId}
+        />
+      </CoverPage>
+      <CoverComposer
+        ownerAccountId={content.ownerAccountId}
+        ownerBusinessId={null}
+        ownerDisplayName={content.businessName}
+        infoTrayContent={{
+          pages: content.infoPages ?? null,
+          aboutUs: content.aboutUs ?? null,
+          yearEstablished: content.yearEstablished ?? null,
+          ownerName: content.ownerName ?? null,
+          ownerPosition: content.ownerPosition ?? null,
+          ownerAvatarUrl: content.ownerAvatarUrl ?? null,
+          hours: content.hours,
+          hoursByDay: content.hoursByDay ?? null,
+          address: content.address,
+          paymentMethodLabels: content.paymentMethodLabels ?? [],
+          qrCodeImageUrl: content.qrCodeImageUrl ?? null,
+          acceptsQrisDelivery: content.acceptsQrisDelivery ?? false,
+          returnPolicyBody: content.returnPolicyBody ?? null,
+          eventsBody: content.eventsBody ?? null,
+          galleryUrls: content.galleryUrls ?? [],
+          isVenue: content.isVenue ?? false,
+        }}
+      />
+    </>
+  );
+}
+
 // ─── Personal Brand · tabbed content ─────────────────────────────────
 // Founder direction 2026-09-30 · Template 10 organises its middle
 // content into four flat tabs · Products · Images · Sizes · Ordering.
@@ -1683,6 +1844,7 @@ function PersonalBrandTabs({
   peerAccountId,
   orderingCopy,
   productsFooter,
+  productsVariant = "grid",
 }: {
   products: MockCoverContent["products"];
   peerAccountId: string;
@@ -1692,6 +1854,11 @@ function PersonalBrandTabs({
    *  slot the Visit Us block under the products pagination without
    *  it appearing on the Images / Sizes / Ordering tabs. */
   productsFooter?: React.ReactNode;
+  /** Founder direction 2026-09-30 · "landscape" flips the CoverCatalog
+   *  cards inside the Products tab from the 2-column portrait grid to
+   *  a single-column landscape list (6 per page). Template 13
+   *  (Personal Brand Landscape) sets this to "landscape". */
+  productsVariant?: "grid" | "landscape";
 }): React.JSX.Element {
   const [tab, setTab] = React.useState<PersonalBrandTab>("products");
 
@@ -1762,6 +1929,7 @@ function PersonalBrandTabs({
             peerAccountId={peerAccountId}
             columns={2}
             pageSize={6}
+            variant={productsVariant}
           />
           {productsFooter}
         </>

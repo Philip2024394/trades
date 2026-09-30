@@ -63,6 +63,8 @@ const COVER_LAYOUT_BLURB: Record<CoverLayoutId, string> = {
     "Same identity as Template 03 · landscape product cards · 6 per page",
   cafe_landscape:
     "Same identity as Template 01 · landscape product cards · 6 per page",
+  personal_brand_landscape:
+    "Same identity as Template 10 · landscape product cards · 6 per page",
 };
 
 /** Founder direction 2026-09-30 · templates flagged as "done" show a

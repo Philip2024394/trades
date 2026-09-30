@@ -21,6 +21,7 @@ import {
   LayoutStreetFood,
   LayoutPremiumBusiness,
   LayoutPersonalBrand,
+  LayoutPersonalBrandLandscape,
 } from "./layouts";
 import type { CoverLayoutId } from "./layout-ids";
 import type { MockCoverContent } from "./mock-data";
@@ -59,6 +60,10 @@ export function CoverLayoutSwitch({
       return <LayoutProductLandscape content={content} themeId={themeId} />;
     case "cafe_landscape":
       return <LayoutCafeLandscape content={content} themeId={themeId} />;
+    case "personal_brand_landscape":
+      return (
+        <LayoutPersonalBrandLandscape content={content} themeId={themeId} />
+      );
     default:
       return null;
   }
