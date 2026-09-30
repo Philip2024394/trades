@@ -62,8 +62,6 @@ export async function loadCoverContent(
   if (!layoutId) return null;
 
   const isVenue = isVenueCategory(business.business_category);
-  const themeId = "pink-dream"; // default until nex_business.chat_theme
-                                // or owner.chat_theme wiring is added
 
   // Parallel fetch: owner + products + menu items + sections +
   // gallery + services.
@@ -94,6 +92,14 @@ export async function loadCoverContent(
     listGalleryImages(business.id).catch(() => []),
     listServices(business.id).catch(() => []),
   ]);
+
+  // Founder-sealed architecture 2026-09-30 · owner's chat_theme is
+  // the SINGLE visual identity across Chat + Cover. Pull it from the
+  // account row; fall back to pink-dream only if the owner has never
+  // set one (matches the existing NEX default). NEVER read a
+  // business-specific theme column · templates are information
+  // architecture only, not visual identity.
+  const themeId = owner?.chat_theme ?? "pink-dream";
 
   const sections = isVenue
     ? menuSectionsRaw.map((s) => ({
