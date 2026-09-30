@@ -401,6 +401,9 @@ export const NEX_RETURN_POLICY_DEFAULT: NexReturnPolicy = {
 export interface NexBusinessRow {
   id: NexUuid;
   owner_account_id: NexUuid;
+  /** Migration 115 · sealed 2026-09-30 · FK to nex_profession · drives
+   *  terminology fallback chain via terminology-service. Nullable. */
+  profession_id?: NexUuid | null;
   display_name: string;
   slug: string;
   /** Merchant-editable profile fields · all nullable · added by migration 014. */
