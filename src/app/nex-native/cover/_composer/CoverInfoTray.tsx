@@ -128,17 +128,24 @@ export function CoverInfoTray({
 
   return (
     <>
-      {/* Blurred backdrop · tap outside the button column to close.
-          Founder direction 2026-09-30 (revised) · blurs the cover
-          content behind so the landscape buttons pop forward · dim
-          added to strengthen the focus without hiding shop context. */}
+      {/* Blurred backdrop · founder direction 2026-09-30 (revised
+          again) · backdrop now ALIGNS with the tray (top:170) so the
+          cover identity header stays CRYSTAL CLEAR above the blur
+          line. Previous version blurred the whole phone including the
+          header, which created a visible "cut" the buyer noticed.
+          Blur + dim now only affects the area behind the button
+          column, giving one clean visual split. Tap here to close. */}
       <div
         role="button"
         aria-label="Close info"
         onClick={onClose}
         style={{
           position: "fixed",
-          inset: 0,
+          top: "calc(env(safe-area-inset-top, 0) + 170px)",
+          left: 0,
+          right: 0,
+          bottom:
+            "calc(env(safe-area-inset-bottom, 0) + 76px)",
           background: "rgba(3,8,20,0.35)",
           backdropFilter: "blur(10px) saturate(1.05)",
           WebkitBackdropFilter: "blur(10px) saturate(1.05)",
