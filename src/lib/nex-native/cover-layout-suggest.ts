@@ -16,46 +16,41 @@
 
 import type { CoverLayoutId } from "@/app/nex-native/cover/layout-ids";
 
+// Founder-sealed 2026-09-30 · non-green templates removed. This
+// mapping only returns ids that currently exist in COVER_LAYOUT_IDS.
+// Categories that used to map to Restaurant / Tradesperson / Salon /
+// Creator / Premium Business now fall back to the closest green
+// template (cafe for food-shaped, product for shipping-shaped,
+// personal_brand for identity-shaped verticals). Sellers can still
+// override on /manage/shop.
 export function suggestCoverLayoutId(
   businessCategory: string | null | undefined,
 ): CoverLayoutId {
   switch ((businessCategory ?? "").toLowerCase()) {
     case "cafe":
     case "bakery":
-      return "cafe";
-
     case "restaurant":
-      return "restaurant";
+      return "cafe";
 
     case "ecommerce":
     case "product-brand":
-      return "product";
-
     case "tradesperson":
     case "construction":
     case "staircase-company":
-      return "tradesperson";
+      return "product";
 
     case "salon":
     case "beauty":
-      return "salon";
-
     case "creator":
     case "portfolio":
-      return "creator";
-
     case "fitness":
     case "local-service":
-      return "personal_brand";
-
     case "consultant":
     case "agency":
     case "professional-service":
-      return "premium_business";
-
     case "community":
     case "event":
-      return "creator";
+      return "personal_brand";
 
     default:
       // Safe default · a Product-style cover reads cleanly for almost

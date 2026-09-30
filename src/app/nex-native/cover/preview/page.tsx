@@ -37,60 +37,37 @@ const NEX = {
 };
 
 /** One-line description of each template's information architecture ·
- *  what the founder sees when picking which layout to work on. */
+ *  what the founder sees when picking which layout to work on.
+ *  Founder-sealed 2026-09-30 · 10 green-ticked templates only. */
 const COVER_LAYOUT_BLURB: Record<CoverLayoutId, string> = {
   cafe:
-    "Portrait-half hero · Featured Today grid · Visit Us panel with Google Maps directions",
-  restaurant:
-    "Full-photo hero · menu sections (small plates + signature mains) · reservation-first CTA",
-  product:
-    "Product-hero card · 2-column shop grid · shipping-first identity",
-  tradesperson:
-    "Portrait + trade badges · services list · before/after gallery",
-  salon:
-    "Signature look photo · services list · client reviews",
-  creator:
-    "Circular portrait · mixed grid (products + services + links)",
-  fashion:
-    "Full-viewport carousel · big cards · fit-guide CTA",
-  street_food:
-    "Dish hero · dish rows · running cart · order-in-chat",
-  premium_business:
-    "Weighted display name · services + case studies + team credits",
-  personal_brand:
-    "Half-portrait hero · balanced products + services + content mix",
-  product_landscape:
-    "Same identity as Template 03 · landscape product cards · 6 per page",
+    "Portrait-half hero · products grid · Visit Us panel with Google Maps directions",
   cafe_landscape:
-    "Same identity as Template 01 · landscape product cards · 6 per page",
-  personal_brand_landscape:
-    "Same identity as Template 10 · landscape product cards · 6 per page",
-  personal_brand_round:
-    "Same identity as Template 13 · round product cards · name below · magnifier on rim",
+    "Same identity as Café · landscape product cards · 6 per page",
   cafe_round:
-    "Same identity as Template 01 · round product cards · name below · magnifier on rim",
+    "Same identity as Café · round product cards · name below · magnifier on rim",
+  product:
+    "Compact identity · Who-We-Are · shop grid · dispatch times",
+  product_landscape:
+    "Same identity as Product Seller · landscape product cards · 6 per page",
   product_round:
-    "Same identity as Template 03 · round product cards · name below · magnifier on rim",
+    "Same identity as Product Seller · round product cards · name below · magnifier on rim",
   product_landscape_round:
-    "Cloned from Template 11 · round product cards · name below · magnifier on rim",
+    "Cloned from Product Landscape · round product cards · name below · magnifier on rim",
+  personal_brand:
+    "Round-portrait hero · Our Journey story · Products/Images/Sizes/Ordering tabs · Visit Us",
+  personal_brand_landscape:
+    "Same identity as Personal Brand · landscape product cards · 6 per page",
+  personal_brand_round:
+    "Same identity as Personal Brand · round product cards · name below · magnifier on rim",
 };
 
-/** Founder direction 2026-09-30 · templates flagged as "done" show a
- *  green tick + Done chip on the gallery card so the admin sees at a
- *  glance which templates are shipped vs still in design. Toggle a
- *  layout id in this set to update the badge. */
-const COVER_LAYOUT_DONE: ReadonlySet<CoverLayoutId> = new Set<CoverLayoutId>([
-  "cafe",
-  "product",
-  "product_landscape",
-  "cafe_landscape",
-  "personal_brand",
-  "personal_brand_landscape",
-  "personal_brand_round",
-  "cafe_round",
-  "product_round",
-  "product_landscape_round",
-]);
+/** Every shipping layout is Done by definition (unfinished layouts
+ *  are deleted rather than kept hidden). Kept as a Set so the gallery
+ *  card still renders the green tick treatment consistently. */
+const COVER_LAYOUT_DONE: ReadonlySet<CoverLayoutId> = new Set<CoverLayoutId>(
+  ["cafe", "cafe_landscape", "cafe_round", "product", "product_landscape", "product_round", "product_landscape_round", "personal_brand", "personal_brand_landscape", "personal_brand_round"],
+);
 
 const DEFAULT_THEME = "pink-dream";
 

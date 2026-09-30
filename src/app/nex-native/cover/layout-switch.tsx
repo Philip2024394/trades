@@ -11,21 +11,14 @@ import * as React from "react";
 import {
   LayoutCafe,
   LayoutCafeLandscape,
-  LayoutRestaurant,
+  LayoutCafeRound,
   LayoutProduct,
   LayoutProductLandscape,
-  LayoutTradesperson,
-  LayoutSalon,
-  LayoutCreator,
-  LayoutFashion,
-  LayoutStreetFood,
-  LayoutPremiumBusiness,
+  LayoutProductRound,
+  LayoutProductLandscapeRound,
   LayoutPersonalBrand,
   LayoutPersonalBrandLandscape,
   LayoutPersonalBrandRound,
-  LayoutCafeRound,
-  LayoutProductRound,
-  LayoutProductLandscapeRound,
 } from "./layouts";
 import type { CoverLayoutId } from "./layout-ids";
 import type { MockCoverContent } from "./mock-data";
@@ -42,42 +35,28 @@ export function CoverLayoutSwitch({
   switch (layoutId) {
     case "cafe":
       return <LayoutCafe content={content} themeId={themeId} />;
-    case "restaurant":
-      return <LayoutRestaurant content={content} themeId={themeId} />;
-    case "product":
-      return <LayoutProduct content={content} themeId={themeId} />;
-    case "tradesperson":
-      return <LayoutTradesperson content={content} themeId={themeId} />;
-    case "salon":
-      return <LayoutSalon content={content} themeId={themeId} />;
-    case "creator":
-      return <LayoutCreator content={content} themeId={themeId} />;
-    case "fashion":
-      return <LayoutFashion content={content} themeId={themeId} />;
-    case "street_food":
-      return <LayoutStreetFood content={content} themeId={themeId} />;
-    case "premium_business":
-      return <LayoutPremiumBusiness content={content} themeId={themeId} />;
-    case "personal_brand":
-      return <LayoutPersonalBrand content={content} themeId={themeId} />;
-    case "product_landscape":
-      return <LayoutProductLandscape content={content} themeId={themeId} />;
     case "cafe_landscape":
       return <LayoutCafeLandscape content={content} themeId={themeId} />;
-    case "personal_brand_landscape":
-      return (
-        <LayoutPersonalBrandLandscape content={content} themeId={themeId} />
-      );
-    case "personal_brand_round":
-      return <LayoutPersonalBrandRound content={content} themeId={themeId} />;
     case "cafe_round":
       return <LayoutCafeRound content={content} themeId={themeId} />;
+    case "product":
+      return <LayoutProduct content={content} themeId={themeId} />;
+    case "product_landscape":
+      return <LayoutProductLandscape content={content} themeId={themeId} />;
     case "product_round":
       return <LayoutProductRound content={content} themeId={themeId} />;
     case "product_landscape_round":
       return (
         <LayoutProductLandscapeRound content={content} themeId={themeId} />
       );
+    case "personal_brand":
+      return <LayoutPersonalBrand content={content} themeId={themeId} />;
+    case "personal_brand_landscape":
+      return (
+        <LayoutPersonalBrandLandscape content={content} themeId={themeId} />
+      );
+    case "personal_brand_round":
+      return <LayoutPersonalBrandRound content={content} themeId={themeId} />;
     default:
       return null;
   }
