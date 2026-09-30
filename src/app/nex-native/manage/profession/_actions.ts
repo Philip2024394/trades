@@ -48,6 +48,15 @@ export async function setBusinessProfessionAction(
       e instanceof Error ? e.message : "Save failed",
     );
   }
+  // Founder-recorded architectural conclusion 2026-09-30 (audit at
+  // commit 1f11f706+): the two paths below invalidate the SELLER
+  // admin surfaces that display the current profession. We
+  // deliberately do NOT invalidate /nex-native/${slug} · the public
+  // cover route is export const dynamic = "force-dynamic" and there
+  // is no route cache, ISR, React cache, unstable_cache, or fetch
+  // cache between profession_id and the rendered cover. See
+  // src/lib/nex-native/terminology-service.ts setBusinessProfession
+  // for the full architectural note.
   revalidatePath("/nex-native/manage/profession");
   revalidatePath("/nex-native/manage/shop");
   redirect("/nex-native/manage/profession?ok=1");

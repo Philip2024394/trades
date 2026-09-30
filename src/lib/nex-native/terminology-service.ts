@@ -144,6 +144,25 @@ export async function getProfessionById(
  * profession_id must NOT modify any other column on nex_business.
  * This helper writes ONLY profession_id · never touches
  * cover_layout_id, info_pages, description, or anything else.
+ *
+ * Architectural note (founder-recorded 2026-09-30 · audit at
+ * commit 1f11f706+):
+ *
+ *   Public cover routes at /nex-native/[businessSlug] declare
+ *   export const dynamic = "force-dynamic" and NO Next.js route
+ *   cache, ISR, React cache(), unstable_cache(), revalidateTag,
+ *   or fetch caching sits on the path
+ *
+ *      profession save → DB → resolveTerminology → cover-content-loader
+ *      → content.terminology → dynamic cover render
+ *
+ *   Therefore server actions that write profession_id do NOT need
+ *   to call revalidatePath('/nex-native/${slug}', 'page'). The
+ *   next buyer request re-renders from persisted state naturally.
+ *
+ *   Do not add cover-route cache invalidation here. If a stale
+ *   cover ever appears in buyer testing, the bug is in the resolver
+ *   / loader chain, not in a missing revalidate call.
  */
 export async function setBusinessProfession(
   businessId: NexUuid,
