@@ -189,37 +189,26 @@ describe("createProvisionalAccountWithFirstMessage · sealed §7B six-mutation a
 // Idempotency · retry with same send_intent_id
 // ---------------------------------------------------------------------------
 
-describe("createProvisionalAccountWithFirstMessage · sealed §7B idempotency semantics", () => {
-  it("second call with the SAME send_intent_id + ciphertext_rows fails at the UNIQUE constraint (not a silent duplicate account)", async () => {
+describe("createProvisionalAccountWithFirstMessage · sealed §7B idempotency semantics (post-M105/M106)", () => {
+  it("second call with the SAME send_intent_id + SAME device returns the cached account (M105 dedup + M106 device scope)", async () => {
     const input = baseInput();
     const first = await createProvisionalAccountWithFirstMessage(input);
     createdProvisionalIds.push(first.account_id);
+    expect(first.deduplicated).toBe(false);
 
-    // Re-invoke with the same send_intent_id · this creates a NEW account
-    // row (since account creation happens in step 1), and steps 1-3 will
-    // succeed, but the message insert (step 4) hits the UNIQUE constraint
-    // on (sender_account_id, send_intent_id) via the derived per-row key.
-    //
-    // Wait · actually, sender_account_id differs across the two calls
-    // because step 1 creates a NEW account_id each time. So the UNIQUE
-    // (sender_account_id, send_intent_id) does NOT collide across calls,
-    // and both calls succeed.
-    //
-    // Idempotency at the SEND intent level therefore requires the CALLER
-    // (route handler, orchestrator) to deduplicate BEFORE reaching the
-    // atomic function, e.g. by not calling twice for the same client
-    // send. The atomic function's job is only atomic-per-call.
-    //
-    // Verify this is the observed behaviour:
+    // M105 + M106 · same intent + same device -> same account · deduplicated=true
     const second = await createProvisionalAccountWithFirstMessage(input);
-    createdProvisionalIds.push(second.account_id);
-    expect(second.account_id).not.toBe(first.account_id);
-    // Both accounts exist:
+    expect(second.account_id).toBe(first.account_id);
+    expect(second.conversation_id).toBe(first.conversation_id);
+    expect(second.first_message_id).toBe(first.first_message_id);
+    expect(second.deduplicated).toBe(true);
+
+    // Only ONE account row · not two
     const acctCheck = await pg.query(
-      `SELECT id FROM nex_account WHERE id = ANY($1::uuid[])`,
-      [[first.account_id, second.account_id]],
+      `SELECT id FROM nex_account WHERE id = $1`,
+      [first.account_id],
     );
-    expect(acctCheck.rows).toHaveLength(2);
+    expect(acctCheck.rows).toHaveLength(1);
   });
 
   // Note: caller-level idempotency (deduplicating on send_intent_id BEFORE
