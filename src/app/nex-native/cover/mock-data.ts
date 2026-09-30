@@ -52,6 +52,12 @@ export interface MockCoverContent {
   hours: string;
   address: string;
   atmosphereLine: string;
+  /** Founder direction 2026-09-30 · optional coordinates for the
+   *  "Visit Us" Google Maps directions link. Falls back to a text
+   *  search of `address` when either is null. Sellers set these via
+   *  SellerLocationEditor on /manage/shop. */
+  locationLat?: number | null;
+  locationLng?: number | null;
 }
 
 export const MARIA_MOCK: MockCoverContent = {
@@ -73,6 +79,11 @@ export const MARIA_MOCK: MockCoverContent = {
   atmosphereLine: "Slow coffee · sourdough · warm mornings",
   hours: "07:00 · 22:00 · every day",
   address: "Jl. Raya Sanggingan, Ubud, Bali",
+  // Founder direction 2026-09-30 · lat/lng for the Google Maps
+  // directions link on the "Visit Us" panel. Optional · when NULL the
+  // directions link falls back to a text-search of the address.
+  locationLat: -8.518520,
+  locationLng: 115.257660,
   countryCode: "ID",
   shippingScope: "local_and_export",
   sections: [
