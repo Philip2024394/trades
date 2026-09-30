@@ -307,6 +307,9 @@ interface TrayItem {
    *  warning. Only populated for the "payment" tray item when the
    *  seller has both uploaded a QR AND accepts qris_delivery. */
   qrImageUrl?: string | null;
+  /** Free-text paragraph rendered at the bottom of the panel.
+   *  Used by the Payment item for the "We also accept …" line. */
+  footerNote?: string | null;
 }
 
 function PanelBody({ item }: { item: TrayItem }) {
@@ -375,51 +378,30 @@ function PanelBody({ item }: { item: TrayItem }) {
       )}
 
       {item.qrImageUrl && (
-        <div style={{ display: "grid", gap: 10 }}>
-          <div
+        <div
+          style={{
+            padding: 12,
+            borderRadius: 14,
+            background: "#ffffff",
+            border:
+              "1px solid var(--nex-accent-soft, rgba(0,175,255,0.35))",
+            display: "grid",
+            placeItems: "center",
+          }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={item.qrImageUrl}
+            alt="Payment QR code"
             style={{
-              padding: 12,
-              borderRadius: 14,
-              background: "#ffffff",
-              border:
-                "1px solid var(--nex-accent-soft, rgba(0,175,255,0.35))",
-              display: "grid",
-              placeItems: "center",
+              display: "block",
+              maxWidth: "100%",
+              width: "100%",
+              height: "auto",
+              aspectRatio: "1 / 1",
+              objectFit: "contain",
             }}
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={item.qrImageUrl}
-              alt="Payment QR code"
-              style={{
-                display: "block",
-                maxWidth: "100%",
-                width: "100%",
-                height: "auto",
-                aspectRatio: "1 / 1",
-                objectFit: "contain",
-              }}
-            />
-          </div>
-          {/* Founder-sealed doctrine copy · NEVER seller-editable ·
-              "you never pay before you receive" is the NEX safety
-              promise (sealed 2026-09-28). */}
-          <div
-            role="note"
-            style={{
-              padding: "10px 12px",
-              borderRadius: 10,
-              background: "rgba(245,158,11,0.10)",
-              border: "1px solid rgba(245,158,11,0.35)",
-              color: "#FFE8B0",
-              fontSize: 12,
-              lineHeight: 1.55,
-            }}
-          >
-            <strong style={{ color: "#FFC94E" }}>Scan when your order arrives.</strong>
-            {" "}Verify the merchant name in your bank app matches the
-            seller before you confirm. NEX never handles the money.
-          </div>
+          />
         </div>
       )}
 
@@ -507,6 +489,19 @@ function PanelBody({ item }: { item: TrayItem }) {
           Open link ↗
         </a>
       )}
+
+      {item.footerNote && item.footerNote.length > 0 && (
+        <p
+          style={{
+            margin: 0,
+            fontSize: 13,
+            lineHeight: 1.55,
+            color: "var(--nex-text-dim, rgba(255,255,255,0.72))",
+          }}
+        >
+          {item.footerNote}
+        </p>
+      )}
     </div>
   );
 }
@@ -570,13 +565,21 @@ function buildTrayItems(content: CoverInfoTrayContent): TrayItem[] {
       content.acceptsQrisDelivery && content.qrCodeImageUrl
         ? content.qrCodeImageUrl
         : null;
+    // Founder direction 2026-09-30 · replace the badge chips with a
+    // single "We also accept …" sentence that lists every non-QRIS
+    // method the seller has ticked. QRIS is represented by the QR
+    // image above so we drop it from this sentence to avoid a double
+    // mention.
+    const alsoAccepts = humaniseOtherPaymentMethods(
+      content.paymentMethodLabels,
+    );
     items.push({
       id: "payment",
       icon: NEX_INFO_PAGE_META.payment.icon,
       label: NEX_INFO_PAGE_META.payment.label,
-      body: "Payment methods this shop accepts:",
-      chips: content.paymentMethodLabels,
+      body: "Payment Methods we Accept",
       qrImageUrl: qr,
+      footerNote: alsoAccepts,
     });
   }
 
@@ -653,6 +656,37 @@ function buildTrayItems(content: CoverInfoTrayContent): TrayItem[] {
   }
 
   return items;
+}
+
+// ─── Payment methods humaniser ───────────────────────────────────────
+// Turns the seller's paymentMethodLabels (like "💵 COD",
+// "📱 QRIS on Delivery", "🤝 Meetup") into the "We also accept …"
+// sentence rendered below the QR image on the Payment panel. QRIS is
+// dropped because the QR image above already represents it.
+
+function humaniseOtherPaymentMethods(labels: string[]): string {
+  const stripped = labels
+    .filter((l) => !/QRIS/i.test(l))
+    // remove the leading emoji + whitespace
+    .map((l) => l.replace(/^\S+\s+/, "").trim())
+    .filter((l) => l.length > 0);
+  if (stripped.length === 0) return "";
+  const humanised = stripped.map((l) => {
+    const lower = l.toLowerCase();
+    if (lower === "cod" || lower === "c.o.d") return "cash on delivery";
+    if (lower === "courier c.o.d") return "courier COD";
+    if (lower === "meetup") return "meetup";
+    if (lower === "escrow") return "escrow";
+    if (lower === "paypal") return "PayPal";
+    if (lower === "bank transfer") return "bank transfer";
+    return l;
+  });
+  if (humanised.length === 1) return `We also accept ${humanised[0]}.`;
+  if (humanised.length === 2)
+    return `We also accept ${humanised[0]} and ${humanised[1]}.`;
+  const head = humanised.slice(0, -1).join(", ");
+  const tail = humanised[humanised.length - 1];
+  return `We also accept ${head}, and ${tail}.`;
 }
 
 // ─── Stroke-based NEX icons ──────────────────────────────────────────
