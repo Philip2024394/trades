@@ -671,13 +671,218 @@ export function CoverProductCard({
   /** Founder direction 2026-09-30 · "grid" (default) renders the
    *  square-image tile stacked above the meta column. "landscape"
    *  renders the image on the LEFT (fixed square) and the meta column
-   *  on the RIGHT · used by Template 11 (Product Seller · Landscape). */
-  variant?: "grid" | "landscape";
+   *  on the RIGHT · used by Template 11 (Product Seller · Landscape).
+   *  "round" renders the image as a circle with a small magnifier
+   *  button on the rim and the product name centred below · used by
+   *  Template 14 (Personal Brand · Round Products). */
+  variant?: "grid" | "landscape" | "round";
 }): React.JSX.Element {
   const soldOut = product.stock_status === "sold_out";
   const priceLabel = formatMoney(product.currency, product.price_pence);
   const chatHref = `/nex-native/chat/peer/${peerAccountId}?product=${encodeURIComponent(product.id)}&auto=1`;
   const isLandscape = variant === "landscape";
+  const isRound = variant === "round";
+  if (isRound) {
+    return (
+      <>
+        <style>{`
+          [data-nex-cover-product-round] {
+            transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+          }
+          [data-nex-cover-product-round]:hover,
+          [data-nex-cover-product-round]:focus-visible {
+            transform: translateY(-3px);
+          }
+          [data-nex-cover-product-round]:hover [data-nex-cover-round-image],
+          [data-nex-cover-product-round]:focus-visible [data-nex-cover-round-image] {
+            box-shadow:
+              0 12px 28px rgba(0,0,0,0.55),
+              0 0 20px var(--nex-accent-glow);
+          }
+        `}</style>
+        <Link
+          href={chatHref}
+          data-nex-cover-product-round
+          style={{
+            display: "grid",
+            gap: 8,
+            justifyItems: "center",
+            padding: "4px 2px",
+            textDecoration: "none",
+            color: "var(--nex-text)",
+            opacity: soldOut ? 0.7 : 1,
+          }}
+        >
+          <div
+            data-nex-cover-round-image
+            aria-hidden={!!product.image_url}
+            role={product.image_url ? undefined : "img"}
+            aria-label={product.image_url ? undefined : "Image placeholder"}
+            style={{
+              position: "relative",
+              width: "100%",
+              aspectRatio: "1 / 1",
+              borderRadius: "50%",
+              border: "1px solid var(--nex-accent-soft)",
+              boxShadow: "0 6px 18px rgba(0,0,0,0.4)",
+              overflow: "hidden",
+              backgroundImage: product.image_url
+                ? `url(${product.image_url})`
+                : undefined,
+              background: product.image_url
+                ? undefined
+                : `linear-gradient(135deg, var(--nex-accent-faint), var(--nex-panel))`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              display: !product.image_url ? "grid" : undefined,
+              placeItems: !product.image_url ? "center" : undefined,
+              transition: "box-shadow 260ms cubic-bezier(0.22, 1, 0.36, 1)",
+            }}
+          >
+            {!product.image_url && (
+              <>
+                <svg
+                  aria-hidden
+                  width="100%"
+                  height="100%"
+                  viewBox="0 0 100 100"
+                  preserveAspectRatio="none"
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    opacity: 0.22,
+                    color: "var(--nex-accent, #FF3F9F)",
+                  }}
+                >
+                  <line
+                    x1="0"
+                    y1="0"
+                    x2="100"
+                    y2="100"
+                    stroke="currentColor"
+                    strokeWidth="0.6"
+                    vectorEffect="non-scaling-stroke"
+                  />
+                  <line
+                    x1="100"
+                    y1="0"
+                    x2="0"
+                    y2="100"
+                    stroke="currentColor"
+                    strokeWidth="0.6"
+                    vectorEffect="non-scaling-stroke"
+                  />
+                </svg>
+                <span
+                  style={{
+                    position: "relative",
+                    fontSize: 8,
+                    fontWeight: 800,
+                    letterSpacing: "0.14em",
+                    color: "var(--nex-text-dim)",
+                    textAlign: "center",
+                    padding: "1px 5px",
+                    background: "#03101D",
+                    borderRadius: 4,
+                  }}
+                >
+                  IMAGE HERE
+                </span>
+              </>
+            )}
+            {soldOut && (
+              <span
+                style={{
+                  position: "absolute",
+                  top: "50%",
+                  left: 0,
+                  right: 0,
+                  transform: "translateY(-50%)",
+                  padding: "3px 0",
+                  fontSize: 9,
+                  fontWeight: 800,
+                  letterSpacing: "0.14em",
+                  textTransform: "uppercase",
+                  color: "#fff",
+                  background: "rgba(180,40,40,0.9)",
+                  textAlign: "center",
+                }}
+              >
+                Sold out
+              </span>
+            )}
+            {/* Founder direction 2026-09-30 · magnifier button sits on
+                the rim of the circle · half inside, half outside · so
+                it reads as an affordance attached to the image rather
+                than a badge. Whole card is still the <Link>; this is
+                the visible tap-to-open glyph. */}
+            <span
+              aria-hidden
+              style={{
+                position: "absolute",
+                right: "6%",
+                bottom: "6%",
+                width: 28,
+                height: 28,
+                borderRadius: "50%",
+                background: "var(--nex-accent)",
+                color: "#03101D",
+                display: "grid",
+                placeItems: "center",
+                boxShadow: "0 4px 10px rgba(0,0,0,0.45)",
+                border: "2px solid var(--nex-panel, #0a1120)",
+              }}
+            >
+              <svg
+                width={14}
+                height={14}
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2.2}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden
+              >
+                <circle cx="11" cy="11" r="7" />
+                <line x1="21" y1="21" x2="16.5" y2="16.5" />
+              </svg>
+            </span>
+          </div>
+          <div
+            style={{
+              fontSize: 12,
+              fontWeight: 700,
+              lineHeight: 1.25,
+              letterSpacing: "-0.005em",
+              textAlign: "center",
+              minWidth: 0,
+              display: "-webkit-box",
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: "vertical",
+              overflow: "hidden",
+              wordBreak: "break-word",
+              maxWidth: "100%",
+            }}
+          >
+            {product.name}
+          </div>
+          <div
+            style={{
+              fontSize: 11,
+              fontWeight: 800,
+              color: "var(--nex-accent)",
+              letterSpacing: "0.01em",
+              fontVariantNumeric: "tabular-nums",
+              textAlign: "center",
+            }}
+          >
+            {priceLabel}
+          </div>
+        </Link>
+      </>
+    );
+  }
   return (
     <>
       <style>{`
@@ -967,14 +1172,17 @@ export function CoverProductGrid({
   activeSectionId?: string;
   /** Founder direction 2026-09-30 · "landscape" forces a single-column
    *  list and asks each card to render horizontally · used by
-   *  Template 11 Product Seller · Landscape. */
-  variant?: "grid" | "landscape";
+   *  Template 11 Product Seller · Landscape. "round" forces 3 columns
+   *  and asks each card to render as a circle · used by Template 14
+   *  Personal Brand · Round Products. */
+  variant?: "grid" | "landscape" | "round";
 }): React.JSX.Element {
   const visible =
     activeSectionId === ALL_TAB_ID
       ? products
       : products.filter((p) => p.section_id === activeSectionId);
-  const effectiveColumns = variant === "landscape" ? 1 : columns;
+  const effectiveColumns =
+    variant === "landscape" ? 1 : variant === "round" ? 3 : columns;
   return (
     <div
       style={{

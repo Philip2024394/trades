@@ -42,14 +42,17 @@ export function CoverCatalog({
   peerAccountId: string;
   columns?: 1 | 2 | 3;
   /** Cards per page in the paginated grid. Default 4 for grid variant
-   *  and 6 for landscape variant (founder direction 2026-09-30). */
+   *  · 6 for landscape variant · 9 for round variant (founder
+   *  direction 2026-09-30 · 3x3 fills a phone screen cleanly). */
   pageSize?: number;
   /** Founder direction 2026-09-30 · "landscape" forces single-column
-   *  horizontal cards · used by Template 11. */
-  variant?: "grid" | "landscape";
+   *  horizontal cards (Template 11) · "round" forces 3-column circle
+   *  cards (Template 14). */
+  variant?: "grid" | "landscape" | "round";
 }): React.JSX.Element {
   const effectivePageSize =
-    pageSize ?? (variant === "landscape" ? 6 : 4);
+    pageSize ??
+    (variant === "landscape" ? 6 : variant === "round" ? 9 : 4);
   // Founder direction 2026-09-30 · FIRST tab active on arrival · not
   // empty. Buyer lands filtered to the seller's first category, sees
   // its underline, taps it again (toggle) if they want to see all.
