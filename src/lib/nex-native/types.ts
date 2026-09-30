@@ -622,6 +622,10 @@ export interface NexProductRow {
    *  product detail page. Open schema · every reader defensively
    *  parses expected keys. */
   spec: NexProductSpec;
+  /** Category Tabs sealed 2026-09-30 · migration 107 · optional FK to
+   *  nex_product_section for the buyer-facing category tab bar. NULL =
+   *  "uncategorised" · appears only under the "All" tab. */
+  section_id?: NexUuid | null;
   created_at: NexTimestamp;
   updated_at: NexTimestamp;
 }

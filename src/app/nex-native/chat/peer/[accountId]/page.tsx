@@ -29,10 +29,16 @@ import {
   sendCartOrderAction,
   toggleMessageReactionAction,
 } from "../../../_actions";
-import {
-  PortraitBloomShell,
-  type PortraitBloomPresenceKind,
-} from "../../_portrait-bloom-shell";
+// Bridge 96 · CORE + CHROME registry (see
+// src/lib/nex-native/chat-render/README.md · Founder-set 2026-09-29
+// for 100+ theme scalability). The peer-chat page never imports a
+// chrome directly — it calls resolveChromeSet(layoutStyle) and
+// renders what comes back. Every existing chrome (bubbles / sky_cards
+// / timeline_ribbon / terminal) currently delegates to
+// PortraitBloomShell so Phase 1 is behaviour-preserving. Phase 2+
+// lifts individual chromes into their own implementations.
+import { type PortraitBloomPresenceKind } from "../../_portrait-bloom-shell";
+import { resolveChromeSet } from "@/lib/nex-native/chat-render/registry";
 import { PeerCallLauncher } from "./_call-launcher";
 import { PeerTypingClient } from "./_typing-client";
 import { PeerPresenceClient } from "./_presence-client";
@@ -62,6 +68,7 @@ import {
 import { SafeTradeConsentModal } from "./_safe-trade-consent-modal";
 import * as productService from "@/lib/nex-native/product-service";
 import * as menuService from "@/lib/nex-native/menu-service";
+import * as productSectionService from "@/lib/nex-native/product-section-service";
 import { isVenueCategory } from "@/lib/nex-native/types";
 import { isNexOfficialAccount } from "@/lib/nex-native/nex-official";
 
@@ -218,6 +225,9 @@ export default async function PeerChatPage({
             image_url: p.image_url ?? null,
             tags: p.tags ?? null,
             stock_status: p.stock_status ?? null,
+            // Category Tabs sealed 2026-09-30 · nex_product.section_id
+            // (migration 107). NULL = uncategorised.
+            section_id: p.section_id ?? null,
           })),
           // Bridge 51 · food-seller menu items ride the same slider ·
           // dietary tags surface as the tag chips · availability
@@ -232,8 +242,36 @@ export default async function PeerChatPage({
             image_url: m.image_url ?? null,
             tags: m.dietary_tags.length > 0 ? m.dietary_tags : null,
             stock_status: m.is_available ? "in_stock" : "sold",
+            // Category Tabs sealed 2026-09-30 · nex_menu_item.section_id
+            // (migration 066). NULL = uncategorised.
+            section_id: m.section_id ?? null,
           })),
         ],
+        // Category Tabs sealed 2026-09-30 · auto-detect by product kind.
+        // Menu items present → surface nex_menu_section (Bridge 15a
+        // sealed vocabulary). Otherwise → surface nex_product_section
+        // (Migration 107). Doctrine: chat-native shop = same UI as
+        // cover shop; tabs cascade automatically.
+        sections:
+          peerMenuItems.length > 0
+            ? (
+                await menuService
+                  .listSectionsByBusiness(peerBusiness.id)
+                  .catch(() => [])
+              ).map((s) => ({
+                id: s.id,
+                name: s.name,
+                sort_order: s.sort_order,
+              }))
+            : (
+                await productSectionService
+                  .listSectionsByBusiness(peerBusiness.id)
+                  .catch(() => [])
+              ).map((s) => ({
+                id: s.id,
+                name: s.name,
+                sort_order: s.sort_order,
+              })),
       }
     : null;
 
@@ -472,8 +510,15 @@ export default async function PeerChatPage({
       )}
       {/* Bridge 17e · Report affordance moved from the peer chat to
           /nex-native/report/[accountId] · reachable from /friends
-          next to Remove / Block · keeps the chat surface clean. */}
-      <PortraitBloomShell
+          next to Remove / Block · keeps the chat surface clean.
+          Bridge 96 · Shell component now comes from the chrome
+          registry keyed by the peer's layout_style. Every existing
+          chrome is a bubbles-delegating stub at Phase 1 so
+          behaviour is bit-identical. */}
+      {(() => {
+        const Shell = resolveChromeSet(peerThemeRow?.layout_style).PeerChatShell;
+        return (
+      <Shell
         scope="peer-chat"
       /* Free accounts display only the first name on the chat
          header per Founder direction 2026-09-27 · full name lives
@@ -532,6 +577,8 @@ export default async function PeerChatPage({
         };
       })()}
       />
+        );
+      })()}
       {/* Bridge 68 · voice-call launcher · disabled for NEX1 support so
           ops isn't paged through WebRTC. Own signalling channel keyed on
           conversation.id. */}

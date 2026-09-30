@@ -16,12 +16,14 @@ import { notFound, redirect } from "next/navigation";
 import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
 import * as productService from "@/lib/nex-native/product-service";
 import * as businessService from "@/lib/nex-native/business-service";
+import * as productSectionService from "@/lib/nex-native/product-section-service";
 import type { NexProductSpec } from "@/lib/nex-native/types";
 import {
   updateProductSpecAction,
   createProductVariantAction,
   deleteProductVariantAction,
 } from "../../../_actions";
+import { assignProductToSectionAction } from "../../categories/_actions";
 import {
   NEX_VARIANT_ATTRIBUTES,
   NEX_PRODUCT_STOCK_STATUSES,
@@ -78,6 +80,17 @@ export default async function ManageProductPage({
   const banner = sp.e && sp.m ? { code: sp.e, message: sp.m } : null;
   const action = updateProductSpecAction.bind(null, productId);
   const createVariantBound = createProductVariantAction.bind(null, productId);
+  // Category Tabs · sealed 2026-09-30. Fetch this product's owner's
+  // sections + the product's current section_id (may be null).
+  const productSections =
+    await productSectionService.listSectionsByBusiness(business.id);
+  const atMaxSections =
+    productSections.length >=
+    productSectionService.NEX_PRODUCT_SECTION_MAX;
+  const assignSectionBound = assignProductToSectionAction.bind(
+    null,
+    productId,
+  );
   // Fetch existing variants for the grouped list.
   const variants = await productService.listVariants(productId);
   const variantsByAttribute = new Map<string, typeof variants>();
@@ -176,6 +189,146 @@ export default async function ManageProductPage({
         </p>
 
         {banner && <Banner code={banner.code} message={banner.message} />}
+
+        {/* Category Tabs · sealed 2026-09-30 · quick section picker with
+            inline create-on-type. Full management lives at
+            /nex-native/manage/categories. Hard cap of 3 enforced in
+            product-section-service. */}
+        <section
+          style={{
+            background: NEX.panelSoft,
+            border: `1px solid ${NEX.border}`,
+            borderRadius: 12,
+            padding: 14,
+            marginBottom: 18,
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "baseline",
+              justifyContent: "space-between",
+              marginBottom: 10,
+              gap: 8,
+            }}
+          >
+            <div>
+              <div
+                style={{
+                  fontSize: 10,
+                  letterSpacing: "0.16em",
+                  textTransform: "uppercase",
+                  color: NEX.cyan,
+                  fontWeight: 700,
+                  marginBottom: 2,
+                }}
+              >
+                Category
+              </div>
+              <div style={{ fontSize: 12, color: NEX.textDim }}>
+                One-word tab that groups this product on your cover and in
+                the peer-chat shop slider.
+              </div>
+            </div>
+            <Link
+              href="/nex-native/manage/categories"
+              style={{
+                fontSize: 11,
+                color: NEX.cyan,
+                textDecoration: "none",
+                whiteSpace: "nowrap",
+                letterSpacing: "0.04em",
+                fontWeight: 700,
+              }}
+            >
+              Manage all →
+            </Link>
+          </div>
+
+          <form
+            action={assignSectionBound}
+            style={{ display: "flex", gap: 8, flexWrap: "wrap" }}
+          >
+            <select
+              name="section_id"
+              defaultValue={product.section_id ?? "__uncategorised__"}
+              style={{
+                flex: "1 1 180px",
+                padding: "10px 12px",
+                borderRadius: 8,
+                background: NEX.bg,
+                border: `1px solid ${NEX.border}`,
+                color: NEX.text,
+                fontFamily: SANS,
+                fontSize: 13,
+                appearance: "auto",
+              }}
+            >
+              <option value="__uncategorised__">— Uncategorised —</option>
+              {productSections.map((s) => (
+                <option key={s.id} value={s.id}>
+                  {s.name}
+                </option>
+              ))}
+            </select>
+            {!atMaxSections && (
+              <input
+                type="text"
+                name="section_name"
+                placeholder="or type a new one"
+                maxLength={20}
+                pattern="[A-Za-z0-9\-]{1,20}"
+                title="One word · letters, numbers, hyphens · up to 20 chars"
+                style={{
+                  flex: "1 1 160px",
+                  padding: "10px 12px",
+                  borderRadius: 8,
+                  background: NEX.bg,
+                  border: `1px solid ${NEX.border}`,
+                  color: NEX.text,
+                  fontFamily: SANS,
+                  fontSize: 13,
+                }}
+              />
+            )}
+            <button
+              type="submit"
+              style={{
+                padding: "10px 16px",
+                borderRadius: 8,
+                border: "none",
+                background: NEX.cyan,
+                color: NEX.bg,
+                fontFamily: SANS,
+                fontSize: 12,
+                fontWeight: 800,
+                letterSpacing: "0.04em",
+                cursor: "pointer",
+              }}
+            >
+              Save
+            </button>
+          </form>
+          {atMaxSections && (
+            <div
+              style={{
+                marginTop: 8,
+                fontSize: 11,
+                color: NEX.textMute,
+              }}
+            >
+              You&apos;ve used all 3 category slots. Pick from the list
+              above or manage them at{" "}
+              <Link
+                href="/nex-native/manage/categories"
+                style={{ color: NEX.cyan, textDecoration: "underline" }}
+              >
+                /manage/categories
+              </Link>
+              .
+            </div>
+          )}
+        </section>
 
         <form
           action={action}

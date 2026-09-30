@@ -26,7 +26,11 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { ShopGridModal, type ShopProduct } from "./_shop-grid-modal";
+import {
+  ShopGridModal,
+  type ShopProduct,
+  type ShopSection,
+} from "./_shop-grid-modal";
 import {
   NEX_CART_STORAGE_KEY,
   type NexCartItem,
@@ -51,6 +55,10 @@ interface Props {
     name: string;
     href: string | null;
     products: ShopProduct[];
+    /** Category Tabs sealed 2026-09-30 · the peer's one-word sections
+     *  (auto-detected upstream: menu items → nex_menu_section, else
+     *  nex_product_section). Empty list hides the tab bar per doctrine. */
+    sections?: ShopSection[];
     isVenue: boolean;
     context?: {
       shop_id: string;
@@ -69,6 +77,14 @@ interface Props {
   inquiryAction?: (
     formData: FormData,
   ) => Promise<never> | void | Promise<void>;
+  /** Bridge 97h · when true, both the Shop and Cart buttons render
+   *  regardless of NEX_COMMERCE_ENABLED. Used by the theme viewer
+   *  so previews show the full 3-button [Home] [Shop] [Cart]
+   *  cluster even while commerce is gated off during the Indonesia
+   *  launch. Default = false · production behaviour unchanged.
+   *  (Kept the name `forceShowCart` for callsite brevity even though
+   *  it now controls both commerce buttons together.) */
+  forceShowCart?: boolean;
 }
 
 /** Read the total quantity of items currently in the localStorage
@@ -98,6 +114,7 @@ export function HeaderRightCluster({
   shop,
   sendCartOrderAction,
   inquiryAction,
+  forceShowCart = false,
 }: Props) {
   const [shopOpen, setShopOpen] = React.useState(false);
   const [cartCount, setCartCount] = React.useState(0);
@@ -120,8 +137,8 @@ export function HeaderRightCluster({
 
   // Bridge 55 · Phase 1 launch · commerce hidden by default.
   // Cart + Shop icons only render when NEX_COMMERCE_ENABLED is on.
-  const showCart = NEX_COMMERCE_ENABLED;
-  const showShop = NEX_COMMERCE_ENABLED && !!shop;
+  const showCart = NEX_COMMERCE_ENABLED || forceShowCart;
+  const showShop = (NEX_COMMERCE_ENABLED || forceShowCart) && !!shop;
   const hasShopProducts = !!shop && shop.products.length > 0;
   const shopAriaLabel = shop
     ? shop.isVenue
@@ -222,6 +239,7 @@ export function HeaderRightCluster({
           shopName={shop.name}
           shopHref={shop.href}
           products={shop.products}
+          sections={shop.sections ?? []}
           peerName={peerName}
           isVenue={shop.isVenue}
           shopContext={shop.context}

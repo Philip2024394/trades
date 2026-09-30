@@ -30,7 +30,11 @@ import {
 } from "./_side-nav-panel";
 import { AmbientMotion } from "./_ambient-motion";
 import { FirstConnectionEmpty } from "./_first-connection-empty";
-import { ShopGridModal, type ShopProduct } from "./_shop-grid-modal";
+import {
+  ShopGridModal,
+  type ShopProduct,
+  type ShopSection,
+} from "./_shop-grid-modal";
 import { HeaderRightCluster } from "./_header-right-cluster";
 import { ImageQrProbe } from "./_qr-image-scanner";
 import { TradeAgreementCard } from "./_trade-agreement-card";
@@ -256,7 +260,7 @@ export interface PortraitBloomShellProps {
    *  nex_chat_theme.layout_style. Defaults to 'bubbles' (classic
    *  Portrait Bloom). Set to 'sky_cards' or 'timeline_ribbon' to
    *  render the theme-specific message row. */
-  layoutStyle?: "bubbles" | "sky_cards" | "timeline_ribbon";
+  layoutStyle?: "bubbles" | "sky_cards" | "timeline_ribbon" | "terminal";
   /** Small caption under the name · profession for friends, business
    *  tagline for businesses, product name for a product-scoped chat.
    *  Null hides the row. */
@@ -352,6 +356,11 @@ export interface PortraitBloomShellProps {
     name: string;
     href: string | null;
     products: ShopProduct[];
+    /** Category Tabs sealed 2026-09-30 · the peer's one-word sections.
+     *  Auto-detected by the loader: menu items → nex_menu_section,
+     *  otherwise → nex_product_section. Optional · empty list hides the
+     *  tab bar in ShopGridModal per doctrine. */
+    sections?: ShopSection[];
     /** True when the peer's business_category is a venue (bakery /
      *  restaurant / cafe / bar / …). Threads through to the header
      *  icon (cutlery vs shop-bag) + slider labels (Menu vs Shop). */
@@ -407,9 +416,12 @@ export interface PortraitBloomShellProps {
    *  profile image must be of the profile user". */
   wallpaperUrl?: string | null;
   /** Per-theme environmental overlay config from
-   *  nex_chat_theme.wallpaper_config · currently drives the moon
-   *  glow position + size + colour. When null, no overlay renders.
-   *  Sealed 2026-09-27 · migration 056. */
+   *  nex_chat_theme.wallpaper_config · drives moonGlow (breathing
+   *  halo) + particleDrift (soft particles floating up) + sparkle
+   *  (twinkling stars). All optional · a theme opts into whichever
+   *  overlays fit. When null, no overlay renders.
+   *  Sealed 2026-09-27 · migration 056 · Bridge 97 added drift +
+   *  sparkle for the 20-theme batch. */
   wallpaperConfig?: {
     moonGlow?: {
       x: string;
@@ -417,7 +429,36 @@ export interface PortraitBloomShellProps {
       size: number;
       color?: string;
     };
+    particleDrift?: {
+      color: string;
+      count?: number;
+      direction?: "up";
+      size?: number;
+      speedSeconds?: number;
+    };
+    sparkle?: {
+      color: string;
+      count?: number;
+      size?: number;
+      twinkleSeconds?: number;
+    };
+    /** Bridge 97f · bubble-shape preset · classic (default), pill,
+     *  square, outlined, gradient. See BubbleShape helper for the
+     *  exact CSS per preset. */
+    bubbleStyle?: {
+      preset:
+        | "classic"
+        | "pill"
+        | "square"
+        | "outlined"
+        | "gradient";
+    };
   } | null;
+  /** Bridge 97h · when true, HeaderRightCluster shows the Cart
+   *  button even while NEX_COMMERCE_ENABLED is false. Only the
+   *  theme viewer sets this so previews render the full 3-button
+   *  cluster. Production peer chat leaves it unset. */
+  forceShowCart?: boolean;
 }
 
 export function PortraitBloomShell({
@@ -442,6 +483,7 @@ export function PortraitBloomShell({
   deleteAction,
   wallpaperUrl,
   wallpaperConfig,
+  forceShowCart = false,
   uploadAction,
   pendingAttachment,
   encryptedUploadEnabled,
@@ -611,6 +653,16 @@ export function PortraitBloomShell({
               ambientTint={`${rippleColor}55`}
               moonGlow={wallpaperConfig?.moonGlow ?? null}
             />
+            {/* Bridge 97 · two lightweight ambient overlays keyed off
+                the theme's wallpaper_config. Both render only when the
+                theme opts in · both use pointer-events: none so they
+                never intercept taps on the message zone above them. */}
+            {wallpaperConfig?.particleDrift && (
+              <ParticleDrift config={wallpaperConfig.particleDrift} />
+            )}
+            {wallpaperConfig?.sparkle && (
+              <SparkleField config={wallpaperConfig.sparkle} />
+            )}
           </>
         )}
 
@@ -1026,35 +1078,24 @@ export function PortraitBloomShell({
                             ? "11px 14px 9px"
                             : "10px 14px",
                         marginTop,
-                        // Squarer corners with a tail corner near the
-                        // sender · 14px main, 4px tail. Mine = tail
-                        // bottom-right, theirs = tail bottom-left.
-                        // Sealed 2026-09-27.
-                        borderRadius: m.mine
-                          ? "14px 14px 4px 14px"
-                          : "14px 14px 14px 4px",
-                        // Darker shaded glass · bubbles carry a
-                        // distinctly dark tint so they read as their
-                        // own containers over the portrait.
-                        background: m.deleted_for_everyone
-                          ? "rgba(20,26,38,0.48)"
-                          : m.mine
-                            ? "rgba(12,32,58,0.62)"
-                            : NEX.glassBubble,
+                        // Bridge 97f · bubble geometry + background +
+                        // border resolved from the theme's
+                        // wallpaperConfig.bubbleStyle preset. Falls
+                        // back to the classic Bloom shape when the
+                        // theme has no preset. Deleted bubbles wear
+                        // the same tombstone treatment regardless of
+                        // preset so retracted messages are always
+                        // recognisable across themes.
+                        ...resolveBubbleShape({
+                          preset: wallpaperConfig?.bubbleStyle?.preset ?? "classic",
+                          mine: m.mine,
+                          deleted: !!m.deleted_for_everyone,
+                          bubbleRim,
+                          accentGlassMine: "rgba(12,32,58,0.62)",
+                          accentGlassPeer: NEX.glassBubble,
+                        }),
                         backdropFilter: "blur(24px) saturate(1.2)",
                         WebkitBackdropFilter: "blur(24px) saturate(1.2)",
-                        // Outgoing bubble rim adopts the peer's
-                        // theme bubble colour (Rose = blue) · sealed
-                        // 2026-09-27. Incoming bubble rim stays a
-                        // neutral frosted gray so the other person's
-                        // messages read as content, not as another
-                        // identity paint layer. Deleted bubbles wear a
-                        // muted dashed rim so they read as tombstones.
-                        border: m.deleted_for_everyone
-                          ? "1px dashed rgba(139,169,209,0.35)"
-                          : m.mine
-                            ? `1px solid ${themeRimStrong(bubbleRim)}`
-                            : "1px solid rgba(150,160,180,0.55)",
                         color: NEX.text,
                         fontSize: 15,
                         lineHeight: 1.42,
@@ -1417,6 +1458,7 @@ export function PortraitBloomShell({
                 name: peerShop.name,
                 href: peerShop.href,
                 products: peerShop.products,
+                sections: peerShop.sections ?? [],
                 isVenue: peerShop.isVenue ?? false,
                 context: peerShop.context,
               }
@@ -1424,6 +1466,7 @@ export function PortraitBloomShell({
         }
         sendCartOrderAction={sendCartOrderAction}
         inquiryAction={productInquiryAction}
+        forceShowCart={forceShowCart}
       />
     </>
   );
@@ -1468,9 +1511,15 @@ function hexToRgb(hex: string): { r: number; g: number; b: number } {
 }
 
 function formatTime(iso: string): string {
-  return new Date(iso).toLocaleTimeString([], {
+  // Pinned to en-GB · 24-hour · no locale drift between server SSR
+  // (system locale) and client hydration (browser locale). Fixes a
+  // hydration mismatch surfaced by the theme viewer (Bridge 97g)
+  // and any chat surface where the Node process locale differs from
+  // the visitor's browser locale (e.g. id-ID server → en-US client).
+  return new Date(iso).toLocaleTimeString("en-GB", {
     hour: "2-digit",
     minute: "2-digit",
+    hour12: false,
   });
 }
 
@@ -2895,5 +2944,244 @@ function PaymentRequestWarning({ mine }: { mine: boolean }) {
         </div>
       </div>
     </div>
+  );
+}
+
+// ─── Bridge 97 · ambient overlays for the 20-theme batch ─────────────
+//
+// Both overlays sit inside the wallpaper zone (z-index 2 · above the
+// wallpaper + scrim, below the header + bubbles) with pointer-events
+// off so they never intercept taps. They render deterministically
+// from their config so SSR + client render agree.
+
+interface ParticleDriftConfig {
+  color: string;
+  count?: number;
+  direction?: "up";
+  size?: number;
+  speedSeconds?: number;
+}
+
+function ParticleDrift({ config }: { config: ParticleDriftConfig }): React.JSX.Element {
+  const count = Math.max(4, Math.min(48, config.count ?? 16));
+  const size = Math.max(2, Math.min(10, config.size ?? 4));
+  const speed = Math.max(6, Math.min(30, config.speedSeconds ?? 14));
+  const color = config.color;
+  const particles = React.useMemo(() => {
+    // Seeded pseudo-random so SSR and client agree on every particle
+    // position + delay. Same seed → same visual.
+    let seed = 424242;
+    const rand = () => {
+      seed = (seed * 9301 + 49297) % 233280;
+      return seed / 233280;
+    };
+    return Array.from({ length: count }, () => ({
+      left: rand() * 100,
+      delay: rand() * speed,
+      xShift: (rand() - 0.5) * 40,
+      opacity: 0.35 + rand() * 0.45,
+      scale: 0.7 + rand() * 0.7,
+    }));
+  }, [count, speed]);
+
+  const anim = `nex-drift-${Math.round(speed)}`;
+
+  return (
+    <>
+      <style>{`
+        @keyframes ${anim} {
+          0%   { transform: translate3d(0, 40px, 0); opacity: 0; }
+          15%  { opacity: 1; }
+          85%  { opacity: 0.6; }
+          100% { transform: translate3d(var(--nx-x, 0px), -110%, 0); opacity: 0; }
+        }
+      `}</style>
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          inset: 0,
+          zIndex: 2,
+          pointerEvents: "none",
+          overflow: "hidden",
+        }}
+      >
+        {particles.map((p, i) => (
+          <span
+            key={i}
+            style={
+              {
+                position: "absolute",
+                left: `${p.left}%`,
+                bottom: -12,
+                width: size,
+                height: size,
+                borderRadius: "50%",
+                background: color,
+                filter: `blur(${size / 4}px)`,
+                opacity: p.opacity,
+                transform: `scale(${p.scale})`,
+                animation: `${anim} ${speed}s linear infinite`,
+                animationDelay: `-${p.delay}s`,
+                "--nx-x": `${p.xShift}px`,
+              } as React.CSSProperties
+            }
+          />
+        ))}
+      </div>
+    </>
+  );
+}
+
+interface SparkleConfig {
+  color: string;
+  count?: number;
+  size?: number;
+  twinkleSeconds?: number;
+}
+
+// Bridge 97f · Resolve the geometry + background + border for a
+// message bubble based on the theme's bubbleStyle preset. Returns a
+// partial style object that gets spread into the bubble div. Deleted
+// bubbles wear the tombstone treatment regardless of preset so
+// retracted messages are always recognisable across themes.
+function resolveBubbleShape(input: {
+  preset: "classic" | "pill" | "square" | "outlined" | "gradient";
+  mine: boolean;
+  deleted: boolean;
+  bubbleRim: string;
+  accentGlassMine: string;
+  accentGlassPeer: string;
+}): {
+  borderRadius: string;
+  background: string;
+  border: string;
+  boxShadow: string;
+} {
+  const { preset, mine, deleted, bubbleRim, accentGlassMine, accentGlassPeer } = input;
+
+  if (deleted) {
+    return {
+      borderRadius: preset === "square" ? "4px" : preset === "pill" ? "20px" : "14px",
+      background: "rgba(20,26,38,0.48)",
+      border: "1px dashed rgba(139,169,209,0.35)",
+      boxShadow: "0 4px 14px rgba(0,0,0,0.4)",
+    };
+  }
+
+  const strongRim = themeRimStrong(bubbleRim);
+  const softRim = "1px solid rgba(150,160,180,0.55)";
+  const mineShadow = "0 0 14px rgba(0,159,239,0.25), 0 6px 20px rgba(0,0,0,0.45)";
+  const peerShadow = "0 6px 22px rgba(0,0,0,0.55)";
+
+  switch (preset) {
+    case "pill":
+      // Fully rounded · no tail · reads as a calm sticker.
+      return {
+        borderRadius: "24px",
+        background: mine ? accentGlassMine : accentGlassPeer,
+        border: mine ? `1px solid ${strongRim}` : softRim,
+        boxShadow: mine ? mineShadow : peerShadow,
+      };
+    case "square":
+      // Sharp geometric · minimal rounding · no tail.
+      return {
+        borderRadius: "4px",
+        background: mine ? accentGlassMine : accentGlassPeer,
+        border: mine ? `1px solid ${strongRim}` : softRim,
+        boxShadow: mine ? mineShadow : peerShadow,
+      };
+    case "outlined":
+      // Transparent background · accent-coloured outline dominates.
+      // Reads as a "card" rather than a solid bubble.
+      return {
+        borderRadius: "12px",
+        background: "rgba(2,9,20,0.30)",
+        border: mine
+          ? `1.5px solid ${strongRim}`
+          : `1.5px solid rgba(150,160,180,0.7)`,
+        boxShadow: mine
+          ? "0 0 10px rgba(0,159,239,0.18)"
+          : "0 4px 14px rgba(0,0,0,0.35)",
+      };
+    case "gradient":
+      // Subtle accent-tinted gradient · warmer feel than solid.
+      return {
+        borderRadius: mine ? "16px 16px 6px 16px" : "16px 16px 16px 6px",
+        background: mine
+          ? `linear-gradient(135deg, ${themeRimStrong(bubbleRim)}55 0%, rgba(12,32,58,0.75) 60%)`
+          : `linear-gradient(135deg, rgba(150,160,180,0.32) 0%, rgba(30,44,66,0.62) 60%)`,
+        border: mine ? `1px solid ${strongRim}` : softRim,
+        boxShadow: mine ? mineShadow : peerShadow,
+      };
+    case "classic":
+    default:
+      // Sealed 2026-09-27 · original Bloom shape · 14px + sender tail.
+      return {
+        borderRadius: mine ? "14px 14px 4px 14px" : "14px 14px 14px 4px",
+        background: mine ? accentGlassMine : accentGlassPeer,
+        border: mine ? `1px solid ${strongRim}` : softRim,
+        boxShadow: mine ? mineShadow : peerShadow,
+      };
+  }
+}
+
+function SparkleField({ config }: { config: SparkleConfig }): React.JSX.Element {
+  const count = Math.max(6, Math.min(60, config.count ?? 24));
+  const size = Math.max(2, Math.min(8, config.size ?? 3));
+  const twinkle = Math.max(1.5, Math.min(8, config.twinkleSeconds ?? 3));
+  const color = config.color;
+  const stars = React.useMemo(() => {
+    let seed = 91827;
+    const rand = () => {
+      seed = (seed * 9301 + 49297) % 233280;
+      return seed / 233280;
+    };
+    return Array.from({ length: count }, () => ({
+      left: rand() * 100,
+      top: rand() * 100,
+      delay: rand() * twinkle * 2,
+      scale: 0.6 + rand() * 0.8,
+    }));
+  }, [count, twinkle]);
+
+  return (
+    <>
+      <style>{`
+        @keyframes nex-sparkle {
+          0%, 100% { opacity: 0.15; transform: scale(0.9); }
+          50%      { opacity: 1;    transform: scale(1.15); }
+        }
+      `}</style>
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          inset: 0,
+          zIndex: 2,
+          pointerEvents: "none",
+          overflow: "hidden",
+        }}
+      >
+        {stars.map((s, i) => (
+          <span
+            key={i}
+            style={{
+              position: "absolute",
+              left: `${s.left}%`,
+              top: `${s.top}%`,
+              width: size,
+              height: size,
+              borderRadius: "50%",
+              background: color,
+              boxShadow: `0 0 ${size * 2}px ${color}`,
+              transform: `scale(${s.scale})`,
+              animation: `nex-sparkle ${twinkle}s ease-in-out infinite`,
+              animationDelay: `-${s.delay}s`,
+            }}
+          />
+        ))}
+      </div>
+    </>
   );
 }
