@@ -1308,8 +1308,6 @@ export function LayoutPersonalBrand({ content, themeId }: LayoutProps): React.JS
         <div style={{ marginTop: 22 }}>
           <PersonalBrandTabs
             products={content.products}
-            services={content.services}
-            reviews={content.reviews}
             peerAccountId={content.ownerAccountId}
             orderingCopy={content.infoPages?.delivery_details ?? null}
           />
@@ -1580,38 +1578,24 @@ function QuickPill({ label }: { label: string }): React.JSX.Element {
 
 // ─── Personal Brand · tabbed content ─────────────────────────────────
 // Founder direction 2026-09-30 · Template 10 organises its middle
-// content into four top-level tabs (Products · Services · Reviews ·
-// Blog). Products tab further exposes four sub-tabs (Products ·
-// Images · Sizes · Ordering) so buyers can look at the shop from
-// multiple angles without leaving the cover.
+// content into four flat tabs · Products · Images · Sizes · Ordering.
+// Buyers can look at the shop from multiple angles without leaving
+// the cover. No nested sub-tabs · one level of navigation only.
 
-type PersonalBrandTab = "products" | "services" | "reviews" | "blog";
-type ProductSubTab = "products" | "images" | "sizes" | "ordering";
+type PersonalBrandTab = "products" | "images" | "sizes" | "ordering";
 
 function PersonalBrandTabs({
   products,
-  services,
-  reviews,
   peerAccountId,
   orderingCopy,
 }: {
   products: MockCoverContent["products"];
-  services: MockCoverContent["services"];
-  reviews: MockCoverContent["reviews"];
   peerAccountId: string;
   orderingCopy: string | null;
 }): React.JSX.Element {
   const [tab, setTab] = React.useState<PersonalBrandTab>("products");
-  const [productSub, setProductSub] =
-    React.useState<ProductSubTab>("products");
 
-  const topTabs: { id: PersonalBrandTab; label: string }[] = [
-    { id: "products", label: "Products" },
-    { id: "services", label: "Services" },
-    { id: "reviews", label: "Reviews" },
-    { id: "blog", label: "Blog" },
-  ];
-  const productSubTabs: { id: ProductSubTab; label: string }[] = [
+  const tabs: { id: PersonalBrandTab; label: string }[] = [
     { id: "products", label: "Products" },
     { id: "images", label: "Images" },
     { id: "sizes", label: "Sizes" },
@@ -1620,7 +1604,7 @@ function PersonalBrandTabs({
 
   return (
     <div>
-      {/* Top tabs · Products / Services / Reviews / Blog */}
+      {/* Four flat tabs · pill buttons · active fills with accent */}
       <div
         role="tablist"
         aria-label="Personal brand sections"
@@ -1631,7 +1615,7 @@ function PersonalBrandTabs({
           marginBottom: 16,
         }}
       >
-        {topTabs.map((t) => {
+        {tabs.map((t) => {
           const isActive = t.id === tab;
           return (
             <button
@@ -1666,78 +1650,21 @@ function PersonalBrandTabs({
       </div>
 
       {tab === "products" && (
-        <div>
-          {/* Sub-tabs · Products / Images / Sizes / Ordering */}
-          <div
-            role="tablist"
-            aria-label="Product view"
-            style={{
-              display: "flex",
-              gap: 4,
-              marginBottom: 14,
-              flexWrap: "wrap",
-            }}
-          >
-            {productSubTabs.map((s) => {
-              const isActive = s.id === productSub;
-              return (
-                <button
-                  key={s.id}
-                  type="button"
-                  role="tab"
-                  aria-selected={isActive}
-                  onClick={() => setProductSub(s.id)}
-                  style={{
-                    appearance: "none",
-                    background: "transparent",
-                    border: "none",
-                    padding: "8px 12px 10px",
-                    margin: 0,
-                    cursor: "pointer",
-                    fontFamily: "var(--nex-font-body)",
-                    fontSize: 12,
-                    fontWeight: isActive ? 700 : 500,
-                    letterSpacing: "0.02em",
-                    color: isActive
-                      ? "var(--nex-accent)"
-                      : "var(--nex-text-dim)",
-                    borderBottom: isActive
-                      ? "2px solid var(--nex-accent)"
-                      : "2px solid transparent",
-                    transition: "color 160ms ease, border-color 160ms ease",
-                  }}
-                >
-                  {s.label}
-                </button>
-              );
-            })}
-          </div>
-          {productSub === "products" && (
-            <CoverProductGrid
-              products={products.slice(0, 6)}
-              peerAccountId={peerAccountId}
-              columns={2}
-            />
-          )}
-          {productSub === "images" && (
-            <ImageGallerySix
-              images={products
-                .map((p) => p.image_url)
-                .filter((u): u is string => !!u)}
-            />
-          )}
-          {productSub === "sizes" && <SizesPanel />}
-          {productSub === "ordering" && (
-            <OrderingPanel body={orderingCopy} />
-          )}
-        </div>
+        <CoverProductGrid
+          products={products.slice(0, 6)}
+          peerAccountId={peerAccountId}
+          columns={2}
+        />
       )}
-
-      {tab === "services" && <ServiceList services={services} />}
-
-      {tab === "reviews" && <ReviewList reviews={reviews} />}
-
-      {tab === "blog" && <BlogPlaceholder />}
+      {tab === "images" && (
+        <ImageGallerySix
+          images={products
+            .map((p) => p.image_url)
+            .filter((u): u is string => !!u)}
+        />
+      )}
+      {tab === "sizes" && <SizesPanel />}
+      {tab === "ordering" && <OrderingPanel body={orderingCopy} />}
     </div>
   );
 }
