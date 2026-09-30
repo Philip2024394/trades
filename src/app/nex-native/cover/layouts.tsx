@@ -1312,6 +1312,99 @@ export function LayoutPersonalBrand({ content, themeId }: LayoutProps): React.JS
             orderingCopy={content.infoPages?.delivery_details ?? null}
           />
         </div>
+        {/* Founder direction 2026-09-30 · Visit Us block sits under the
+            Products pagination · address + Google Maps directions link
+            + today's opening / closing hours. Same block Template 01
+            Café uses so buyers get identical wayfinding regardless of
+            which cover template the seller picked. */}
+        <a
+          href={
+            content.locationLat != null && content.locationLng != null
+              ? `https://www.google.com/maps/dir/?api=1&destination=${content.locationLat},${content.locationLng}`
+              : `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+                  content.address,
+                )}`
+          }
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            display: "block",
+            marginTop: 20,
+            padding: "16px 18px",
+            borderRadius: 14,
+            border: "1px dashed var(--nex-accent-soft)",
+            background:
+              "linear-gradient(180deg, var(--nex-accent-faint), rgba(3,8,20,0.35))",
+            textDecoration: "none",
+            color: "inherit",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "baseline",
+              justifyContent: "space-between",
+              gap: 10,
+              marginBottom: 6,
+            }}
+          >
+            <div
+              style={{
+                fontSize: 10,
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+                color: "var(--nex-accent)",
+                fontWeight: 700,
+              }}
+            >
+              Visit Us
+            </div>
+            <div
+              aria-hidden
+              style={{
+                fontSize: 10,
+                letterSpacing: "0.08em",
+                textTransform: "uppercase",
+                color: "var(--nex-accent)",
+                fontWeight: 700,
+              }}
+            >
+              Directions ↗
+            </div>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "flex-start",
+              gap: 8,
+              fontFamily: "var(--nex-font-display)",
+              fontSize: 15,
+              lineHeight: 1.35,
+              fontWeight: 600,
+              color: "var(--nex-text)",
+            }}
+          >
+            <span aria-hidden style={{ flex: "0 0 auto" }}>📍</span>
+            <span style={{ flex: 1 }}>{content.address}</span>
+          </div>
+          <div
+            style={{
+              marginTop: 8,
+              display: "flex",
+              alignItems: "center",
+              gap: 6,
+              fontSize: 12,
+              color: "var(--nex-text-dim)",
+            }}
+          >
+            <span aria-hidden>🕐</span>
+            <span>
+              {formatTodayHoursLabel(content.hoursByDay, content.hours) ??
+                content.hours ??
+                "Hours to be confirmed"}
+            </span>
+          </div>
+        </a>
         <CoverIdentityRail
           handle={content.handle}
           location={content.location}
