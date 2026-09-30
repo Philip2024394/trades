@@ -87,6 +87,9 @@ const COVER_LAYOUT_DONE: ReadonlySet<CoverLayoutId> = new Set<CoverLayoutId>([
   "personal_brand",
   "personal_brand_landscape",
   "personal_brand_round",
+  "cafe_round",
+  "product_round",
+  "product_landscape_round",
 ]);
 
 const DEFAULT_THEME = "pink-dream";
