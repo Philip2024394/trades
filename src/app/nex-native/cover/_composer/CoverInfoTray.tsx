@@ -577,6 +577,12 @@ function buildTrayItems(content: CoverInfoTrayContent): TrayItem[] {
       icon: NEX_INFO_PAGE_META.delivery.icon,
       label: NEX_INFO_PAGE_META.delivery.label,
       body: content.pages.delivery_details,
+      // Founder direction 2026-09-30 · every delivery panel closes
+      // with the NEX-standard courier network note · lets buyers
+      // know they can pick a delivery slot that fits their schedule
+      // even when the seller's own rider is unavailable.
+      footerNote:
+        "We can also arrange delivery with local transportation companies at a time that best suits your schedule.",
     });
   }
 
@@ -761,12 +767,16 @@ function IconAboutUs({ size }: { size: number }) {
 }
 
 function IconDelivery({ size }: { size: number }) {
+  // Founder direction 2026-09-30 · scooter / motorbike is THE
+  // universal Indonesian delivery vehicle (Gojek, Grab, Maxim, private
+  // riders). Two wheels + angular body + handlebar rising from the
+  // front · clean silhouette at 24×24.
   return (
     <svg {...iconProps(size)}>
-      <path d="M3 7h11v9H3z" />
-      <path d="M14 10h4l3 3v3h-7" />
-      <circle cx="7" cy="18" r="1.7" />
-      <circle cx="17" cy="18" r="1.7" />
+      <circle cx="5" cy="17" r="3" />
+      <circle cx="19" cy="17" r="3" />
+      <path d="M5 17l4-7h5l5 7" />
+      <path d="M9 10l-3-3" />
     </svg>
   );
 }
