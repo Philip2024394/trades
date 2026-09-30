@@ -393,21 +393,17 @@ export function LayoutProduct({ content, themeId }: LayoutProps): React.JSX.Elem
                   fontVariantNumeric: "tabular-nums",
                 }}
               >
-                <svg
-                  width={14}
-                  height={14}
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+                {/* Founder direction 2026-09-30 · 3D emoji glyph (renders
+                    as a dimensional colour icon on iOS / Android / modern
+                    browsers) instead of the flat stroke SVG. Same badge
+                    layout · just swaps line-art for the platform's
+                    native colour icon. */}
+                <span
                   aria-hidden
+                  style={{ fontSize: 16, lineHeight: 1 }}
                 >
-                  <path d="M3 8l9-4 9 4v9l-9 4-9-4z" />
-                  <path d="M3 8l9 4 9-4" />
-                  <line x1="12" y1="12" x2="12" y2="21" />
-                </svg>
+                  📦
+                </span>
                 <span>{content.products.length} products live</span>
               </div>
             }
