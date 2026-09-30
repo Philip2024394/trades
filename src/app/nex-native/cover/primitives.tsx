@@ -476,9 +476,15 @@ export function CoverSecondaryCTA({
 export function CoverSectionHeading({
   eyebrow,
   title,
+  rightSlot,
 }: {
   eyebrow?: string;
   title: string;
+  /** Founder direction 2026-09-30 · optional right-aligned node
+   *  rendered on the same row as the title (e.g. product count badge,
+   *  status chip). Callers that don't provide it get the same layout
+   *  as before. */
+  rightSlot?: React.ReactNode;
 }): React.JSX.Element {
   return (
     <div style={{ marginBottom: 14 }}>
@@ -496,21 +502,34 @@ export function CoverSectionHeading({
           {eyebrow}
         </div>
       )}
-      {/* Founder direction 2026-09-30 · remove the small accent-coloured
-          dash that used to sit before the title. Title now stands alone
-          for a cleaner heading. */}
-      <h2
+      <div
         style={{
-          margin: 0,
-          fontFamily: "var(--nex-font-display)",
-          fontSize: 20,
-          fontWeight: 700,
-          letterSpacing: "-0.01em",
-          textShadow: "0 1px 4px rgba(0,0,0,0.55)",
+          display: "flex",
+          alignItems: "baseline",
+          justifyContent: "space-between",
+          gap: 12,
         }}
       >
-        {title}
-      </h2>
+        {/* Founder direction 2026-09-30 · remove the small accent-coloured
+            dash that used to sit before the title. Title now stands alone
+            for a cleaner heading. */}
+        <h2
+          style={{
+            margin: 0,
+            fontFamily: "var(--nex-font-display)",
+            fontSize: 20,
+            fontWeight: 700,
+            letterSpacing: "-0.01em",
+            textShadow: "0 1px 4px rgba(0,0,0,0.55)",
+            minWidth: 0,
+          }}
+        >
+          {title}
+        </h2>
+        {rightSlot && (
+          <div style={{ flex: "0 0 auto" }}>{rightSlot}</div>
+        )}
+      </div>
     </div>
   );
 }

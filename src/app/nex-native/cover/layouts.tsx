@@ -373,33 +373,51 @@ export function LayoutProduct({ content, themeId }: LayoutProps): React.JSX.Elem
           />
         </div>
         <div style={{ marginTop: 20 }}>
-          <CoverSectionHeading eyebrow="Shop" title="All products" />
+          {/* Founder direction 2026-09-30 · products-live count moves
+              from the standalone stats strip to the right side of the
+              All products heading · reads as a live badge on the
+              section header. */}
+          <CoverSectionHeading
+            eyebrow="Shop"
+            title="All products"
+            rightSlot={
+              <div
+                aria-label={`${content.products.length} products live`}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 6,
+                  fontSize: 12,
+                  fontWeight: 700,
+                  color: "var(--nex-accent)",
+                  fontVariantNumeric: "tabular-nums",
+                }}
+              >
+                <svg
+                  width={14}
+                  height={14}
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden
+                >
+                  <path d="M3 8l9-4 9 4v9l-9 4-9-4z" />
+                  <path d="M3 8l9 4 9-4" />
+                  <line x1="12" y1="12" x2="12" y2="21" />
+                </svg>
+                <span>{content.products.length} products live</span>
+              </div>
+            }
+          />
           <CoverCatalog
             sections={content.sections}
             products={content.products}
             peerAccountId={content.ownerAccountId}
             columns={2}
           />
-        </div>
-        {/* Founder direction 2026-09-30 · stats strip moved DOWN so it
-            sits under the pagination controls · reads as a footer
-            summary of the shop grid ("here's what you just scrolled
-            through") rather than a header above it. */}
-        <div
-          style={{
-            marginTop: 14,
-            display: "flex",
-            gap: 8,
-            fontSize: 12,
-            color: "var(--nex-text-dim)",
-            padding: "10px 14px",
-            borderRadius: 10,
-            background: "var(--nex-accent-faint)",
-            border: "1px solid var(--nex-accent-soft)",
-          }}
-        >
-          📦 {content.products.length} products live · 🚚{" "}
-          {content.location || "Ships worldwide"}
         </div>
         <CoverIdentityRail
           handle={content.handle}
