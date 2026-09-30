@@ -33,6 +33,20 @@ export interface CoverInfoTrayContent {
   pages: NexInfoPagesJson | null | undefined;
   /** nex_business.description · About Us body. */
   aboutUs: string | null;
+  /** Founder direction 2026-09-30 · year the business was founded
+   *  (from nex_business.year_established smallint). Rendered as a
+   *  small pill at the top of the About Us panel. */
+  yearEstablished?: number | null;
+  /** Owner's real name (from nex_account.display_name on the
+   *  business's owner_account_id). Shown next to the avatar and
+   *  used as the signature on the About Us panel. */
+  ownerName?: string | null;
+  /** Owner's role · Founder / Owner / Chef / Head of Studio etc.
+   *  Free text. */
+  ownerPosition?: string | null;
+  /** Round avatar for the owner (defaults to the same portrait shown
+   *  on the identity badge · Maria's face on Maria's Café). */
+  ownerAvatarUrl?: string | null;
   /** Rendered opening hours. */
   hours: string | null;
   /** Address + optional coords → shown in the Location card if the
@@ -315,11 +329,25 @@ interface TrayItem {
    *  the Catering panel for the default event types (Birthdays ·
    *  Anniversaries · Graduations · Weddings). */
   bullets?: string[];
+  /** Owner block · Founder direction 2026-09-30 · rendered above the
+   *  body on the About Us panel. Round avatar + name + position +
+   *  year-established pill. */
+  ownerBlock?: {
+    yearEstablished?: number | null;
+    avatarUrl?: string | null;
+    name?: string | null;
+    position?: string | null;
+  };
+  /** Signature name · rendered in italic serif at the very bottom of
+   *  the panel body (About Us signs off with the owner's name after
+   *  the thanking line). */
+  signatureName?: string | null;
 }
 
 function PanelBody({ item }: { item: TrayItem }) {
   return (
     <div style={{ display: "grid", gap: 12 }}>
+      {item.ownerBlock && <OwnerBlock block={item.ownerBlock} />}
       <div
         style={{
           display: "flex",
@@ -531,6 +559,43 @@ function PanelBody({ item }: { item: TrayItem }) {
           {item.footerNote}
         </p>
       )}
+
+      {item.signatureName && (
+        <div
+          style={{
+            marginTop: 4,
+            display: "grid",
+            gap: 2,
+            paddingTop: 8,
+            borderTop:
+              "1px solid var(--nex-accent-soft, rgba(0,175,255,0.18))",
+          }}
+        >
+          <div
+            style={{
+              fontSize: 10,
+              letterSpacing: "0.18em",
+              textTransform: "uppercase",
+              color: "var(--nex-text-dim, rgba(255,255,255,0.55))",
+              fontWeight: 700,
+            }}
+          >
+            Signed
+          </div>
+          <div
+            style={{
+              fontFamily:
+                "'Cormorant Garamond', 'EB Garamond', 'Playfair Display', Georgia, serif",
+              fontStyle: "italic",
+              fontSize: 26,
+              lineHeight: 1.1,
+              color: "var(--nex-accent, #F2F5F8)",
+            }}
+          >
+            {item.signatureName}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -568,6 +633,19 @@ function buildTrayItems(content: CoverInfoTrayContent): TrayItem[] {
       icon: NEX_INFO_PAGE_META.about_us.icon,
       label: NEX_INFO_PAGE_META.about_us.label,
       body: content.aboutUs,
+      // Founder direction 2026-09-30 · About Us panel gains a rich
+      // owner-block header (year est · round avatar · name · position),
+      // a system-authored thanks line as the footer note, and the
+      // owner's name in italic serif as the signature.
+      ownerBlock: {
+        yearEstablished: content.yearEstablished ?? null,
+        avatarUrl: content.ownerAvatarUrl ?? null,
+        name: content.ownerName ?? null,
+        position: content.ownerPosition ?? null,
+      },
+      footerNote:
+        "Thanking all our customers in advance for your commitment to our brand.",
+      signatureName: content.ownerName ?? null,
     });
   }
 
@@ -711,6 +789,114 @@ function buildTrayItems(content: CoverInfoTrayContent): TrayItem[] {
   return items;
 }
 
+// ─── Owner block (About Us header) ───────────────────────────────────
+
+function OwnerBlock({
+  block,
+}: {
+  block: NonNullable<TrayItem["ownerBlock"]>;
+}) {
+  const { yearEstablished, avatarUrl, name, position } = block;
+  const hasAnyOwnerInfo = !!(avatarUrl || name || position);
+  if (!hasAnyOwnerInfo && !yearEstablished) return null;
+  return (
+    <div
+      style={{
+        display: "grid",
+        gap: 10,
+        paddingBottom: 12,
+        borderBottom:
+          "1px solid var(--nex-accent-soft, rgba(0,175,255,0.18))",
+      }}
+    >
+      {typeof yearEstablished === "number" && (
+        <div
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            alignSelf: "flex-start",
+            padding: "3px 10px",
+            borderRadius: 999,
+            background: "var(--nex-accent-faint, rgba(0,175,255,0.10))",
+            border:
+              "1px solid var(--nex-accent-soft, rgba(0,175,255,0.35))",
+            fontSize: 10,
+            fontWeight: 700,
+            letterSpacing: "0.16em",
+            textTransform: "uppercase",
+            color: "var(--nex-accent)",
+          }}
+        >
+          Est. {yearEstablished}
+        </div>
+      )}
+      {hasAnyOwnerInfo && (
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          {avatarUrl ? (
+            <div
+              style={{
+                width: 48,
+                height: 48,
+                borderRadius: "50%",
+                flexShrink: 0,
+                backgroundImage: `url(${avatarUrl})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center 30%",
+                border:
+                  "2px solid var(--nex-accent, #00AFFF)",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.35)",
+              }}
+              aria-hidden
+            />
+          ) : (
+            <div
+              style={{
+                width: 48,
+                height: 48,
+                borderRadius: "50%",
+                flexShrink: 0,
+                background: "var(--nex-accent-faint, rgba(0,175,255,0.10))",
+                border:
+                  "2px solid var(--nex-accent, #00AFFF)",
+              }}
+              aria-hidden
+            />
+          )}
+          <div style={{ minWidth: 0 }}>
+            {name && (
+              <div
+                style={{
+                  fontFamily: "var(--nex-font-display)",
+                  fontSize: 15,
+                  fontWeight: 700,
+                  letterSpacing: "-0.005em",
+                  lineHeight: 1.2,
+                }}
+              >
+                {name}
+              </div>
+            )}
+            {position && (
+              <div
+                style={{
+                  marginTop: 2,
+                  fontSize: 11,
+                  color: "var(--nex-accent)",
+                  fontWeight: 700,
+                  letterSpacing: "0.12em",
+                  textTransform: "uppercase",
+                }}
+              >
+                {position}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ─── Payment methods humaniser ───────────────────────────────────────
 // Turns the seller's paymentMethodLabels (like "💵 COD",
 // "📱 QRIS on Delivery", "🤝 Meetup") into the "We also accept …"
@@ -773,16 +959,20 @@ function IconAboutUs({ size }: { size: number }) {
 }
 
 function IconDelivery({ size }: { size: number }) {
-  // Founder direction 2026-09-30 · scooter / motorbike is THE
-  // universal Indonesian delivery vehicle (Gojek, Grab, Maxim, private
-  // riders). Two wheels + angular body + handlebar rising from the
-  // front · clean silhouette at 24×24.
+  // Founder direction 2026-09-30 (revised) · switched from motorbike
+  // silhouette to a car · reads as the universal "delivery" symbol
+  // internationally rather than region-specific (scooter reads as
+  // Indonesia-only). Roofline + hood + two wheels + a couple of
+  // window separators.
   return (
     <svg {...iconProps(size)}>
-      <circle cx="5" cy="17" r="3" />
-      <circle cx="19" cy="17" r="3" />
-      <path d="M5 17l4-7h5l5 7" />
-      <path d="M9 10l-3-3" />
+      <path d="M3 15l2-6a2 2 0 0 1 2-1h10a2 2 0 0 1 2 1l2 6" />
+      <path d="M3 15v3h18v-3" />
+      <path d="M3 15h18" />
+      <circle cx="7" cy="18" r="1.6" />
+      <circle cx="17" cy="18" r="1.6" />
+      <line x1="10" y1="9" x2="10" y2="14" />
+      <line x1="14" y1="9" x2="14" y2="14" />
     </svg>
   );
 }

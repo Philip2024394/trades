@@ -66,6 +66,15 @@ export interface MockCoverContent {
   qrCodeImageUrl?: string | null;
   /** True when the seller has 📱 QRIS on Delivery in accepted methods. */
   acceptsQrisDelivery?: boolean;
+  /** Founder direction 2026-09-30 · About Us panel enrichments.
+   *  yearEstablished from nex_business.year_established (smallint) ·
+   *  ownerName / ownerPosition / ownerAvatarUrl derived from
+   *  nex_account joined via nex_business.owner_account_id. All
+   *  optional · panel gracefully skips missing fields. */
+  yearEstablished?: number | null;
+  ownerName?: string | null;
+  ownerPosition?: string | null;
+  ownerAvatarUrl?: string | null;
   products: CoverProduct[];
   services: {
     id: string;
@@ -126,6 +135,13 @@ export const MARIA_MOCK: MockCoverContent = {
   qrCodeImageUrl:
     "https://placehold.co/512x512/ffffff/000000/png?text=QRIS%0A%E2%97%BC%E2%96%A1%E2%96%A1%0A%E2%96%A1%E2%97%BC%E2%96%A1%0A%E2%96%A1%E2%96%A1%E2%97%BC",
   acceptsQrisDelivery: true,
+  yearEstablished: 2019,
+  ownerName: "Maria Santos",
+  ownerPosition: "Founder",
+  // Reuse the identity portrait so the About Us avatar matches the
+  // face the buyer already saw at the top of the cover.
+  ownerAvatarUrl:
+    "https://ijvqdvsvwtwxzcqmoqit.supabase.co/storage/v1/object/public/nex-chat-theme-hero/maria-santos-hero-1790481483761.png",
   returnPolicyBody:
     "Freshly baked and prepared items are non-returnable. If something arrived damaged, message us within 24 hours with a photo and we'll replace it or refund in full.",
   eventsBody:
