@@ -261,7 +261,7 @@ export function CoverThemeSkin(props: CoverThemeSkinProps): React.JSX.Element {
         <div
           aria-hidden
           style={{
-            position: "fixed",
+            position: "absolute",
             inset: 0,
             zIndex: 0,
             opacity: wallpaperUrl ? 0.35 : 1,
@@ -278,7 +278,7 @@ export function CoverThemeSkin(props: CoverThemeSkinProps): React.JSX.Element {
         <div
           aria-hidden
           style={{
-            position: "fixed",
+            position: "absolute",
             inset: 0,
             zIndex: 0,
             background:
@@ -294,7 +294,7 @@ export function CoverThemeSkin(props: CoverThemeSkinProps): React.JSX.Element {
         <div
           aria-hidden
           style={{
-            position: "fixed",
+            position: "absolute",
             inset: 0,
             zIndex: 0,
             background:
@@ -366,7 +366,7 @@ function ParticleDrift({ config }: { config: ParticleDriftConfig }): React.JSX.E
       <div
         aria-hidden
         style={{
-          position: "fixed",
+          position: "absolute",
           inset: 0,
           zIndex: 0,
           pointerEvents: "none",
@@ -435,7 +435,7 @@ function SparkleField({ config }: { config: SparkleConfig }): React.JSX.Element 
       <div
         aria-hidden
         style={{
-          position: "fixed",
+          position: "absolute",
           inset: 0,
           zIndex: 0,
           pointerEvents: "none",
@@ -481,7 +481,7 @@ function MoonGlow({
       <div
         aria-hidden
         style={{
-          position: "fixed",
+          position: "absolute",
           left: config.x,
           top: config.y,
           width: config.size,
