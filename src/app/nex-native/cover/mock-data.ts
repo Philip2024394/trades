@@ -441,6 +441,11 @@ export const PRODUCT_SELLER_MOCK: MockCoverContent = {
   businessName: "Corner Store",
   tagline: "Shop of products",
   isVenue: false,
+  // Founder direction 2026-09-30 · longer real-world business address
+  // matches the warehouse copy in the Dispatch Times block above ·
+  // reads as a proper commerce shop rather than a village cafe pin.
+  location: "Jl. Industri Raya No. 345, City West Park, Bali 80361",
+  address: "Jl. Industri Raya No. 345, City West Park, Bali 80361",
   // Founder direction 2026-09-30 · warehouse-oriented delivery copy
   // for the Product Seller preview (Maria's cafe delivery copy is
   // hyper-local and doesn't fit a product shop that ships from a
