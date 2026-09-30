@@ -22,6 +22,10 @@ import { effectiveTier } from "@/lib/nex-native/account-service";
 import type { NexAccountRow } from "@/lib/nex-native/types";
 import { createBusinessAction, signOutAction } from "../_actions";
 import { NEX_BUSINESS_CATEGORIES } from "@/lib/nex-native/site-templates";
+import {
+  listProfessions,
+  listVerticals,
+} from "@/lib/nex-native/terminology-service";
 
 /** Small helper so the JSX below stays readable. */
 function effectiveTierValue(account: NexAccountRow): "gratis" | "bisnis" | "pro" {
@@ -76,9 +80,11 @@ export default async function Page({ searchParams }: PageProps) {
   const banner =
     sp.e && sp.m ? { code: sp.e, message: sp.m } : null;
 
-  const existing = await businessService.listBusinessesByOwner(
-    session.account.id,
-  );
+  const [existing, verticals, professions] = await Promise.all([
+    businessService.listBusinessesByOwner(session.account.id),
+    listVerticals().catch(() => []),
+    listProfessions().catch(() => []),
+  ]);
   const owned = existing[0] ?? null;
 
   return (
@@ -200,6 +206,8 @@ export default async function Page({ searchParams }: PageProps) {
         ) : (
           <CreateShopForm
             viewerTier={effectiveTierValue(session.account)}
+            verticals={verticals}
+            professions={professions}
           />
         )}
       </main>
@@ -296,10 +304,22 @@ function ExistingShopCard({
 
 function CreateShopForm({
   viewerTier,
+  verticals,
+  professions,
 }: {
   viewerTier: "gratis" | "bisnis" | "pro";
+  verticals: import("@/lib/nex-native/terminology-service").NexVerticalRow[];
+  professions: import("@/lib/nex-native/terminology-service").NexProfessionRow[];
 }) {
   const isBisnis = viewerTier === "bisnis" || viewerTier === "pro";
+  // Group professions by their vertical so the <select> shows an
+  // <optgroup> per vertical. Empty groups get skipped.
+  const professionGroups = verticals
+    .map((v) => ({
+      vertical: v,
+      rows: professions.filter((p) => p.vertical_id === v.id),
+    }))
+    .filter((g) => g.rows.length > 0);
   return (
     <section
       style={{
@@ -490,6 +510,39 @@ function CreateShopForm({
               <option key={c} value={c}>
                 {formatCategoryLabel(c)}
               </option>
+            ))}
+          </select>
+        </FormRow>
+
+        {/* Bridge Profession-F · sealed 2026-09-30 · profession picker
+            at onboarding. Optional · when set, drives the terminology
+            (catalog_heading, primary_action_label, section_about_label,
+            section_location_label, ...) the buyer sees on your cover.
+            Terminology falls back to vertical then global default when
+            profession is left blank. Sellers can change or clear this
+            at any time on /manage/profession without losing anything. */}
+        <FormRow
+          label="Profession"
+          hint="Optional · your profession chooses the words your cover uses (Menu / Products / Portfolio / Services / Packages). You can change this anytime."
+        >
+          <select
+            name="profession_id"
+            defaultValue=""
+            style={{
+              ...inputStyle,
+              appearance: "auto",
+              cursor: "pointer",
+            }}
+          >
+            <option value="">— Skip · use generic wording —</option>
+            {professionGroups.map(({ vertical, rows }) => (
+              <optgroup key={vertical.id} label={vertical.label}>
+                {rows.map((p) => (
+                  <option key={p.id} value={p.id}>
+                    {p.label}
+                  </option>
+                ))}
+              </optgroup>
             ))}
           </select>
         </FormRow>

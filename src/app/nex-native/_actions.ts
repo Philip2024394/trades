@@ -2687,6 +2687,11 @@ export async function createBusinessAction(formData: FormData): Promise<never> {
   const hoursDisplayInput = String(formData.get("hours_display") ?? "").trim();
   // Bridge 16f · category dropdown from onboarding.
   const categoryInput = String(formData.get("business_category") ?? "").trim();
+  // Bridge Profession-F · sealed 2026-09-30 · optional profession
+  // pick at onboarding. Empty string means "skip" (falls back to
+  // vertical then global terminology). Value is a nex_profession.id
+  // UUID · validated in the soft-fail block below.
+  const professionIdInput = String(formData.get("profession_id") ?? "").trim();
 
   const session = await resolveNexAppSessionFromContext();
   if (!session) {
@@ -2807,16 +2812,54 @@ export async function createBusinessAction(formData: FormData): Promise<never> {
       }
     }
 
-    // Layout-A · sealed 2026-09-30 · auto-suggest cover_layout_id from
-    // business_category so every new business starts with the sealed
-    // cover template that matches its vertical (no legacy fall-through
-    // for new sellers). Seller can override on /manage/shop.
+    // Bridge Profession-F · persist the profession pick (writes ONLY
+    // profession_id per the sealed invariant). Non-blocking. Also
+    // captures the profession row for the layout-suggestion below so
+    // profession beats category when both are set.
+    let professionSuggestedLayoutId: string | null = null;
+    if (professionIdInput.length > 0) {
+      try {
+        const { setBusinessProfession, getProfessionById, listVerticals } =
+          await import("@/lib/nex-native/terminology-service");
+        await setBusinessProfession(business.id, professionIdInput);
+        const prof = await getProfessionById(professionIdInput);
+        if (prof) {
+          if (prof.default_cover_layout_id) {
+            professionSuggestedLayoutId = prof.default_cover_layout_id;
+          } else {
+            const verts = await listVerticals();
+            const vert = verts.find((v) => v.id === prof.vertical_id);
+            professionSuggestedLayoutId =
+              vert?.default_cover_layout_id ?? null;
+          }
+        }
+      } catch (profErr) {
+        // eslint-disable-next-line no-console
+        console.warn(
+          "createBusinessAction · profession soft-fail:",
+          profErr,
+        );
+      }
+    }
+
+    // Layout-A · sealed 2026-09-30 · auto-suggest cover_layout_id.
+    // Priority · profession-derived suggestion (when the seller picked
+    // one) beats category-derived (Layout-A). Seller can override on
+    // /manage/shop at any time. This is the INITIAL creation moment ·
+    // no existing template to preserve · the invariant "profession
+    // change does not alter template" applies to later CHANGES only.
     try {
-      const { suggestCoverLayoutId } = await import(
-        "@/lib/nex-native/cover-layout-suggest"
+      let suggested: string | null = professionSuggestedLayoutId;
+      if (!suggested) {
+        const { suggestCoverLayoutId } = await import(
+          "@/lib/nex-native/cover-layout-suggest"
+        );
+        suggested = suggestCoverLayoutId(categoryInput || null);
+      }
+      await businessService.updateCoverLayoutId(
+        business.id,
+        suggested as import("@/app/nex-native/cover/layout-ids").CoverLayoutId | null,
       );
-      const suggested = suggestCoverLayoutId(categoryInput || null);
-      await businessService.updateCoverLayoutId(business.id, suggested);
     } catch (layoutErr) {
       // eslint-disable-next-line no-console
       console.warn(
