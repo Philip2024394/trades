@@ -1070,7 +1070,11 @@ function WhoWeAreCollapsible({ body }: { body: string }): React.JSX.Element | nu
           fontSize: 14,
           lineHeight: 1.5,
           color: "var(--nex-text, #F2F5F8)",
-          whiteSpace: "pre-wrap",
+          // Founder direction 2026-09-30 · flow as one continuous
+          // paragraph · CSS collapses \n and \n\n into a single space
+          // so seller-authored paragraph breaks in aboutUs stop
+          // producing visible gaps in this cover block.
+          whiteSpace: "normal",
           display: showFull ? "block" : "-webkit-box",
           WebkitLineClamp: showFull ? undefined : 6,
           WebkitBoxOrient: "vertical",
