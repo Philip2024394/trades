@@ -352,7 +352,6 @@ export function LayoutRestaurant({ content, themeId }: LayoutProps): React.JSX.E
 // ─── 3 · Product seller ─────────────────────────────────────────────
 
 export function LayoutProduct({ content, themeId }: LayoutProps): React.JSX.Element {
-  const hero = content.products[0]!;
   return (
     <>
       <CoverPage>
@@ -365,10 +364,8 @@ export function LayoutProduct({ content, themeId }: LayoutProps): React.JSX.Elem
           countryCode={content.countryCode ?? null}
         />
         <div style={{ marginTop: 20 }}>
-          <CoverProductCard
-            product={hero}
-            peerAccountId={content.ownerAccountId}
-            eyebrow="Featured"
+          <WhoWeAreCollapsible
+            body={content.aboutUs ?? content.tagline ?? ""}
           />
         </div>
         <div
@@ -384,13 +381,14 @@ export function LayoutProduct({ content, themeId }: LayoutProps): React.JSX.Elem
             border: "1px solid var(--nex-accent-soft)",
           }}
         >
-          📦 {content.products.length} products live · 🚚 Ships from Ubud
+          📦 {content.products.length} products live · 🚚{" "}
+          {content.location || "Ships worldwide"}
         </div>
         <div style={{ marginTop: 28 }}>
           <CoverSectionHeading eyebrow="Shop" title="All products" />
           <CoverCatalog
             sections={content.sections}
-            products={content.products.slice(1)}
+            products={content.products}
             peerAccountId={content.ownerAccountId}
             columns={2}
           />
@@ -1030,6 +1028,113 @@ export function LayoutPersonalBrand({ content, themeId }: LayoutProps): React.JS
 }
 
 // ─── Shared layout primitives (local to this file) ──────────────────
+
+/**
+ * WhoWeAreCollapsible · Template 03 header block. Renders the seller's
+ * About-Us story (from content.aboutUs) inside a themed rounded panel.
+ * The body is clamped to 7 lines by default · a right-side chevron
+ * toggles the full text open. Chevron auto-hides when the body is
+ * short enough to render fully at the initial cap.
+ *
+ * Founder direction 2026-09-30 · Template 03 replaces the "Featured"
+ * product-hero card with this "Who We Are" block. Body text pulls from
+ * the same nex_business.description column that feeds the Info Tray
+ * About Us panel · authoring the story once fills both surfaces.
+ */
+function WhoWeAreCollapsible({ body }: { body: string }): React.JSX.Element | null {
+  const [expanded, setExpanded] = React.useState(false);
+  const trimmed = body.trim();
+  if (trimmed.length === 0) return null;
+  // Heuristic · 7 lines × ~50 chars = 350. If the body fits under
+  // that (measured naively), skip the chevron entirely and render as
+  // plain block.
+  const canExpand = trimmed.length > 350 || trimmed.split(/\n/).length > 7;
+  const showFull = expanded || !canExpand;
+  return (
+    <section
+      style={{
+        padding: "14px 16px",
+        borderRadius: 14,
+        background: "var(--nex-accent-faint, rgba(0,175,255,0.10))",
+        border: "1px solid var(--nex-accent-soft, rgba(0,175,255,0.35))",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: 12,
+          marginBottom: 10,
+        }}
+      >
+        <div
+          style={{
+            fontSize: 10,
+            letterSpacing: "0.16em",
+            textTransform: "uppercase",
+            color: "var(--nex-accent)",
+            fontWeight: 700,
+          }}
+        >
+          Who We Are
+        </div>
+        {canExpand && (
+          <button
+            type="button"
+            onClick={() => setExpanded((v) => !v)}
+            aria-expanded={expanded}
+            aria-label={expanded ? "Show less" : "Read more"}
+            style={{
+              width: 28,
+              height: 28,
+              borderRadius: "50%",
+              border: "1px solid var(--nex-accent-soft, rgba(0,175,255,0.35))",
+              background: "transparent",
+              color: "var(--nex-accent)",
+              cursor: "pointer",
+              display: "grid",
+              placeItems: "center",
+              padding: 0,
+            }}
+          >
+            <svg
+              width={14}
+              height={14}
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden
+              style={{
+                transform: expanded ? "rotate(90deg)" : "rotate(0deg)",
+                transition: "transform 180ms ease",
+              }}
+            >
+              <polyline points="9 6 15 12 9 18" />
+            </svg>
+          </button>
+        )}
+      </div>
+      <div
+        style={{
+          fontSize: 13,
+          lineHeight: 1.5,
+          color: "var(--nex-text, #F2F5F8)",
+          whiteSpace: "pre-wrap",
+          display: showFull ? "block" : "-webkit-box",
+          WebkitLineClamp: showFull ? undefined : 7,
+          WebkitBoxOrient: "vertical",
+          overflow: "hidden",
+        }}
+      >
+        {trimmed}
+      </div>
+    </section>
+  );
+}
 
 function CoverPage({ children }: { children: React.ReactNode }): React.JSX.Element {
   return (

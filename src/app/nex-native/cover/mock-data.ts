@@ -126,7 +126,7 @@ export const MARIA_MOCK: MockCoverContent = {
   countryCode: "ID",
   shippingScope: "local_and_export",
   aboutUs:
-    "Maria's Café is a family-run slow-coffee bar and sourdough kitchen in Ubud, open since 2019. Everything is baked and pulled the same morning by Maria and her two sons.",
+    "Maria's Café is a family-run slow-coffee bar and sourdough kitchen in Ubud, open since 2019. Everything is baked and pulled the same morning by Maria and her two sons Andi and Rian.\n\nWe roast our own single-origin arabica from three Kintamani farms we've worked with for six years. The espresso side of the menu is small on purpose · seven drinks that we can pull consistently at the highest bar. Our sourdough kitchen runs 4:00-5:30 every morning, twelve loaves at a time, and everything is sold by mid-morning.\n\nWe host private catering for events of 8-40, monthly supper clubs, and half-day sourdough workshops for anyone who wants to learn what we do. Every guest at Maria's is treated as family — the coffee comes with time, and the bread comes with stories.\n\nOur promise is simple: nothing frozen, nothing pre-mixed, nothing rushed. If you leave here without feeling looked after, tell us and we'll make it right.",
   paymentMethodLabels: [
     "💵 COD",
     "📱 QRIS on Delivery",
