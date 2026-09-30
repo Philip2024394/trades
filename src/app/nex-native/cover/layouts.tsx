@@ -1650,10 +1650,17 @@ function PersonalBrandTabs({
       </div>
 
       {tab === "products" && (
-        <CoverProductGrid
-          products={products.slice(0, 6)}
+        // Founder direction 2026-09-30 · Products tab under Personal
+        // Brand uses CoverCatalog so it inherits the pagination row
+        // (page numbers + prev / next arrow buttons). No sections
+        // passed so the category-tab bar auto-hides · we deliberately
+        // stripped Meal/Snack/Drinks tabs from this template earlier.
+        <CoverCatalog
+          sections={[]}
+          products={products}
           peerAccountId={peerAccountId}
           columns={2}
+          pageSize={6}
         />
       )}
       {tab === "images" && <ImagePlaceholderGallery totalTiles={18} />}
