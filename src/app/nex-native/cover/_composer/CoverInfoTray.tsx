@@ -97,7 +97,9 @@ export function CoverInfoTray({
         }}
       />
 
-      {/* Bottom sheet · slides above the composer footer */}
+      {/* Bottom sheet · slides above the composer footer · founder
+          direction 2026-09-30 · tall (86dvh) · no divider line at the
+          header · small × close button top-right. */}
       <section
         role="dialog"
         aria-modal="true"
@@ -109,7 +111,7 @@ export function CoverInfoTray({
           right: 12,
           bottom:
             "calc(env(safe-area-inset-bottom, 0) + 76px)",
-          maxHeight: "68dvh",
+          maxHeight: "86dvh",
           zIndex: 41,
           borderRadius: 20,
           background:
@@ -125,12 +127,12 @@ export function CoverInfoTray({
           overflow: "hidden",
         }}
       >
-        {/* Header */}
+        {/* Header · NO borderBottom · just enough padding to seat the
+            × close button top-right (and Back arrow on the left when
+            a panel is open). */}
         <div
           style={{
-            padding: "14px 16px 10px",
-            borderBottom:
-              "1px solid var(--nex-accent-soft, rgba(0,175,255,0.15))",
+            padding: "12px 14px 6px",
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
@@ -158,40 +160,26 @@ export function CoverInfoTray({
               ‹ Back
             </button>
           ) : (
-            <div
-              style={{
-                fontSize: 10,
-                letterSpacing: "0.18em",
-                textTransform: "uppercase",
-                color: "var(--nex-accent)",
-                fontWeight: 700,
-              }}
-            >
-              About {businessName}
-            </div>
+            <span aria-hidden style={{ flex: 1 }} />
           )}
           <button
             type="button"
             onClick={onClose}
             aria-label="Close"
             style={{
-              width: 28,
-              height: 28,
+              width: 24,
+              height: 24,
               borderRadius: "50%",
-              border:
-                "1px solid var(--nex-accent-soft, rgba(0,175,255,0.35))",
-              background: "transparent",
+              border: "none",
+              background: "rgba(255,255,255,0.08)",
               color: "var(--nex-text-dim, rgba(255,255,255,0.65))",
               cursor: "pointer",
               display: "grid",
               placeItems: "center",
-              fontFamily: "inherit",
-              fontSize: 14,
-              lineHeight: 1,
               padding: 0,
             }}
           >
-            ×
+            <IconClose />
           </button>
         </div>
 
@@ -236,8 +224,15 @@ export function CoverInfoTray({
                     textAlign: "left",
                   }}
                 >
-                  <span aria-hidden style={{ fontSize: 22, lineHeight: 1 }}>
-                    {it.icon}
+                  <span
+                    aria-hidden
+                    style={{
+                      color: "var(--nex-accent)",
+                      display: "grid",
+                      placeItems: "center",
+                    }}
+                  >
+                    {renderTrayIcon(it, 26)}
                   </span>
                   <span
                     style={{
@@ -256,6 +251,44 @@ export function CoverInfoTray({
       </section>
     </>
   );
+}
+
+/**
+ * Render the icon for a tray item. Sealed IDs (about_us, delivery, …)
+ * get a stroke-based NEX SVG icon. Custom buttons (id prefixed with
+ * "custom__") fall back to the seller's chosen emoji glyph since the
+ * seller can't author an SVG.
+ */
+function renderTrayIcon(it: TrayItem, size: number): React.ReactNode {
+  if (it.id.startsWith("custom__")) {
+    return (
+      <span style={{ fontSize: size, lineHeight: 1 }}>{it.icon}</span>
+    );
+  }
+  switch (it.id) {
+    case "about_us":
+      return <IconAboutUs size={size} />;
+    case "delivery":
+      return <IconDelivery size={size} />;
+    case "hours":
+      return <IconClock size={size} />;
+    case "payment":
+      return <IconWallet size={size} />;
+    case "returns":
+      return <IconReturn size={size} />;
+    case "catering":
+      return <IconCelebration size={size} />;
+    case "gallery":
+      return <IconImage size={size} />;
+    case "custom_orders":
+      return <IconPackage size={size} />;
+    case "services":
+      return <IconWrench size={size} />;
+    default:
+      return (
+        <span style={{ fontSize: size, lineHeight: 1 }}>{it.icon}</span>
+      );
+  }
 }
 
 // ─── Panel body renderer ─────────────────────────────────────────────
@@ -281,8 +314,15 @@ function PanelBody({ item }: { item: TrayItem }) {
           gap: 10,
         }}
       >
-        <span aria-hidden style={{ fontSize: 26, lineHeight: 1 }}>
-          {item.icon}
+        <span
+          aria-hidden
+          style={{
+            color: "var(--nex-accent)",
+            display: "grid",
+            placeItems: "center",
+          }}
+        >
+          {renderTrayIcon(item, 28)}
         </span>
         <h2
           style={{
@@ -554,4 +594,123 @@ function buildTrayItems(content: CoverInfoTrayContent): TrayItem[] {
   }
 
   return items;
+}
+
+// ─── Stroke-based NEX icons ──────────────────────────────────────────
+// Match the visual language of the chat header cluster (HomeIcon /
+// ShopBagIcon / CutleryIcon / CartIcon in src/app/nex-native/chat/
+// _header-right-cluster.tsx): 24×24 viewBox · fill:none · stroke:
+// currentColor · strokeWidth:1.9 · round line-caps and joins.
+
+function iconProps(size: number) {
+  return {
+    width: size,
+    height: size,
+    viewBox: "0 0 24 24",
+    fill: "none" as const,
+    stroke: "currentColor",
+    strokeWidth: 1.9,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+    "aria-hidden": true as const,
+  };
+}
+
+function IconClose() {
+  return (
+    <svg {...iconProps(14)}>
+      <line x1="6" y1="6" x2="18" y2="18" />
+      <line x1="18" y1="6" x2="6" y2="18" />
+    </svg>
+  );
+}
+
+function IconAboutUs({ size }: { size: number }) {
+  return (
+    <svg {...iconProps(size)}>
+      <circle cx="12" cy="12" r="9" />
+      <line x1="12" y1="11" x2="12" y2="16" />
+      <circle cx="12" cy="8" r="0.9" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+function IconDelivery({ size }: { size: number }) {
+  return (
+    <svg {...iconProps(size)}>
+      <path d="M3 7h11v9H3z" />
+      <path d="M14 10h4l3 3v3h-7" />
+      <circle cx="7" cy="18" r="1.7" />
+      <circle cx="17" cy="18" r="1.7" />
+    </svg>
+  );
+}
+
+function IconClock({ size }: { size: number }) {
+  return (
+    <svg {...iconProps(size)}>
+      <circle cx="12" cy="12" r="9" />
+      <polyline points="12 7 12 12 16 14" />
+    </svg>
+  );
+}
+
+function IconWallet({ size }: { size: number }) {
+  return (
+    <svg {...iconProps(size)}>
+      <path d="M3 8a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+      <path d="M16 13h4" />
+      <circle cx="17" cy="13" r="0.9" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+function IconReturn({ size }: { size: number }) {
+  return (
+    <svg {...iconProps(size)}>
+      <polyline points="9 14 4 9 9 4" />
+      <path d="M4 9h11a5 5 0 0 1 5 5v2a4 4 0 0 1-4 4h-3" />
+    </svg>
+  );
+}
+
+function IconCelebration({ size }: { size: number }) {
+  return (
+    <svg {...iconProps(size)}>
+      <rect x="4" y="10" width="16" height="4" rx="1" />
+      <path d="M6 14v7h12v-7" />
+      <line x1="12" y1="10" x2="12" y2="21" />
+      <path d="M12 10c-2 0-3-1-3-2s1-2 2-2 1 1 1 2" />
+      <path d="M12 10c2 0 3-1 3-2s-1-2-2-2-1 1-1 2" />
+    </svg>
+  );
+}
+
+function IconImage({ size }: { size: number }) {
+  return (
+    <svg {...iconProps(size)}>
+      <rect x="3" y="4" width="18" height="16" rx="2" />
+      <circle cx="9" cy="10" r="1.8" />
+      <polyline points="21 17 15 11 5 20" />
+    </svg>
+  );
+}
+
+function IconPackage({ size }: { size: number }) {
+  return (
+    <svg {...iconProps(size)}>
+      <path d="M3 8l9-4 9 4v9l-9 4-9-4z" />
+      <path d="M3 8l9 4 9-4" />
+      <line x1="12" y1="12" x2="12" y2="21" />
+      <path d="M7.5 6l9 4" />
+    </svg>
+  );
+}
+
+function IconWrench({ size }: { size: number }) {
+  return (
+    <svg {...iconProps(size)}>
+      <path d="M15 3a4 4 0 0 0-4 6l-7 7 3 3 7-7a4 4 0 0 0 6-4l-3 3-2-2z" />
+    </svg>
+  );
 }
