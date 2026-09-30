@@ -120,13 +120,16 @@ function deps(getIp: string = "203.0.113.42") {
 // The critical proof · same send_intent_id · two concurrent POSTs
 // ---------------------------------------------------------------------------
 
-describe("§13 A2 end-to-end · same send_intent_id → concurrent POSTs → one account", () => {
-  it("two concurrent processFirstMessagePayload calls with the SAME send_intent_id produce one account, one conversation, deduplicated=true on one side", async () => {
+describe("§13 A2 end-to-end · same send_intent_id + same device → concurrent POSTs → one account", () => {
+  it("two concurrent processFirstMessagePayload calls with the SAME send_intent_id and SAME device_id produce one account (M106-scoped dedup)", async () => {
     const sharedIntent = randomUUID();
-    // Distinct device_ids so the fingerprint hashes differ · this ISN'T
-    // fingerprint-based dedup. Uses only send_intent_id.
-    const bodyA = goodBody({ send_intent_id: sharedIntent, device_id: `dev-A-${randomUUID().slice(0, 8)}` });
-    const bodyB = goodBody({ send_intent_id: sharedIntent, device_id: `dev-B-${randomUUID().slice(0, 8)}` });
+    const sharedDevice = `dev-a2-${randomUUID().slice(0, 8)}`;
+    // A2 legitimate double-tap Send: same client, same request, same intent.
+    // Under M106 the dedup key is (send_intent_id, device_id) so this uses
+    // the SAME device_id. Two clients with different device_id + same
+    // intent produce two accounts (see the independent-context test below).
+    const bodyA = goodBody({ send_intent_id: sharedIntent, device_id: sharedDevice });
+    const bodyB = goodBody({ send_intent_id: sharedIntent, device_id: sharedDevice });
 
     // Different IPs · proves dedup is intent-based, not IP-based
     const depsA = deps("203.0.113.10");
@@ -202,10 +205,55 @@ describe("§13 A2 end-to-end · same send_intent_id → concurrent POSTs → one
 // Sequential retry (double-tap Send within 100ms surrogate)
 // ---------------------------------------------------------------------------
 
-describe("§13 A2 end-to-end · sequential retry same intent", () => {
-  it("sequential same-intent retry · second call returns same account_id · deduplicated=true", async () => {
+// ---------------------------------------------------------------------------
+// M106 SECURITY BOUNDARY · independent-context intent reuse
+// ---------------------------------------------------------------------------
+
+describe("§13 A2 · M106 independent-context intent reuse (send_intent_id is NOT a bearer token)", () => {
+  it("Context B (different device_id) using Context A's send_intent_id MUST NOT inherit account A", async () => {
+    // Founder-required security boundary test.
+    // Simulates an attacker (or accidental reuse) where the send_intent_id
+    // from one browser context is replayed from a genuinely-independent
+    // browser context with its own IndexedDB device_id.
     const sharedIntent = randomUUID();
-    const body = goodBody({ send_intent_id: sharedIntent });
+
+    // Context A · first legitimate send
+    const bodyA = goodBody({
+      send_intent_id: sharedIntent,
+      device_id: `dev-ctxA-${randomUUID().slice(0, 8)}`,
+    });
+    const ra = await processFirstMessagePayload(bodyA, deps("203.0.113.10"));
+    expect(ra.body.status).toBe("created");
+    const accA = ra.body.account_id as string;
+    trackedAccountIds.push(accA);
+
+    // Context B · genuinely independent browser, DIFFERENT device_id,
+    // but same intent id (as if replayed)
+    const bodyB = goodBody({
+      send_intent_id: sharedIntent,
+      device_id: `dev-ctxB-${randomUUID().slice(0, 8)}`,
+    });
+    const rb = await processFirstMessagePayload(bodyB, deps("198.51.100.20"));
+    expect(rb.body.status).toBe("created");
+    const accB = rb.body.account_id as string;
+    trackedAccountIds.push(accB);
+
+    // Critical assertion: independent context did NOT inherit account A.
+    expect(accB).not.toBe(accA);
+    // Both are fresh creates · both deduplicated=false
+    expect(ra.body.deduplicated).toBe(false);
+    expect(rb.body.deduplicated).toBe(false);
+    // Session cookies point at different accounts
+    expect(ra.set_session_cookie!.payload.account_id).toBe(accA);
+    expect(rb.set_session_cookie!.payload.account_id).toBe(accB);
+  });
+});
+
+describe("§13 A2 end-to-end · sequential retry same intent", () => {
+  it("sequential same-intent + same-device retry · second call returns same account_id · deduplicated=true", async () => {
+    const sharedIntent = randomUUID();
+    const sharedDevice = `dev-seq-${randomUUID().slice(0, 8)}`;
+    const body = goodBody({ send_intent_id: sharedIntent, device_id: sharedDevice });
 
     const first = await processFirstMessagePayload(body, deps());
     const second = await processFirstMessagePayload(body, deps());
