@@ -85,6 +85,49 @@ export default async function Page({
   const business = await businessService.getBusinessBySlug(businessSlug);
   if (!business) notFound();
 
+  // Cover-A · sealed 2026-09-30 · when the seller has picked one of
+  // the 10 sealed cover layouts (Migration 100 · nex_business.
+  // cover_layout_id), we render the NEW cover via CoverThemeSkin +
+  // CoverLayoutSwitch and return before we hit the legacy
+  // HeroSidePanel path. NULL cover_layout_id keeps every existing
+  // business on the legacy landing (zero regression).
+  if (business.cover_layout_id) {
+    const { loadCoverContent } = await import(
+      "@/lib/nex-native/cover-content-loader"
+    );
+    const bundle = await loadCoverContent(business);
+    if (bundle) {
+      const { CoverThemeSkin } = await import("../cover/theme-skin");
+      const { CoverLayoutSwitch } = await import("../cover/layout-switch");
+      const chatThemeService = await import(
+        "@/lib/nex-native/chat-theme-service"
+      );
+      const theme = await chatThemeService
+        .getThemeById(bundle.themeId)
+        .catch(() => null);
+      if (theme && theme.is_active) {
+        return (
+          <CoverThemeSkin
+            accentHex={theme.accent_hex}
+            bubbleRimHex={theme.bubble_rim_hex}
+            composerRimHex={theme.composer_rim_hex}
+            wallpaperUrl={theme.hero_image_url}
+            wallpaperConfig={theme.wallpaper_config}
+            themeId={theme.id}
+            layoutId={bundle.layoutId}
+          >
+            <CoverLayoutSwitch
+              layoutId={bundle.layoutId}
+              content={bundle.content}
+              themeId={theme.id}
+            />
+          </CoverThemeSkin>
+        );
+      }
+    }
+    // Fall through to legacy landing if theme couldn't resolve.
+  }
+
   // Bridge 16c · resolve viewer to decide whether the floating chat
   // button renders (hide it for the shop owner viewing their own
   // shop · they'd be chatting with themselves).

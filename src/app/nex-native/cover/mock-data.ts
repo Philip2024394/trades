@@ -6,6 +6,7 @@
 
 import type { CoverProduct, CoverSection, CoverSocialLinks } from "./primitives";
 import type { NexInfoPagesJson } from "@/lib/nex-native/info-pages";
+import type { WeeklyHours } from "./_composer/CoverInfoTray";
 
 export interface MockCoverContent {
   businessName: string;
@@ -78,15 +79,7 @@ export interface MockCoverContent {
   /** Founder direction 2026-09-30 · structured Mon–Sun schedule for
    *  the Info Tray Hours panel. When set, the panel renders a
    *  two-column table with "Closed" for any missing / closed day. */
-  hoursByDay?: {
-    mon?: { open?: string | null; close?: string | null; closed?: boolean };
-    tue?: { open?: string | null; close?: string | null; closed?: boolean };
-    wed?: { open?: string | null; close?: string | null; closed?: boolean };
-    thu?: { open?: string | null; close?: string | null; closed?: boolean };
-    fri?: { open?: string | null; close?: string | null; closed?: boolean };
-    sat?: { open?: string | null; close?: string | null; closed?: boolean };
-    sun?: { open?: string | null; close?: string | null; closed?: boolean };
-  } | null;
+  hoursByDay?: WeeklyHours | null;
   products: CoverProduct[];
   services: {
     id: string;

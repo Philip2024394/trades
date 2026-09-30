@@ -458,6 +458,12 @@ export interface NexBusinessRow {
    *  NULL = seller hasn't uploaded a QR. NEX never touches the funds
    *  this QR triggers. */
   qr_code_image_url?: string | null;
+  /** Migration 100 · Bridge 98 · sealed 2026-09-30 · seller's chosen
+   *  cover layout · one of the 10 sealed CoverLayoutId values. NULL =
+   *  keep the legacy /[businessSlug] shop landing (backwards compat).
+   *  When set, /[businessSlug]/page.tsx renders <CoverThemeSkin> +
+   *  <CoverLayoutSwitch> instead of the legacy HeroSidePanel. */
+  cover_layout_id?: string | null;
   /** Bridge 16e · single-line city / neighbourhood · migration 072.
    *  Shown on the About panel with a 📍 pin. Free-text 1-80 chars
    *  when set. Directory facet reads this via lower(city) index. */
