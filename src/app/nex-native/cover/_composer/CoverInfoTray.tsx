@@ -128,7 +128,9 @@ export function CoverInfoTray({
 
   return (
     <>
-      {/* Dim backdrop · tap to close */}
+      {/* Transparent full-phone catcher · tap outside the buttons to
+          close · no dim backdrop (founder direction 2026-09-30 · info
+          should feel like a phone-screen VIEW not an overlay modal). */}
       <div
         role="button"
         aria-label="Close info"
@@ -136,46 +138,31 @@ export function CoverInfoTray({
         style={{
           position: "fixed",
           inset: 0,
-          background: "rgba(3,8,20,0.55)",
-          backdropFilter: "blur(6px)",
-          WebkitBackdropFilter: "blur(6px)",
+          background: "transparent",
           zIndex: 40,
         }}
       />
 
-      {/* Bottom sheet · slides above the composer footer · founder
-          direction 2026-09-30 · tall (86dvh) · uniform 1px border on
-          all 4 sides · no close button in the header (tap the + or
-          the backdrop to close · Escape also closes). */}
+      {/* In-place phone-screen panel · founder direction 2026-09-30 ·
+          no rounded container · no border · no shadow. Sits under the
+          cover's identity header (top offset clears the hero block)
+          and above the composer footer. Header of the cover remains
+          visible so the buyer never loses shop context. */}
       <section
         role="dialog"
         aria-modal="true"
         aria-label={`Info about ${businessName}`}
         data-nex-cover-info-tray
+        onClick={(e) => e.stopPropagation()}
         style={{
           position: "fixed",
-          left: 12,
-          right: 12,
+          top: "calc(env(safe-area-inset-top, 0) + 170px)",
+          left: 0,
+          right: 0,
           bottom:
             "calc(env(safe-area-inset-bottom, 0) + 76px)",
-          maxHeight: "86dvh",
           zIndex: 41,
-          borderRadius: 20,
-          background:
-            "linear-gradient(180deg, rgba(3,8,20,0.98), rgba(3,8,20,0.94))",
-          // Founder direction 2026-09-30 (revised) · every side gets
-          // the same accent-soft border · spelt out per-edge so no
-          // shadow or gradient washes any side out visually.
-          borderTop:
-            "1px solid var(--nex-accent-soft, rgba(0,175,255,0.35))",
-          borderRight:
-            "1px solid var(--nex-accent-soft, rgba(0,175,255,0.35))",
-          borderBottom:
-            "1px solid var(--nex-accent-soft, rgba(0,175,255,0.35))",
-          borderLeft:
-            "1px solid var(--nex-accent-soft, rgba(0,175,255,0.35))",
-          boxShadow:
-            "0 -20px 60px rgba(0,0,0,0.7), 0 0 40px var(--nex-accent-glow, rgba(0,175,255,0.2))",
+          background: "transparent",
           color: "var(--nex-text, #F2F5F8)",
           fontFamily: "var(--nex-font-body, inherit)",
           display: "flex",
@@ -183,14 +170,12 @@ export function CoverInfoTray({
           overflow: "hidden",
         }}
       >
-        {/* Header · NO borderBottom · NO close button · just seats the
-            Back arrow when a panel is open. Close paths: tap the +
-            button on the composer again (toggle), tap the backdrop,
-            or press Escape. */}
+        {/* Back arrow · only when a panel is active. Sits inside the
+            info-view area, not on top of the cover header. */}
         {activeItem && (
           <div
             style={{
-              padding: "10px 14px 4px",
+              padding: "6px 16px 6px",
               display: "flex",
               alignItems: "center",
               justifyContent: "flex-end",
@@ -219,15 +204,15 @@ export function CoverInfoTray({
           </div>
         )}
 
-        {/* Body · grid or panel · opts in to the thin scrollbar rule
-            declared in CoverThemeSkin so the tray gets a compact
-            accent-tinted vertical thumb IF the content overflows. */}
+        {/* Scrollable body · either the landscape button LIST or the
+            selected panel's content. Both render at the same phone-
+            screen slot below the cover header. */}
         <div
           data-nex-cover-scroll="thin"
           style={{
             flex: "1 1 auto",
             overflowY: "auto",
-            padding: 14,
+            padding: "6px 16px 16px",
           }}
         >
           {activeItem ? (
@@ -235,52 +220,106 @@ export function CoverInfoTray({
           ) : items.length === 0 ? (
             <EmptyState businessName={businessName} />
           ) : (
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: 10,
-              }}
-            >
+            <div style={{ display: "grid", gap: 8 }}>
               {items.map((it) => (
                 <button
                   key={it.id}
                   type="button"
                   onClick={() => setPanelKey(it.id)}
                   style={{
-                    padding: "14px 12px",
-                    borderRadius: 12,
+                    padding: "12px 14px",
+                    borderRadius: 14,
                     border:
-                      "1px solid var(--nex-accent-soft, rgba(0,175,255,0.35))",
-                    background: "var(--nex-accent-faint, rgba(0,175,255,0.08))",
+                      "1px solid var(--nex-accent-soft, rgba(0,175,255,0.30))",
+                    background:
+                      "linear-gradient(180deg, rgba(3,8,20,0.72), rgba(3,8,20,0.55))",
+                    backdropFilter: "blur(14px) saturate(1.1)",
+                    WebkitBackdropFilter: "blur(14px) saturate(1.1)",
                     color: "var(--nex-text, #F2F5F8)",
                     cursor: "pointer",
                     fontFamily: "inherit",
                     display: "flex",
-                    flexDirection: "column",
-                    alignItems: "flex-start",
-                    gap: 6,
+                    alignItems: "center",
+                    gap: 14,
                     textAlign: "left",
+                    boxShadow: "0 4px 14px rgba(0,0,0,0.35)",
                   }}
                 >
+                  {/* Icon cell · fixed 44×44 on the LEFT */}
                   <span
                     aria-hidden
                     style={{
+                      flex: "0 0 auto",
+                      width: 44,
+                      height: 44,
+                      borderRadius: 12,
+                      background:
+                        "var(--nex-accent-faint, rgba(0,175,255,0.10))",
+                      border:
+                        "1px solid var(--nex-accent-soft, rgba(0,175,255,0.30))",
                       color: "var(--nex-accent)",
                       display: "grid",
                       placeItems: "center",
                     }}
                   >
-                    {renderTrayIcon(it, 26)}
+                    {renderTrayIcon(it, 24)}
                   </span>
+                  {/* Text cell · title top, small subtitle under */}
                   <span
                     style={{
-                      fontSize: 12,
-                      fontWeight: 700,
-                      letterSpacing: "0.01em",
+                      minWidth: 0,
+                      flex: "1 1 auto",
+                      display: "grid",
+                      gap: 2,
                     }}
                   >
-                    {it.label}
+                    <span
+                      style={{
+                        fontFamily: "var(--nex-font-display)",
+                        fontSize: 15,
+                        fontWeight: 700,
+                        letterSpacing: "-0.005em",
+                        lineHeight: 1.2,
+                      }}
+                    >
+                      {it.label}
+                    </span>
+                    <span
+                      style={{
+                        fontSize: 11,
+                        lineHeight: 1.35,
+                        color:
+                          "var(--nex-text-dim, rgba(255,255,255,0.62))",
+                        letterSpacing: "0.01em",
+                      }}
+                    >
+                      {trayItemSubtitle(it)}
+                    </span>
+                  </span>
+                  {/* Chevron affordance · right edge */}
+                  <span
+                    aria-hidden
+                    style={{
+                      flex: "0 0 auto",
+                      color:
+                        "var(--nex-accent-soft, rgba(0,175,255,0.55))",
+                      display: "grid",
+                      placeItems: "center",
+                    }}
+                  >
+                    <svg
+                      width={16}
+                      height={16}
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden
+                    >
+                      <polyline points="9 6 15 12 9 18" />
+                    </svg>
                   </span>
                 </button>
               ))}
@@ -290,6 +329,35 @@ export function CoverInfoTray({
       </section>
     </>
   );
+}
+
+/**
+ * Short one-liner subtitle for a landscape button. Explains what the
+ * page contains in ~4 words so the buyer knows what to expect before
+ * tapping. Sealed IDs get founder-authored copy · custom buttons fall
+ * back to the seller's own body first sentence (truncated).
+ */
+function trayItemSubtitle(it: TrayItem): string {
+  const SEALED_SUBTITLES: Record<string, string> = {
+    about_us: "Meet the team and story",
+    delivery: "Areas, times, fees",
+    hours: "When we are open",
+    payment: "How to pay",
+    returns: "Refund and replacement policy",
+    catering: "Book us for your event",
+    gallery: "See the venue",
+    custom_orders: "Bespoke and made-to-order",
+    services: "What we offer",
+    faq: "Common questions answered",
+  };
+  if (SEALED_SUBTITLES[it.id]) return SEALED_SUBTITLES[it.id];
+  // Custom button · use its own body first ~40 chars, sentence-cased.
+  if (it.body && it.body.trim().length > 0) {
+    const first = it.body.split(/[.\n]/)[0]?.trim() ?? "";
+    if (first.length <= 44) return first;
+    return first.slice(0, 42).trimEnd() + "…";
+  }
+  return "Tap to open";
 }
 
 /**
