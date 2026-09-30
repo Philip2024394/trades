@@ -193,11 +193,10 @@ export function CoverIdentityBadge(
   props: CoverIdentityBadgeProps,
 ): React.JSX.Element {
   const isHero = props.size !== "compact";
-  // Founder direction 2026-09-30 (revised twice) · portrait sized to
-  // hold long business names with the 2-line clamp AND read at a
-  // proper header weight. Hero=72 · Compact=44. Flag badge scales
-  // via the isHero branch.
-  const portraitSize = isHero ? 72 : 44;
+  // Founder direction 2026-09-30 (revised three times) · portrait
+  // enlarged another 30% so the identity block reads as a hero
+  // element. Hero=94 · Compact=57. Flag badge scales via isHero.
+  const portraitSize = isHero ? 94 : 57;
   return (
     <>
       <style>{`
@@ -258,7 +257,7 @@ export function CoverIdentityBadge(
               color: "var(--nex-text)",
               fontFamily: "var(--nex-font-display)",
               fontWeight: 700,
-              fontSize: isHero ? 26 : 16,
+              fontSize: isHero ? 34 : 21,
             }}
           >
             {!props.portraitUrl && initials(props.name)}
@@ -272,7 +271,7 @@ export function CoverIdentityBadge(
           {(() => {
             const flag = countryCodeToFlagEmoji(props.countryCode);
             if (!flag) return null;
-            const badgeSize = isHero ? 28 : 20;
+            const badgeSize = isHero ? 36 : 26;
             return (
               <div
                 aria-label={`Country ${props.countryCode}`}
@@ -290,7 +289,7 @@ export function CoverIdentityBadge(
                   placeItems: "center",
                   boxShadow: "0 4px 12px rgba(0,0,0,0.55)",
                   overflow: "hidden",
-                  fontSize: isHero ? 18 : 13,
+                  fontSize: isHero ? 23 : 17,
                   lineHeight: 1,
                 }}
               >
@@ -303,7 +302,7 @@ export function CoverIdentityBadge(
           <div
             style={{
               fontFamily: "var(--nex-font-display)",
-              fontSize: isHero ? 24 : 14,
+              fontSize: isHero ? 26 : 15,
               fontWeight: 700,
               letterSpacing: "-0.015em",
               lineHeight: 1.15,

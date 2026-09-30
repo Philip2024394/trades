@@ -254,14 +254,17 @@ export function CoverThemeSkin(props: CoverThemeSkinProps): React.JSX.Element {
           overflow: "hidden",
         }}
       >
-        {/* Wallpaper composition · fixed to viewport · low opacity so
+        {/* Wallpaper composition · fixed to the phone-screen containing
+            block (phone-device applies transform:translateZ(0) in preview
+            so fixed descendants scope to it; in production fixed pins to
+            the browser viewport = the full phone screen). Low opacity so
             copy stays legible but the image is part of the visual
             language, not a stock backdrop. Ken Burns slow drift adds
             life without stealing attention. */}
         <div
           aria-hidden
           style={{
-            position: "absolute",
+            position: "fixed",
             inset: 0,
             zIndex: 0,
             opacity: wallpaperUrl ? 0.35 : 1,
@@ -278,7 +281,7 @@ export function CoverThemeSkin(props: CoverThemeSkinProps): React.JSX.Element {
         <div
           aria-hidden
           style={{
-            position: "absolute",
+            position: "fixed",
             inset: 0,
             zIndex: 0,
             background:
@@ -294,7 +297,7 @@ export function CoverThemeSkin(props: CoverThemeSkinProps): React.JSX.Element {
         <div
           aria-hidden
           style={{
-            position: "absolute",
+            position: "fixed",
             inset: 0,
             zIndex: 0,
             background:
@@ -366,7 +369,7 @@ function ParticleDrift({ config }: { config: ParticleDriftConfig }): React.JSX.E
       <div
         aria-hidden
         style={{
-          position: "absolute",
+          position: "fixed",
           inset: 0,
           zIndex: 0,
           pointerEvents: "none",
@@ -435,7 +438,7 @@ function SparkleField({ config }: { config: SparkleConfig }): React.JSX.Element 
       <div
         aria-hidden
         style={{
-          position: "absolute",
+          position: "fixed",
           inset: 0,
           zIndex: 0,
           pointerEvents: "none",
@@ -481,7 +484,7 @@ function MoonGlow({
       <div
         aria-hidden
         style={{
-          position: "absolute",
+          position: "fixed",
           left: config.x,
           top: config.y,
           width: config.size,

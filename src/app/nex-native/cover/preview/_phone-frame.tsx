@@ -41,30 +41,9 @@ export function PhoneFrame({ children }: { children: React.ReactNode }): React.J
            still works (touch + wheel + keyboard), just no visible rail. */
         [data-nex-phone-scroll] { scrollbar-width: none; -ms-overflow-style: none; }
         [data-nex-phone-scroll]::-webkit-scrollbar { width: 0; height: 0; display: none; }
-        /* Founder direction 2026-09-30 · on desktop the CoverComposer
-           uses position:fixed which pins to the browser viewport bottom
-           (below the phone silhouette). Inside the phone-frame preview
-           we make it position:sticky so it stays at the BOTTOM OF THE
-           PHONE SCREEN as the user scrolls. Also drops the CoverThemeSkin
-           overflow:hidden inside the frame so sticky works across the
-           atmospheric-layers boundary. */
         @media (min-width: 768px) {
-          [data-nex-phone-frame] [data-nex-cover-skin] {
-            overflow: visible !important;
-          }
-          [data-nex-phone-frame] [data-nex-cover-composer] {
-            position: sticky !important;
-            bottom: 0 !important;
-            left: auto !important;
-            right: auto !important;
-            transform: none !important;
-            width: auto !important;
-            max-width: none !important;
-            margin-left: 0 !important;
-            margin-right: 0 !important;
-            /* Sticky element sits above the wallpaper/scrim layers ·
-               force z-index so it doesn't get buried. */
-            z-index: 30 !important;
+          [data-nex-phone-frame] [data-nex-phone-device] {
+            transform: translateZ(0);
           }
         }
         /* Mobile · frame collapses entirely, cover fills viewport */
