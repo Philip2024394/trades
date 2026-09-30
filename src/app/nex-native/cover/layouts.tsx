@@ -38,6 +38,11 @@ import {
 // composer wired to POST /api/nex-native/first-message. Theme accent flows
 // through via CSS vars so each theme paints the composer in its own colors.
 import { CoverComposer } from "./_composer/CoverComposer";
+// Category Tabs (2026-09-30) · CoverCatalog wraps CoverProductGrid with the
+// one-word category tab bar. Drop-in replacement for the primary product grid
+// in each layout. Restaurant keeps its secondary "Signature mains" cut as a
+// plain CoverProductGrid so the layout's identity survives.
+import { CoverCatalog } from "./CoverCatalog";
 import type { MockCoverContent } from "./mock-data";
 
 interface LayoutProps {
@@ -63,7 +68,8 @@ export function LayoutCafe({ content, themeId }: LayoutProps): React.JSX.Element
         />
         <div style={{ marginTop: 26 }}>
           <CoverSectionHeading eyebrow="Today" title="Featured today" />
-          <CoverProductGrid
+          <CoverCatalog
+            sections={content.sections}
             products={content.products.slice(0, 4)}
             peerAccountId={content.ownerAccountId}
             columns={2}
@@ -208,7 +214,8 @@ export function LayoutRestaurant({ content, themeId }: LayoutProps): React.JSX.E
 
       <CoverPage>
         <CoverSectionHeading eyebrow="Menu" title="Small plates" />
-        <CoverProductGrid
+        <CoverCatalog
+          sections={content.sections}
           products={content.products.slice(0, 2)}
           peerAccountId={content.ownerAccountId}
           columns={2}
@@ -275,7 +282,8 @@ export function LayoutProduct({ content, themeId }: LayoutProps): React.JSX.Elem
         </div>
         <div style={{ marginTop: 28 }}>
           <CoverSectionHeading eyebrow="Shop" title="All products" />
-          <CoverProductGrid
+          <CoverCatalog
+            sections={content.sections}
             products={content.products.slice(1)}
             peerAccountId={content.ownerAccountId}
             columns={2}
@@ -462,7 +470,8 @@ export function LayoutCreator({ content, themeId }: LayoutProps): React.JSX.Elem
         </div>
         <div style={{ marginTop: 24 }}>
           <CoverSectionHeading eyebrow="Explore" title="Products + links" />
-          <CoverProductGrid
+          <CoverCatalog
+            sections={content.sections}
             products={content.products.slice(0, 6)}
             peerAccountId={content.ownerAccountId}
             columns={2}
@@ -557,7 +566,8 @@ export function LayoutFashion({ content, themeId }: LayoutProps): React.JSX.Elem
         </div>
       </div>
       <CoverPage>
-        <CoverProductGrid
+        <CoverCatalog
+          sections={content.sections}
           products={content.products.slice(0, 3)}
           peerAccountId={content.ownerAccountId}
           columns={1}
@@ -735,7 +745,8 @@ export function LayoutPersonalBrand({ content, themeId }: LayoutProps): React.JS
         </div>
         <div style={{ marginTop: 24 }}>
           <CoverSectionHeading eyebrow="Shop" title="Products" />
-          <CoverProductGrid
+          <CoverCatalog
+            sections={content.sections}
             products={content.products.slice(0, 4)}
             peerAccountId={content.ownerAccountId}
             columns={2}
