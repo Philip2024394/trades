@@ -7,6 +7,22 @@
 import type { CoverProduct, CoverSection, CoverSocialLinks } from "./primitives";
 import type { NexInfoPagesJson } from "@/lib/nex-native/info-pages";
 import type { WeeklyHours } from "./_composer/CoverInfoTray";
+import {
+  GLOBAL_DEFAULT_TERMINOLOGY,
+  type NexTerminology,
+} from "@/lib/nex-native/terminology";
+
+/** Small helper · returns the resolved terminology for a content
+ *  bundle, falling back to GLOBAL_DEFAULT_TERMINOLOGY when the content
+ *  bundle didn't carry one (mock previews that predate Phase 2 · or
+ *  real businesses without a profession). Layouts call this at the top
+ *  of each function and read t.catalog_heading, t.section_about_label,
+ *  t.section_location_label directly. */
+export function terminologyForContent(
+  content: { terminology?: NexTerminology },
+): NexTerminology {
+  return content.terminology ?? GLOBAL_DEFAULT_TERMINOLOGY;
+}
 
 export interface MockCoverContent {
   businessName: string;
@@ -100,6 +116,19 @@ export interface MockCoverContent {
     caption: string;
     longDescription: string;
   }[];
+  /** Bridge Profession-D · terminology strings resolved by the
+   *  fallback chain (business override → profession → vertical →
+   *  global default). Layout files consume these instead of
+   *  hardcoding "All products" / "Menu" / "Portfolio" etc. When
+   *  omitted the layout falls back to GLOBAL_DEFAULT_TERMINOLOGY. */
+  terminology?: {
+    catalog_heading: string;
+    catalog_action_label: string;
+    primary_action_label: string;
+    section_about_label: string;
+    section_location_label: string;
+    story_eyebrow: string;
+  };
   hours: string;
   address: string;
   atmosphereLine: string;

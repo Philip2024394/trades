@@ -17,6 +17,7 @@ import * as menuService from "./menu-service";
 import * as productSectionService from "./product-section-service";
 import { listGalleryImages } from "./gallery-image-service";
 import { listServices } from "./service-list-service";
+import { resolveTerminology } from "./terminology-service";
 import type { NexBusinessRow, NexUuid } from "./types";
 import { isVenueCategory } from "./types";
 import {
@@ -92,6 +93,11 @@ export async function loadCoverContent(
     listGalleryImages(business.id).catch(() => []),
     listServices(business.id).catch(() => []),
   ]);
+
+  // Resolve terminology via the fallback chain (profession →
+  // vertical → global default). Fails soft so a resolver error
+  // never breaks the cover.
+  const terminology = await resolveTerminology(business.id);
 
   // Founder-sealed architecture 2026-09-30 · owner's chat_theme is
   // the SINGLE visual identity across Chat + Cover. Pull it from the
@@ -220,6 +226,7 @@ export async function loadCoverContent(
       caption: row.caption,
       longDescription: row.long_description,
     })),
+    terminology,
     hours: business.hours_display ?? "",
     address: business.address ?? "",
     atmosphereLine: "",

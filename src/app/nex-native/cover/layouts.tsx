@@ -48,6 +48,7 @@ import { CoverComposer } from "./_composer/CoverComposer";
 // plain CoverProductGrid so the layout's identity survives.
 import { CoverCatalog } from "./CoverCatalog";
 import type { MockCoverContent } from "./mock-data";
+import { terminologyForContent } from "./mock-data";
 
 interface LayoutProps {
   content: MockCoverContent;
@@ -60,6 +61,7 @@ const chatHref = (ownerAccountId: string) =>
 // ─── 1 · Café ─────────────────────────────────────────────────────────
 
 export function LayoutCafe({ content, themeId }: LayoutProps): React.JSX.Element {
+  const t = terminologyForContent(content);
   return (
     <>
       <CoverPage>
@@ -142,7 +144,7 @@ export function LayoutCafe({ content, themeId }: LayoutProps): React.JSX.Element
                 fontWeight: 700,
               }}
             >
-              Visit Us
+              {t.section_location_label}
             </div>
             <div
               style={{
@@ -227,6 +229,7 @@ export function LayoutCafe({ content, themeId }: LayoutProps): React.JSX.Element
 // on the rim (50% in / 50% out). Every other block identical.
 
 export function LayoutCafeRound({ content, themeId }: LayoutProps): React.JSX.Element {
+  const t = terminologyForContent(content);
   return (
     <>
       <CoverPage>
@@ -278,7 +281,7 @@ export function LayoutCafeRound({ content, themeId }: LayoutProps): React.JSX.El
           }}
         >
           <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 10, marginBottom: 6 }}>
-            <div style={{ fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--nex-accent)", fontWeight: 700 }}>Visit Us</div>
+            <div style={{ fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--nex-accent)", fontWeight: 700 }}>{t.section_location_label}</div>
             <div aria-hidden style={{ fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--nex-accent)", fontWeight: 700 }}>Directions ↗</div>
           </div>
           <div style={{ display: "flex", alignItems: "flex-start", gap: 8, fontFamily: "var(--nex-font-display)", fontSize: 15, lineHeight: 1.35, fontWeight: 600, color: "var(--nex-text)" }}>
@@ -330,6 +333,7 @@ export function LayoutCafeRound({ content, themeId }: LayoutProps): React.JSX.El
 // ROUND circles. Everything else identical.
 
 export function LayoutProductRound({ content, themeId }: LayoutProps): React.JSX.Element {
+  const t = terminologyForContent(content);
   return (
     <>
       <CoverPage>
@@ -344,6 +348,7 @@ export function LayoutProductRound({ content, themeId }: LayoutProps): React.JSX
         />
         <div style={{ marginTop: 20 }}>
           <WhoWeAreCollapsible
+            title={t.section_about_label}
             body={content.aboutUs ?? content.tagline ?? ""}
             hoursLabel={formatTodayHoursLabel(
               content.hoursByDay,
@@ -354,7 +359,7 @@ export function LayoutProductRound({ content, themeId }: LayoutProps): React.JSX
         <div style={{ marginTop: 20 }}>
           <CoverSectionHeading
             eyebrow="Shop"
-            title="All products"
+            title={t.catalog_heading}
             rightSlot={
               <div
                 aria-label={`${content.products.length} products live`}
@@ -442,6 +447,7 @@ export function LayoutProductLandscapeRound({ content, themeId }: LayoutProps): 
 // can switch layouts without losing any of their configured data.
 
 export function LayoutCafeLandscape({ content, themeId }: LayoutProps): React.JSX.Element {
+  const t = terminologyForContent(content);
   return (
     <>
       <CoverPage>
@@ -510,7 +516,7 @@ export function LayoutCafeLandscape({ content, themeId }: LayoutProps): React.JS
                 fontWeight: 700,
               }}
             >
-              Visit Us
+              {t.section_location_label}
             </div>
             <div
               style={{
@@ -591,6 +597,7 @@ export function LayoutCafeLandscape({ content, themeId }: LayoutProps): React.JS
 // ─── 2 · Restaurant ─────────────────────────────────────────────────
 
 export function LayoutRestaurant({ content, themeId }: LayoutProps): React.JSX.Element {
+  const t = terminologyForContent(content);
   return (
     <>
       <div
@@ -720,6 +727,7 @@ export function LayoutRestaurant({ content, themeId }: LayoutProps): React.JSX.E
 // ─── 3 · Product seller ─────────────────────────────────────────────
 
 export function LayoutProduct({ content, themeId }: LayoutProps): React.JSX.Element {
+  const t = terminologyForContent(content);
   return (
     <>
       <CoverPage>
@@ -734,6 +742,7 @@ export function LayoutProduct({ content, themeId }: LayoutProps): React.JSX.Elem
         />
         <div style={{ marginTop: 20 }}>
           <WhoWeAreCollapsible
+            title={t.section_about_label}
             body={content.aboutUs ?? content.tagline ?? ""}
             hoursLabel={formatTodayHoursLabel(
               content.hoursByDay,
@@ -748,7 +757,7 @@ export function LayoutProduct({ content, themeId }: LayoutProps): React.JSX.Elem
               section header. */}
           <CoverSectionHeading
             eyebrow="Shop"
-            title="All products"
+            title={t.catalog_heading}
             rightSlot={
               <div
                 aria-label={`${content.products.length} products live`}
@@ -859,6 +868,7 @@ export function LayoutProduct({ content, themeId }: LayoutProps): React.JSX.Elem
 // switch layouts without losing any of their configured data.
 
 export function LayoutProductLandscape({ content, themeId }: LayoutProps): React.JSX.Element {
+  const t = terminologyForContent(content);
   return (
     <>
       <CoverPage>
@@ -873,6 +883,7 @@ export function LayoutProductLandscape({ content, themeId }: LayoutProps): React
         />
         <div style={{ marginTop: 20 }}>
           <WhoWeAreCollapsible
+            title={t.section_about_label}
             body={content.aboutUs ?? content.tagline ?? ""}
             hoursLabel={formatTodayHoursLabel(
               content.hoursByDay,
@@ -883,7 +894,7 @@ export function LayoutProductLandscape({ content, themeId }: LayoutProps): React
         <div style={{ marginTop: 20 }}>
           <CoverSectionHeading
             eyebrow="Shop"
-            title="All products"
+            title={t.catalog_heading}
             rightSlot={
               <div
                 aria-label={`${content.products.length} products live`}
@@ -977,6 +988,7 @@ export function LayoutProductLandscape({ content, themeId }: LayoutProps): React
 // ─── 4 · Tradesperson ────────────────────────────────────────────────
 
 export function LayoutTradesperson({ content, themeId }: LayoutProps): React.JSX.Element {
+  const t = terminologyForContent(content);
   return (
     <>
       <CoverPage>
@@ -1045,6 +1057,7 @@ export function LayoutTradesperson({ content, themeId }: LayoutProps): React.JSX
 // ─── 5 · Salon / Beauty ─────────────────────────────────────────────
 
 export function LayoutSalon({ content, themeId }: LayoutProps): React.JSX.Element {
+  const t = terminologyForContent(content);
   return (
     <>
       <div
@@ -1139,6 +1152,7 @@ export function LayoutSalon({ content, themeId }: LayoutProps): React.JSX.Elemen
 // ─── 6 · Creator / Influencer ───────────────────────────────────────
 
 export function LayoutCreator({ content, themeId }: LayoutProps): React.JSX.Element {
+  const t = terminologyForContent(content);
   return (
     <>
       <CoverPage>
@@ -1221,6 +1235,7 @@ export function LayoutCreator({ content, themeId }: LayoutProps): React.JSX.Elem
 // ─── 7 · Fashion Store ──────────────────────────────────────────────
 
 export function LayoutFashion({ content, themeId }: LayoutProps): React.JSX.Element {
+  const t = terminologyForContent(content);
   return (
     <>
       <div
@@ -1334,6 +1349,7 @@ export function LayoutFashion({ content, themeId }: LayoutProps): React.JSX.Elem
 // ─── 8 · Street Food / Delivery ─────────────────────────────────────
 
 export function LayoutStreetFood({ content, themeId }: LayoutProps): React.JSX.Element {
+  const t = terminologyForContent(content);
   return (
     <>
       <CoverPage>
@@ -1403,6 +1419,7 @@ export function LayoutStreetFood({ content, themeId }: LayoutProps): React.JSX.E
 // ─── 9 · Premium Business ───────────────────────────────────────────
 
 export function LayoutPremiumBusiness({ content, themeId }: LayoutProps): React.JSX.Element {
+  const t = terminologyForContent(content);
   return (
     <>
       <CoverPage>
@@ -1484,6 +1501,7 @@ export function LayoutPremiumBusiness({ content, themeId }: LayoutProps): React.
 // ─── 10 · Personal Brand ────────────────────────────────────────────
 
 export function LayoutPersonalBrand({ content, themeId }: LayoutProps): React.JSX.Element {
+  const t = terminologyForContent(content);
   return (
     <>
       <CoverPage>
@@ -1508,7 +1526,7 @@ export function LayoutPersonalBrand({ content, themeId }: LayoutProps): React.JS
             button to open the About Us panel in the info tray. */}
         <div style={{ marginTop: 20 }}>
           <WhoWeAreCollapsible
-            title="Our Journey"
+            title={t.section_about_label}
             body={content.aboutUs ?? content.tagline ?? ""}
           />
         </div>
@@ -1569,7 +1587,7 @@ export function LayoutPersonalBrand({ content, themeId }: LayoutProps): React.JS
                       fontWeight: 700,
                     }}
                   >
-                    Visit Us
+                    {t.section_location_label}
                   </div>
                   <div
                     aria-hidden
@@ -1896,6 +1914,7 @@ export function LayoutPersonalBrandLandscape({
   content,
   themeId,
 }: LayoutProps): React.JSX.Element {
+  const t = terminologyForContent(content);
   return (
     <>
       <CoverPage>
@@ -1909,7 +1928,7 @@ export function LayoutPersonalBrandLandscape({
         />
         <div style={{ marginTop: 20 }}>
           <WhoWeAreCollapsible
-            title="Our Journey"
+            title={t.section_about_label}
             body={content.aboutUs ?? content.tagline ?? ""}
           />
         </div>
@@ -1961,7 +1980,7 @@ export function LayoutPersonalBrandLandscape({
                       fontWeight: 700,
                     }}
                   >
-                    Visit Us
+                    {t.section_location_label}
                   </div>
                   <div
                     aria-hidden
@@ -2058,6 +2077,7 @@ export function LayoutPersonalBrandRound({
   content,
   themeId,
 }: LayoutProps): React.JSX.Element {
+  const t = terminologyForContent(content);
   return (
     <>
       <CoverPage>
@@ -2071,7 +2091,7 @@ export function LayoutPersonalBrandRound({
         />
         <div style={{ marginTop: 20 }}>
           <WhoWeAreCollapsible
-            title="Our Journey"
+            title={t.section_about_label}
             body={content.aboutUs ?? content.tagline ?? ""}
           />
         </div>
@@ -2123,7 +2143,7 @@ export function LayoutPersonalBrandRound({
                       fontWeight: 700,
                     }}
                   >
-                    Visit Us
+                    {t.section_location_label}
                   </div>
                   <div
                     aria-hidden
