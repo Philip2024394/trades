@@ -103,7 +103,7 @@ export const MARIA_MOCK: MockCoverContent = {
   businessName: "Maria's Café",
   tagline: "Slow coffee · sourdough · Ubud",
   handle: "@mariascafe",
-  location: "Ubud, Bali",
+  location: "Jl. Raya Sanggingan No. 87, Ubud, Bali 80571",
   portraitUrl:
     "https://ijvqdvsvwtwxzcqmoqit.supabase.co/storage/v1/object/public/nex-chat-theme-hero/maria-santos-hero-1790481483761.png",
   ownerAccountId: "preview-maria",
@@ -117,7 +117,7 @@ export const MARIA_MOCK: MockCoverContent = {
   },
   atmosphereLine: "Slow coffee · sourdough · warm mornings",
   hours: "07:00 · 22:00 · every day",
-  address: "Jl. Raya Sanggingan, Ubud, Bali",
+  address: "Jl. Raya Sanggingan No. 87, Ubud, Bali 80571",
   // Founder direction 2026-09-30 · lat/lng for the Google Maps
   // directions link on the "Visit Us" panel. Optional · when NULL the
   // directions link falls back to a text-search of the address.

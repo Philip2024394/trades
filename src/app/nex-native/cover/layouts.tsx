@@ -1804,6 +1804,57 @@ function ImagePlaceholderGallery({
       (i % 10) + 1,
     ).padStart(3, "0")}`;
 
+  // Founder direction 2026-09-30 · mock captions + 7-line long
+  // descriptions per tile. Sellers replace both fields per image
+  // via a future editor. Caption sits under the tile · long
+  // description renders inside the lightbox when a tile is tapped.
+  const captions = [
+    "Studio front on rainy morning",
+    "Bench detail · brass hinge close-up",
+    "Team assembling the small edition",
+    "Client fitting session in progress",
+    "Packaging trial · card sleeve",
+    "Weekly stock arrival at the atelier",
+    "Sourcing trip to the fabric market",
+    "First cut on the winter capsule",
+    "Prototype photographed on natural light",
+    "Studio front · afternoon shot",
+    "Detail of the hand-stitched seam",
+    "Full-view of the flagship piece",
+    "Behind-the-scenes with the team",
+    "Signature colour in daylight",
+    "Editorial shot for the campaign",
+    "Order fulfilment · packing table",
+    "Private commission · fitting stage",
+    "Archive drawer · sample cards",
+  ];
+  const longDescriptions = [
+    "This is our studio front on a rainy Ubud morning. The wooden facade was built by a family friend from reclaimed teak we sourced in Denpasar back in 2019. Every plank tells a small story of another place before it came to rest here. The green plants are all local ferns, watered by hand each morning before we open the studio to visitors. We chose this location precisely for the light · the morning east-facing angle gives us six hours of natural photography every day. Come by anytime the sign says OPEN.",
+    "The brass hinge is one of our signature details, hand-forged by a small workshop in Java that has been supplying us since we began. Each hinge is finished with a burnished patina rather than lacquer, which means it develops a unique character with age. We chose brass because it responds to touch · your hand leaves subtle marks that become part of the object over time. The visible pin is a design choice, not an oversight · it makes replacement possible without destroying the frame. That's the whole ethos.",
+    "This is the team assembling our smallest edition · a run of thirty pieces made by the three of us over about six weeks each spring. We work at the long bench with the north-facing window because the light there is flat enough to see every detail. Each piece is signed and numbered on the underside. The atmosphere on assembly days is quiet · we play one album from start to finish and rarely speak. It's meditative work and we protect the space for it carefully.",
+    "A client fitting session · this is the moment that matters most to us. The pattern on the table is a first draft, cut on inexpensive muslin so we can adjust freely. Fitting takes about ninety minutes per client and we do at most two a day. We ask a lot of questions during this time · not just about measurements but about how the piece will be worn, how it should feel, what it needs to survive. That conversation shapes the whole build.",
+    "Packaging trial · we're testing a card sleeve made from a single sheet of unbleached kraft paper that folds without adhesive. The goal is a package that can be composted at home without any waste stream complication. We went through eleven prototypes before landing on this fold pattern. It's not perfect yet · we're still refining the closure · but it's the direction we're committed to. Zero plastic, zero foam, zero anything that outlives the object it's protecting.",
+    "Weekly stock arrival at the atelier · everything we work with is delivered in small quantities so we never hold surplus. The boxes on the left are woven cotton from Sukawati, the tubes on the right contain wax-coated linen for the winter capsule. We refuse anything shipped in single-use plastic, which slowed our growth in the first year but made every supplier relationship stronger. Small orders, close partners, no waste · that's the whole supply chain.",
+    "Sourcing trip to the fabric market · we visit twice a year, spend three days there, and buy less than we plan every time. The photograph shows a stall we've bought from since we started, run by a woman whose mother ran it before her. She sets aside the best bolts for us because we've never returned anything. Trust is the only currency in these markets and it took years to earn. Every piece you buy from us is stitched from cloth that started here.",
+    "First cut on the winter capsule · this is the ceremonial moment when a design leaves the paper and becomes fabric. The scissors were a gift from Maria's grandmother and they're the only pair we use for the first cut of a new collection. It's a small ritual but it matters to us. After the first cut, we photograph the offcut and pin it to the wall alongside every other first-cut offcut we've ever made. It's become a private archive of every piece we've ever released.",
+    "Prototype photographed under natural light · we never use artificial lighting for any product photography. This shot was taken at 10:14 in the morning on a slightly overcast day, which is our favourite conditions · the shadows are soft but the details still read clearly. If you compare the same piece shot on a bright day, it looks like a different object. We want you to see it as it will look in your hands, in ordinary light, in an ordinary room.",
+    "Studio front · afternoon shot. This is the same view as the morning shot but taken about eight hours later. The light has warmed considerably and the whole facade takes on a completely different character. We wanted to include both times of day so you understand the space breathes with the sun. When you visit, the studio will look different depending on when you arrive · that's not a flaw, it's the whole point of choosing this building in the first place.",
+    "Detail of the hand-stitched seam · this is done with waxed linen thread using a saddle-stitch that requires two needles working in opposite directions. It takes about three times as long as machine stitching but produces a seam that cannot unravel · if a single stitch breaks, the two adjacent stitches lock the whole line. We learned this technique from a saddler in Yogyakarta who has been making horse tack since he was fourteen years old.",
+    "Full-view of the flagship piece · the version photographed here is number one of forty-two in the year's edition. Each unit takes about eleven working hours to complete, spread across four days so no single day involves more than three hours of concentrated work. We don't ship any piece we couldn't confidently own ourselves. If it fails within a year, we'll rebuild it at cost. If it fails after ten years, we'll rebuild it at cost. That's the whole warranty.",
+    "Behind-the-scenes with the team on a build day. The three of us have worked together since 2019 · Maria on design, Rian on construction, Andi on finishing. We each have veto power over any decision on any piece. It's a slow way to work but the results carry every one of our hands. On the wall behind us is a print of the very first piece we made together · we look at it every morning to remember why we started.",
+    "Signature colour in daylight · this warm ochre is the base of our whole visual language. The pigment is mixed from three natural earths sourced from three different Indonesian islands · Bali, Java, and Sumbawa. Every batch is slightly different, which we consider a feature rather than a problem. If you own two pieces from different years, hold them side by side and you'll see the family resemblance and the individual character.",
+    "Editorial shot for the campaign · this is one of six frames we use across the whole year of communication. We hire the same photographer, same stylist, same makeup artist for every campaign · it gives the whole brand a cohesive voice. The location is always somewhere within walking distance of the studio, never a rented set. If we can't make a good picture in the space we actually work in, we've failed the piece itself.",
+    "Order fulfilment · this is the packing table where every single order is prepared by hand. The lamp on the right is on a dimmer because bright light makes it easier to miss thread ends. We pack in the same slow rhythm we make in · about twenty minutes per order, ten of which is a handwritten note. Every buyer gets a card that mentions something specific about their order and thanks them by first name. It matters.",
+    "Private commission · fitting stage. The client for this piece asked to remain anonymous but gave permission for the making process to be documented. Private commissions take about four months from first conversation to delivery and typically involve two fittings and one video call. We only take on eight per year because they eat significantly into our capsule production schedule. If you're interested, message us in the chat and we'll talk you through the intake process.",
+    "Archive drawer · these are sample cards from the last four years. Every fabric we've ever bought is recorded here with the date, the supplier, the price per metre, and a small note about how it performed in the workshop. It's how we know which linen holds a crease well, which cotton shrinks unpredictably, which wool blooms in the wash. This archive is the closest thing we have to a technical manual · it's built entirely from experience.",
+  ];
+
+  const captionFor = (i: number) =>
+    captions[i % captions.length] ?? "Image description";
+  const descriptionFor = (i: number) =>
+    longDescriptions[i % longDescriptions.length] ??
+    "Image description will appear here once the seller uploads a caption.";
+
   return (
     <div>
       <div
@@ -1889,10 +1940,9 @@ function ImagePlaceholderGallery({
                 </span>
               </button>
               {/* Founder direction 2026-09-30 · description caption
-                  under each tile · sellers author short captions per
-                  image (max ~40 chars fits on 2 lines at this width).
-                  Placeholder text reads as "Image description" so the
-                  founder sees where real captions will live. */}
+                  under each tile · varied mock text per index so the
+                  founder sees the varying-length layout. Tap the tile
+                  to open the lightbox with a 7-line long description. */}
               <div
                 style={{
                   fontSize: 10,
@@ -1907,7 +1957,7 @@ function ImagePlaceholderGallery({
                   minHeight: 26,
                 }}
               >
-                Image description
+                {captionFor(globalIndex)}
               </div>
             </div>
           );
@@ -1970,6 +2020,7 @@ function ImagePlaceholderGallery({
         <ImagePlaceholderLightbox
           name={nameFor(lightboxIndex)}
           sku={skuFor(lightboxIndex)}
+          description={descriptionFor(lightboxIndex)}
           onClose={() => setLightboxIndex(null)}
         />
       )}
@@ -1986,10 +2037,12 @@ function ImagePlaceholderGallery({
 function ImagePlaceholderLightbox({
   name,
   sku,
+  description,
   onClose,
 }: {
   name: string;
   sku: string;
+  description: string;
   onClose: () => void;
 }): React.JSX.Element {
   React.useEffect(() => {
@@ -2152,6 +2205,26 @@ function ImagePlaceholderLightbox({
           >
             IMAGE HERE
           </span>
+        </div>
+        {/* Founder direction 2026-09-30 · 7-line long description
+            below the enlarged tile. Sellers author the full body per
+            image · placeholder text stops at ~7 lines with an
+            ellipsis so long copy doesn't push the whole lightbox
+            offscreen. Buyers who want to keep reading tap the chat
+            composer to ask directly. */}
+        <div
+          style={{
+            fontSize: 13,
+            lineHeight: 1.55,
+            color: "var(--nex-text)",
+            display: "-webkit-box",
+            WebkitLineClamp: 7,
+            WebkitBoxOrient: "vertical",
+            overflow: "hidden",
+            wordBreak: "break-word",
+          }}
+        >
+          {description}
         </div>
       </div>
     </div>
