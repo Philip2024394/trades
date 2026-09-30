@@ -372,6 +372,19 @@ export function LayoutProduct({ content, themeId }: LayoutProps): React.JSX.Elem
             )}
           />
         </div>
+        <div style={{ marginTop: 20 }}>
+          <CoverSectionHeading eyebrow="Shop" title="All products" />
+          <CoverCatalog
+            sections={content.sections}
+            products={content.products}
+            peerAccountId={content.ownerAccountId}
+            columns={2}
+          />
+        </div>
+        {/* Founder direction 2026-09-30 · stats strip moved DOWN so it
+            sits under the pagination controls · reads as a footer
+            summary of the shop grid ("here's what you just scrolled
+            through") rather than a header above it. */}
         <div
           style={{
             marginTop: 14,
@@ -387,15 +400,6 @@ export function LayoutProduct({ content, themeId }: LayoutProps): React.JSX.Elem
         >
           📦 {content.products.length} products live · 🚚{" "}
           {content.location || "Ships worldwide"}
-        </div>
-        <div style={{ marginTop: 28 }}>
-          <CoverSectionHeading eyebrow="Shop" title="All products" />
-          <CoverCatalog
-            sections={content.sections}
-            products={content.products}
-            peerAccountId={content.ownerAccountId}
-            columns={2}
-          />
         </div>
         <CoverIdentityRail
           handle={content.handle}
