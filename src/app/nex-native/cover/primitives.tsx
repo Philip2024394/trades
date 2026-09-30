@@ -785,6 +785,9 @@ export function CoverProductCard({
               minWidth: 0,
             }}
           >
+            {/* Founder direction 2026-09-30 · price must ALWAYS show
+                in full · no ellipsis truncation. Long values wrap to
+                a second line rather than clipping. */}
             <div
               style={{
                 flex: "1 1 auto",
@@ -793,9 +796,9 @@ export function CoverProductCard({
                 fontWeight: 800,
                 color: "var(--nex-accent)",
                 letterSpacing: "0.01em",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
+                lineHeight: 1.25,
+                wordBreak: "break-word",
+                overflowWrap: "anywhere",
               }}
             >
               {priceLabel}
