@@ -75,6 +75,18 @@ export interface MockCoverContent {
   ownerName?: string | null;
   ownerPosition?: string | null;
   ownerAvatarUrl?: string | null;
+  /** Founder direction 2026-09-30 · structured Mon–Sun schedule for
+   *  the Info Tray Hours panel. When set, the panel renders a
+   *  two-column table with "Closed" for any missing / closed day. */
+  hoursByDay?: {
+    mon?: { open?: string | null; close?: string | null; closed?: boolean };
+    tue?: { open?: string | null; close?: string | null; closed?: boolean };
+    wed?: { open?: string | null; close?: string | null; closed?: boolean };
+    thu?: { open?: string | null; close?: string | null; closed?: boolean };
+    fri?: { open?: string | null; close?: string | null; closed?: boolean };
+    sat?: { open?: string | null; close?: string | null; closed?: boolean };
+    sun?: { open?: string | null; close?: string | null; closed?: boolean };
+  } | null;
   products: CoverProduct[];
   services: {
     id: string;
@@ -138,6 +150,15 @@ export const MARIA_MOCK: MockCoverContent = {
   yearEstablished: 2019,
   ownerName: "Maria Santos",
   ownerPosition: "Founder",
+  hoursByDay: {
+    mon: { open: "07:00", close: "22:00" },
+    tue: { open: "07:00", close: "22:00" },
+    wed: { open: "07:00", close: "22:00" },
+    thu: { open: "07:00", close: "22:00" },
+    fri: { open: "07:00", close: "23:00" },
+    sat: { open: "07:00", close: "23:00" },
+    sun: { closed: true },
+  },
   // Reuse the identity portrait so the About Us avatar matches the
   // face the buyer already saw at the top of the cover.
   ownerAvatarUrl:

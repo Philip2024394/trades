@@ -28,6 +28,21 @@ import {
   type NexInfoPagesJson,
 } from "@/lib/nex-native/info-pages";
 
+/** Founder direction 2026-09-30 · one row per weekday for the Hours
+ *  panel. `closed=true` (or a null open/close) renders as "Closed".
+ *  Times are stored as strings (e.g. "07:00") so we don't couple the
+ *  UI to a timezone parser · seller writes them exactly how they
+ *  want them displayed. */
+export interface WeeklyHoursDay {
+  open?: string | null;
+  close?: string | null;
+  closed?: boolean;
+}
+export type WeeklyHours = Record<
+  "mon" | "tue" | "wed" | "thu" | "fri" | "sat" | "sun",
+  WeeklyHoursDay
+>;
+
 export interface CoverInfoTrayContent {
   /** Seller-authored blob from nex_business.info_pages. */
   pages: NexInfoPagesJson | null | undefined;
@@ -47,8 +62,15 @@ export interface CoverInfoTrayContent {
   /** Round avatar for the owner (defaults to the same portrait shown
    *  on the identity badge · Maria's face on Maria's Café). */
   ownerAvatarUrl?: string | null;
-  /** Rendered opening hours. */
+  /** Rendered opening hours · plain-text fallback used when
+   *  hoursByDay is not provided. */
   hours: string | null;
+  /** Founder direction 2026-09-30 · structured Monday–Sunday schedule.
+   *  When populated, the Hours panel renders a two-column day/time
+   *  table instead of the plain-text `hours` string. Any day marked
+   *  closed=true reads "Closed" · missing open OR close also reads
+   *  "Closed" for safety. */
+  hoursByDay?: WeeklyHours | null;
   /** Address + optional coords → shown in the Location card if the
    *  seller decides to keep a separate button (defaults hidden). */
   address: string | null;
@@ -329,6 +351,10 @@ interface TrayItem {
    *  the Catering panel for the default event types (Birthdays ·
    *  Anniversaries · Graduations · Weddings). */
   bullets?: string[];
+  /** Founder direction 2026-09-30 · two-column weekday schedule for
+   *  the Hours panel. Rendered as a Mon–Sun list with open–close
+   *  times · closed days read "Closed". */
+  hoursByDay?: WeeklyHours | null;
   /** Owner block · Founder direction 2026-09-30 · rendered above the
    *  body on the About Us panel. Round avatar + name + position +
    *  year-established pill. */
@@ -409,6 +435,8 @@ function PanelBody({ item }: { item: TrayItem }) {
           {item.body}
         </p>
       )}
+
+      {item.hoursByDay && <HoursTable hours={item.hoursByDay} />}
 
       {item.bullets && item.bullets.length > 0 && (
         <ul
@@ -664,12 +692,17 @@ function buildTrayItems(content: CoverInfoTrayContent): TrayItem[] {
     });
   }
 
-  if (enabled("hours") && content.hours) {
+  if (enabled("hours") && (content.hours || content.hoursByDay)) {
+    // Founder direction 2026-09-30 · when the seller has provided a
+    // structured Mon–Sun schedule, render that as a two-column table.
+    // Fall back to the plain-text hours string only when no
+    // hoursByDay is present.
     items.push({
       id: "hours",
       icon: NEX_INFO_PAGE_META.hours.icon,
       label: NEX_INFO_PAGE_META.hours.label,
-      body: content.hours,
+      body: content.hoursByDay ? "" : (content.hours ?? ""),
+      hoursByDay: content.hoursByDay ?? null,
     });
   }
 
@@ -787,6 +820,102 @@ function buildTrayItems(content: CoverInfoTrayContent): TrayItem[] {
   }
 
   return items;
+}
+
+// ─── Weekly hours table (Hours panel) ────────────────────────────────
+
+function HoursTable({ hours }: { hours: WeeklyHours }) {
+  const rows: { key: keyof WeeklyHours; label: string }[] = [
+    { key: "mon", label: "Monday" },
+    { key: "tue", label: "Tuesday" },
+    { key: "wed", label: "Wednesday" },
+    { key: "thu", label: "Thursday" },
+    { key: "fri", label: "Friday" },
+    { key: "sat", label: "Saturday" },
+    { key: "sun", label: "Sunday" },
+  ];
+  const now = new Date();
+  // JS getDay: 0=Sun ... 6=Sat · map to our key order.
+  const todayKey: keyof WeeklyHours = (
+    ["sun", "mon", "tue", "wed", "thu", "fri", "sat"] as const
+  )[now.getDay()];
+
+  return (
+    <div
+      style={{
+        display: "grid",
+        gap: 0,
+        borderRadius: 12,
+        border: "1px solid var(--nex-accent-soft, rgba(0,175,255,0.20))",
+        overflow: "hidden",
+      }}
+    >
+      {rows.map((r) => {
+        const day = hours[r.key] ?? {};
+        const isClosed =
+          day.closed === true || !day.open || !day.close;
+        const isToday = r.key === todayKey;
+        return (
+          <div
+            key={r.key}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 12,
+              padding: "10px 14px",
+              background: isToday
+                ? "var(--nex-accent-faint, rgba(0,175,255,0.10))"
+                : "transparent",
+              borderTop:
+                "1px solid var(--nex-accent-soft, rgba(0,175,255,0.12))",
+            }}
+          >
+            <div
+              style={{
+                fontSize: 13,
+                fontWeight: isToday ? 800 : 600,
+                color: isToday
+                  ? "var(--nex-accent)"
+                  : "var(--nex-text, #F2F5F8)",
+                letterSpacing: "0.01em",
+              }}
+            >
+              {r.label}
+              {isToday && (
+                <span
+                  style={{
+                    marginLeft: 8,
+                    fontSize: 9,
+                    letterSpacing: "0.16em",
+                    textTransform: "uppercase",
+                    color: "var(--nex-accent)",
+                    fontWeight: 700,
+                  }}
+                >
+                  Today
+                </span>
+              )}
+            </div>
+            <div
+              style={{
+                fontSize: 13,
+                fontWeight: 700,
+                color: isClosed
+                  ? "var(--nex-text-dim, rgba(255,255,255,0.55))"
+                  : isToday
+                    ? "var(--nex-accent)"
+                    : "var(--nex-text, #F2F5F8)",
+                fontVariantNumeric: "tabular-nums",
+              }}
+            >
+              {isClosed ? "Closed" : `${day.open} – ${day.close}`}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
 }
 
 // ─── Owner block (About Us header) ───────────────────────────────────
