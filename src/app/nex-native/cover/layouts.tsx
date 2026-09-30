@@ -1656,7 +1656,7 @@ function PersonalBrandTabs({
           columns={2}
         />
       )}
-      {tab === "images" && <ImagePlaceholderGallery totalTiles={12} />}
+      {tab === "images" && <ImagePlaceholderGallery totalTiles={18} />}
       {tab === "sizes" && <SizesPanel />}
       {tab === "ordering" && <OrderingPanel body={orderingCopy} />}
     </div>
@@ -1664,26 +1664,36 @@ function PersonalBrandTabs({
 }
 
 /**
- * ImagePlaceholderGallery · Founder direction 2026-09-30 · Personal
- * Brand Images tab shows plain placeholder tiles with the label
- * "IMAGE HERE" instead of pulling real product photos. Buyers still
- * see the 6-per-page layout with ‹ prev · next › arrows so the shape
- * of the surface reads clearly · sellers will drop real photos in
- * later via a future editor.
+ * ImagePlaceholderGallery · Founder direction 2026-09-30 (revised) ·
+ * 3x3 grid of placeholder tiles (9 per page) with ‹ prev · next ›
+ * pagination. Each tile is CLICKABLE · tapping opens an in-cover
+ * lightbox showing the enlarged tile plus the mock product name and
+ * SKU/model. Real seller uploads swap the placeholder body later ·
+ * the shell (grid rhythm, lightbox behaviour) stays.
  */
 function ImagePlaceholderGallery({
   totalTiles,
 }: {
   totalTiles: number;
 }): React.JSX.Element {
-  const PAGE = 6;
+  const PAGE = 9;
   const [page, setPage] = React.useState(0);
+  const [lightboxIndex, setLightboxIndex] = React.useState<number | null>(
+    null,
+  );
   const totalPages = Math.max(1, Math.ceil(totalTiles / PAGE));
   const safePage = Math.min(page, totalPages - 1);
   const start = safePage * PAGE;
   const visibleCount = Math.min(PAGE, totalTiles - start);
   const canPrev = safePage > 0;
   const canNext = safePage < totalPages - 1;
+
+  const nameFor = (i: number) => `Product ${String(i + 1).padStart(2, "0")}`;
+  const skuFor = (i: number) =>
+    `MDL-${String.fromCharCode(65 + Math.floor(i / 10))}-${String(
+      (i % 10) + 1,
+    ).padStart(3, "0")}`;
+
   return (
     <div>
       <div
@@ -1693,73 +1703,79 @@ function ImagePlaceholderGallery({
           gap: 8,
         }}
       >
-        {Array.from({ length: visibleCount }).map((_, i) => (
-          <div
-            key={`placeholder-${start + i}`}
-            role="img"
-            aria-label="Image placeholder"
-            style={{
-              aspectRatio: "1 / 1",
-              borderRadius: 10,
-              border: "1px solid var(--nex-accent-soft)",
-              background: "#0a1120",
-              display: "grid",
-              placeItems: "center",
-              boxShadow: "0 4px 12px rgba(0,0,0,0.35)",
-              position: "relative",
-              overflow: "hidden",
-            }}
-          >
-            {/* Diagonal cross-through so the placeholder reads as an
-                empty image slot rather than a filled tile. */}
-            <svg
-              aria-hidden
-              width="100%"
-              height="100%"
-              viewBox="0 0 100 100"
-              preserveAspectRatio="none"
+        {Array.from({ length: visibleCount }).map((_, i) => {
+          const globalIndex = start + i;
+          return (
+            <button
+              key={`placeholder-${globalIndex}`}
+              type="button"
+              aria-label={`Open ${nameFor(globalIndex)}`}
+              onClick={() => setLightboxIndex(globalIndex)}
               style={{
-                position: "absolute",
-                inset: 0,
-                opacity: 0.22,
-              }}
-            >
-              <line
-                x1="0"
-                y1="0"
-                x2="100"
-                y2="100"
-                stroke="currentColor"
-                strokeWidth="0.6"
-                vectorEffect="non-scaling-stroke"
-              />
-              <line
-                x1="100"
-                y1="0"
-                x2="0"
-                y2="100"
-                stroke="currentColor"
-                strokeWidth="0.6"
-                vectorEffect="non-scaling-stroke"
-              />
-            </svg>
-            <span
-              style={{
+                appearance: "none",
+                padding: 0,
+                aspectRatio: "1 / 1",
+                borderRadius: 10,
+                border: "1px solid var(--nex-accent-soft)",
+                background: "#0a1120",
+                display: "grid",
+                placeItems: "center",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.35)",
                 position: "relative",
-                fontSize: 10,
-                fontWeight: 800,
-                letterSpacing: "0.16em",
-                color: "var(--nex-text-dim)",
-                textAlign: "center",
-                padding: "2px 6px",
-                background: "#03101D",
-                borderRadius: 4,
+                overflow: "hidden",
+                cursor: "pointer",
+                transition: "transform 180ms ease, box-shadow 180ms ease",
               }}
             >
-              IMAGE HERE
-            </span>
-          </div>
-        ))}
+              <svg
+                aria-hidden
+                width="100%"
+                height="100%"
+                viewBox="0 0 100 100"
+                preserveAspectRatio="none"
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  opacity: 0.22,
+                }}
+              >
+                <line
+                  x1="0"
+                  y1="0"
+                  x2="100"
+                  y2="100"
+                  stroke="currentColor"
+                  strokeWidth="0.6"
+                  vectorEffect="non-scaling-stroke"
+                />
+                <line
+                  x1="100"
+                  y1="0"
+                  x2="0"
+                  y2="100"
+                  stroke="currentColor"
+                  strokeWidth="0.6"
+                  vectorEffect="non-scaling-stroke"
+                />
+              </svg>
+              <span
+                style={{
+                  position: "relative",
+                  fontSize: 9,
+                  fontWeight: 800,
+                  letterSpacing: "0.14em",
+                  color: "var(--nex-text-dim)",
+                  textAlign: "center",
+                  padding: "2px 6px",
+                  background: "#03101D",
+                  borderRadius: 4,
+                }}
+              >
+                IMAGE HERE
+              </span>
+            </button>
+          );
+        })}
         {/* Balance the last row when the final page is short. */}
         {Array.from({ length: PAGE - visibleCount }).map((_, i) => (
           <div
@@ -1808,6 +1824,195 @@ function ImagePlaceholderGallery({
           />
         </div>
       )}
+
+      {lightboxIndex !== null && (
+        <ImagePlaceholderLightbox
+          name={nameFor(lightboxIndex)}
+          sku={skuFor(lightboxIndex)}
+          onClose={() => setLightboxIndex(null)}
+        />
+      )}
+    </div>
+  );
+}
+
+/**
+ * ImagePlaceholderLightbox · fullscreen overlay opened when the buyer
+ * taps an image tile. Founder direction 2026-09-30 · shows the
+ * enlarged placeholder tile plus the mock product name and SKU/model
+ * above it. Tap the backdrop or the × to close.
+ */
+function ImagePlaceholderLightbox({
+  name,
+  sku,
+  onClose,
+}: {
+  name: string;
+  sku: string;
+  onClose: () => void;
+}): React.JSX.Element {
+  React.useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label={name}
+      onClick={onClose}
+      style={{
+        position: "fixed",
+        inset: 0,
+        zIndex: 60,
+        background: "rgba(3,8,20,0.92)",
+        backdropFilter: "blur(12px) saturate(1.05)",
+        WebkitBackdropFilter: "blur(12px) saturate(1.05)",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "stretch",
+        justifyContent: "center",
+        padding: "56px 20px",
+      }}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          maxWidth: 520,
+          width: "100%",
+          margin: "0 auto",
+          display: "grid",
+          gap: 14,
+        }}
+      >
+        {/* Header · name + SKU */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "flex-end",
+            justifyContent: "space-between",
+            gap: 12,
+          }}
+        >
+          <div style={{ minWidth: 0 }}>
+            <div
+              style={{
+                fontFamily: "var(--nex-font-display)",
+                fontSize: 20,
+                fontWeight: 800,
+                letterSpacing: "-0.01em",
+                lineHeight: 1.1,
+                color: "var(--nex-text)",
+              }}
+            >
+              {name}
+            </div>
+            <div
+              style={{
+                marginTop: 4,
+                fontSize: 11,
+                fontWeight: 700,
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+                color: "var(--nex-accent)",
+                fontVariantNumeric: "tabular-nums",
+              }}
+            >
+              SKU · {sku}
+            </div>
+          </div>
+          <button
+            type="button"
+            aria-label="Close"
+            onClick={onClose}
+            style={{
+              appearance: "none",
+              width: 36,
+              height: 36,
+              borderRadius: "50%",
+              border: "1px solid var(--nex-accent-soft)",
+              background: "rgba(3,8,20,0.6)",
+              color: "var(--nex-text)",
+              fontSize: 18,
+              fontWeight: 700,
+              cursor: "pointer",
+              display: "grid",
+              placeItems: "center",
+              flex: "0 0 auto",
+            }}
+          >
+            ×
+          </button>
+        </div>
+        {/* Enlarged placeholder tile */}
+        <div
+          role="img"
+          aria-label="Image placeholder"
+          style={{
+            aspectRatio: "1 / 1",
+            width: "100%",
+            borderRadius: 14,
+            border: "1px solid var(--nex-accent-soft)",
+            background: "#0a1120",
+            display: "grid",
+            placeItems: "center",
+            boxShadow: "0 12px 40px rgba(0,0,0,0.55)",
+            position: "relative",
+            overflow: "hidden",
+          }}
+        >
+          <svg
+            aria-hidden
+            width="100%"
+            height="100%"
+            viewBox="0 0 100 100"
+            preserveAspectRatio="none"
+            style={{
+              position: "absolute",
+              inset: 0,
+              opacity: 0.22,
+              color: "var(--nex-accent, #FF3F9F)",
+            }}
+          >
+            <line
+              x1="0"
+              y1="0"
+              x2="100"
+              y2="100"
+              stroke="currentColor"
+              strokeWidth="0.4"
+              vectorEffect="non-scaling-stroke"
+            />
+            <line
+              x1="100"
+              y1="0"
+              x2="0"
+              y2="100"
+              stroke="currentColor"
+              strokeWidth="0.4"
+              vectorEffect="non-scaling-stroke"
+            />
+          </svg>
+          <span
+            style={{
+              position: "relative",
+              fontSize: 16,
+              fontWeight: 800,
+              letterSpacing: "0.24em",
+              color: "var(--nex-text-dim)",
+              textAlign: "center",
+              padding: "6px 14px",
+              background: "#03101D",
+              borderRadius: 6,
+            }}
+          >
+            IMAGE HERE
+          </span>
+        </div>
+      </div>
     </div>
   );
 }
@@ -1868,15 +2073,88 @@ function SizesPanel(): React.JSX.Element {
   ];
   return (
     <div>
+      {/* Founder direction 2026-09-30 · size chart image placeholder ·
+          sellers upload a fit chart (measurements, model wearing size,
+          etc.) later via a future editor. Same IMAGE HERE treatment as
+          the Images tab · solid navy tile with a diagonal cross and a
+          SIZE CHART HERE caption. Wider than 1:1 to match the shape
+          of a real fit chart. */}
       <div
+        role="img"
+        aria-label="Size chart placeholder"
         style={{
-          fontSize: 13,
-          color: "var(--nex-text-dim)",
-          lineHeight: 1.5,
-          marginBottom: 12,
+          aspectRatio: "3 / 2",
+          width: "100%",
+          borderRadius: 12,
+          border: "1px solid var(--nex-accent-soft)",
+          background: "#0a1120",
+          display: "grid",
+          placeItems: "center",
+          boxShadow: "0 4px 14px rgba(0,0,0,0.35)",
+          position: "relative",
+          overflow: "hidden",
+          marginBottom: 14,
         }}
       >
-        Available sizes · tap any product for a size-specific chat.
+        <svg
+          aria-hidden
+          width="100%"
+          height="100%"
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none"
+          style={{
+            position: "absolute",
+            inset: 0,
+            opacity: 0.22,
+            color: "var(--nex-accent, #FF3F9F)",
+          }}
+        >
+          <line
+            x1="0"
+            y1="0"
+            x2="100"
+            y2="100"
+            stroke="currentColor"
+            strokeWidth="0.6"
+            vectorEffect="non-scaling-stroke"
+          />
+          <line
+            x1="100"
+            y1="0"
+            x2="0"
+            y2="100"
+            stroke="currentColor"
+            strokeWidth="0.6"
+            vectorEffect="non-scaling-stroke"
+          />
+        </svg>
+        <span
+          style={{
+            position: "relative",
+            fontSize: 11,
+            fontWeight: 800,
+            letterSpacing: "0.18em",
+            color: "var(--nex-text-dim)",
+            textAlign: "center",
+            padding: "4px 10px",
+            background: "#03101D",
+            borderRadius: 5,
+          }}
+        >
+          SIZE CHART HERE
+        </span>
+      </div>
+      <div
+        style={{
+          fontSize: 10,
+          letterSpacing: "0.16em",
+          textTransform: "uppercase",
+          color: "var(--nex-accent)",
+          fontWeight: 700,
+          marginBottom: 8,
+        }}
+      >
+        Available sizes
       </div>
       <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
         {sizes.map((s) => (
