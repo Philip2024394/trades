@@ -70,8 +70,10 @@ const COVER_LAYOUT_BLURB: Record<CoverLayoutId, string> = {
  *  glance which templates are shipped vs still in design. Toggle a
  *  layout id in this set to update the badge. */
 const COVER_LAYOUT_DONE: ReadonlySet<CoverLayoutId> = new Set<CoverLayoutId>([
+  "cafe",
   "product",
   "product_landscape",
+  "cafe_landscape",
 ]);
 
 const DEFAULT_THEME = "pink-dream";
