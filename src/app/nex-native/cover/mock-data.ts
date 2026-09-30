@@ -88,6 +88,18 @@ export interface MockCoverContent {
     description: string;
   }[];
   reviews: { author: string; body: string; stars: number }[];
+  /** Bridge Gallery-A/B/C · seller-uploaded gallery images that render
+   *  on the Personal Brand Images tab (Templates 10, 13, 14). Loaded
+   *  by cover-content-loader from nex_gallery_image (Migration 111).
+   *  When empty (or omitted) the layout falls back to 18 placeholder
+   *  IMAGE HERE tiles so previews without a real business still show
+   *  the surface shape. */
+  galleryImages?: {
+    id: string;
+    imageUrl: string;
+    caption: string;
+    longDescription: string;
+  }[];
   hours: string;
   address: string;
   atmosphereLine: string;

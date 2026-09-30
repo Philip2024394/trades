@@ -1523,6 +1523,7 @@ export function LayoutPersonalBrand({ content, themeId }: LayoutProps): React.JS
             products={content.products}
             peerAccountId={content.ownerAccountId}
             orderingCopy={content.infoPages?.delivery_details ?? null}
+            galleryImages={content.galleryImages}
             productsFooter={
               // Founder direction 2026-09-30 · Visit Us renders ONLY
               // when the Products tab is active · slotted inside the
@@ -1917,6 +1918,7 @@ export function LayoutPersonalBrandLandscape({
             products={content.products}
             peerAccountId={content.ownerAccountId}
             orderingCopy={content.infoPages?.delivery_details ?? null}
+            galleryImages={content.galleryImages}
             productsVariant="landscape"
             productsFooter={
               <a
@@ -2078,6 +2080,7 @@ export function LayoutPersonalBrandRound({
             products={content.products}
             peerAccountId={content.ownerAccountId}
             orderingCopy={content.infoPages?.delivery_details ?? null}
+            galleryImages={content.galleryImages}
             productsVariant="round"
             productsFooter={
               <a
@@ -2219,6 +2222,7 @@ function PersonalBrandTabs({
   orderingCopy,
   productsFooter,
   productsVariant = "grid",
+  galleryImages,
 }: {
   products: MockCoverContent["products"];
   peerAccountId: string;
@@ -2232,8 +2236,13 @@ function PersonalBrandTabs({
    *  cards to a single-column landscape list (Template 13) · "round"
    *  flips them to a 3-column round-image grid (Template 14). */
   productsVariant?: "grid" | "landscape" | "round";
+  /** Bridge Gallery-C · real seller-uploaded gallery images from
+   *  nex_gallery_image (Migration 111). When empty the Images tab
+   *  renders 18 IMAGE HERE placeholder tiles. */
+  galleryImages?: MockCoverContent["galleryImages"];
 }): React.JSX.Element {
   const [tab, setTab] = React.useState<PersonalBrandTab>("products");
+  const realGalleryImages = galleryImages ?? [];
 
   const tabs: { id: PersonalBrandTab; label: string }[] = [
     { id: "products", label: "Products" },
@@ -2307,7 +2316,12 @@ function PersonalBrandTabs({
           {productsFooter}
         </>
       )}
-      {tab === "images" && <ImagePlaceholderGallery totalTiles={18} />}
+      {tab === "images" && (
+        <ImagePlaceholderGallery
+          totalTiles={18}
+          realImages={realGalleryImages}
+        />
+      )}
       {tab === "sizes" && <SizesPanel />}
       {tab === "ordering" && <OrderingPanel body={orderingCopy} />}
     </div>
@@ -2316,46 +2330,57 @@ function PersonalBrandTabs({
 
 /**
  * ImagePlaceholderGallery · Founder direction 2026-09-30 (revised) ·
- * 3x3 grid of placeholder tiles (9 per page) with ‹ prev · next ›
- * pagination. Each tile is CLICKABLE · tapping opens an in-cover
- * lightbox showing the enlarged tile plus the mock product name and
- * SKU/model. Real seller uploads swap the placeholder body later ·
- * the shell (grid rhythm, lightbox behaviour) stays.
+ * 3x3 grid with ‹ prev · next › pagination + tap-to-open lightbox.
+ *
+ * Bridge Gallery-C · when `realImages` is non-empty the tiles render
+ * SELLER-UPLOADED photography with real captions + long descriptions
+ * from nex_gallery_image (Migration 111). When `realImages` is empty
+ * (previews without a business AND real businesses that haven't
+ * uploaded yet) the grid falls back to `totalTiles` IMAGE HERE
+ * placeholder tiles so the surface shape reads clearly.
  */
 function ImagePlaceholderGallery({
   totalTiles,
+  realImages = [],
 }: {
   totalTiles: number;
+  realImages?: NonNullable<MockCoverContent["galleryImages"]>;
 }): React.JSX.Element {
+  const hasReal = realImages.length > 0;
   const PAGE = 9;
   const [page, setPage] = React.useState(0);
   const [lightboxIndex, setLightboxIndex] = React.useState<number | null>(
     null,
   );
-  const totalPages = Math.max(1, Math.ceil(totalTiles / PAGE));
+  // Real gallery drives pagination when present · falls back to
+  // placeholder tile count otherwise. Never fewer than 1 page so the
+  // component always renders something.
+  const totalItems = hasReal ? realImages.length : totalTiles;
+  const totalPages = Math.max(1, Math.ceil(totalItems / PAGE));
   const safePage = Math.min(page, totalPages - 1);
   const start = safePage * PAGE;
-  const visibleCount = Math.min(PAGE, totalTiles - start);
+  const visibleCount = Math.min(PAGE, totalItems - start);
   const canPrev = safePage > 0;
   const canNext = safePage < totalPages - 1;
 
-  const nameFor = (i: number) => `Product ${String(i + 1).padStart(2, "0")}`;
+  const nameFor = (i: number) =>
+    hasReal
+      ? realImages[i]?.caption?.trim() || `Image ${String(i + 1).padStart(2, "0")}`
+      : `Photo ${String(i + 1).padStart(2, "0")}`;
   const skuFor = (i: number) =>
-    `MDL-${String.fromCharCode(65 + Math.floor(i / 10))}-${String(
-      (i % 10) + 1,
-    ).padStart(3, "0")}`;
+    hasReal
+      ? realImages[i]?.id?.slice(0, 8) ?? ""
+      : `MDL-${String.fromCharCode(65 + Math.floor(i / 10))}-${String(
+          (i % 10) + 1,
+        ).padStart(3, "0")}`;
 
-  // Founder direction 2026-09-30 · templates are BLANK STAGES · every
-  // caption + long description is now placeholder copy that hints at
-  // what the field is FOR, not a concrete story from a mock brand.
-  // Sellers author their own captions + long bodies from a future
-  // editor. Caption sits under the tile · long description renders
-  // inside the lightbox when the tile is tapped.
-  const captions = Array.from(
+  // Fallback captions + long descriptions when no real gallery images
+  // exist. Real seller data supersedes these via the realImages prop.
+  const placeholderCaptions = Array.from(
     { length: 18 },
     (_, i) => `Photo caption ${String(i + 1).padStart(2, "0")}`,
   );
-  const longDescriptions = Array.from(
+  const placeholderLongDescriptions = Array.from(
     { length: 18 },
     (_, i) =>
       `This is where the full description for photo ${String(i + 1).padStart(
@@ -2365,10 +2390,16 @@ function ImagePlaceholderGallery({
   );
 
   const captionFor = (i: number) =>
-    captions[i % captions.length] ?? "Image description";
+    hasReal
+      ? realImages[i]?.caption?.trim() || placeholderCaptions[i % 18]
+      : placeholderCaptions[i % 18];
   const descriptionFor = (i: number) =>
-    longDescriptions[i % longDescriptions.length] ??
-    "Image description will appear here once the seller uploads a caption.";
+    hasReal
+      ? realImages[i]?.longDescription?.trim() ||
+        placeholderLongDescriptions[i % 18]
+      : placeholderLongDescriptions[i % 18];
+  const imageUrlFor = (i: number) =>
+    hasReal ? realImages[i]?.imageUrl : null;
 
   return (
     <div>
@@ -2381,9 +2412,10 @@ function ImagePlaceholderGallery({
       >
         {Array.from({ length: visibleCount }).map((_, i) => {
           const globalIndex = start + i;
+          const realUrl = imageUrlFor(globalIndex);
           return (
             <div
-              key={`placeholder-${globalIndex}`}
+              key={`tile-${globalIndex}`}
               style={{ display: "grid", gap: 6 }}
             >
               <button
@@ -2398,6 +2430,9 @@ function ImagePlaceholderGallery({
                   borderRadius: 10,
                   border: "1px solid var(--nex-accent-soft)",
                   background: "#0a1120",
+                  backgroundImage: realUrl ? `url(${realUrl})` : undefined,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
                   display: "grid",
                   placeItems: "center",
                   boxShadow: "0 4px 12px rgba(0,0,0,0.35)",
@@ -2407,52 +2442,56 @@ function ImagePlaceholderGallery({
                   transition: "transform 180ms ease, box-shadow 180ms ease",
                 }}
               >
-                <svg
-                  aria-hidden
-                  width="100%"
-                  height="100%"
-                  viewBox="0 0 100 100"
-                  preserveAspectRatio="none"
-                  style={{
-                    position: "absolute",
-                    inset: 0,
-                    opacity: 0.22,
-                  }}
-                >
-                  <line
-                    x1="0"
-                    y1="0"
-                    x2="100"
-                    y2="100"
-                    stroke="currentColor"
-                    strokeWidth="0.6"
-                    vectorEffect="non-scaling-stroke"
-                  />
-                  <line
-                    x1="100"
-                    y1="0"
-                    x2="0"
-                    y2="100"
-                    stroke="currentColor"
-                    strokeWidth="0.6"
-                    vectorEffect="non-scaling-stroke"
-                  />
-                </svg>
-                <span
-                  style={{
-                    position: "relative",
-                    fontSize: 9,
-                    fontWeight: 800,
-                    letterSpacing: "0.14em",
-                    color: "var(--nex-text-dim)",
-                    textAlign: "center",
-                    padding: "2px 6px",
-                    background: "#03101D",
-                    borderRadius: 4,
-                  }}
-                >
-                  IMAGE HERE
-                </span>
+                {!realUrl && (
+                  <>
+                    <svg
+                      aria-hidden
+                      width="100%"
+                      height="100%"
+                      viewBox="0 0 100 100"
+                      preserveAspectRatio="none"
+                      style={{
+                        position: "absolute",
+                        inset: 0,
+                        opacity: 0.22,
+                      }}
+                    >
+                      <line
+                        x1="0"
+                        y1="0"
+                        x2="100"
+                        y2="100"
+                        stroke="currentColor"
+                        strokeWidth="0.6"
+                        vectorEffect="non-scaling-stroke"
+                      />
+                      <line
+                        x1="100"
+                        y1="0"
+                        x2="0"
+                        y2="100"
+                        stroke="currentColor"
+                        strokeWidth="0.6"
+                        vectorEffect="non-scaling-stroke"
+                      />
+                    </svg>
+                    <span
+                      style={{
+                        position: "relative",
+                        fontSize: 9,
+                        fontWeight: 800,
+                        letterSpacing: "0.14em",
+                        color: "var(--nex-text-dim)",
+                        textAlign: "center",
+                        padding: "2px 6px",
+                        background: "#03101D",
+                        borderRadius: 4,
+                      }}
+                    >
+                      IMAGE HERE
+                    </span>
+                  </>
+                )}
               </button>
               {/* Founder direction 2026-09-30 · description caption
                   under each tile · varied mock text per index so the

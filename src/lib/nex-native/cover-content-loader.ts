@@ -15,6 +15,7 @@ import * as accountService from "./account-service";
 import * as productService from "./product-service";
 import * as menuService from "./menu-service";
 import * as productSectionService from "./product-section-service";
+import { listGalleryImages } from "./gallery-image-service";
 import type { NexBusinessRow, NexUuid } from "./types";
 import { isVenueCategory } from "./types";
 import {
@@ -63,25 +64,32 @@ export async function loadCoverContent(
   const themeId = "pink-dream"; // default until nex_business.chat_theme
                                 // or owner.chat_theme wiring is added
 
-  // Parallel fetch: owner + products + menu items + sections.
-  const [owner, products, menuItems, productSectionsRaw, menuSectionsRaw] =
-    await Promise.all([
-      accountService.getAccountById(business.owner_account_id).catch(() => null),
-      productService
-        .listProductsByBusiness(business.id, "live")
-        .catch(() => []),
-      isVenue
-        ? menuService
-            .listMenuItemsByBusiness(business.id, { status: "live" })
-            .catch(() => [])
-        : Promise.resolve([]),
-      productSectionService
-        .listSectionsByBusiness(business.id)
-        .catch(() => []),
-      isVenue
-        ? menuService.listSectionsByBusiness(business.id).catch(() => [])
-        : Promise.resolve([]),
-    ]);
+  // Parallel fetch: owner + products + menu items + sections + gallery.
+  const [
+    owner,
+    products,
+    menuItems,
+    productSectionsRaw,
+    menuSectionsRaw,
+    galleryRaw,
+  ] = await Promise.all([
+    accountService.getAccountById(business.owner_account_id).catch(() => null),
+    productService
+      .listProductsByBusiness(business.id, "live")
+      .catch(() => []),
+    isVenue
+      ? menuService
+          .listMenuItemsByBusiness(business.id, { status: "live" })
+          .catch(() => [])
+      : Promise.resolve([]),
+    productSectionService
+      .listSectionsByBusiness(business.id)
+      .catch(() => []),
+    isVenue
+      ? menuService.listSectionsByBusiness(business.id).catch(() => [])
+      : Promise.resolve([]),
+    listGalleryImages(business.id).catch(() => []),
+  ]);
 
   const sections = isVenue
     ? menuSectionsRaw.map((s) => ({
@@ -191,6 +199,12 @@ export async function loadCoverContent(
     products: productList,
     services: [],
     reviews: [],
+    galleryImages: galleryRaw.map((row) => ({
+      id: row.id,
+      imageUrl: row.image_url,
+      caption: row.caption,
+      longDescription: row.long_description,
+    })),
     hours: business.hours_display ?? "",
     address: business.address ?? "",
     atmosphereLine: "",
