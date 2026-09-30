@@ -46,6 +46,10 @@ import {
   NEX_SHIPPING_SCOPE_META,
 } from "@/lib/nex-native/business-service";
 import { updateBusinessShippingScopeAction } from "./_shipping-scope-action";
+import {
+  uploadBusinessQrCodeAction,
+  clearBusinessQrCodeAction,
+} from "./_qr-code-action";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -170,6 +174,12 @@ export default async function ShopSettingsPage({
     null,
     business.id,
   );
+  const uploadQrBound = uploadBusinessQrCodeAction.bind(null, business.id);
+  const clearQrBound = clearBusinessQrCodeAction.bind(null, business.id);
+  const currentQrUrl = business.qr_code_image_url ?? null;
+  const acceptsQrisDelivery = (
+    business.accepted_payment_methods ?? []
+  ).includes("qris_delivery");
   const cityHoursBound = updateBusinessCityAndHoursAction.bind(
     null,
     business.id,
@@ -1021,6 +1031,152 @@ export default async function ShopSettingsPage({
               );
             })}
             <SubmitButton label="Save payment methods" tone="primary" />
+          </form>
+        </SectionCard>
+
+        {/* --- Payment QR image (Migration 110 · sealed 2026-09-30) - */}
+        <SectionCard>
+          <SectionEyebrow color={NEX.green}>Payment</SectionEyebrow>
+          <h2
+            style={{
+              margin: "6px 0 6px",
+              fontSize: 18,
+              fontWeight: 700,
+              letterSpacing: "-0.005em",
+            }}
+          >
+            Your payment QR (QRIS · bank · e-wallet)
+          </h2>
+          <p
+            style={{
+              margin: "0 0 12px",
+              fontSize: 13,
+              lineHeight: 1.55,
+              color: NEX.textDim,
+            }}
+          >
+            Upload your QR image. Buyers see it inside the cover&apos;s
+            Info tray → Payment panel and scan it with their own bank or
+            e-wallet app. Money moves directly to you · NEX never
+            touches funds.
+          </p>
+          {!acceptsQrisDelivery && (
+            <div
+              style={{
+                padding: "10px 12px",
+                borderRadius: 10,
+                background: "rgba(245,158,11,0.10)",
+                border: "1px solid rgba(245,158,11,0.35)",
+                color: "#FFE8B0",
+                fontSize: 12,
+                lineHeight: 1.5,
+                marginBottom: 14,
+              }}
+            >
+              Tick <strong>📱 QRIS on Delivery</strong> in the payment
+              methods above to make the QR panel appear on your cover.
+              Uploading here is safe either way; it only renders when
+              QRIS on Delivery is on.
+            </div>
+          )}
+          {currentQrUrl ? (
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "auto 1fr",
+                gap: 14,
+                alignItems: "center",
+                marginBottom: 12,
+              }}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={currentQrUrl}
+                alt="Current payment QR"
+                style={{
+                  width: 96,
+                  height: 96,
+                  objectFit: "cover",
+                  borderRadius: 8,
+                  border: `1px solid ${NEX.border}`,
+                  background: "#fff",
+                }}
+              />
+              <div style={{ display: "grid", gap: 6 }}>
+                <div
+                  style={{
+                    fontSize: 12,
+                    color: NEX.textDim,
+                    lineHeight: 1.5,
+                  }}
+                >
+                  Current QR is live on your cover. Upload a new file
+                  below to replace it, or clear it entirely.
+                </div>
+                <form action={clearQrBound}>
+                  <button
+                    type="submit"
+                    style={{
+                      padding: "6px 10px",
+                      borderRadius: 8,
+                      border: `1px solid rgba(255,51,85,0.4)`,
+                      background: "transparent",
+                      color: NEX.red,
+                      fontFamily: SANS,
+                      fontSize: 11,
+                      fontWeight: 700,
+                      letterSpacing: "0.06em",
+                      textTransform: "uppercase",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Clear QR
+                  </button>
+                </form>
+              </div>
+            </div>
+          ) : (
+            <div
+              style={{
+                padding: "10px 12px",
+                borderRadius: 10,
+                background: "rgba(0,0,0,0.28)",
+                border: `1px dashed ${NEX.border}`,
+                color: NEX.textDim,
+                fontSize: 12,
+                lineHeight: 1.5,
+                marginBottom: 12,
+              }}
+            >
+              No QR uploaded yet. Once uploaded, buyers can scan it from
+              the Info tray on your cover.
+            </div>
+          )}
+          <form
+            action={uploadQrBound}
+            style={{ display: "grid", gap: 10 }}
+            encType="multipart/form-data"
+          >
+            <input
+              type="file"
+              name="qr_image"
+              accept="image/png,image/jpeg,image/webp"
+              required
+              style={{
+                padding: "8px 10px",
+                borderRadius: 8,
+                background: NEX.bg,
+                border: `1px solid ${NEX.border}`,
+                color: NEX.text,
+                fontFamily: SANS,
+                fontSize: 13,
+              }}
+            />
+            <div style={{ fontSize: 10, color: NEX.textMute, lineHeight: 1.5 }}>
+              png / jpg / webp · max 2MB · replaces the current QR if
+              one is set.
+            </div>
+            <SubmitButton label="Upload QR image" tone="primary" />
           </form>
         </SectionCard>
 

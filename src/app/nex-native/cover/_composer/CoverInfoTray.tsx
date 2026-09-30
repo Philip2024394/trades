@@ -40,6 +40,14 @@ export interface CoverInfoTrayContent {
   address: string | null;
   /** Payment method labels · from accepted_payment_methods → labels. */
   paymentMethodLabels: string[];
+  /** Migration 110 · sealed 2026-09-30 · seller-uploaded QR image
+   *  URL (QRIS / bank / e-wallet). When set AND acceptsQrisDelivery
+   *  is true, the Payment panel renders the QR with the doctrine
+   *  "scan on arrival" warning below it. */
+  qrCodeImageUrl?: string | null;
+  /** True when the seller ticked 📱 QRIS on Delivery in their
+   *  accepted payment methods. Gates whether the QR panel renders. */
+  acceptsQrisDelivery?: boolean;
   /** Return policy · pre-rendered body when set. */
   returnPolicyBody: string | null;
   /** Events / catering body · pre-rendered from events_profile. */
@@ -294,6 +302,11 @@ interface TrayItem {
   externalUrl?: string | null;
   chips?: string[];
   images?: string[];
+  /** Migration 110 · when set, Payment panel renders the QR image
+   *  followed by the doctrine "scan on arrival · verify merchant name"
+   *  warning. Only populated for the "payment" tray item when the
+   *  seller has both uploaded a QR AND accepts qris_delivery. */
+  qrImageUrl?: string | null;
 }
 
 function PanelBody({ item }: { item: TrayItem }) {
@@ -359,6 +372,55 @@ function PanelBody({ item }: { item: TrayItem }) {
         >
           {item.body}
         </p>
+      )}
+
+      {item.qrImageUrl && (
+        <div style={{ display: "grid", gap: 10 }}>
+          <div
+            style={{
+              padding: 12,
+              borderRadius: 14,
+              background: "#ffffff",
+              border:
+                "1px solid var(--nex-accent-soft, rgba(0,175,255,0.35))",
+              display: "grid",
+              placeItems: "center",
+            }}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={item.qrImageUrl}
+              alt="Payment QR code"
+              style={{
+                display: "block",
+                maxWidth: "100%",
+                width: "100%",
+                height: "auto",
+                aspectRatio: "1 / 1",
+                objectFit: "contain",
+              }}
+            />
+          </div>
+          {/* Founder-sealed doctrine copy · NEVER seller-editable ·
+              "you never pay before you receive" is the NEX safety
+              promise (sealed 2026-09-28). */}
+          <div
+            role="note"
+            style={{
+              padding: "10px 12px",
+              borderRadius: 10,
+              background: "rgba(245,158,11,0.10)",
+              border: "1px solid rgba(245,158,11,0.35)",
+              color: "#FFE8B0",
+              fontSize: 12,
+              lineHeight: 1.55,
+            }}
+          >
+            <strong style={{ color: "#FFC94E" }}>Scan when your order arrives.</strong>
+            {" "}Verify the merchant name in your bank app matches the
+            seller before you confirm. NEX never handles the money.
+          </div>
+        </div>
       )}
 
       {item.chips && item.chips.length > 0 && (
@@ -504,12 +566,17 @@ function buildTrayItems(content: CoverInfoTrayContent): TrayItem[] {
   }
 
   if (enabled("payment") && content.paymentMethodLabels.length > 0) {
+    const qr =
+      content.acceptsQrisDelivery && content.qrCodeImageUrl
+        ? content.qrCodeImageUrl
+        : null;
     items.push({
       id: "payment",
       icon: NEX_INFO_PAGE_META.payment.icon,
       label: NEX_INFO_PAGE_META.payment.label,
       body: "Payment methods this shop accepts:",
       chips: content.paymentMethodLabels,
+      qrImageUrl: qr,
     });
   }
 

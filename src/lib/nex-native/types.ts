@@ -452,6 +452,12 @@ export interface NexBusinessRow {
    *  toggle any button off (info_pages.enabled) or add up to 3 custom
    *  buttons (info_pages.custom_buttons). */
   info_pages?: import("./info-pages").NexInfoPagesJson | null;
+  /** Migration 110 · sealed 2026-09-30 · seller-uploaded payment QR
+   *  image URL (QRIS / bank / e-wallet). Renders in the cover Info
+   *  Tray Payment panel with the doctrine "scan on arrival" warning.
+   *  NULL = seller hasn't uploaded a QR. NEX never touches the funds
+   *  this QR triggers. */
+  qr_code_image_url?: string | null;
   /** Bridge 16e · single-line city / neighbourhood · migration 072.
    *  Shown on the About panel with a 📍 pin. Free-text 1-80 chars
    *  when set. Directory facet reads this via lower(city) index. */

@@ -62,6 +62,10 @@ export interface MockCoverContent {
   galleryUrls?: string[];
   /** True when the shop's business_category is a venue. */
   isVenue?: boolean;
+  /** Migration 110 · seller-uploaded QR image URL. */
+  qrCodeImageUrl?: string | null;
+  /** True when the seller has 📱 QRIS on Delivery in accepted methods. */
+  acceptsQrisDelivery?: boolean;
   products: CoverProduct[];
   services: {
     id: string;
@@ -114,6 +118,14 @@ export const MARIA_MOCK: MockCoverContent = {
     "📱 QRIS on Delivery",
     "🤝 Meetup",
   ],
+  // Migration 110 · sealed 2026-09-30 · seller-uploaded QR image URL
+  // (renders in the Info Tray Payment panel when acceptsQrisDelivery
+  // is true). Placeholder points at a generic QRIS demo image so the
+  // preview shows the shape · real sellers upload their own on
+  // /manage/shop.
+  qrCodeImageUrl:
+    "https://placehold.co/512x512/ffffff/000000/png?text=QRIS%0A%E2%97%BC%E2%96%A1%E2%96%A1%0A%E2%96%A1%E2%97%BC%E2%96%A1%0A%E2%96%A1%E2%96%A1%E2%97%BC",
+  acceptsQrisDelivery: true,
   returnPolicyBody:
     "Freshly baked and prepared items are non-returnable. If something arrived damaged, message us within 24 hours with a photo and we'll replace it or refund in full.",
   eventsBody:

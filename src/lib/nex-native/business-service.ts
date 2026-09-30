@@ -769,6 +769,73 @@ export async function uploadVenuePhoto(
   return { url: pub.publicUrl };
 }
 
+/** Migration 110 · sealed 2026-09-30 · upload the seller's payment
+ *  QR image to the nex-business-assets bucket and set the URL on
+ *  nex_business.qr_code_image_url. Pass null to clear.
+ *
+ *  Doctrine: NEX only stores + displays the seller-uploaded image.
+ *  Money moves buyer → seller via QRIS / bank rail · NEX never sees,
+ *  holds, or brokers the payment.
+ *
+ *  Constraints:
+ *    · 2MB max (matches bucket file_size_limit)
+ *    · png / jpg / webp only
+ *    · Object path prefixed with the business id so bulk cleanup on
+ *      business delete is a single storage.remove() over the prefix. */
+export async function uploadBusinessQrCode(
+  businessId: NexUuid,
+  file: File,
+): Promise<{ url: string }> {
+  const MAX = 2 * 1024 * 1024;
+  if (file.size > MAX) {
+    throw new Error(`QR image exceeds ${MAX / (1024 * 1024)}MB cap`);
+  }
+  const mime = (file.type || "").toLowerCase();
+  const IMAGE_MIMES: Record<string, string> = {
+    "image/png": "png",
+    "image/jpeg": "jpg",
+    "image/jpg": "jpg",
+    "image/webp": "webp",
+  };
+  const ext = IMAGE_MIMES[mime];
+  if (!ext) {
+    throw new Error(
+      `QR must be png / jpg / webp · got ${file.type || "unknown"}`,
+    );
+  }
+  const objectPath = `qr/${businessId}/${Date.now()}.${ext}`;
+  const bucket = nexSupabaseAdmin.storage.from("nex-business-assets");
+  const bytes = new Uint8Array(await file.arrayBuffer());
+  const { error: upErr } = await bucket.upload(objectPath, bytes, {
+    contentType: file.type,
+    upsert: true,
+  });
+  if (upErr) {
+    throw new Error(`business-service.uploadBusinessQrCode: ${upErr.message}`);
+  }
+  const { data: pub } = bucket.getPublicUrl(objectPath);
+  const url = pub.publicUrl;
+  await updateBusinessQrCodeUrl(businessId, url);
+  return { url };
+}
+
+/** Set (or clear when null) the persisted QR image URL. Used by the
+ *  upload helper above AND by the seller's "Remove QR" action. */
+export async function updateBusinessQrCodeUrl(
+  businessId: NexUuid,
+  url: string | null,
+): Promise<void> {
+  const { error } = await nexSupabaseAdmin
+    .from("nex_business")
+    .update({ qr_code_image_url: url })
+    .eq("id", businessId);
+  if (error) {
+    throw new Error(
+      `business-service.updateBusinessQrCodeUrl(${businessId}): ${error.message}`,
+    );
+  }
+}
+
 /** Bridge 23b · Overwrite the seller's venue gallery. Client uploads
  *  URLs one-at-a-time via the storage bucket · this action replaces
  *  the whole array (order matters · the first URL is used as the
