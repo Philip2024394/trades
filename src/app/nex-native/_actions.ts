@@ -2699,14 +2699,38 @@ export async function createBusinessAction(formData: FormData): Promise<never> {
   if (displayName.length > 200) {
     redirectToOnboardingWithError("long_display_name", "business name too long");
   }
-  if (!slug) {
-    redirectToOnboardingWithError("missing_slug", "slug required");
-  }
-  if (!NEX_SLUG_REGEX.test(slug)) {
-    redirectToOnboardingWithError(
-      "invalid_slug",
-      "slug must be lowercase letters, digits, or hyphens · 1-64 chars · no leading/trailing hyphen"
+
+  // Slug-A · sealed 2026-09-30 · Bisnis-only custom .nex names.
+  // The 2026-09-27 package doctrine says custom name.nex is a Bisnis
+  // feature. Gratis sellers get an auto-generated shop-<6chars> slug.
+  // Bisnis sellers pick their own name at onboarding.
+  const { effectiveTier } = await import("@/lib/nex-native/account-service");
+  const viewerTier = effectiveTier({
+    tier: session.account.tier,
+    bisnis_expires_at: session.account.bisnis_expires_at,
+    themes_trial_used_at: session.account.themes_trial_used_at ?? null,
+  });
+  let resolvedSlug: string;
+  if (viewerTier === "bisnis") {
+    // Bisnis path · seller picks their own slug · validate as before.
+    if (!slug) {
+      redirectToOnboardingWithError("missing_slug", "slug required");
+    }
+    if (!NEX_SLUG_REGEX.test(slug)) {
+      redirectToOnboardingWithError(
+        "invalid_slug",
+        "slug must be lowercase letters, digits, or hyphens · 1-64 chars · no leading/trailing hyphen"
+      );
+    }
+    resolvedSlug = slug;
+  } else {
+    // Gratis path · auto-generate a shop-<6chars> slug regardless of
+    // what came in on the form. Doctrine: custom .nex is a Bisnis
+    // feature. Upgrade CTA lives on the onboarding page + /manage/shop.
+    const { generateAutoBusinessSlug } = await import(
+      "@/lib/nex-native/auto-slug"
     );
+    resolvedSlug = await generateAutoBusinessSlug();
   }
   if (!productName) {
     redirectToOnboardingWithError("missing_product_name", "product name required");
@@ -2748,7 +2772,7 @@ export async function createBusinessAction(formData: FormData): Promise<never> {
     business = await businessService.createBusiness({
       owner_account_id: session.account.id,
       display_name: displayName,
-      slug,
+      slug: resolvedSlug,
     });
     // Bridge 16e · stash the two optional profile fields right after
     // create · silent if either is blank · non-blocking failure.

@@ -18,8 +18,19 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
 import * as businessService from "@/lib/nex-native/business-service";
+import { effectiveTier } from "@/lib/nex-native/account-service";
+import type { NexAccountRow } from "@/lib/nex-native/types";
 import { createBusinessAction, signOutAction } from "../_actions";
 import { NEX_BUSINESS_CATEGORIES } from "@/lib/nex-native/site-templates";
+
+/** Small helper so the JSX below stays readable. */
+function effectiveTierValue(account: NexAccountRow): "gratis" | "bisnis" | "pro" {
+  return effectiveTier({
+    tier: account.tier,
+    bisnis_expires_at: account.bisnis_expires_at,
+    themes_trial_used_at: account.themes_trial_used_at ?? null,
+  });
+}
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -184,7 +195,13 @@ export default async function Page({ searchParams }: PageProps) {
 
         {banner && <Banner code={banner.code} message={banner.message} />}
 
-        {owned ? <ExistingShopCard owned={owned} /> : <CreateShopForm />}
+        {owned ? (
+          <ExistingShopCard owned={owned} />
+        ) : (
+          <CreateShopForm
+            viewerTier={effectiveTierValue(session.account)}
+          />
+        )}
       </main>
     </div>
   );
@@ -277,7 +294,12 @@ function ExistingShopCard({
  * Create form                                                           *
  * --------------------------------------------------------------------- */
 
-function CreateShopForm() {
+function CreateShopForm({
+  viewerTier,
+}: {
+  viewerTier: "gratis" | "bisnis" | "pro";
+}) {
+  const isBisnis = viewerTier === "bisnis" || viewerTier === "pro";
   return (
     <section
       style={{
@@ -344,24 +366,111 @@ function CreateShopForm() {
           />
         </FormRow>
 
-        <FormRow
-          label="Slug · your public address"
-          hint="Lowercase letters, digits, hyphens · permanent"
-        >
-          <input
-            required
-            type="text"
-            name="slug"
-            minLength={1}
-            maxLength={64}
-            pattern="^[a-z0-9]([-a-z0-9]{0,62}[a-z0-9])?$"
-            placeholder="e.g. aisha-vintage-cameras"
+        {/* Slug-A · sealed 2026-09-30 · Bisnis-only custom .nex names.
+            Gratis sellers see a locked preview + upgrade CTA · the
+            actual slug is auto-generated shop-<6chars> in the server
+            action, ignoring whatever the (hidden) input holds. */}
+        {isBisnis ? (
+          <FormRow
+            label="Your .nex name · public address"
+            hint="Lowercase letters, digits, hyphens · permanent · this becomes your public URL"
+          >
+            <input
+              required
+              type="text"
+              name="slug"
+              minLength={1}
+              maxLength={64}
+              pattern="^[a-z0-9]([-a-z0-9]{0,62}[a-z0-9])?$"
+              placeholder="e.g. myshop"
+              style={{
+                ...inputStyle,
+                fontFamily:
+                  "ui-monospace, SFMono-Regular, Menlo, Monaco, monospace",
+              }}
+            />
+          </FormRow>
+        ) : (
+          <div
             style={{
-              ...inputStyle,
-              fontFamily: "ui-monospace, SFMono-Regular, Menlo, Monaco, monospace",
+              padding: "14px 16px",
+              borderRadius: 12,
+              background: "rgba(255,120,0,0.08)",
+              border: "1px dashed rgba(255,120,0,0.42)",
+              display: "grid",
+              gap: 8,
             }}
-          />
-        </FormRow>
+          >
+            <div
+              style={{
+                fontSize: 10,
+                letterSpacing: "0.18em",
+                textTransform: "uppercase",
+                color: NEX.orange,
+                fontWeight: 700,
+              }}
+            >
+              .nex name · Bisnis feature
+            </div>
+            <div
+              style={{
+                fontSize: 13,
+                color: NEX.text,
+                lineHeight: 1.55,
+              }}
+            >
+              You&apos;re on <b style={{ color: NEX.orange }}>Gratis</b>. Your
+              NEX name will be auto-generated (e.g.{" "}
+              <span
+                style={{
+                  fontFamily:
+                    "ui-monospace, SFMono-Regular, Menlo, Monaco, monospace",
+                  color: NEX.cyan,
+                }}
+              >
+                shop-a3f8kx.nex
+              </span>
+              ).
+            </div>
+            <div style={{ fontSize: 12, color: NEX.textDim, lineHeight: 1.55 }}>
+              Upgrade to <b style={{ color: NEX.text }}>Bisnis</b> to pick a
+              custom name like{" "}
+              <span
+                style={{
+                  fontFamily:
+                    "ui-monospace, SFMono-Regular, Menlo, Monaco, monospace",
+                  color: NEX.text,
+                }}
+              >
+                myshop.nex
+              </span>{" "}
+              — plus unlimited products, verified ✓, priority Directory, and
+              full analytics.
+            </div>
+            <Link
+              href="/nex-native/settings/tier"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                alignSelf: "flex-start",
+                padding: "8px 14px",
+                borderRadius: 999,
+                background: NEX.orange,
+                color: "#0B0F1A",
+                fontSize: 11,
+                fontWeight: 800,
+                letterSpacing: "0.06em",
+                textTransform: "uppercase",
+                textDecoration: "none",
+              }}
+            >
+              Upgrade to Bisnis →
+            </Link>
+            {/* Hidden field so the form still submits · the action
+                ignores this and auto-generates the slug server-side. */}
+            <input type="hidden" name="slug" value="__auto__" />
+          </div>
+        )}
 
         <FormRow
           label="Category"
