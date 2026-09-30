@@ -361,6 +361,7 @@ export function LayoutProduct({ content, themeId }: LayoutProps): React.JSX.Elem
           subtitle={content.tagline}
           themeId={themeId}
           size="compact"
+          presenceOnline={content.presenceOnline}
           countryCode={content.countryCode ?? null}
         />
         <div style={{ marginTop: 20 }}>
