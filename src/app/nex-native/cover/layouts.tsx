@@ -1816,74 +1816,100 @@ function ImagePlaceholderGallery({
         {Array.from({ length: visibleCount }).map((_, i) => {
           const globalIndex = start + i;
           return (
-            <button
+            <div
               key={`placeholder-${globalIndex}`}
-              type="button"
-              aria-label={`Open ${nameFor(globalIndex)}`}
-              onClick={() => setLightboxIndex(globalIndex)}
-              style={{
-                appearance: "none",
-                padding: 0,
-                aspectRatio: "1 / 1",
-                borderRadius: 10,
-                border: "1px solid var(--nex-accent-soft)",
-                background: "#0a1120",
-                display: "grid",
-                placeItems: "center",
-                boxShadow: "0 4px 12px rgba(0,0,0,0.35)",
-                position: "relative",
-                overflow: "hidden",
-                cursor: "pointer",
-                transition: "transform 180ms ease, box-shadow 180ms ease",
-              }}
+              style={{ display: "grid", gap: 6 }}
             >
-              <svg
-                aria-hidden
-                width="100%"
-                height="100%"
-                viewBox="0 0 100 100"
-                preserveAspectRatio="none"
+              <button
+                type="button"
+                aria-label={`Open ${nameFor(globalIndex)}`}
+                onClick={() => setLightboxIndex(globalIndex)}
                 style={{
-                  position: "absolute",
-                  inset: 0,
-                  opacity: 0.22,
+                  appearance: "none",
+                  padding: 0,
+                  aspectRatio: "1 / 1",
+                  width: "100%",
+                  borderRadius: 10,
+                  border: "1px solid var(--nex-accent-soft)",
+                  background: "#0a1120",
+                  display: "grid",
+                  placeItems: "center",
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.35)",
+                  position: "relative",
+                  overflow: "hidden",
+                  cursor: "pointer",
+                  transition: "transform 180ms ease, box-shadow 180ms ease",
                 }}
               >
-                <line
-                  x1="0"
-                  y1="0"
-                  x2="100"
-                  y2="100"
-                  stroke="currentColor"
-                  strokeWidth="0.6"
-                  vectorEffect="non-scaling-stroke"
-                />
-                <line
-                  x1="100"
-                  y1="0"
-                  x2="0"
-                  y2="100"
-                  stroke="currentColor"
-                  strokeWidth="0.6"
-                  vectorEffect="non-scaling-stroke"
-                />
-              </svg>
-              <span
+                <svg
+                  aria-hidden
+                  width="100%"
+                  height="100%"
+                  viewBox="0 0 100 100"
+                  preserveAspectRatio="none"
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    opacity: 0.22,
+                  }}
+                >
+                  <line
+                    x1="0"
+                    y1="0"
+                    x2="100"
+                    y2="100"
+                    stroke="currentColor"
+                    strokeWidth="0.6"
+                    vectorEffect="non-scaling-stroke"
+                  />
+                  <line
+                    x1="100"
+                    y1="0"
+                    x2="0"
+                    y2="100"
+                    stroke="currentColor"
+                    strokeWidth="0.6"
+                    vectorEffect="non-scaling-stroke"
+                  />
+                </svg>
+                <span
+                  style={{
+                    position: "relative",
+                    fontSize: 9,
+                    fontWeight: 800,
+                    letterSpacing: "0.14em",
+                    color: "var(--nex-text-dim)",
+                    textAlign: "center",
+                    padding: "2px 6px",
+                    background: "#03101D",
+                    borderRadius: 4,
+                  }}
+                >
+                  IMAGE HERE
+                </span>
+              </button>
+              {/* Founder direction 2026-09-30 · description caption
+                  under each tile · sellers author short captions per
+                  image (max ~40 chars fits on 2 lines at this width).
+                  Placeholder text reads as "Image description" so the
+                  founder sees where real captions will live. */}
+              <div
                 style={{
-                  position: "relative",
-                  fontSize: 9,
-                  fontWeight: 800,
-                  letterSpacing: "0.14em",
+                  fontSize: 10,
+                  lineHeight: 1.35,
                   color: "var(--nex-text-dim)",
                   textAlign: "center",
-                  padding: "2px 6px",
-                  background: "#03101D",
-                  borderRadius: 4,
+                  display: "-webkit-box",
+                  WebkitLineClamp: 2,
+                  WebkitBoxOrient: "vertical",
+                  overflow: "hidden",
+                  wordBreak: "break-word",
+                  minHeight: 26,
                 }}
               >
-                IMAGE HERE
-              </span>
-            </button>
+                Image description
+              </div>
+            </div>
           );
         })}
         {/* Balance the last row when the final page is short. */}
@@ -1891,13 +1917,18 @@ function ImagePlaceholderGallery({
           <div
             key={`empty-${i}`}
             aria-hidden
-            style={{
-              aspectRatio: "1 / 1",
-              borderRadius: 10,
-              border: "1px dashed var(--nex-accent-soft)",
-              opacity: 0.25,
-            }}
-          />
+            style={{ display: "grid", gap: 6 }}
+          >
+            <div
+              style={{
+                aspectRatio: "1 / 1",
+                borderRadius: 10,
+                border: "1px dashed var(--nex-accent-soft)",
+                opacity: 0.25,
+              }}
+            />
+            <div style={{ minHeight: 26 }} />
+          </div>
         ))}
       </div>
       {totalPages > 1 && (
