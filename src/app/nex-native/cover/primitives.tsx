@@ -192,13 +192,15 @@ function countryCodeToFlagEmoji(code: string | null | undefined): string | null 
 export function CoverIdentityBadge(
   props: CoverIdentityBadgeProps,
 ): React.JSX.Element {
-  const isHero = props.size !== "compact";
-  // Founder direction 2026-09-30 (revised four times) · portrait
-  // enlarged another 40% so the identity block reads as a full
-  // hero element. Hero=132 · Compact=80. Flag badge scales via
-  // isHero. Ping ring anchored to the same box so it grows with
-  // the portrait automatically.
-  const portraitSize = isHero ? 132 : 80;
+  // Founder direction 2026-09-30 (revised · sealed) · hero and
+  // compact now render IDENTICALLY so every cover template shows
+  // the same identity block. Reference is Template 03 (Product
+  // Seller): portrait 80 · name 15/700 · subtitle 12 · flag badge
+  // 36 · online marker 10/700. The `size` prop is kept for API
+  // stability but no longer changes anything.
+  const isHero = false;
+  void props.size;
+  const portraitSize = 80;
   return (
     <>
       <style>{`
@@ -222,7 +224,7 @@ export function CoverIdentityBadge(
         style={{
           display: "flex",
           alignItems: "center",
-          gap: isHero ? 14 : 10,
+          gap: 10,
         }}
       >
         <div
@@ -259,7 +261,7 @@ export function CoverIdentityBadge(
               color: "var(--nex-text)",
               fontFamily: "var(--nex-font-display)",
               fontWeight: 700,
-              fontSize: isHero ? 48 : 30,
+              fontSize: 30,
             }}
           >
             {!props.portraitUrl && initials(props.name)}
@@ -273,7 +275,7 @@ export function CoverIdentityBadge(
           {(() => {
             const flag = countryCodeToFlagEmoji(props.countryCode);
             if (!flag) return null;
-            const badgeSize = isHero ? 50 : 36;
+            const badgeSize = 36;
             return (
               <div
                 aria-label={`Country ${props.countryCode}`}
@@ -291,7 +293,7 @@ export function CoverIdentityBadge(
                   placeItems: "center",
                   boxShadow: "0 4px 12px rgba(0,0,0,0.55)",
                   overflow: "hidden",
-                  fontSize: isHero ? 32 : 24,
+                  fontSize: 24,
                   lineHeight: 1,
                 }}
               >
@@ -304,7 +306,7 @@ export function CoverIdentityBadge(
           <div
             style={{
               fontFamily: "var(--nex-font-display)",
-              fontSize: isHero ? 26 : 15,
+              fontSize: 15,
               fontWeight: 700,
               letterSpacing: "-0.015em",
               lineHeight: 1.15,
@@ -324,8 +326,8 @@ export function CoverIdentityBadge(
           </div>
           <div
             style={{
-              marginTop: isHero ? 5 : 2,
-              fontSize: isHero ? 13 : 11,
+              marginTop: 2,
+              fontSize: 11,
               color: "var(--nex-text-dim)",
               letterSpacing: "0.02em",
               lineHeight: 1.35,
@@ -340,11 +342,11 @@ export function CoverIdentityBadge(
           {props.presenceOnline && (
             <div
               style={{
-                marginTop: isHero ? 6 : 4,
+                marginTop: 4,
                 display: "inline-flex",
                 alignItems: "center",
                 gap: 6,
-                fontSize: isHero ? 11 : 10,
+                fontSize: 10,
                 fontWeight: 700,
                 // Founder direction 2026-09-30 · online marker uses
                 // the universal green (WhatsApp / iMessage convention)
