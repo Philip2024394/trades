@@ -2440,22 +2440,8 @@ function formatMoney(currency: string, minor: number): string {
   return `${sym}${(minor / 100).toFixed(2)}`;
 }
 
-// ─── Layout registry ────────────────────────────────────────────────
-
-export const COVER_LAYOUTS: Record<
-  string,
-  { label: string; Component: React.FC<LayoutProps> }
-> = {
-  cafe: { label: "Café", Component: LayoutCafe },
-  restaurant: { label: "Modern Restaurant", Component: LayoutRestaurant },
-  product: { label: "Product Seller", Component: LayoutProduct },
-  tradesperson: { label: "Tradesperson", Component: LayoutTradesperson },
-  salon: { label: "Beauty / Salon", Component: LayoutSalon },
-  creator: { label: "Creator / Influencer", Component: LayoutCreator },
-  fashion: { label: "Fashion Store", Component: LayoutFashion },
-  street_food: { label: "Street Food / Delivery", Component: LayoutStreetFood },
-  premium_business: { label: "Premium Business", Component: LayoutPremiumBusiness },
-  personal_brand: { label: "Personal Brand", Component: LayoutPersonalBrand },
-};
-
-export type CoverLayoutId = keyof typeof COVER_LAYOUTS;
+// Layout registry lives in ./layout-ids.ts + ./layout-switch.tsx so
+// server components can enumerate ids without pulling the "use client"
+// layout functions into their bundle. The stale COVER_LAYOUTS map that
+// used to live here referenced 7 deleted templates and blew up SSR ·
+// removed 2026-09-30. Do not re-add it here.
