@@ -18,6 +18,7 @@ import * as productSectionService from "./product-section-service";
 import { listGalleryImages } from "./gallery-image-service";
 import { listServices } from "./service-list-service";
 import { resolveTerminology } from "./terminology-service";
+import { listThemeEmojis } from "./theme-emoji-service";
 import type { NexBusinessRow, NexUuid } from "./types";
 import { isVenueCategory } from "./types";
 import {
@@ -98,6 +99,16 @@ export async function loadCoverContent(
   // vertical → global default). Fails soft so a resolver error
   // never breaks the cover.
   const terminology = await resolveTerminology(business.id);
+
+  // Bridge ThemeEmoji-B · load the owner's chat_theme emoji set (if
+  // any). CoverComposer swaps its picker to these when non-empty ·
+  // else falls back to the default 40-emoji hardcoded array.
+  const themeEmojiRows = await listThemeEmojis(themeId).catch(() => []);
+  const themeEmojis = themeEmojiRows.map((row) => ({
+    slug: row.slug,
+    imageUrl: row.image_url,
+    label: row.label,
+  }));
 
   // Founder-sealed architecture 2026-09-30 · owner's chat_theme is
   // the SINGLE visual identity across Chat + Cover. Pull it from the
@@ -227,6 +238,7 @@ export async function loadCoverContent(
       longDescription: row.long_description,
     })),
     terminology,
+    themeEmojis,
     hours: business.hours_display ?? "",
     address: business.address ?? "",
     atmosphereLine: "",

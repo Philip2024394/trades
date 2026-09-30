@@ -37,6 +37,18 @@ export interface CoverComposerProps {
    *  When omitted (or empty), the + button stays disabled with the
    *  legacy "More actions coming soon" affordance. */
   infoTrayContent?: CoverInfoTrayContent | null;
+  /** Bridge ThemeEmoji-B · sealed 2026-10-01 · per-theme emoji set
+   *  loaded from nex_theme_emoji (Migration 116). When non-empty
+   *  the picker renders these image tiles instead of the default
+   *  40-emoji hardcoded array · clicking one inserts `:slug:` into
+   *  the input (message renderer maps back to the image). */
+  themeEmojis?:
+    | {
+        slug: string;
+        imageUrl: string;
+        label: string;
+      }[]
+    | null;
 }
 
 export function CoverComposer(props: CoverComposerProps): React.JSX.Element {
@@ -389,9 +401,14 @@ export function CoverComposer(props: CoverComposerProps): React.JSX.Element {
         </div>
       )}
 
-      {/* Emoji picker · simple grid · close on pick or backdrop */}
+      {/* Emoji picker · simple grid · close on pick or backdrop.
+          When the current theme carries its own emoji set (via
+          themeEmojis prop, loaded from nex_theme_emoji), the picker
+          renders THAT set as image tiles · else it falls back to
+          the default 40-emoji hardcoded array. */}
       {emojiOpen && (
         <EmojiPicker
+          themeEmojis={props.themeEmojis ?? null}
           onClose={() => setEmojiOpen(false)}
           onPick={(e) => {
             insertEmoji(e);
@@ -418,10 +435,16 @@ const EMOJI_SET: string[] = [
 function EmojiPicker({
   onClose,
   onPick,
+  themeEmojis,
 }: {
   onClose: () => void;
   onPick: (emoji: string) => void;
+  themeEmojis?:
+    | { slug: string; imageUrl: string; label: string }[]
+    | null;
 }) {
+  const useTheme = !!themeEmojis && themeEmojis.length > 0;
+  const columns = useTheme ? 6 : 8;
   return (
     <div
       role="dialog"
@@ -451,32 +474,65 @@ function EmojiPicker({
           border: "1px solid var(--nex-accent-soft, rgba(0,175,255,0.35))",
           boxShadow: "0 30px 80px rgba(0,0,0,0.55)",
           display: "grid",
-          gridTemplateColumns: "repeat(8, 1fr)",
+          gridTemplateColumns: `repeat(${columns}, 1fr)`,
           gap: 4,
-          maxHeight: 220,
+          maxHeight: 260,
           overflowY: "auto",
         }}
       >
-        {EMOJI_SET.map((emoji, i) => (
-          <button
-            key={`${emoji}-${i}`}
-            type="button"
-            onClick={() => onPick(emoji)}
-            style={{
-              width: "100%",
-              aspectRatio: "1 / 1",
-              border: "none",
-              background: "transparent",
-              color: "var(--nex-text, #F2F5F8)",
-              fontSize: 22,
-              cursor: "pointer",
-              padding: 0,
-              borderRadius: 8,
-            }}
-          >
-            {emoji}
-          </button>
-        ))}
+        {useTheme
+          ? themeEmojis!.map((em) => (
+              <button
+                key={em.slug}
+                type="button"
+                title={em.label || em.slug}
+                aria-label={em.label || em.slug}
+                onClick={() => onPick(`:${em.slug}:`)}
+                style={{
+                  width: "100%",
+                  aspectRatio: "1 / 1",
+                  border: "none",
+                  background: "transparent",
+                  padding: 2,
+                  cursor: "pointer",
+                  borderRadius: 8,
+                  display: "grid",
+                  placeItems: "center",
+                }}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={em.imageUrl}
+                  alt={em.label || em.slug}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "contain",
+                    display: "block",
+                  }}
+                />
+              </button>
+            ))
+          : EMOJI_SET.map((emoji, i) => (
+              <button
+                key={`${emoji}-${i}`}
+                type="button"
+                onClick={() => onPick(emoji)}
+                style={{
+                  width: "100%",
+                  aspectRatio: "1 / 1",
+                  border: "none",
+                  background: "transparent",
+                  color: "var(--nex-text, #F2F5F8)",
+                  fontSize: 22,
+                  cursor: "pointer",
+                  padding: 0,
+                  borderRadius: 8,
+                }}
+              >
+                {emoji}
+              </button>
+            ))}
       </div>
     </div>
   );

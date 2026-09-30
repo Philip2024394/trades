@@ -17,6 +17,7 @@ import {
   isValidCoverLayoutId,
 } from "../../layout-ids";
 import { MARIA_MOCK, PRODUCT_SELLER_MOCK } from "../../mock-data";
+import { listThemeEmojis } from "@/lib/nex-native/theme-emoji-service";
 import { PhoneFrame } from "../_phone-frame";
 
 export const runtime = "nodejs";
@@ -218,13 +219,23 @@ export default async function CoverLayoutPreview({
         >
           <CoverLayoutSwitch
             layoutId={layoutId}
-            content={
+            content={{
               // Founder direction 2026-09-30 · product-vertical mock
               // for Template 03 so the sections tabs read Electronics /
               // Mens Wear / Watches with matching products. Every
               // other template still gets MARIA_MOCK.
-              layoutId === "product" ? PRODUCT_SELLER_MOCK : MARIA_MOCK
-            }
+              ...(layoutId === "product" ? PRODUCT_SELLER_MOCK : MARIA_MOCK),
+              // Bridge ThemeEmoji-B · load emojis for the currently-
+              // previewed theme so the composer picker matches. Fails
+              // soft to empty (composer falls back to default set).
+              themeEmojis: (
+                await listThemeEmojis(theme.id).catch(() => [])
+              ).map((row) => ({
+                slug: row.slug,
+                imageUrl: row.image_url,
+                label: row.label,
+              })),
+            }}
             themeId={theme.id}
           />
         </CoverThemeSkin>

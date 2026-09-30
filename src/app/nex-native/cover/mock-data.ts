@@ -129,6 +129,15 @@ export interface MockCoverContent {
     section_location_label: string;
     story_eyebrow: string;
   };
+  /** Bridge ThemeEmoji-B · sealed 2026-10-01 · per-theme emoji set
+   *  loaded from nex_theme_emoji (Migration 116). When present AND
+   *  non-empty, the CoverComposer emoji picker renders THIS set
+   *  instead of the default 40-emoji hardcoded array. */
+  themeEmojis?: {
+    slug: string;
+    imageUrl: string;
+    label: string;
+  }[];
   hours: string;
   address: string;
   atmosphereLine: string;

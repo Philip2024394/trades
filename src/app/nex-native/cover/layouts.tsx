@@ -199,6 +199,7 @@ export function LayoutCafe({ content, themeId }: LayoutProps): React.JSX.Element
         ownerAccountId={content.ownerAccountId}
         ownerBusinessId={null}
         ownerDisplayName={content.businessName}
+        themeEmojis={content.themeEmojis}
         infoTrayContent={{
           pages: content.infoPages ?? null,
           aboutUs: content.aboutUs ?? null,
@@ -304,6 +305,7 @@ export function LayoutCafeRound({ content, themeId }: LayoutProps): React.JSX.El
         ownerAccountId={content.ownerAccountId}
         ownerBusinessId={null}
         ownerDisplayName={content.businessName}
+        themeEmojis={content.themeEmojis}
         infoTrayContent={{
           pages: content.infoPages ?? null,
           aboutUs: content.aboutUs ?? null,
@@ -402,6 +404,7 @@ export function LayoutProductRound({ content, themeId }: LayoutProps): React.JSX
         ownerAccountId={content.ownerAccountId}
         ownerBusinessId={null}
         ownerDisplayName={content.businessName}
+        themeEmojis={content.themeEmojis}
         infoTrayContent={{
           pages: content.infoPages ?? null,
           aboutUs: content.aboutUs ?? null,
@@ -571,6 +574,7 @@ export function LayoutCafeLandscape({ content, themeId }: LayoutProps): React.JS
         ownerAccountId={content.ownerAccountId}
         ownerBusinessId={null}
         ownerDisplayName={content.businessName}
+        themeEmojis={content.themeEmojis}
         infoTrayContent={{
           pages: content.infoPages ?? null,
           aboutUs: content.aboutUs ?? null,
@@ -705,6 +709,7 @@ export function LayoutProduct({ content, themeId }: LayoutProps): React.JSX.Elem
         ownerAccountId={content.ownerAccountId}
         ownerBusinessId={null}
         ownerDisplayName={content.businessName}
+        themeEmojis={content.themeEmojis}
         infoTrayContent={{
           pages: content.infoPages ?? null,
           aboutUs: content.aboutUs ?? null,
@@ -832,6 +837,7 @@ export function LayoutProductLandscape({ content, themeId }: LayoutProps): React
         ownerAccountId={content.ownerAccountId}
         ownerBusinessId={null}
         ownerDisplayName={content.businessName}
+        themeEmojis={content.themeEmojis}
         infoTrayContent={{
           pages: content.infoPages ?? null,
           aboutUs: content.aboutUs ?? null,
@@ -1006,6 +1012,7 @@ export function LayoutPersonalBrand({ content, themeId }: LayoutProps): React.JS
         ownerAccountId={content.ownerAccountId}
         ownerBusinessId={null}
         ownerDisplayName={content.businessName}
+        themeEmojis={content.themeEmojis}
         infoTrayContent={{
           pages: content.infoPages ?? null,
           aboutUs: content.aboutUs ?? null,
@@ -1340,6 +1347,7 @@ export function LayoutPersonalBrandLandscape({
         ownerAccountId={content.ownerAccountId}
         ownerBusinessId={null}
         ownerDisplayName={content.businessName}
+        themeEmojis={content.themeEmojis}
         infoTrayContent={{
           pages: content.infoPages ?? null,
           aboutUs: content.aboutUs ?? null,
@@ -1503,6 +1511,7 @@ export function LayoutPersonalBrandRound({
         ownerAccountId={content.ownerAccountId}
         ownerBusinessId={null}
         ownerDisplayName={content.businessName}
+        themeEmojis={content.themeEmojis}
         infoTrayContent={{
           pages: content.infoPages ?? null,
           aboutUs: content.aboutUs ?? null,
