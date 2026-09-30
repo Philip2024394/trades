@@ -924,9 +924,9 @@ function OwnerBlock({
 }: {
   block: NonNullable<TrayItem["ownerBlock"]>;
 }) {
-  const { yearEstablished, avatarUrl, name, position } = block;
+  const { avatarUrl, name, position } = block;
   const hasAnyOwnerInfo = !!(avatarUrl || name || position);
-  if (!hasAnyOwnerInfo && !yearEstablished) return null;
+  if (!hasAnyOwnerInfo) return null;
   return (
     <div
       style={{
@@ -937,27 +937,6 @@ function OwnerBlock({
           "1px solid var(--nex-accent-soft, rgba(0,175,255,0.18))",
       }}
     >
-      {typeof yearEstablished === "number" && (
-        <div
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            alignSelf: "flex-start",
-            padding: "3px 10px",
-            borderRadius: 999,
-            background: "var(--nex-accent-faint, rgba(0,175,255,0.10))",
-            border:
-              "1px solid var(--nex-accent-soft, rgba(0,175,255,0.35))",
-            fontSize: 10,
-            fontWeight: 700,
-            letterSpacing: "0.16em",
-            textTransform: "uppercase",
-            color: "var(--nex-accent)",
-          }}
-        >
-          Est. {yearEstablished}
-        </div>
-      )}
       {hasAnyOwnerInfo && (
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
           {avatarUrl ? (
