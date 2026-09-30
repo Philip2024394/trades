@@ -441,6 +441,16 @@ export const PRODUCT_SELLER_MOCK: MockCoverContent = {
   businessName: "Corner Store",
   tagline: "Shop of products",
   isVenue: false,
+  // Founder direction 2026-09-30 · warehouse-oriented delivery copy
+  // for the Product Seller preview (Maria's cafe delivery copy is
+  // hyper-local and doesn't fit a product shop that ships from a
+  // warehouse). Feeds both the Dispatch Times cover block AND the
+  // Info Tray Delivery panel · one source, two surfaces.
+  infoPages: {
+    ...(MARIA_MOCK.infoPages ?? {}),
+    delivery_details:
+      "Orders received before 3pm will dispatch same day from our warehouse located at Industrial Zone 345, City West Park. Collection can be arranged on request — please contact us in advance.",
+  },
   aboutUs:
     "Corner Store is your neighbourhood shop for curated electronics, menswear, and watches. Every piece is inspected, cleaned, and photographed by us before it goes live · nothing arrives from a warehouse untouched.\n\nWe've been trading since 2019 out of a small workshop in Ubud. What started as a vintage-camera hobby is now a three-vertical shop with a growing catalogue of quality-checked stock.\n\nOur promise: honest condition notes, fair prices, and every item backed by a full refund window if it doesn't match how we described it.",
   sections: [

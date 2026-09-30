@@ -415,6 +415,37 @@ export function LayoutProduct({ content, themeId }: LayoutProps): React.JSX.Elem
             columns={2}
           />
         </div>
+        {/* Founder direction 2026-09-30 · Dispatch Times block sits
+            below the pagination row · reads from the same
+            info_pages.delivery_details field that feeds the Info Tray
+            Delivery panel · one source, two surfaces. Auto-hides when
+            the seller hasn't set delivery details. */}
+        {content.infoPages?.delivery_details && (
+          <section style={{ marginTop: 20 }}>
+            <div
+              style={{
+                fontSize: 10,
+                letterSpacing: "0.16em",
+                textTransform: "uppercase",
+                color: "var(--nex-accent)",
+                fontWeight: 700,
+                marginBottom: 4,
+              }}
+            >
+              Dispatch Times
+            </div>
+            <div
+              style={{
+                fontSize: 14,
+                lineHeight: 1.5,
+                color: "var(--nex-text, #F2F5F8)",
+                whiteSpace: "normal",
+              }}
+            >
+              {content.infoPages.delivery_details}
+            </div>
+          </section>
+        )}
         <CoverIdentityRail
           handle={content.handle}
           location={content.location}
