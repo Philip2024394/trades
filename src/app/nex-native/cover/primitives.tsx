@@ -686,6 +686,15 @@ export function CoverProductCard({
             backgroundSize: "cover",
             backgroundPosition: "center",
             position: "relative",
+            // Founder direction 2026-09-30 · image bottom-left and
+            // bottom-right corners are rounded so the image reads as
+            // its own rounded panel · the meta stack below sits under
+            // a visible curve rather than butting up against a hard
+            // straight edge. Top corners still follow the card's
+            // outer clip.
+            borderBottomLeftRadius: 12,
+            borderBottomRightRadius: 12,
+            overflow: "hidden",
           }}
         >
           {eyebrow && (
