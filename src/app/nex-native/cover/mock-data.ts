@@ -16,6 +16,17 @@ export interface MockCoverContent {
   presenceOnline: boolean;
   social: CoverSocialLinks;
   sections: CoverSection[];
+  /** Founder direction 2026-09-30 · ISO 3166-1 alpha-2 · renders a
+   *  small round flag badge on the portrait circle instead of the
+   *  theme charm. Optional · omit for no flag. */
+  countryCode?: string | null;
+  /** Founder direction 2026-09-30 · seller-configurable eyebrow +
+   *  title for the primary catalog section. Both optional · fall back
+   *  to sensible defaults ("Services" / "Ships locally · exports too")
+   *  when omitted. A future settings surface will persist these
+   *  per-business on nex_business. */
+  sectionEyebrow?: string | null;
+  sectionTitle?: string | null;
   products: CoverProduct[];
   services: {
     id: string;
@@ -48,6 +59,7 @@ export const MARIA_MOCK: MockCoverContent = {
   atmosphereLine: "Slow coffee · sourdough · warm mornings",
   hours: "07:00 · 22:00 · every day",
   address: "Jl. Raya Sanggingan, Ubud, Bali",
+  countryCode: "ID",
   sections: [
     { id: "sec-meal", name: "Meal", sort_order: 0 },
     { id: "sec-snack", name: "Snack", sort_order: 1 },

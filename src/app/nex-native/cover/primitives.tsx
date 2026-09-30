@@ -166,6 +166,27 @@ export interface CoverIdentityBadgeProps {
   themeId: string;
   presenceOnline?: boolean;
   size?: "hero" | "compact";
+  /** Founder direction 2026-09-30 · ISO 3166-1 alpha-2 country code
+   *  ("ID", "GB", "US"). Renders a small round flag badge in the
+   *  bottom-right of the portrait circle where the theme charm used
+   *  to sit. Optional · falls back to nothing when absent. */
+  countryCode?: string | null;
+}
+
+/**
+ * Convert an ISO 3166-1 alpha-2 country code to its flag emoji using
+ * Unicode regional indicator symbols. Returns null for invalid codes.
+ */
+function countryCodeToFlagEmoji(code: string | null | undefined): string | null {
+  if (!code) return null;
+  const trimmed = code.trim().toUpperCase();
+  if (!/^[A-Z]{2}$/.test(trimmed)) return null;
+  const A = 0x1f1e6;
+  const base = "A".charCodeAt(0);
+  return (
+    String.fromCodePoint(A + (trimmed.charCodeAt(0) - base)) +
+    String.fromCodePoint(A + (trimmed.charCodeAt(1) - base))
+  );
 }
 
 export function CoverIdentityBadge(
@@ -238,26 +259,41 @@ export function CoverIdentityBadge(
           >
             {!props.portraitUrl && initials(props.name)}
           </div>
-          {/* Charm sits bottom-right of the portrait as a small
-              tinted badge · same charm the chat header carries. */}
-          <div
-            aria-hidden
-            style={{
-              position: "absolute",
-              bottom: -4,
-              right: -4,
-              width: isHero ? 30 : 20,
-              height: isHero ? 30 : 20,
-              borderRadius: "50%",
-              background: "var(--nex-panel)",
-              border: "2px solid var(--nex-accent)",
-              display: "grid",
-              placeItems: "center",
-              boxShadow: "0 4px 12px rgba(0,0,0,0.55)",
-            }}
-          >
-            <CharmGlyph themeId={props.themeId} size={isHero ? 16 : 11} />
-          </div>
+          {/* Founder direction 2026-09-30 · the theme charm circle used
+              to sit here. Replaced by a small round country-flag badge
+              showing which country the seller/restaurant is from. Falls
+              back to nothing when countryCode is absent (older mock
+              rows). Kept the same bottom-right anchor and shadow so the
+              silhouette of the portrait unit is preserved. */}
+          {(() => {
+            const flag = countryCodeToFlagEmoji(props.countryCode);
+            if (!flag) return null;
+            const badgeSize = isHero ? 28 : 20;
+            return (
+              <div
+                aria-label={`Country ${props.countryCode}`}
+                title={props.countryCode ?? undefined}
+                style={{
+                  position: "absolute",
+                  bottom: -4,
+                  right: -4,
+                  width: badgeSize,
+                  height: badgeSize,
+                  borderRadius: "50%",
+                  background: "var(--nex-panel, #050f1e)",
+                  border: "2px solid var(--nex-accent)",
+                  display: "grid",
+                  placeItems: "center",
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.55)",
+                  overflow: "hidden",
+                  fontSize: isHero ? 18 : 13,
+                  lineHeight: 1,
+                }}
+              >
+                {flag}
+              </div>
+            );
+          })()}
         </div>
         <div style={{ minWidth: 0, flex: 1 }}>
           <div
@@ -446,36 +482,21 @@ export function CoverSectionHeading({
           {eyebrow}
         </div>
       )}
-      <div
+      {/* Founder direction 2026-09-30 · remove the small accent-coloured
+          dash that used to sit before the title. Title now stands alone
+          for a cleaner heading. */}
+      <h2
         style={{
-          display: "flex",
-          alignItems: "baseline",
-          gap: 10,
+          margin: 0,
+          fontFamily: "var(--nex-font-display)",
+          fontSize: 20,
+          fontWeight: 700,
+          letterSpacing: "-0.01em",
+          textShadow: "0 1px 4px rgba(0,0,0,0.55)",
         }}
       >
-        <span
-          aria-hidden
-          style={{
-            display: "inline-block",
-            width: 24,
-            height: 2,
-            background: "var(--nex-accent)",
-            borderRadius: 2,
-          }}
-        />
-        <h2
-          style={{
-            margin: 0,
-            fontFamily: "var(--nex-font-display)",
-            fontSize: 20,
-            fontWeight: 700,
-            letterSpacing: "-0.01em",
-            textShadow: "0 1px 4px rgba(0,0,0,0.55)",
-          }}
-        >
-          {title}
-        </h2>
-      </div>
+        {title}
+      </h2>
     </div>
   );
 }
@@ -516,13 +537,11 @@ export function CoverCategoryTabs({
   activeId,
   onSelect,
   maxDisplay = 3,
-  allLabel = "All",
 }: {
   sections: CoverSection[];
   activeId: string;
   onSelect: (id: string) => void;
   maxDisplay?: number;
-  allLabel?: string;
 }): React.JSX.Element | null {
   // Founder ruling: 0-1 sections hide the tab bar entirely.
   if (sections.length <= 1) return null;
@@ -532,10 +551,13 @@ export function CoverCategoryTabs({
   );
   const visible = ordered.slice(0, maxDisplay);
 
-  const tabs: { id: string; label: string }[] = [
-    { id: ALL_TAB_ID, label: allLabel },
-    ...visible.map((s) => ({ id: s.id, label: s.name })),
-  ];
+  // Founder direction 2026-09-30 · no "All" tab in the row. Nothing
+  // selected = grid shows everything, no underline anywhere. Tapping
+  // a tab underlines it AND filters the grid. Tapping the active tab
+  // again clears the filter (toggle behaviour). Only the highlighted
+  // tab shows an underline · unselected tabs sit as plain text with
+  // no line beneath them.
+  const tabs = visible.map((s) => ({ id: s.id, label: s.name }));
 
   return (
     <div
@@ -545,7 +567,6 @@ export function CoverCategoryTabs({
         display: "flex",
         gap: 4,
         overflow: "hidden",
-        borderBottom: "1px solid var(--nex-accent-soft, rgba(148,163,184,0.25))",
         marginBottom: 14,
       }}
     >
@@ -556,7 +577,7 @@ export function CoverCategoryTabs({
             key={tab.id}
             role="tab"
             aria-selected={isActive}
-            onClick={() => onSelect(tab.id)}
+            onClick={() => onSelect(isActive ? "" : tab.id)}
             type="button"
             style={{
               appearance: "none",
@@ -572,10 +593,11 @@ export function CoverCategoryTabs({
               color: isActive
                 ? "var(--nex-accent, #06b6d4)"
                 : "var(--nex-text-dim, rgba(148,163,184,0.8))",
+              // Only the highlighted tab gets a line beneath it. Others
+              // sit as plain text · no border, no track.
               borderBottom: isActive
                 ? "2px solid var(--nex-accent, #06b6d4)"
-                : "2px solid transparent",
-              marginBottom: -1,
+                : "none",
               transition: "color 160ms ease, border-color 160ms ease",
               whiteSpace: "nowrap",
               textTransform: "capitalize",

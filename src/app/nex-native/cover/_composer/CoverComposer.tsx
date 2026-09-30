@@ -172,14 +172,19 @@ export function CoverComposer(props: CoverComposerProps): React.JSX.Element {
             disabled={sendState === "sending"}
             maxLength={4000}
             style={{
+              // Founder direction 2026-09-30 · composer input is a
+              // long rounded container with a small corner radius (was
+              // a naked underline). Reads as a real field the visitor
+              // can tap into.
               flex: "1 1 0%",
               minWidth: 0,
               width: "100%",
-              padding: "10px 6px",
-              background: "transparent",
-              border: "none",
-              borderBottom:
+              padding: "10px 14px",
+              background:
+                "var(--nex-accent-faint, rgba(0,175,255,0.06))",
+              border:
                 "1px solid var(--nex-accent-soft, rgba(0,175,255,0.35))",
+              borderRadius: 10,
               color: "var(--nex-text, #F2F5F8)",
               fontSize: 16,
               fontFamily: "inherit",

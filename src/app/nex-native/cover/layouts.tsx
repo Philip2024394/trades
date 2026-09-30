@@ -65,9 +65,20 @@ export function LayoutCafe({ content, themeId }: LayoutProps): React.JSX.Element
           subtitle={content.tagline}
           themeId={themeId}
           presenceOnline={content.presenceOnline}
+          countryCode={content.countryCode ?? null}
         />
         <div style={{ marginTop: 26 }}>
-          <CoverSectionHeading eyebrow="Today" title="Featured today" />
+          {/* Founder direction 2026-09-30 · default eyebrow is "Services"
+              (renameable per-seller in a future settings surface) · title
+              defaults to a shipping-scope descriptor ("Ships locally ·
+              exports too" style). Seller-editable copy tracked as
+              follow-up settings surface. */}
+          <CoverSectionHeading
+            eyebrow={content.sectionEyebrow ?? "Services"}
+            title={
+              content.sectionTitle ?? "Ships locally · exports too"
+            }
+          />
           <CoverCatalog
             sections={content.sections}
             products={content.products.slice(0, 4)}
@@ -257,6 +268,7 @@ export function LayoutProduct({ content, themeId }: LayoutProps): React.JSX.Elem
           subtitle={content.tagline}
           themeId={themeId}
           size="compact"
+          countryCode={content.countryCode ?? null}
         />
         <div style={{ marginTop: 20 }}>
           <CoverProductCard
@@ -317,6 +329,7 @@ export function LayoutTradesperson({ content, themeId }: LayoutProps): React.JSX
           subtitle={content.tagline}
           themeId={themeId}
           presenceOnline={content.presenceOnline}
+          countryCode={content.countryCode ?? null}
         />
         <div
           style={{
@@ -403,6 +416,7 @@ export function LayoutSalon({ content, themeId }: LayoutProps): React.JSX.Elemen
             themeId={themeId}
             presenceOnline={content.presenceOnline}
             size="compact"
+            countryCode={content.countryCode ?? null}
           />
         </div>
       </div>
@@ -600,6 +614,7 @@ export function LayoutStreetFood({ content, themeId }: LayoutProps): React.JSX.E
           subtitle={content.tagline}
           themeId={themeId}
           presenceOnline={content.presenceOnline}
+          countryCode={content.countryCode ?? null}
         />
         <div
           style={{
@@ -785,7 +800,14 @@ function CoverPage({ children }: { children: React.ReactNode }): React.JSX.Eleme
         position: "relative",
         maxWidth: 720,
         margin: "0 auto",
-        padding: "18px 20px calc(env(safe-area-inset-bottom, 0) + 96px)",
+        // Founder direction 2026-09-30 · header must never sit under the
+        // iPhone/Android notch or earpiece. safe-area-inset-top gives the
+        // OS-reported space; 18px is the fallback for browsers without it.
+        paddingTop:
+          "max(env(safe-area-inset-top, 18px), 18px)",
+        paddingRight: 20,
+        paddingLeft: 20,
+        paddingBottom: "calc(env(safe-area-inset-bottom, 0) + 96px)",
       }}
     >
       {children}

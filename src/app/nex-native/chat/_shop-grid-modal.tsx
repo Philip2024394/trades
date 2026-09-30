@@ -538,10 +538,11 @@ function CloseIcon() {
   );
 }
 
-/** Category Tabs · sealed 2026-09-30. Chat-flavored equivalent of
- *  <CoverCategoryTabs> using the NEX palette rather than CSS vars.
- *  Same doctrine: 0-1 sections hidden · 2-3 shown · 4+ shows first 3
- *  by sort_order preceded by an "All" tab that clears the filter. */
+/** Category Tabs · sealed 2026-09-30 · updated 2026-09-30 (no-All).
+ *  Chat-flavored equivalent of <CoverCategoryTabs> using the NEX palette
+ *  rather than CSS vars. Founder direction: no "All" tab · nothing
+ *  selected shows every product · only the highlighted tab carries a
+ *  line beneath it. Tap active tab again to clear the filter. */
 function ShopCategoryTabs({
   sections,
   activeId,
@@ -557,11 +558,7 @@ function ShopCategoryTabs({
     (a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0),
   );
   const visible = ordered.slice(0, 3);
-
-  const tabs: { id: string; label: string }[] = [
-    { id: SHOP_ALL_TAB_ID, label: "All" },
-    ...visible.map((s) => ({ id: s.id, label: s.name })),
-  ];
+  const tabs = visible.map((s) => ({ id: s.id, label: s.name }));
 
   return (
     <div
@@ -572,7 +569,6 @@ function ShopCategoryTabs({
         gap: 4,
         padding: "0 14px",
         overflow: "hidden",
-        borderBottom: `1px solid ${NEX.cyanBorder}`,
       }}
     >
       {tabs.map((tab) => {
@@ -582,7 +578,7 @@ function ShopCategoryTabs({
             key={tab.id}
             role="tab"
             aria-selected={isActive}
-            onClick={() => onSelect(tab.id)}
+            onClick={() => onSelect(isActive ? SHOP_ALL_TAB_ID : tab.id)}
             type="button"
             style={{
               appearance: "none",
@@ -598,8 +594,7 @@ function ShopCategoryTabs({
               color: isActive ? NEX.cyan : NEX.textDim,
               borderBottom: isActive
                 ? `2px solid ${NEX.cyan}`
-                : "2px solid transparent",
-              marginBottom: -1,
+                : "none",
               transition: "color 160ms ease, border-color 160ms ease",
               whiteSpace: "nowrap",
               textTransform: "capitalize",
