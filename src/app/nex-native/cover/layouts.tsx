@@ -654,7 +654,7 @@ export function LayoutCreator({ content, themeId }: LayoutProps): React.JSX.Elem
           <CoverSectionHeading eyebrow="Explore" title="Products + links" />
           <CoverCatalog
             sections={content.sections}
-            products={content.products.slice(0, 6)}
+            products={content.products}
             peerAccountId={content.ownerAccountId}
             columns={2}
           />
@@ -768,7 +768,7 @@ export function LayoutFashion({ content, themeId }: LayoutProps): React.JSX.Elem
       <CoverPage>
         <CoverCatalog
           sections={content.sections}
-          products={content.products.slice(0, 3)}
+          products={content.products}
           peerAccountId={content.ownerAccountId}
           columns={1}
         />
@@ -1002,7 +1002,7 @@ export function LayoutPersonalBrand({ content, themeId }: LayoutProps): React.JS
           <CoverSectionHeading eyebrow="Shop" title="Products" />
           <CoverCatalog
             sections={content.sections}
-            products={content.products.slice(0, 4)}
+            products={content.products}
             peerAccountId={content.ownerAccountId}
             columns={2}
           />
