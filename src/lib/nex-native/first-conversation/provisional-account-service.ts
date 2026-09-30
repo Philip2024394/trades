@@ -75,6 +75,10 @@ export interface CreateProvisionalAccountResult {
   account_id: string;
   conversation_id: string;
   first_message_id: string;
+  /** True when the atomic function returned a cached result for a prior
+   *  same-send_intent_id call (Migration 105 dedup). False when this
+   *  call performed the create. */
+  deduplicated: boolean;
 }
 
 // ---------------------------------------------------------------------------
@@ -193,6 +197,7 @@ export async function createProvisionalAccountWithFirstMessage(
     account_id?: unknown;
     conversation_id?: unknown;
     first_message_id?: unknown;
+    deduplicated?: unknown;
   };
   if (
     typeof result.account_id !== "string" ||
@@ -207,5 +212,9 @@ export async function createProvisionalAccountWithFirstMessage(
     account_id: result.account_id,
     conversation_id: result.conversation_id,
     first_message_id: result.first_message_id,
+    // Migration 105 introduced this flag. Migration 104-era responses
+    // (before M105 replaced the function) had no field · default false
+    // for that historical scenario, but M105 always returns it.
+    deduplicated: result.deduplicated === true,
   };
 }

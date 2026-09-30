@@ -172,11 +172,15 @@ export async function createNexAccountAction(formData: FormData): Promise<never>
                 NEX_OFFICIAL_ACCOUNT_ID,
                 acc.id,
               );
-            const firstName = fullName.split(/\s+/)[0] || "there";
-            const body =
-              `🎉 Welcome to NEX, ${firstName}!\n\n` +
-              `I'm NEX · your support account. Everything about your NEX chat lives here — tap /settings/theme to try any premium theme free for 7 days, or reply to this message any time you have a question.\n\n` +
-              `Enjoy your first look 💜`;
+            // Bridge 99 Stage 10 (2026-09-30) · body now rendered via
+            // the shared helper at src/lib/nex-native/nex-official-welcome.ts
+            // so Bridge 62 and Bridge 99 produce identical output. The
+            // helper is regression-pinned in
+            // src/lib/nex-native/__tests__/nex-official-welcome.test.ts.
+            const { renderNex1WelcomeBody } = await import(
+              "@/lib/nex-native/nex-official-welcome"
+            );
+            const body = renderNex1WelcomeBody({ first_name: fullName });
             await peerMessageService.sendPeerMessage({
               conversation_id: conv.id,
               sender_account_id: NEX_OFFICIAL_ACCOUNT_ID,

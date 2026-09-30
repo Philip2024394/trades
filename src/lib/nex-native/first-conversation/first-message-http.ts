@@ -268,6 +268,7 @@ export async function processFirstMessagePayload(
           account_id: result.account_id,
           conversation_id: result.conversation_id,
           first_message_id: result.first_message_id,
+          deduplicated: result.deduplicated,
           redirect_to: result.redirect_to,
         },
         set_session_cookie: {

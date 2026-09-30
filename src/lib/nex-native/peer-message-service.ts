@@ -286,6 +286,13 @@ export interface SendPeerMessageInput {
   attachment_url?: string | null;
   attachment_type?: NexPeerAttachmentKind | null;
   attachment_meta?: NexPeerAttachmentMeta | null;
+  /** Optional · Bridge 99 idempotency key (Migration 102 Part C).
+   *  When supplied, the insert is subject to UNIQUE
+   *  (sender_account_id, send_intent_id) · a repeated send with the
+   *  same intent raises a Postgres duplicate-key error the caller can
+   *  interpret as "already delivered". Callers without an idempotency
+   *  requirement should leave this undefined. */
+  send_intent_id?: NexUuid | null;
 }
 
 /** Persist a peer chat message. Sender must be a participant of the
@@ -364,6 +371,9 @@ export async function sendPeerMessage(
       attachment_url: input.attachment_url ?? null,
       attachment_type: input.attachment_type ?? null,
       attachment_meta: input.attachment_meta ?? null,
+      // Bridge 99 idempotency key · UNIQUE (sender_account_id,
+      // send_intent_id) enforced by Migration 102 Part C.
+      ...(input.send_intent_id ? { send_intent_id: input.send_intent_id } : {}),
     })
     .select("*")
     .single();

@@ -124,6 +124,7 @@ export type OrchestrateFirstMessageResult =
       account_id: string;
       conversation_id: string;
       first_message_id: string;
+      deduplicated: boolean;
       session: {
         session_id: string;
         signed_cookie_token: string;
@@ -267,6 +268,10 @@ export async function orchestrateFirstMessage(
     account_id: created.account_id,
     conversation_id: created.conversation_id,
     first_message_id: created.first_message_id,
+    // Migration 105 · true iff a prior same-send_intent_id call already
+    // performed the atomic create. Both winner and loser get a fresh
+    // session cookie for the same account_id.
+    deduplicated: created.deduplicated,
     session: {
       session_id: session.session_id,
       signed_cookie_token: signedCookieToken,
