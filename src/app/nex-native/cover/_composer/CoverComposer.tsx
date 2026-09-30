@@ -87,10 +87,11 @@ export function CoverComposer(props: CoverComposerProps): React.JSX.Element {
         onSubmit={onSubmit}
         data-nex-cover-composer
         style={{
-          // Founder direction 2026-09-30 (revised) · NO background
-          // container on the footer itself · the composer floats. All
-          // affordances live inside a single long rounded field. Send
-          // button sits alongside the field, not inside it.
+          // Founder direction 2026-09-30 (revised again) · transparent
+          // footer wrapper · ONE long rounded container holds the +
+          // button, the emoji button, the input, AND the send button
+          // together. Both + and Send render as solid accent-colour
+          // round buttons inside the field.
           position: "fixed",
           left: 0,
           right: 0,
@@ -99,14 +100,11 @@ export function CoverComposer(props: CoverComposerProps): React.JSX.Element {
           padding: "10px 12px calc(env(safe-area-inset-bottom, 0) + 10px)",
           display: "flex",
           alignItems: "center",
-          gap: 8,
           background: "transparent",
           fontFamily: "var(--nex-font-body, inherit)",
         }}
       >
-        {/* Single long rounded field · holds [+] [😊] [input] together.
-            Accent-soft border, faint accent-tinted fill so the field
-            reads as one continuous surface per cover theme. */}
+        {/* Single long rounded field · holds [+] [😊] [input] [Send]. */}
         <div
           style={{
             flex: "1 1 0%",
@@ -114,8 +112,10 @@ export function CoverComposer(props: CoverComposerProps): React.JSX.Element {
             display: "flex",
             alignItems: "center",
             gap: 6,
-            padding: "6px 10px 6px 8px",
-            borderRadius: 24,
+            padding: 4,
+            paddingLeft: 4,
+            paddingRight: 4,
+            borderRadius: 999,
             background:
               "var(--nex-accent-faint, rgba(0,175,255,0.08))",
             border:
@@ -124,32 +124,35 @@ export function CoverComposer(props: CoverComposerProps): React.JSX.Element {
             WebkitBackdropFilter: "blur(10px) saturate(1.05)",
           }}
         >
-          {/* Small "+" INSIDE the field · deferred panel (placeholder
-              for future shop/marketing/share). */}
+          {/* Left · SOLID accent-colour "+" round button · deferred
+              panel (placeholder for future shop/marketing/share). */}
           <button
             type="button"
             aria-label="More actions"
             disabled
             title="More actions coming soon"
             style={{
-              width: 28,
-              height: 28,
+              width: 32,
+              height: 32,
               borderRadius: "50%",
               border: "none",
-              background: "transparent",
-              color: "var(--nex-accent, #00AFFF)",
+              background: "var(--nex-accent, #00AFFF)",
+              color: "#03101D",
               display: "grid",
               placeItems: "center",
               cursor: "not-allowed",
               opacity: 0.85,
               flex: "0 0 auto",
               padding: 0,
+              boxShadow: "0 2px 6px rgba(0,0,0,0.35)",
             }}
           >
             <PlusIcon />
           </button>
 
-          {/* Emoji picker toggle · INSIDE the field. */}
+          {/* Emoji picker toggle · transparent, tucks between + and
+              input so it doesn't fight the two solid buttons for
+              attention. */}
           <button
             type="button"
             aria-label="Insert emoji"
@@ -173,7 +176,7 @@ export function CoverComposer(props: CoverComposerProps): React.JSX.Element {
           </button>
 
           {/* Text input · fills remaining width · NO border, NO fill
-              of its own · it draws from the outer field. */}
+              of its own · draws from the outer field. */}
           <input
             ref={inputRef}
             type="text"
@@ -196,35 +199,37 @@ export function CoverComposer(props: CoverComposerProps): React.JSX.Element {
               outline: "none",
             }}
           />
-        </div>
 
-        {/* Right · gradient Send · sits alongside the field. */}
-        <button
-          type="submit"
-          disabled={!canSend}
-          aria-label="Send"
-          style={{
-            flex: "0 0 auto",
-            width: 42,
-            height: 42,
-            borderRadius: "50%",
-            border: "1px solid var(--nex-accent, #00AFFF)",
-            background: canSend
-              ? "linear-gradient(135deg, var(--nex-accent, #00AFFF), var(--nex-accent-soft, rgba(0,175,255,0.55)))"
-              : "rgba(255,255,255,0.10)",
-            color: canSend ? "#03101D" : "rgba(255,255,255,0.4)",
-            display: "grid",
-            placeItems: "center",
-            cursor: canSend ? "pointer" : "not-allowed",
-            boxShadow: canSend
-              ? "0 6px 16px rgba(0,0,0,0.35), 0 0 12px var(--nex-accent-glow, rgba(0,175,255,0.35))"
-              : "none",
-            padding: 0,
-            transition: "background 120ms ease, box-shadow 120ms ease",
-          }}
-        >
-          {sendState === "sending" ? <DotsIcon /> : <SendIcon />}
-        </button>
+          {/* Right · SOLID accent-colour Send round button · sits
+              INSIDE the field. Disabled state shrinks its presence
+              rather than switching to a grey scheme so the composer
+              always feels theme-coloured. */}
+          <button
+            type="submit"
+            disabled={!canSend}
+            aria-label="Send"
+            style={{
+              flex: "0 0 auto",
+              width: 36,
+              height: 36,
+              borderRadius: "50%",
+              border: "none",
+              background: "var(--nex-accent, #00AFFF)",
+              color: "#03101D",
+              display: "grid",
+              placeItems: "center",
+              cursor: canSend ? "pointer" : "not-allowed",
+              opacity: canSend ? 1 : 0.45,
+              boxShadow: canSend
+                ? "0 4px 10px rgba(0,0,0,0.35), 0 0 10px var(--nex-accent-glow, rgba(0,175,255,0.35))"
+                : "none",
+              padding: 0,
+              transition: "opacity 120ms ease, box-shadow 120ms ease",
+            }}
+          >
+            {sendState === "sending" ? <DotsIcon /> : <SendIcon />}
+          </button>
+        </div>
       </form>
 
       {/* Error toast · surfaces above the composer */}
