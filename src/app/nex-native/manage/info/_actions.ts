@@ -15,8 +15,10 @@ import {
 } from "@/lib/nex-native/info-pages-service";
 import {
   NEX_INFO_MAX_CUSTOM_BUTTONS,
+  NEX_INFO_MAX_FAQ_ITEMS,
   NEX_INFO_PAGE_KEYS,
   type NexInfoCustomButton,
+  type NexInfoFaqItem,
   type NexInfoPageKey,
   type NexInfoPagesJson,
 } from "@/lib/nex-native/info-pages";
@@ -88,12 +90,28 @@ export async function updateInfoPagesAction(
     customButtons.push(raw);
   }
 
+  // ── FAQ items ──
+  // Each row encoded as: faq__<idx>__id / faq__<idx>__enabled /
+  //                     faq__<idx>__question / faq__<idx>__answer
+  const faqItems: NexInfoFaqItem[] = [];
+  for (let i = 0; i < NEX_INFO_MAX_FAQ_ITEMS; i++) {
+    const question = readText(`faq__${i}__question`);
+    if (!question) continue;
+    faqItems.push({
+      id: readText(`faq__${i}__id`) ?? `faq_${Date.now()}_${i}`,
+      enabled: formData.get(`faq__${i}__enabled`) === "on",
+      question,
+      answer: readText(`faq__${i}__answer`) ?? "",
+    });
+  }
+
   const next: NexInfoPagesJson = {
     enabled,
     delivery_details: readText("delivery_details"),
     custom_orders: readText("custom_orders"),
     services_scope: readText("services_scope"),
     custom_buttons: customButtons,
+    faq_items: faqItems,
   };
 
   try {

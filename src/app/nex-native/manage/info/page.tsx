@@ -27,12 +27,17 @@ import { getInfoPages } from "@/lib/nex-native/info-pages-service";
 import {
   isInfoPageEnabled,
   isCustomButtonEnabled,
+  isFaqItemEnabled,
   NEX_INFO_BODY_MAX,
   NEX_INFO_CUSTOM_ICONS,
+  NEX_INFO_FAQ_ANSWER_MAX,
+  NEX_INFO_FAQ_QUESTION_MAX,
   NEX_INFO_MAX_CUSTOM_BUTTONS,
+  NEX_INFO_MAX_FAQ_ITEMS,
   NEX_INFO_PAGE_META,
   NEX_INFO_TITLE_MAX,
   type NexInfoCustomButton,
+  type NexInfoFaqItem,
   type NexInfoPageKey,
 } from "@/lib/nex-native/info-pages";
 import { updateInfoPagesAction } from "./_actions";
@@ -92,6 +97,10 @@ export default async function ManageInfoPage({
   while (customButtons.length < NEX_INFO_MAX_CUSTOM_BUTTONS) {
     customButtons.push(null);
   }
+  // Pre-compute FAQ rows (pad to MAX so the form always renders every
+  // draftable slot).
+  const faqItems: (NexInfoFaqItem | null)[] = [...(pages.faq_items ?? [])];
+  while (faqItems.length < NEX_INFO_MAX_FAQ_ITEMS) faqItems.push(null);
 
   return (
     <div style={{ background: NEX.bg, color: NEX.text, minHeight: "100dvh" }}>
@@ -208,6 +217,41 @@ export default async function ManageInfoPage({
             help="What models / brands / parts you handle. Buyers filter their questions from this."
             visible={isProductOrService}
           />
+
+          {/* ── FAQ ─────────────────────────────────────────────────── */}
+          <section
+            style={{
+              background: NEX.panelSoft,
+              border: `1px solid ${NEX.border}`,
+              borderRadius: 12,
+              padding: 14,
+            }}
+          >
+            <SectionHeader
+              keyId="faq"
+              enabled={isInfoPageEnabled(pages, "faq")}
+              visible={true}
+            />
+            <div
+              style={{
+                fontSize: 11,
+                color: NEX.textMute,
+                lineHeight: 1.5,
+                marginBottom: 10,
+              }}
+            >
+              Up to {NEX_INFO_MAX_FAQ_ITEMS} questions. Question ≤{" "}
+              {NEX_INFO_FAQ_QUESTION_MAX} chars · answer ≤{" "}
+              {NEX_INFO_FAQ_ANSWER_MAX} chars. Leave the question blank
+              to skip a row. Buyers see the questions as tappable rows
+              that expand to reveal the answer.
+            </div>
+            <div style={{ display: "grid", gap: 10 }}>
+              {faqItems.map((item, i) => (
+                <FaqRow key={i} idx={i} item={item} />
+              ))}
+            </div>
+          </section>
 
           {/* ── Custom buttons ──────────────────────────────────────── */}
           <div
@@ -754,6 +798,142 @@ function CustomButtonRow({
           />
         </label>
       </div>
+    </div>
+  );
+}
+
+function FaqRow({
+  idx,
+  item,
+}: {
+  idx: number;
+  item: NexInfoFaqItem | null;
+}) {
+  const enabled = item ? isFaqItemEnabled(item) : true;
+  return (
+    <div
+      style={{
+        border: `1px dashed ${NEX.border}`,
+        borderRadius: 10,
+        padding: 12,
+        display: "grid",
+        gap: 8,
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: 8,
+        }}
+      >
+        <div
+          style={{
+            fontSize: 10,
+            letterSpacing: "0.14em",
+            textTransform: "uppercase",
+            color: NEX.textDim,
+            fontWeight: 700,
+          }}
+        >
+          Question {idx + 1}
+        </div>
+        <label
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 6,
+            cursor: "pointer",
+          }}
+        >
+          <input
+            type="checkbox"
+            name={`faq__${idx}__enabled`}
+            defaultChecked={enabled}
+            style={{ accentColor: NEX.cyan, width: 16, height: 16 }}
+          />
+          <span
+            style={{
+              fontSize: 10,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+              color: NEX.textDim,
+              fontWeight: 700,
+            }}
+          >
+            show
+          </span>
+        </label>
+      </div>
+
+      <input
+        type="hidden"
+        name={`faq__${idx}__id`}
+        defaultValue={item?.id ?? ""}
+      />
+
+      <label style={{ display: "grid", gap: 4 }}>
+        <span
+          style={{
+            fontSize: 9,
+            letterSpacing: "0.14em",
+            textTransform: "uppercase",
+            color: NEX.textMute,
+            fontWeight: 700,
+          }}
+        >
+          Question (max {NEX_INFO_FAQ_QUESTION_MAX})
+        </span>
+        <input
+          type="text"
+          name={`faq__${idx}__question`}
+          defaultValue={item?.question ?? ""}
+          maxLength={NEX_INFO_FAQ_QUESTION_MAX}
+          placeholder="e.g. Do you deliver on Sundays?"
+          style={{
+            padding: "8px 10px",
+            borderRadius: 8,
+            background: NEX.bg,
+            border: `1px solid ${NEX.border}`,
+            color: NEX.text,
+            fontFamily: SANS,
+            fontSize: 13,
+          }}
+        />
+      </label>
+
+      <label style={{ display: "grid", gap: 4 }}>
+        <span
+          style={{
+            fontSize: 9,
+            letterSpacing: "0.14em",
+            textTransform: "uppercase",
+            color: NEX.textMute,
+            fontWeight: 700,
+          }}
+        >
+          Answer (max {NEX_INFO_FAQ_ANSWER_MAX})
+        </span>
+        <textarea
+          name={`faq__${idx}__answer`}
+          defaultValue={item?.answer ?? ""}
+          maxLength={NEX_INFO_FAQ_ANSWER_MAX}
+          rows={3}
+          placeholder="Type the answer buyers see when they tap the question."
+          style={{
+            padding: "8px 10px",
+            borderRadius: 8,
+            background: NEX.bg,
+            border: `1px solid ${NEX.border}`,
+            color: NEX.text,
+            fontFamily: SANS,
+            fontSize: 13,
+            resize: "vertical",
+            minHeight: 64,
+          }}
+        />
+      </label>
     </div>
   );
 }

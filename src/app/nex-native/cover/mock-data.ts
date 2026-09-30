@@ -201,6 +201,36 @@ export const MARIA_MOCK: MockCoverContent = {
         external_url: null,
       },
     ],
+    faq_items: [
+      {
+        id: "faq_delivery_sunday",
+        enabled: true,
+        question: "Do you deliver on Sundays?",
+        answer:
+          "We're closed on Sundays but courier delivery via GoJek or Grab can still be arranged for regular customers · message us on Saturday to book a Sunday slot.",
+      },
+      {
+        id: "faq_gluten_free",
+        enabled: true,
+        question: "Do you have gluten-free options?",
+        answer:
+          "Yes — our sourdough range includes a rice-flour loaf and we can prep gado-gado without wheat crackers on request. Message us the day before for anything more specific.",
+      },
+      {
+        id: "faq_bulk_pricing",
+        enabled: true,
+        question: "Do you offer bulk / catering pricing?",
+        answer:
+          "Orders of 20+ items get 10% off, 40+ items 15% off. See the Catering panel for private-event pricing.",
+      },
+      {
+        id: "faq_reservations",
+        enabled: true,
+        question: "Do you take table reservations?",
+        answer:
+          "For groups of 6 or more, yes · smaller groups are walk-in only. Message us your date, time, and headcount and we'll confirm within an hour during opening hours.",
+      },
+    ],
   },
   sections: [
     { id: "sec-meal", name: "Meal", sort_order: 0 },

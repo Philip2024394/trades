@@ -22,6 +22,7 @@ export const NEX_INFO_PAGE_KEYS = [
   "gallery",
   "custom_orders",
   "services",
+  "faq",
 ] as const;
 export type NexInfoPageKey = (typeof NEX_INFO_PAGE_KEYS)[number];
 
@@ -40,6 +41,7 @@ export const NEX_INFO_PAGE_SCOPE: Record<
   gallery: "venue_only",
   custom_orders: "product_or_service",
   services: "product_or_service",
+  faq: "all",
 };
 
 /** Icon + human label per sealed page. Icons chosen so a tray of six
@@ -93,6 +95,11 @@ export const NEX_INFO_PAGE_META: Record<
     label: "What we fix / stock",
     blurb: "Brands · models · parts",
   },
+  faq: {
+    icon: "❓",
+    label: "FAQ",
+    blurb: "Common questions · tap a question to see the answer",
+  },
 };
 
 /** Curated icon set for seller-added custom buttons. Locked to 30
@@ -108,6 +115,13 @@ export type NexInfoCustomIcon = (typeof NEX_INFO_CUSTOM_ICONS)[number];
 export const NEX_INFO_MAX_CUSTOM_BUTTONS = 3;
 export const NEX_INFO_TITLE_MAX = 24;
 export const NEX_INFO_BODY_MAX = 400;
+
+/** FAQ sealed 2026-09-30 · answers can be longer than a body since the
+ *  question already sets short context · seller writes the answer once,
+ *  buyer reads it once. */
+export const NEX_INFO_MAX_FAQ_ITEMS = 6;
+export const NEX_INFO_FAQ_QUESTION_MAX = 140;
+export const NEX_INFO_FAQ_ANSWER_MAX = 800;
 
 /** Shape stored in nex_business.info_pages (jsonb). Every field
  *  optional · service layer normalises the read path so callers can
@@ -126,6 +140,18 @@ export interface NexInfoPagesJson {
   services_scope?: string | null;
   /** Up to 3 seller-defined buttons · each with its own toggle. */
   custom_buttons?: NexInfoCustomButton[];
+  /** FAQ items rendered inside the FAQ tray panel · seller-authored
+   *  question/answer pairs with per-row toggles. Sealed 2026-09-30. */
+  faq_items?: NexInfoFaqItem[];
+}
+
+export interface NexInfoFaqItem {
+  id: string;
+  enabled?: boolean;
+  /** 1-140 chars. Empty = don't render. */
+  question: string;
+  /** 0-800 chars · line breaks preserved · plain text only. */
+  answer: string;
 }
 
 export interface NexInfoCustomButton {
@@ -160,6 +186,11 @@ export function isInfoPageEnabled(
 /** Read helper · normalises a custom button's enabled flag (default true). */
 export function isCustomButtonEnabled(btn: NexInfoCustomButton): boolean {
   return btn.enabled === undefined ? true : btn.enabled === true;
+}
+
+/** Read helper · normalises a FAQ item's enabled flag (default true). */
+export function isFaqItemEnabled(item: NexInfoFaqItem): boolean {
+  return item.enabled === undefined ? true : item.enabled === true;
 }
 
 /** Validators shared between the seller-form and the server action.

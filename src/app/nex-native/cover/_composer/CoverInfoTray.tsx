@@ -21,9 +21,11 @@
 import * as React from "react";
 import {
   isCustomButtonEnabled,
+  isFaqItemEnabled,
   isInfoPageEnabled,
   NEX_INFO_PAGE_META,
   type NexInfoCustomButton,
+  type NexInfoFaqItem,
   type NexInfoPageKey,
   type NexInfoPagesJson,
 } from "@/lib/nex-native/info-pages";
@@ -321,6 +323,8 @@ function renderTrayIcon(it: TrayItem, size: number): React.ReactNode {
       return <IconPackage size={size} />;
     case "services":
       return <IconWrench size={size} />;
+    case "faq":
+      return <IconFaq size={size} />;
     default:
       return (
         <span style={{ fontSize: size, lineHeight: 1 }}>{it.icon}</span>
@@ -369,6 +373,9 @@ interface TrayItem {
    *  the panel body (About Us signs off with the owner's name after
    *  the thanking line). */
   signatureName?: string | null;
+  /** FAQ list · rendered as an accordion on the FAQ panel. Each row
+   *  is a tappable question that expands to reveal its answer. */
+  faqItems?: NexInfoFaqItem[];
 }
 
 function PanelBody({ item }: { item: TrayItem }) {
@@ -438,6 +445,10 @@ function PanelBody({ item }: { item: TrayItem }) {
       )}
 
       {item.hoursByDay && <HoursTable hours={item.hoursByDay} />}
+
+      {item.faqItems && item.faqItems.length > 0 && (
+        <FaqAccordion items={item.faqItems} />
+      )}
 
       {item.bullets && item.bullets.length > 0 && (
         <ul
@@ -804,6 +815,22 @@ function buildTrayItems(content: CoverInfoTrayContent): TrayItem[] {
     });
   }
 
+  // FAQ · rendered only when the seller has authored at least one
+  // enabled question (skipping empty rows and toggled-off rows).
+  const enabledFaqItems = (content.pages?.faq_items ?? []).filter(
+    (i) =>
+      isFaqItemEnabled(i) && i.question && i.question.trim().length > 0,
+  );
+  if (enabled("faq") && enabledFaqItems.length > 0) {
+    items.push({
+      id: "faq",
+      icon: NEX_INFO_PAGE_META.faq.icon,
+      label: NEX_INFO_PAGE_META.faq.label,
+      body: "",
+      faqItems: enabledFaqItems,
+    });
+  }
+
   const customButtons = content.pages?.custom_buttons ?? [];
   for (const btn of customButtons) {
     if (!isCustomButtonEnabled(btn)) continue;
@@ -819,6 +846,95 @@ function buildTrayItems(content: CoverInfoTrayContent): TrayItem[] {
   }
 
   return items;
+}
+
+// ─── FAQ accordion (FAQ panel) ───────────────────────────────────────
+
+function FaqAccordion({ items }: { items: NexInfoFaqItem[] }) {
+  const [openId, setOpenId] = React.useState<string | null>(null);
+  return (
+    <div
+      style={{
+        display: "grid",
+        gap: 8,
+        borderRadius: 12,
+        border:
+          "1px solid var(--nex-accent-soft, rgba(0,175,255,0.20))",
+        overflow: "hidden",
+      }}
+    >
+      {items.map((it, i) => {
+        const isOpen = openId === it.id;
+        return (
+          <div
+            key={it.id}
+            style={{
+              borderTop:
+                i === 0
+                  ? "none"
+                  : "1px solid var(--nex-accent-soft, rgba(0,175,255,0.15))",
+              paddingTop: i === 0 ? 0 : 2,
+            }}
+          >
+            <button
+              type="button"
+              onClick={() => setOpenId(isOpen ? null : it.id)}
+              aria-expanded={isOpen}
+              style={{
+                appearance: "none",
+                width: "100%",
+                textAlign: "left",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gap: 10,
+                padding: "12px 14px",
+                background: isOpen
+                  ? "var(--nex-accent-faint, rgba(0,175,255,0.10))"
+                  : "transparent",
+                border: "none",
+                color: "var(--nex-text, #F2F5F8)",
+                fontFamily: "inherit",
+                fontSize: 14,
+                fontWeight: 700,
+                lineHeight: 1.35,
+                cursor: "pointer",
+              }}
+            >
+              <span style={{ flex: 1, minWidth: 0 }}>{it.question}</span>
+              <span
+                aria-hidden
+                style={{
+                  flex: "0 0 auto",
+                  color: "var(--nex-accent)",
+                  transition: "transform 180ms ease",
+                  transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
+                  display: "grid",
+                  placeItems: "center",
+                }}
+              >
+                <IconChevronDown size={18} />
+              </span>
+            </button>
+            {isOpen && (
+              <div
+                style={{
+                  padding: "0 14px 14px",
+                  fontSize: 13,
+                  lineHeight: 1.55,
+                  color: "var(--nex-text, #F2F5F8)",
+                  opacity: 0.9,
+                  whiteSpace: "pre-wrap",
+                }}
+              >
+                {it.answer}
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
 }
 
 // ─── Weekly hours table (Hours panel) ────────────────────────────────
@@ -1118,6 +1234,24 @@ function IconWrench({ size }: { size: number }) {
   return (
     <svg {...iconProps(size)}>
       <path d="M15 3a4 4 0 0 0-4 6l-7 7 3 3 7-7a4 4 0 0 0 6-4l-3 3-2-2z" />
+    </svg>
+  );
+}
+
+function IconFaq({ size }: { size: number }) {
+  return (
+    <svg {...iconProps(size)}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M9 9a3 3 0 0 1 6 0c0 2-3 2-3 4" />
+      <circle cx="12" cy="17" r="0.9" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+function IconChevronDown({ size }: { size: number }) {
+  return (
+    <svg {...iconProps(size)}>
+      <polyline points="6 9 12 15 18 9" />
     </svg>
   );
 }

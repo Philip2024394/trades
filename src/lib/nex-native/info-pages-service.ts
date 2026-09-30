@@ -10,9 +10,13 @@ import type { NexUuid } from "./types";
 import {
   NEX_INFO_BODY_MAX,
   NEX_INFO_CUSTOM_ICONS,
+  NEX_INFO_FAQ_ANSWER_MAX,
+  NEX_INFO_FAQ_QUESTION_MAX,
   NEX_INFO_MAX_CUSTOM_BUTTONS,
+  NEX_INFO_MAX_FAQ_ITEMS,
   NEX_INFO_TITLE_MAX,
   type NexInfoCustomButton,
+  type NexInfoFaqItem,
   type NexInfoPageKey,
   type NexInfoPagesJson,
 } from "./info-pages";
@@ -106,12 +110,33 @@ export function normaliseInfoPages(raw: NexInfoPagesJson): NexInfoPagesJson {
         .filter((b): b is NexInfoCustomButton => b !== null)
     : [];
 
+  const faqItems: NexInfoFaqItem[] = Array.isArray(raw.faq_items)
+    ? raw.faq_items
+        .slice(0, NEX_INFO_MAX_FAQ_ITEMS)
+        .map((item): NexInfoFaqItem | null => {
+          if (!item || typeof item !== "object") return null;
+          const id =
+            typeof item.id === "string" && item.id.trim().length > 0
+              ? item.id
+              : `faq_${Math.random().toString(36).slice(2, 10)}`;
+          const question = clampText(item.question, NEX_INFO_FAQ_QUESTION_MAX);
+          if (!question) return null;
+          const answer =
+            clampText(item.answer, NEX_INFO_FAQ_ANSWER_MAX) ?? "";
+          const enabled =
+            typeof item.enabled === "boolean" ? item.enabled : true;
+          return { id, enabled, question, answer };
+        })
+        .filter((item): item is NexInfoFaqItem => item !== null)
+    : [];
+
   return {
     enabled,
     delivery_details: clampText(raw.delivery_details, NEX_INFO_BODY_MAX),
     custom_orders: clampText(raw.custom_orders, NEX_INFO_BODY_MAX),
     services_scope: clampText(raw.services_scope, NEX_INFO_BODY_MAX),
     custom_buttons: customButtons,
+    faq_items: faqItems,
   };
 }
 
