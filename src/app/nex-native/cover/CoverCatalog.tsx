@@ -156,9 +156,9 @@ function Pagination({
               height: 32,
               padding: "0 10px",
               borderRadius: 10,
-              border: isActive
-                ? "1px solid var(--nex-accent, #06b6d4)"
-                : "1px solid var(--nex-accent-soft, rgba(148,163,184,0.25))",
+              // Founder direction 2026-09-30 · borders removed from
+              // every pagination button · reads as pure text pills.
+              border: "none",
               background: isActive
                 ? "var(--nex-accent, #06b6d4)"
                 : "transparent",
@@ -194,6 +194,10 @@ function PageArrow({
   disabled: boolean;
   onClick: () => void;
 }) {
+  // Founder direction 2026-09-30 · arrow chevrons render in solid black
+  // so they stand off the accent-tinted pagination row · matches the
+  // higher-contrast affordance the founder wants for the prev/next
+  // controls (numbered pills stay accent-coloured for the active state).
   return (
     <button
       type="button"
@@ -205,19 +209,17 @@ function PageArrow({
         width: 32,
         height: 32,
         borderRadius: 10,
-        border: "1px solid var(--nex-accent-soft, rgba(148,163,184,0.25))",
+        border: "none",
         background: "transparent",
-        color: disabled
-          ? "var(--nex-text-mute, rgba(148,163,184,0.45))"
-          : "var(--nex-accent, #06b6d4)",
+        color: "#000000",
         fontFamily: "var(--nex-font-body, inherit)",
-        fontSize: 16,
-        fontWeight: 700,
+        fontSize: 18,
+        fontWeight: 800,
         cursor: disabled ? "not-allowed" : "pointer",
-        opacity: disabled ? 0.55 : 1,
+        opacity: disabled ? 0.35 : 1,
         display: "grid",
         placeItems: "center",
-        transition: "opacity 140ms ease, color 140ms ease",
+        transition: "opacity 140ms ease",
       }}
     >
       {direction === "prev" ? "‹" : "›"}
