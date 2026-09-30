@@ -55,9 +55,31 @@ export function CoverComposer(props: CoverComposerProps): React.JSX.Element {
 
   const canSend =
     sendState === "idle" && text.trim().length >= 3 && text.trim().length <= 4000;
-  const placeholder = props.ownerDisplayName
-    ? `Message ${props.ownerDisplayName}…`
-    : "Message…";
+
+  // Founder direction 2026-09-30 · rotating "running text" placeholder
+  // cycles through short prompts every ~3.5s while the field is empty.
+  // Each new phrase slides up from below with a fade so the composer
+  // feels alive and invites the visitor to send a message.
+  const rotation = React.useMemo(() => {
+    const name = props.ownerDisplayName?.trim();
+    const base = [
+      "Say hello…",
+      "Ask us anything…",
+      "Send a quick question…",
+      "Place an order or enquiry…",
+      "Message us anytime…",
+    ];
+    return name ? [`Message ${name}…`, ...base] : base;
+  }, [props.ownerDisplayName]);
+  const [placeholderIdx, setPlaceholderIdx] = React.useState(0);
+  React.useEffect(() => {
+    if (text.length > 0) return;
+    const id = window.setInterval(() => {
+      setPlaceholderIdx((i) => (i + 1) % rotation.length);
+    }, 3500);
+    return () => window.clearInterval(id);
+  }, [text.length, rotation.length]);
+  const runningPlaceholder = rotation[placeholderIdx] ?? rotation[0];
 
   React.useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -202,30 +224,82 @@ export function CoverComposer(props: CoverComposerProps): React.JSX.Element {
             <SmileIcon />
           </button>
 
-          {/* Text input · fills remaining width · NO border, NO fill
-              of its own · draws from the outer field. */}
-          <input
-            ref={inputRef}
-            type="text"
-            placeholder={placeholder}
-            aria-label={placeholder}
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            disabled={sendState === "sending"}
-            maxLength={4000}
+          {/* Text input + running-text placeholder overlay · wrapper
+              is position:relative so the overlay lays exactly over
+              the input. HTML placeholder is empty · overlay owns the
+              rotating hint so the change animates instead of
+              swapping instantly. */}
+          <style>{`
+            @keyframes nex-cover-placeholder-in {
+              0%   { opacity: 0; transform: translateY(8px); }
+              100% { opacity: 1; transform: translateY(0); }
+            }
+          `}</style>
+          <div
             style={{
+              position: "relative",
               flex: "1 1 0%",
               minWidth: 0,
-              width: "100%",
-              padding: "6px 4px",
-              background: "transparent",
-              border: "none",
-              color: "var(--nex-text, #F2F5F8)",
-              fontSize: 15,
-              fontFamily: "inherit",
-              outline: "none",
+              display: "flex",
+              alignItems: "center",
             }}
-          />
+          >
+            <input
+              ref={inputRef}
+              type="text"
+              aria-label={runningPlaceholder}
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              disabled={sendState === "sending"}
+              maxLength={4000}
+              style={{
+                flex: "1 1 0%",
+                minWidth: 0,
+                width: "100%",
+                padding: "6px 4px",
+                background: "transparent",
+                border: "none",
+                color: "var(--nex-text, #F2F5F8)",
+                fontSize: 15,
+                fontFamily: "inherit",
+                outline: "none",
+              }}
+            />
+            {text.length === 0 && (
+              <div
+                aria-hidden
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 4,
+                  right: 4,
+                  bottom: 0,
+                  display: "flex",
+                  alignItems: "center",
+                  pointerEvents: "none",
+                  color: "var(--nex-text-dim, rgba(255,255,255,0.55))",
+                  fontSize: 15,
+                  fontFamily: "inherit",
+                  overflow: "hidden",
+                }}
+              >
+                <span
+                  key={placeholderIdx}
+                  style={{
+                    animation:
+                      "nex-cover-placeholder-in 420ms ease-out both",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    display: "inline-block",
+                    maxWidth: "100%",
+                  }}
+                >
+                  {runningPlaceholder}
+                </span>
+              </div>
+            )}
+          </div>
 
           {/* Right · SOLID accent-colour Send round button · sits
               INSIDE the field. Disabled state shrinks its presence
