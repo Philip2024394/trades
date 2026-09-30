@@ -736,11 +736,12 @@ function buildTrayItems(content: CoverInfoTrayContent): TrayItem[] {
       label: NEX_INFO_PAGE_META.returns.label,
       body: content.returnPolicyBody,
       // Founder direction 2026-09-30 · every Returns panel closes
-      // with the NEX-standard "damaged-in-transit" promise so buyers
-      // always see a clear refund/replacement pathway regardless of
-      // what the seller wrote above.
+      // with the NEX-standard courier-note prompt + refund /
+      // replacement promise so buyers see BOTH the "flag it with the
+      // rider" step AND the refund pathway regardless of what the
+      // seller wrote above.
       footerNote:
-        "If for any reason our product does not reach you in the condition you expect, please contact us for a full refund or replacement.",
+        "If your delivery arrives with damaged packaging, please make a note with the delivery provider so we can help resolve this from happening again. If for any reason our product does not reach you in the condition you expect, please contact us for a full refund or replacement.",
     });
   }
 
