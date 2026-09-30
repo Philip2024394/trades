@@ -943,7 +943,9 @@ export function CoverIdentityRail({
         display: "grid",
         gap: 10,
         padding: "20px 4px 4px",
-        borderTop: "1px dashed var(--nex-accent-soft)",
+        // Founder direction 2026-09-30 · dashed top border removed ·
+        // identity rail now flows straight up into the pagination row
+        // above without a divider line.
       }}
     >
       {handle && (
