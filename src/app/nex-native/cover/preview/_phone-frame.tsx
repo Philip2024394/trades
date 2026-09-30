@@ -42,17 +42,29 @@ export function PhoneFrame({ children }: { children: React.ReactNode }): React.J
         [data-nex-phone-scroll] { scrollbar-width: none; -ms-overflow-style: none; }
         [data-nex-phone-scroll]::-webkit-scrollbar { width: 0; height: 0; display: none; }
         /* Founder direction 2026-09-30 · on desktop the CoverComposer
-           uses position:fixed which stretches it to the whole browser
-           width. Inside the phone-frame preview we clamp it to the
-           phone-screen width (~370px inside the 10px chassis border)
-           so it visually sits inside the phone. */
+           uses position:fixed which pins to the browser viewport bottom
+           (below the phone silhouette). Inside the phone-frame preview
+           we make it position:sticky so it stays at the BOTTOM OF THE
+           PHONE SCREEN as the user scrolls. Also drops the CoverThemeSkin
+           overflow:hidden inside the frame so sticky works across the
+           atmospheric-layers boundary. */
         @media (min-width: 768px) {
+          [data-nex-phone-frame] [data-nex-cover-skin] {
+            overflow: visible !important;
+          }
           [data-nex-phone-frame] [data-nex-cover-composer] {
-            left: 50% !important;
+            position: sticky !important;
+            bottom: 0 !important;
+            left: auto !important;
             right: auto !important;
-            transform: translateX(-50%);
-            width: 370px !important;
-            max-width: 370px !important;
+            transform: none !important;
+            width: auto !important;
+            max-width: none !important;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+            /* Sticky element sits above the wallpaper/scrim layers ·
+               force z-index so it doesn't get buried. */
+            z-index: 30 !important;
           }
         }
         /* Mobile · frame collapses entirely, cover fills viewport */
