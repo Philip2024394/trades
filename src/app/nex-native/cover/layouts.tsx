@@ -2127,15 +2127,21 @@ function ImagePlaceholderLightbox({
               width: 36,
               height: 36,
               borderRadius: "50%",
-              border: "1px solid var(--nex-accent-soft)",
-              background: "rgba(3,8,20,0.6)",
-              color: "var(--nex-text)",
-              fontSize: 18,
-              fontWeight: 700,
+              // Founder direction 2026-09-30 · close button paints in
+              // the active theme's accent · under Pink Dream that
+              // reads as pink · under any other theme the button
+              // picks up that theme's accent hex automatically.
+              border: "1px solid var(--nex-accent)",
+              background: "var(--nex-accent)",
+              color: "#03101D",
+              fontSize: 20,
+              fontWeight: 800,
               cursor: "pointer",
               display: "grid",
               placeItems: "center",
               flex: "0 0 auto",
+              boxShadow:
+                "0 4px 12px rgba(0,0,0,0.45), 0 0 12px var(--nex-accent-glow, rgba(255,63,159,0.35))",
             }}
           >
             ×
