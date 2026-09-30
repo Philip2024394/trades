@@ -117,7 +117,11 @@ export function CoverComposer(props: CoverComposerProps): React.JSX.Element {
           fontFamily: "var(--nex-font-body, inherit)",
         }}
       >
-        {/* Single long rounded field · holds [+] [😊] [input] [Send]. */}
+        {/* Single long rounded field · holds [+] [😊] [input] [Send].
+            Founder direction 2026-09-30 · SOLID dark-navy fill (no
+            translucency, no backdrop-blur) so wallpaper/products behind
+            never bleed through and the composer reads as its own solid
+            band regardless of the theme underneath. */}
         <div
           style={{
             flex: "1 1 0%",
@@ -129,12 +133,10 @@ export function CoverComposer(props: CoverComposerProps): React.JSX.Element {
             paddingLeft: 4,
             paddingRight: 4,
             borderRadius: 999,
-            background:
-              "var(--nex-accent-faint, rgba(0,175,255,0.08))",
+            background: "#050f1e",
             border:
               "1px solid var(--nex-accent-soft, rgba(0,175,255,0.35))",
-            backdropFilter: "blur(10px) saturate(1.05)",
-            WebkitBackdropFilter: "blur(10px) saturate(1.05)",
+            boxShadow: "0 6px 20px rgba(0,0,0,0.5)",
           }}
         >
           {/* Left · SOLID accent-colour "+" round button · when

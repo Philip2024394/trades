@@ -526,6 +526,10 @@ export interface CoverProduct {
   image_url: string | null;
   stock_status: string | null;
   section_id?: string | null;
+  /** Short 2-line description shown on the CoverProductCard between
+   *  name and price. Clamped visually to 2 lines. Optional · card
+   *  hides the row when absent. */
+  description?: string | null;
 }
 
 // ─── Category Tabs (sealed 2026-09-30) ────────────────────────────────
@@ -724,27 +728,87 @@ export function CoverProductCard({
             </span>
           )}
         </div>
-        <div style={{ padding: "10px 12px 12px" }}>
+        {/* Founder direction 2026-09-30 · card meta stack ·
+              name → 2-line description → price → small View pill.
+            The View pill signals that tap opens the seller's chat with
+            the shop slider focused on this product (whole card is the
+            same link, pill is the visible affordance). */}
+        <div
+          style={{
+            padding: "10px 12px 12px",
+            display: "grid",
+            gap: 6,
+          }}
+        >
           <div
             style={{
               fontSize: 14,
-              fontWeight: 600,
+              fontWeight: 700,
               lineHeight: 1.25,
               letterSpacing: "-0.005em",
+              display: "-webkit-box",
+              WebkitLineClamp: 1,
+              WebkitBoxOrient: "vertical",
+              overflow: "hidden",
             }}
           >
             {product.name}
           </div>
+          {product.description && product.description.trim().length > 0 && (
+            <div
+              style={{
+                fontSize: 11,
+                lineHeight: 1.35,
+                color: "var(--nex-text-dim)",
+                display: "-webkit-box",
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: "vertical",
+                overflow: "hidden",
+              }}
+            >
+              {product.description}
+            </div>
+          )}
           <div
             style={{
-              marginTop: 4,
-              fontSize: 13,
-              fontWeight: 700,
-              color: "var(--nex-accent)",
-              letterSpacing: "0.01em",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 8,
+              marginTop: 2,
             }}
           >
-            {priceLabel}
+            <div
+              style={{
+                fontSize: 13,
+                fontWeight: 800,
+                color: "var(--nex-accent)",
+                letterSpacing: "0.01em",
+                minWidth: 0,
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {priceLabel}
+            </div>
+            <span
+              aria-hidden
+              style={{
+                flex: "0 0 auto",
+                padding: "5px 12px",
+                borderRadius: 999,
+                background: "var(--nex-accent)",
+                color: "#03101D",
+                fontSize: 10,
+                fontWeight: 800,
+                letterSpacing: "0.08em",
+                textTransform: "uppercase",
+                boxShadow: "0 2px 6px rgba(0,0,0,0.35)",
+              }}
+            >
+              View
+            </span>
           </div>
         </div>
       </Link>

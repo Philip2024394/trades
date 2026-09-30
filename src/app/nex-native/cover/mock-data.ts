@@ -161,6 +161,8 @@ export const MARIA_MOCK: MockCoverContent = {
       image_url: null,
       stock_status: "in_stock",
       section_id: "sec-drinks",
+      description:
+        "Double-shot Kintamani espresso with steamed oat milk and a warm honey drizzle on top.",
     },
     {
       id: "prod-nasi-goreng",
@@ -171,6 +173,8 @@ export const MARIA_MOCK: MockCoverContent = {
       image_url: null,
       stock_status: "in_stock",
       section_id: "sec-meal",
+      description:
+        "House-fried rice with prawns, chicken satay skewer, fried egg, and Ubud shallots.",
     },
     {
       id: "prod-mie-goreng",
@@ -181,6 +185,8 @@ export const MARIA_MOCK: MockCoverContent = {
       image_url: null,
       stock_status: "in_stock",
       section_id: "sec-meal",
+      description:
+        "Village-style stir-fried noodles with chicken, bok choy, and a fried egg on top.",
     },
     {
       id: "prod-gado-gado",
@@ -191,6 +197,8 @@ export const MARIA_MOCK: MockCoverContent = {
       image_url: null,
       stock_status: "in_stock",
       section_id: "sec-meal",
+      description:
+        "Warm vegetables and tofu with tempeh, boiled egg, and rich house peanut sauce.",
     },
     {
       id: "prod-soto-ayam",
@@ -201,6 +209,8 @@ export const MARIA_MOCK: MockCoverContent = {
       image_url: null,
       stock_status: "in_stock",
       section_id: "sec-meal",
+      description:
+        "Yellow turmeric broth with pulled chicken, rice noodles, potato, and fresh lime.",
     },
     {
       id: "prod-ayam-bakar",
@@ -211,6 +221,8 @@ export const MARIA_MOCK: MockCoverContent = {
       image_url: null,
       stock_status: "low_stock",
       section_id: "sec-meal",
+      description:
+        "Grilled half chicken glazed with local honey and lemongrass · served with sambal.",
     },
     {
       id: "prod-sourdough",
@@ -221,6 +233,8 @@ export const MARIA_MOCK: MockCoverContent = {
       image_url: null,
       stock_status: "low_stock",
       section_id: "sec-snack",
+      description:
+        "Slow-fermented country loaf · crackly crust, open crumb · baked each morning.",
     },
     {
       id: "prod-cinnamon-bun",
@@ -231,6 +245,8 @@ export const MARIA_MOCK: MockCoverContent = {
       image_url: null,
       stock_status: "in_stock",
       section_id: "sec-snack",
+      description:
+        "Buttery brioche coil with brown-butter cinnamon filling and cream-cheese glaze.",
     },
     {
       id: "prod-cold-brew",
@@ -241,6 +257,8 @@ export const MARIA_MOCK: MockCoverContent = {
       image_url: null,
       stock_status: "in_stock",
       section_id: "sec-drinks",
+      description:
+        "18-hour steeped Kintamani cold brew · served neat over big cubes, no dilution.",
     },
     {
       id: "prod-tart",
@@ -251,6 +269,8 @@ export const MARIA_MOCK: MockCoverContent = {
       image_url: null,
       stock_status: "sold_out",
       section_id: "sec-snack",
+      description:
+        "Buttery shortcrust with tart lemon curd and torched Italian meringue.",
     },
   ],
   services: [
