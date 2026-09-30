@@ -712,7 +712,9 @@ export function CoverProductCard({
         }}
       >
         <div
-          aria-hidden
+          aria-hidden={!!product.image_url}
+          role={product.image_url ? undefined : "img"}
+          aria-label={product.image_url ? undefined : "Image placeholder"}
           style={{
             aspectRatio: "1 / 1",
             width: isLandscape ? 112 : "100%",
@@ -723,7 +725,7 @@ export function CoverProductCard({
               : undefined,
             background: product.image_url
               ? undefined
-              : `linear-gradient(135deg, var(--nex-accent-faint), var(--nex-panel))`,
+              : "#0a1120",
             backgroundSize: "cover",
             backgroundPosition: "center",
             position: "relative",
@@ -734,8 +736,67 @@ export function CoverProductCard({
             borderBottomRightRadius: isLandscape ? 12 : 12,
             borderTopRightRadius: isLandscape ? 12 : 0,
             overflow: "hidden",
+            display: !product.image_url ? "grid" : undefined,
+            placeItems: !product.image_url ? "center" : undefined,
           }}
         >
+          {/* Founder direction 2026-09-30 · when the seller hasn't
+              uploaded an image, the card renders the same IMAGE HERE
+              placeholder pattern used in the Personal Brand Images
+              tab. Diagonal cross-through + translucent "IMAGE HERE"
+              caption so the tile reads as an empty slot rather than
+              a filled but blank card. */}
+          {!product.image_url && (
+            <>
+              <svg
+                aria-hidden
+                width="100%"
+                height="100%"
+                viewBox="0 0 100 100"
+                preserveAspectRatio="none"
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  opacity: 0.22,
+                  color: "var(--nex-accent, #FF3F9F)",
+                }}
+              >
+                <line
+                  x1="0"
+                  y1="0"
+                  x2="100"
+                  y2="100"
+                  stroke="currentColor"
+                  strokeWidth="0.6"
+                  vectorEffect="non-scaling-stroke"
+                />
+                <line
+                  x1="100"
+                  y1="0"
+                  x2="0"
+                  y2="100"
+                  stroke="currentColor"
+                  strokeWidth="0.6"
+                  vectorEffect="non-scaling-stroke"
+                />
+              </svg>
+              <span
+                style={{
+                  position: "relative",
+                  fontSize: isLandscape ? 8 : 10,
+                  fontWeight: 800,
+                  letterSpacing: "0.16em",
+                  color: "var(--nex-text-dim)",
+                  textAlign: "center",
+                  padding: isLandscape ? "1px 4px" : "2px 6px",
+                  background: "#03101D",
+                  borderRadius: 4,
+                }}
+              >
+                IMAGE HERE
+              </span>
+            </>
+          )}
           {eyebrow && (
             <span
               style={{

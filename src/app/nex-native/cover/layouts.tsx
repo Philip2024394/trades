@@ -1702,8 +1702,7 @@ function ImagePlaceholderGallery({
               aspectRatio: "1 / 1",
               borderRadius: 10,
               border: "1px solid var(--nex-accent-soft)",
-              background:
-                "linear-gradient(135deg, var(--nex-accent-faint), rgba(3,8,20,0.55))",
+              background: "#0a1120",
               display: "grid",
               placeItems: "center",
               boxShadow: "0 4px 12px rgba(0,0,0,0.35)",
@@ -1753,7 +1752,7 @@ function ImagePlaceholderGallery({
                 color: "var(--nex-text-dim)",
                 textAlign: "center",
                 padding: "2px 6px",
-                background: "rgba(3,8,20,0.55)",
+                background: "#03101D",
                 borderRadius: 4,
               }}
             >
