@@ -54,6 +54,21 @@ export interface CoverThemeSkinProps {
           size?: number;
           twinkleSeconds?: number;
         };
+        mistDrift?: {
+          /** Fog colour · rgba recommended so blob edges bleed to
+           *  transparent. Defaults to a cool white when omitted. */
+          color?: string;
+          /** Number of concurrent fog blobs · 4-14 · default 8. */
+          count?: number;
+          /** Average blob diameter (px) · 80-260 · default 160. */
+          size?: number;
+          /** Blur radius (px) so each blob reads as fog not a disc ·
+           *  default 44. */
+          blur?: number;
+          /** Seconds a single blob takes to rise from below the
+           *  footer to above the header · default 22. */
+          speedSeconds?: number;
+        };
         bubbleStyle?: {
           preset: "classic" | "pill" | "square" | "outlined" | "gradient";
         };
@@ -318,6 +333,9 @@ export function CoverThemeSkin(props: CoverThemeSkinProps): React.JSX.Element {
         {wallpaperConfig?.moonGlow && (
           <MoonGlow config={wallpaperConfig.moonGlow} />
         )}
+        {wallpaperConfig?.mistDrift && (
+          <MistDrift config={wallpaperConfig.mistDrift} />
+        )}
 
         {/* Content · z-index 1 so it sits above the atmosphere layers.
             Every layout composes its own hierarchy here. */}
@@ -497,6 +515,108 @@ function MoonGlow({
           zIndex: 0,
         }}
       />
+    </>
+  );
+}
+
+// ─── MistDrift · Founder-sealed 2026-09-30 · Theme 0 ─────────────────
+// Randomised fog blobs rise from below the composer up past the top of
+// the phone screen, drift lightly sideways as they climb, fade in
+// during the first 20% of their travel and fade out during the last
+// 25%. Reads as ambient smoke / mist / vapour on a dark cover ·
+// especially fitting for Theme 0 (Joker alley · toxic-green smoke).
+
+interface MistDriftConfig {
+  color?: string;
+  count?: number;
+  size?: number;
+  blur?: number;
+  speedSeconds?: number;
+}
+
+function MistDrift({ config }: { config: MistDriftConfig }): React.JSX.Element {
+  const color = config.color ?? "rgba(220,235,225,0.45)";
+  const count = Math.max(4, Math.min(14, config.count ?? 8));
+  const baseSize = Math.max(80, Math.min(260, config.size ?? 160));
+  const blur = Math.max(16, Math.min(80, config.blur ?? 44));
+  const speed = Math.max(10, Math.min(60, config.speedSeconds ?? 22));
+
+  // Deterministic pseudo-random so SSR + hydration match. Same seed
+  // pattern as the ParticleDrift / SparkleField overlays.
+  const blobs = React.useMemo(() => {
+    let seed = 733333;
+    const rand = () => {
+      seed = (seed * 9301 + 49297) % 233280;
+      return seed / 233280;
+    };
+    return Array.from({ length: count }, () => ({
+      left: rand() * 100,
+      // Blob size varies 70%-140% of base so the wall doesn't read
+      // like a repeating pattern.
+      scale: 0.7 + rand() * 0.7,
+      // Lateral drift · -10% to +10% of viewport width across the
+      // whole rise so blobs don't move in a rigid column.
+      xShift: (rand() - 0.5) * 20,
+      // Stagger blob start times across the whole cycle.
+      delay: rand() * speed,
+      // Each blob picks a slightly different speed so they don't
+      // rise in lockstep.
+      dur: speed * (0.75 + rand() * 0.5),
+      // Vary the peak opacity per blob so some read as denser fog
+      // than others.
+      opacity: 0.35 + rand() * 0.45,
+    }));
+  }, [count, speed]);
+
+  const anim = `nex-cover-mist-${Math.round(speed)}`;
+  return (
+    <>
+      <style>{`
+        @keyframes ${anim} {
+          0%   { transform: translate3d(0, 30%, 0) scale(0.9);  opacity: 0; }
+          20%  { opacity: 1; }
+          75%  { opacity: 0.6; }
+          100% { transform: translate3d(var(--nx-x, 0px), -140%, 0) scale(1.25); opacity: 0; }
+        }
+      `}</style>
+      <div
+        aria-hidden
+        style={{
+          position: "fixed",
+          inset: 0,
+          zIndex: 0,
+          pointerEvents: "none",
+          overflow: "hidden",
+        }}
+      >
+        {blobs.map((b, i) => {
+          const w = baseSize * b.scale;
+          return (
+            <span
+              key={i}
+              style={
+                {
+                  position: "absolute",
+                  left: `${b.left}%`,
+                  // Start below the visible cover so first frame is
+                  // already off-screen (no pop-in on load).
+                  bottom: -w * 0.4,
+                  width: w,
+                  height: w,
+                  borderRadius: "50%",
+                  background: `radial-gradient(circle, ${color} 0%, transparent 70%)`,
+                  filter: `blur(${blur}px)`,
+                  opacity: b.opacity,
+                  animation: `${anim} ${b.dur}s linear infinite`,
+                  animationDelay: `-${b.delay}s`,
+                  willChange: "transform, opacity",
+                  "--nx-x": `${b.xShift}vw`,
+                } as React.CSSProperties
+              }
+            />
+          );
+        })}
+      </div>
     </>
   );
 }
