@@ -549,34 +549,37 @@ function MistDrift({ config }: { config: MistDriftConfig }): React.JSX.Element {
       seed = (seed * 9301 + 49297) % 233280;
       return seed / 233280;
     };
+    // Founder direction 2026-09-30 (revised · realistic ground fog):
+    // wisps are tall narrow ellipses that emerge from the ground plane
+    // (bottom:0, opacity:0) rather than circular blobs entering from
+    // off-screen. Each wisp expands as it rises and dissipates well
+    // before the top of the viewport so headers stay legible.
     return Array.from({ length: count }, () => ({
       left: rand() * 100,
-      // Blob size varies 70%-140% of base so the wall doesn't read
-      // like a repeating pattern.
       scale: 0.7 + rand() * 0.7,
-      // Lateral drift · -10% to +10% of viewport width across the
-      // whole rise so blobs don't move in a rigid column.
-      xShift: (rand() - 0.5) * 20,
-      // Stagger blob start times across the whole cycle.
+      xShift: (rand() - 0.5) * 16,
       delay: rand() * speed,
-      // Each blob picks a slightly different speed so they don't
-      // rise in lockstep.
-      dur: speed * (0.75 + rand() * 0.5),
-      // Vary the peak opacity per blob so some read as denser fog
-      // than others.
-      opacity: 0.35 + rand() * 0.45,
+      dur: speed * (0.8 + rand() * 0.5),
+      opacity: 0.35 + rand() * 0.5,
+      tilt: (rand() - 0.5) * 8,
     }));
   }, [count, speed]);
 
   const anim = `nex-cover-mist-${Math.round(speed)}`;
+  const haze = `nex-cover-mist-haze-${Math.round(speed)}`;
   return (
     <>
       <style>{`
         @keyframes ${anim} {
-          0%   { transform: translate3d(0, 30%, 0) scale(0.9);  opacity: 0; }
-          20%  { opacity: 1; }
-          75%  { opacity: 0.6; }
-          100% { transform: translate3d(var(--nx-x, 0px), -140%, 0) scale(1.25); opacity: 0; }
+          0%   { transform: translate3d(0, 0, 0) scale(0.7) rotate(0deg); opacity: 0; }
+          15%  { opacity: 1; }
+          60%  { opacity: 0.5; }
+          85%  { opacity: 0; }
+          100% { transform: translate3d(var(--nx-x, 0px), -110vh, 0) scale(1.6) rotate(var(--nx-r, 0deg)); opacity: 0; }
+        }
+        @keyframes ${haze} {
+          0%, 100% { opacity: 0.5; transform: scaleY(1); }
+          50%      { opacity: 0.9; transform: scaleY(1.15); }
         }
       `}</style>
       <div
@@ -589,8 +592,25 @@ function MistDrift({ config }: { config: MistDriftConfig }): React.JSX.Element {
           overflow: "hidden",
         }}
       >
+        {/* Persistent ground haze · gives the wisps a visible origin
+            so the effect reads as fog rising FROM ground, not from
+            off-screen. */}
+        <div
+          style={{
+            position: "absolute",
+            left: 0,
+            right: 0,
+            bottom: 0,
+            height: 140,
+            background: `linear-gradient(to top, ${color} 0%, transparent 100%)`,
+            filter: `blur(${Math.round(blur * 0.6)}px)`,
+            transformOrigin: "bottom center",
+            animation: `${haze} ${Math.round(speed * 1.5)}s ease-in-out infinite`,
+          }}
+        />
         {blobs.map((b, i) => {
-          const w = baseSize * b.scale;
+          const wW = baseSize * 0.55 * b.scale;
+          const wH = baseSize * 1.4 * b.scale;
           return (
             <span
               key={i}
@@ -598,19 +618,19 @@ function MistDrift({ config }: { config: MistDriftConfig }): React.JSX.Element {
                 {
                   position: "absolute",
                   left: `${b.left}%`,
-                  // Start below the visible cover so first frame is
-                  // already off-screen (no pop-in on load).
-                  bottom: -w * 0.4,
-                  width: w,
-                  height: w,
+                  bottom: 0,
+                  width: wW,
+                  height: wH,
                   borderRadius: "50%",
-                  background: `radial-gradient(circle, ${color} 0%, transparent 70%)`,
+                  transformOrigin: "bottom center",
+                  background: `radial-gradient(ellipse at center 90%, ${color} 0%, transparent 75%)`,
                   filter: `blur(${blur}px)`,
                   opacity: b.opacity,
                   animation: `${anim} ${b.dur}s linear infinite`,
                   animationDelay: `-${b.delay}s`,
                   willChange: "transform, opacity",
                   "--nx-x": `${b.xShift}vw`,
+                  "--nx-r": `${b.tilt}deg`,
                 } as React.CSSProperties
               }
             />
