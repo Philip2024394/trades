@@ -162,13 +162,20 @@ export const MARIA_MOCK: MockCoverContent = {
     },
     delivery_details:
       "We deliver Ubud + surrounding villages 08:00-21:00. Last order 20:30. Free delivery within 3 km · Rp 15k for the rest.",
+    // Founder direction 2026-09-30 · custom button reframed as the
+    // NEX-standard "quality promise" pattern. The label adapts to the
+    // vertical in real deployments (Ingredients We Use for restaurants
+    // / cafes · Parts We Use for repair services · Materials We Use
+    // for tradespeople etc.) · Maria is a café so it renders as
+    // "Ingredients We Use". The body is a reusable quality-standards
+    // paragraph sellers can trim or personalise.
     custom_buttons: [
       {
-        id: "cb_beans",
+        id: "cb_ingredients",
         enabled: true,
         icon: "☕",
-        label: "Beans we use",
-        body: "Single-origin Bali arabica from Kintamani farmers · light + medium roast. Filter or espresso, both stocked.",
+        label: "Ingredients We Use",
+        body: "Every ingredient is hand-picked and selected to hold the quality standards our customers expect. We aim for the highest standards available in the daily preparation of everything we serve.",
         image_url: null,
         external_url: null,
       },
