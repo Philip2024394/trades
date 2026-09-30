@@ -22,18 +22,31 @@
 
 import * as React from "react";
 import { useCoverSendMessage } from "./useCoverSendMessage";
+import {
+  CoverInfoTray,
+  type CoverInfoTrayContent,
+} from "./CoverInfoTray";
 
 export interface CoverComposerProps {
   ownerAccountId: string;
   ownerBusinessId: string | null;
   ownerBisnisTier?: "gratis" | "bisnis";
   ownerDisplayName?: string;
+  /** Founder direction 2026-09-30 · when provided, tapping the +
+   *  button opens a themed info tray populated from these fields.
+   *  When omitted (or empty), the + button stays disabled with the
+   *  legacy "More actions coming soon" affordance. */
+  infoTrayContent?: CoverInfoTrayContent | null;
 }
 
 export function CoverComposer(props: CoverComposerProps): React.JSX.Element {
   const [text, setText] = React.useState("");
   const [emojiOpen, setEmojiOpen] = React.useState(false);
+  const [infoTrayOpen, setInfoTrayOpen] = React.useState(false);
   const inputRef = React.useRef<HTMLInputElement | null>(null);
+  const infoTrayEnabled =
+    props.infoTrayContent !== null &&
+    props.infoTrayContent !== undefined;
   const { send, sendState, lastError, lastResponse } = useCoverSendMessage({
     ownerAccountId: props.ownerAccountId,
     ownerBusinessId: props.ownerBusinessId,
@@ -124,13 +137,25 @@ export function CoverComposer(props: CoverComposerProps): React.JSX.Element {
             WebkitBackdropFilter: "blur(10px) saturate(1.05)",
           }}
         >
-          {/* Left · SOLID accent-colour "+" round button · deferred
-              panel (placeholder for future shop/marketing/share). */}
+          {/* Left · SOLID accent-colour "+" round button · when
+              infoTrayContent is threaded through, this opens the
+              CoverInfoTray with About Us / Delivery / etc. Otherwise
+              it stays disabled with a "More actions coming soon" hint. */}
           <button
             type="button"
-            aria-label="More actions"
-            disabled
-            title="More actions coming soon"
+            aria-label={infoTrayEnabled ? "Open info" : "More actions"}
+            aria-expanded={infoTrayEnabled ? infoTrayOpen : undefined}
+            disabled={!infoTrayEnabled}
+            title={
+              infoTrayEnabled
+                ? "About · Delivery · Hours · more"
+                : "More actions coming soon"
+            }
+            onClick={
+              infoTrayEnabled
+                ? () => setInfoTrayOpen((v) => !v)
+                : undefined
+            }
             style={{
               width: 32,
               height: 32,
@@ -140,8 +165,8 @@ export function CoverComposer(props: CoverComposerProps): React.JSX.Element {
               color: "#03101D",
               display: "grid",
               placeItems: "center",
-              cursor: "not-allowed",
-              opacity: 0.85,
+              cursor: infoTrayEnabled ? "pointer" : "not-allowed",
+              opacity: infoTrayEnabled ? 1 : 0.85,
               flex: "0 0 auto",
               padding: 0,
               boxShadow: "0 2px 6px rgba(0,0,0,0.35)",
@@ -231,6 +256,18 @@ export function CoverComposer(props: CoverComposerProps): React.JSX.Element {
           </button>
         </div>
       </form>
+
+      {/* Founder direction 2026-09-30 · info tray opens from the +
+          button. Renders only when infoTrayContent is threaded through
+          from the layout (real business data OR MARIA_MOCK preview). */}
+      {infoTrayEnabled && props.infoTrayContent && (
+        <CoverInfoTray
+          open={infoTrayOpen}
+          onClose={() => setInfoTrayOpen(false)}
+          businessName={props.ownerDisplayName ?? "this shop"}
+          content={props.infoTrayContent}
+        />
+      )}
 
       {/* Error toast · surfaces above the composer */}
       {lastError && (

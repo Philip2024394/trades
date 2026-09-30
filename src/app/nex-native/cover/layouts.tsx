@@ -197,6 +197,17 @@ export function LayoutCafe({ content, themeId }: LayoutProps): React.JSX.Element
         ownerAccountId={content.ownerAccountId}
         ownerBusinessId={null}
         ownerDisplayName={content.businessName}
+        infoTrayContent={{
+          pages: content.infoPages ?? null,
+          aboutUs: content.aboutUs ?? null,
+          hours: content.hours,
+          address: content.address,
+          paymentMethodLabels: content.paymentMethodLabels ?? [],
+          returnPolicyBody: content.returnPolicyBody ?? null,
+          eventsBody: content.eventsBody ?? null,
+          galleryUrls: content.galleryUrls ?? [],
+          isVenue: content.isVenue ?? false,
+        }}
       />
     </>
   );
@@ -308,6 +319,17 @@ export function LayoutRestaurant({ content, themeId }: LayoutProps): React.JSX.E
         ownerAccountId={content.ownerAccountId}
         ownerBusinessId={null}
         ownerDisplayName={content.businessName}
+        infoTrayContent={{
+          pages: content.infoPages ?? null,
+          aboutUs: content.aboutUs ?? null,
+          hours: content.hours,
+          address: content.address,
+          paymentMethodLabels: content.paymentMethodLabels ?? [],
+          returnPolicyBody: content.returnPolicyBody ?? null,
+          eventsBody: content.eventsBody ?? null,
+          galleryUrls: content.galleryUrls ?? [],
+          isVenue: content.isVenue ?? false,
+        }}
       />
     </>
   );
@@ -370,6 +392,17 @@ export function LayoutProduct({ content, themeId }: LayoutProps): React.JSX.Elem
         ownerAccountId={content.ownerAccountId}
         ownerBusinessId={null}
         ownerDisplayName={content.businessName}
+        infoTrayContent={{
+          pages: content.infoPages ?? null,
+          aboutUs: content.aboutUs ?? null,
+          hours: content.hours,
+          address: content.address,
+          paymentMethodLabels: content.paymentMethodLabels ?? [],
+          returnPolicyBody: content.returnPolicyBody ?? null,
+          eventsBody: content.eventsBody ?? null,
+          galleryUrls: content.galleryUrls ?? [],
+          isVenue: content.isVenue ?? false,
+        }}
       />
     </>
   );
@@ -420,6 +453,17 @@ export function LayoutTradesperson({ content, themeId }: LayoutProps): React.JSX
         ownerAccountId={content.ownerAccountId}
         ownerBusinessId={null}
         ownerDisplayName={content.businessName}
+        infoTrayContent={{
+          pages: content.infoPages ?? null,
+          aboutUs: content.aboutUs ?? null,
+          hours: content.hours,
+          address: content.address,
+          paymentMethodLabels: content.paymentMethodLabels ?? [],
+          returnPolicyBody: content.returnPolicyBody ?? null,
+          eventsBody: content.eventsBody ?? null,
+          galleryUrls: content.galleryUrls ?? [],
+          isVenue: content.isVenue ?? false,
+        }}
       />
     </>
   );
@@ -496,6 +540,17 @@ export function LayoutSalon({ content, themeId }: LayoutProps): React.JSX.Elemen
         ownerAccountId={content.ownerAccountId}
         ownerBusinessId={null}
         ownerDisplayName={content.businessName}
+        infoTrayContent={{
+          pages: content.infoPages ?? null,
+          aboutUs: content.aboutUs ?? null,
+          hours: content.hours,
+          address: content.address,
+          paymentMethodLabels: content.paymentMethodLabels ?? [],
+          returnPolicyBody: content.returnPolicyBody ?? null,
+          eventsBody: content.eventsBody ?? null,
+          galleryUrls: content.galleryUrls ?? [],
+          isVenue: content.isVenue ?? false,
+        }}
       />
     </>
   );
@@ -560,6 +615,17 @@ export function LayoutCreator({ content, themeId }: LayoutProps): React.JSX.Elem
         ownerAccountId={content.ownerAccountId}
         ownerBusinessId={null}
         ownerDisplayName={content.businessName}
+        infoTrayContent={{
+          pages: content.infoPages ?? null,
+          aboutUs: content.aboutUs ?? null,
+          hours: content.hours,
+          address: content.address,
+          paymentMethodLabels: content.paymentMethodLabels ?? [],
+          returnPolicyBody: content.returnPolicyBody ?? null,
+          eventsBody: content.eventsBody ?? null,
+          galleryUrls: content.galleryUrls ?? [],
+          isVenue: content.isVenue ?? false,
+        }}
       />
     </>
   );
@@ -655,6 +721,17 @@ export function LayoutFashion({ content, themeId }: LayoutProps): React.JSX.Elem
         ownerAccountId={content.ownerAccountId}
         ownerBusinessId={null}
         ownerDisplayName={content.businessName}
+        infoTrayContent={{
+          pages: content.infoPages ?? null,
+          aboutUs: content.aboutUs ?? null,
+          hours: content.hours,
+          address: content.address,
+          paymentMethodLabels: content.paymentMethodLabels ?? [],
+          returnPolicyBody: content.returnPolicyBody ?? null,
+          eventsBody: content.eventsBody ?? null,
+          galleryUrls: content.galleryUrls ?? [],
+          isVenue: content.isVenue ?? false,
+        }}
       />
     </>
   );
@@ -706,6 +783,17 @@ export function LayoutStreetFood({ content, themeId }: LayoutProps): React.JSX.E
         ownerAccountId={content.ownerAccountId}
         ownerBusinessId={null}
         ownerDisplayName={content.businessName}
+        infoTrayContent={{
+          pages: content.infoPages ?? null,
+          aboutUs: content.aboutUs ?? null,
+          hours: content.hours,
+          address: content.address,
+          paymentMethodLabels: content.paymentMethodLabels ?? [],
+          returnPolicyBody: content.returnPolicyBody ?? null,
+          eventsBody: content.eventsBody ?? null,
+          galleryUrls: content.galleryUrls ?? [],
+          isVenue: content.isVenue ?? false,
+        }}
       />
     </>
   );
@@ -769,6 +857,17 @@ export function LayoutPremiumBusiness({ content, themeId }: LayoutProps): React.
         ownerAccountId={content.ownerAccountId}
         ownerBusinessId={null}
         ownerDisplayName={content.businessName}
+        infoTrayContent={{
+          pages: content.infoPages ?? null,
+          aboutUs: content.aboutUs ?? null,
+          hours: content.hours,
+          address: content.address,
+          paymentMethodLabels: content.paymentMethodLabels ?? [],
+          returnPolicyBody: content.returnPolicyBody ?? null,
+          eventsBody: content.eventsBody ?? null,
+          galleryUrls: content.galleryUrls ?? [],
+          isVenue: content.isVenue ?? false,
+        }}
       />
     </>
   );
@@ -844,6 +943,17 @@ export function LayoutPersonalBrand({ content, themeId }: LayoutProps): React.JS
         ownerAccountId={content.ownerAccountId}
         ownerBusinessId={null}
         ownerDisplayName={content.businessName}
+        infoTrayContent={{
+          pages: content.infoPages ?? null,
+          aboutUs: content.aboutUs ?? null,
+          hours: content.hours,
+          address: content.address,
+          paymentMethodLabels: content.paymentMethodLabels ?? [],
+          returnPolicyBody: content.returnPolicyBody ?? null,
+          eventsBody: content.eventsBody ?? null,
+          galleryUrls: content.galleryUrls ?? [],
+          isVenue: content.isVenue ?? false,
+        }}
       />
     </>
   );

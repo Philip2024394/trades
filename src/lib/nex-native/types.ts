@@ -446,6 +446,12 @@ export interface NexBusinessRow {
    *  pickup_only / dine_in / digital. NULL = unset (cover falls back
    *  to "Local Delivery"). Set by seller on /manage/shop. */
   shipping_scope?: string | null;
+  /** Migration 109 · sealed 2026-09-30 · seller-authored info-pages
+   *  blob backing the cover-composer + info tray. Shape validated in
+   *  src/lib/nex-native/info-pages-service.ts. Nullable · seller can
+   *  toggle any button off (info_pages.enabled) or add up to 3 custom
+   *  buttons (info_pages.custom_buttons). */
+  info_pages?: import("./info-pages").NexInfoPagesJson | null;
   /** Bridge 16e · single-line city / neighbourhood · migration 072.
    *  Shown on the About panel with a 📍 pin. Free-text 1-80 chars
    *  when set. Directory facet reads this via lower(city) index. */

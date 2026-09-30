@@ -5,6 +5,7 @@
 // variation. Same peer, same products, same social — different layout.
 
 import type { CoverProduct, CoverSection, CoverSocialLinks } from "./primitives";
+import type { NexInfoPagesJson } from "@/lib/nex-native/info-pages";
 
 export interface MockCoverContent {
   businessName: string;
@@ -41,6 +42,26 @@ export interface MockCoverContent {
     | "dine_in"
     | "digital"
     | null;
+  /** Migration 109 · sealed 2026-09-30 · seller-authored info blob
+   *  backing the + button info tray on the cover composer. Optional ·
+   *  when null the + button falls back to disabled. */
+  infoPages?: NexInfoPagesJson | null;
+  /** Cover-facing About Us body (from nex_business.description). Kept
+   *  as a top-level field on the mock so preview layouts don't have to
+   *  reach into a business object. */
+  aboutUs?: string | null;
+  /** Accepted payment method labels · pre-rendered from
+   *  NEX_PAYMENT_METHOD_META so we don't drag business-service into
+   *  the client bundle. */
+  paymentMethodLabels?: string[];
+  /** Pre-rendered return-policy body · optional. */
+  returnPolicyBody?: string | null;
+  /** Pre-rendered events / catering body · optional. */
+  eventsBody?: string | null;
+  /** Venue gallery photo URLs · optional. */
+  galleryUrls?: string[];
+  /** True when the shop's business_category is a venue. */
+  isVenue?: boolean;
   products: CoverProduct[];
   services: {
     id: string;
@@ -86,6 +107,45 @@ export const MARIA_MOCK: MockCoverContent = {
   locationLng: 115.257660,
   countryCode: "ID",
   shippingScope: "local_and_export",
+  aboutUs:
+    "Maria's Café is a family-run slow-coffee bar and sourdough kitchen in Ubud, open since 2019. Everything is baked and pulled the same morning by Maria and her two sons.",
+  paymentMethodLabels: [
+    "💵 COD",
+    "📱 QRIS on Delivery",
+    "🤝 Meetup",
+  ],
+  returnPolicyBody:
+    "Freshly baked and prepared items are non-returnable. If something arrived damaged, message us within 24 hours with a photo and we'll replace it or refund in full.",
+  eventsBody:
+    "We cater private parties, weddings, and small corporate events (8-40 people). Full menu · outside catering available · sound system on request. Book at least 5 days ahead.",
+  galleryUrls: [],
+  isVenue: true,
+  infoPages: {
+    enabled: {
+      about_us: true,
+      delivery: true,
+      hours: true,
+      payment: true,
+      returns: true,
+      catering: true,
+      gallery: false,
+      custom_orders: false,
+      services: false,
+    },
+    delivery_details:
+      "We deliver Ubud + surrounding villages 08:00-21:00. Last order 20:30. Free delivery within 3 km · Rp 15k for the rest.",
+    custom_buttons: [
+      {
+        id: "cb_beans",
+        enabled: true,
+        icon: "☕",
+        label: "Beans we use",
+        body: "Single-origin Bali arabica from Kintamani farmers · light + medium roast. Filter or espresso, both stocked.",
+        image_url: null,
+        external_url: null,
+      },
+    ],
+  },
   sections: [
     { id: "sec-meal", name: "Meal", sort_order: 0 },
     { id: "sec-snack", name: "Snack", sort_order: 1 },
