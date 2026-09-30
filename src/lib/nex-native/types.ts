@@ -441,6 +441,11 @@ export interface NexBusinessRow {
    *  from /manage/shop. Doctrine: NEX never handles payments · buyer
    *  is always safe. */
   accepted_payment_methods: string[];
+  /** Migration 108 · sealed 2026-09-30 · how the shop fulfils orders.
+   *  Enum: local_delivery / local_and_export / international_only /
+   *  pickup_only / dine_in / digital. NULL = unset (cover falls back
+   *  to "Local Delivery"). Set by seller on /manage/shop. */
+  shipping_scope?: string | null;
   /** Bridge 16e · single-line city / neighbourhood · migration 072.
    *  Shown on the About panel with a 📍 pin. Free-text 1-80 chars
    *  when set. Directory facet reads this via lower(city) index. */

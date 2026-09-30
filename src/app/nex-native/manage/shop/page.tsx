@@ -42,7 +42,10 @@ import { SellerLocationEditor } from "./_location-editor";
 import {
   NEX_PAYMENT_METHODS,
   NEX_PAYMENT_METHOD_META,
+  NEX_SHIPPING_SCOPES,
+  NEX_SHIPPING_SCOPE_META,
 } from "@/lib/nex-native/business-service";
+import { updateBusinessShippingScopeAction } from "./_shipping-scope-action";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -173,6 +176,12 @@ export default async function ShopSettingsPage({
   );
   const locationBound = updateBusinessLocationAction.bind(null, business.id);
   const accepted = new Set(business.accepted_payment_methods ?? ["cod"]);
+  const shippingScopeBound = updateBusinessShippingScopeAction.bind(
+    null,
+    business.id,
+  );
+  const currentShippingScope = business.shipping_scope ?? null;
+  const isVenue = isVenueCategory(business.business_category);
   const awayUntilInputValue = business.away_until
     ? new Date(business.away_until).toISOString().slice(0, 10)
     : "";
@@ -762,6 +771,145 @@ export default async function ShopSettingsPage({
               }
               tone={business.safe_trade_activated ? "ghost" : "primary"}
             />
+          </form>
+        </SectionCard>
+
+        {/* --- Shipping scope (Migration 108 · sealed 2026-09-30) --- */}
+        <SectionCard>
+          <SectionEyebrow color={NEX.cyan}>Delivery</SectionEyebrow>
+          <h2
+            style={{
+              margin: "6px 0 6px",
+              fontSize: 18,
+              fontWeight: 700,
+              letterSpacing: "-0.005em",
+            }}
+          >
+            How you fulfil orders
+          </h2>
+          <p
+            style={{
+              margin: "0 0 16px",
+              fontSize: 13,
+              lineHeight: 1.55,
+              color: NEX.textDim,
+            }}
+          >
+            Pick the option that matches your shop. This becomes the
+            heading buyers see on your cover page (e.g. "Local Delivery"
+            or "Local Delivery / Export"). You can change it any time.
+          </p>
+          <form
+            action={shippingScopeBound}
+            style={{ display: "flex", flexDirection: "column", gap: 10 }}
+          >
+            {NEX_SHIPPING_SCOPES.filter((s) => {
+              const meta = NEX_SHIPPING_SCOPE_META[s];
+              return !meta.venueOnly || isVenue;
+            }).map((s) => {
+              const meta = NEX_SHIPPING_SCOPE_META[s];
+              const isChecked = currentShippingScope === s;
+              return (
+                <label
+                  key={s}
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "24px 1fr",
+                    gap: 12,
+                    padding: "12px 14px",
+                    borderRadius: 12,
+                    background: isChecked
+                      ? "rgba(0,175,255,0.10)"
+                      : "rgba(0,0,0,0.28)",
+                    border: isChecked
+                      ? `1px solid ${NEX.cyanSoft}`
+                      : `1px solid ${NEX.border}`,
+                    cursor: "pointer",
+                  }}
+                >
+                  <input
+                    type="radio"
+                    name="shipping_scope"
+                    value={s}
+                    defaultChecked={isChecked}
+                    style={{
+                      accentColor: NEX.cyan,
+                      width: 18,
+                      height: 18,
+                      marginTop: 2,
+                    }}
+                  />
+                  <div>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 8,
+                        fontSize: 13,
+                        fontWeight: 700,
+                        marginBottom: 2,
+                      }}
+                    >
+                      <span aria-hidden>{meta.emoji}</span>
+                      {meta.label}
+                    </div>
+                    <div
+                      style={{
+                        fontSize: 12,
+                        color: NEX.textDim,
+                        lineHeight: 1.5,
+                      }}
+                    >
+                      {meta.blurb}
+                    </div>
+                  </div>
+                </label>
+              );
+            })}
+            {/* Unset row · lets the seller clear the picker (falls
+                back to the cover default). */}
+            <label
+              style={{
+                display: "grid",
+                gridTemplateColumns: "24px 1fr",
+                gap: 12,
+                padding: "10px 14px",
+                borderRadius: 12,
+                background:
+                  currentShippingScope === null
+                    ? "rgba(139,169,209,0.08)"
+                    : "rgba(0,0,0,0.16)",
+                border:
+                  currentShippingScope === null
+                    ? `1px solid ${NEX.borderStrong}`
+                    : `1px dashed ${NEX.border}`,
+                cursor: "pointer",
+              }}
+            >
+              <input
+                type="radio"
+                name="shipping_scope"
+                value="__unset__"
+                defaultChecked={currentShippingScope === null}
+                style={{
+                  accentColor: NEX.textDim,
+                  width: 18,
+                  height: 18,
+                  marginTop: 2,
+                }}
+              />
+              <div
+                style={{
+                  fontSize: 12,
+                  color: NEX.textDim,
+                  lineHeight: 1.5,
+                }}
+              >
+                Not set · cover heading defaults to&nbsp;
+                <em style={{ color: NEX.text }}>Local Delivery</em>.
+              </div>
+            </label>
+            <SubmitButton label="Save delivery scope" tone="primary" />
           </form>
         </SectionCard>
 

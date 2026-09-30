@@ -22,11 +22,25 @@ export interface MockCoverContent {
   countryCode?: string | null;
   /** Founder direction 2026-09-30 · seller-configurable eyebrow +
    *  title for the primary catalog section. Both optional · fall back
-   *  to sensible defaults ("Services" / "Ships locally · exports too")
-   *  when omitted. A future settings surface will persist these
-   *  per-business on nex_business. */
+   *  to sensible defaults ("Services" / resolved shipping scope) when
+   *  omitted. A future settings surface will persist per-business
+   *  overrides on nex_business.
+   *
+   *  When shippingScope is set and sectionTitle is NOT, the layout
+   *  resolves NEX_SHIPPING_SCOPE_META[shippingScope].label (e.g.
+   *  "Local Delivery" / "Local Delivery / Export") as the visible
+   *  heading. sectionTitle wins if both are present. */
   sectionEyebrow?: string | null;
   sectionTitle?: string | null;
+  /** Migration 108 · nex_business.shipping_scope value. Optional. */
+  shippingScope?:
+    | "local_delivery"
+    | "local_and_export"
+    | "international_only"
+    | "pickup_only"
+    | "dine_in"
+    | "digital"
+    | null;
   products: CoverProduct[];
   services: {
     id: string;
@@ -60,6 +74,7 @@ export const MARIA_MOCK: MockCoverContent = {
   hours: "07:00 · 22:00 · every day",
   address: "Jl. Raya Sanggingan, Ubud, Bali",
   countryCode: "ID",
+  shippingScope: "local_and_export",
   sections: [
     { id: "sec-meal", name: "Meal", sort_order: 0 },
     { id: "sec-snack", name: "Snack", sort_order: 1 },

@@ -87,10 +87,8 @@ export async function updateProductSku(
 import type {
   NexProductVariantInsert,
   NexProductVariantRow,
-  NexProductRow,
   NexProductSpec,
   NexVariantAttribute,
-  NexProductStockStatus,
 } from "./types";
 import { NEX_VARIANT_ATTRIBUTES } from "./types";
 

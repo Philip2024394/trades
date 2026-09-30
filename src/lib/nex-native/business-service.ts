@@ -382,6 +382,49 @@ export const NEX_PAYMENT_METHODS = [
 
 export type NexPaymentMethod = (typeof NEX_PAYMENT_METHODS)[number];
 
+// ---------------------------------------------------------------------------
+// Shipping scope · Migration 108 · sealed 2026-09-30
+// ---------------------------------------------------------------------------
+// The six values covering the real-world spread of how a NEX shop can
+// fulfil an order. Seller picks on /manage/shop · cover pages render
+// the resolved label as the primary section heading.
+//
+// Constants + type live in ./shipping-scope (client-safe · no
+// "server-only" import) so cover client components can consume them.
+// Server-side mutation stays here alongside the Supabase client.
+// ---------------------------------------------------------------------------
+
+export {
+  NEX_SHIPPING_SCOPES,
+  NEX_SHIPPING_SCOPE_META,
+  type NexShippingScope,
+} from "./shipping-scope";
+import {
+  NEX_SHIPPING_SCOPES,
+  type NexShippingScope,
+} from "./shipping-scope";
+
+/** Update the shop's shipping scope. Pass null to clear. */
+export async function updateShippingScope(
+  businessId: NexUuid,
+  scope: NexShippingScope | null,
+): Promise<void> {
+  if (scope !== null && !(NEX_SHIPPING_SCOPES as readonly string[]).includes(scope)) {
+    throw new Error(
+      `business-service.updateShippingScope: invalid scope "${scope}"`,
+    );
+  }
+  const { error } = await nexSupabaseAdmin
+    .from("nex_business")
+    .update({ shipping_scope: scope })
+    .eq("id", businessId);
+  if (error) {
+    throw new Error(
+      `business-service.updateShippingScope(${businessId}): ${error.message}`,
+    );
+  }
+}
+
 /** Human-friendly labels + emoji · consumed by the seller selector,
  *  the shop-landing chip strip, and the /safe-trade explainer. */
 export const NEX_PAYMENT_METHOD_META: Record<

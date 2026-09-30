@@ -26,6 +26,10 @@
 // like a website template.
 
 import * as React from "react";
+// Client-safe constants file (no "server-only" import) so this
+// "use client" module can safely resolve the shipping-scope label
+// without dragging Supabase into the browser bundle.
+import { NEX_SHIPPING_SCOPE_META } from "@/lib/nex-native/shipping-scope";
 import {
   CoverIdentityBadge,
   CoverSecondaryCTA,
@@ -70,13 +74,16 @@ export function LayoutCafe({ content, themeId }: LayoutProps): React.JSX.Element
         <div style={{ marginTop: 26 }}>
           {/* Founder direction 2026-09-30 · default eyebrow is "Services"
               (renameable per-seller in a future settings surface) · title
-              defaults to a shipping-scope descriptor ("Ships locally ·
-              exports too" style). Seller-editable copy tracked as
-              follow-up settings surface. */}
+              resolves from shipping-scope enum (Migration 108) to one of
+              the six NEX_SHIPPING_SCOPE_META labels · falls back to
+              "Local Delivery" when unset. sectionTitle wins if present. */}
           <CoverSectionHeading
             eyebrow={content.sectionEyebrow ?? "Services"}
             title={
-              content.sectionTitle ?? "Ships locally · exports too"
+              content.sectionTitle ??
+              (content.shippingScope
+                ? NEX_SHIPPING_SCOPE_META[content.shippingScope].label
+                : "Local Delivery")
             }
           />
           <CoverCatalog

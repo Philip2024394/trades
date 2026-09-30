@@ -87,68 +87,77 @@ export function CoverComposer(props: CoverComposerProps): React.JSX.Element {
         onSubmit={onSubmit}
         data-nex-cover-composer
         style={{
+          // Founder direction 2026-09-30 (revised) · NO background
+          // container on the footer itself · the composer floats. All
+          // affordances live inside a single long rounded field. Send
+          // button sits alongside the field, not inside it.
           position: "fixed",
           left: 0,
           right: 0,
           bottom: 0,
           zIndex: 30,
-          padding: "12px 12px calc(env(safe-area-inset-bottom, 0) + 12px)",
+          padding: "10px 12px calc(env(safe-area-inset-bottom, 0) + 10px)",
           display: "flex",
           alignItems: "center",
           gap: 8,
-          background:
-            "linear-gradient(0deg, rgba(3,8,20,0.94) 0%, rgba(3,8,20,0.82) 60%, rgba(3,8,20,0.4) 100%)",
-          backdropFilter: "blur(16px) saturate(1.1)",
-          WebkitBackdropFilter: "blur(16px) saturate(1.1)",
-          borderTop: "1px solid var(--nex-accent-soft, rgba(0,175,255,0.35))",
+          background: "transparent",
           fontFamily: "var(--nex-font-body, inherit)",
         }}
       >
-        {/* Left · small "+" (30px, secondary) · deferred panel · placeholder
-            for future shop/marketing/share panel per Pink Dream pattern. */}
-        <button
-          type="button"
-          aria-label="More actions"
-          disabled
-          title="More actions coming soon"
-          style={{
-            width: 30,
-            height: 30,
-            borderRadius: "50%",
-            border: "none",
-            background:
-              "linear-gradient(135deg, var(--nex-accent, #00AFFF), var(--nex-accent, #00AFFF)88)",
-            color: "var(--nex-text, #F2F5F8)",
-            display: "grid",
-            placeItems: "center",
-            cursor: "not-allowed",
-            opacity: 0.55,
-            flex: "0 0 auto",
-            padding: 0,
-          }}
-        >
-          <PlusIcon />
-        </button>
-
-        {/* Middle · smile + naked input with accent underline */}
+        {/* Single long rounded field · holds [+] [😊] [input] together.
+            Accent-soft border, faint accent-tinted fill so the field
+            reads as one continuous surface per cover theme. */}
         <div
           style={{
             flex: "1 1 0%",
             minWidth: 0,
             display: "flex",
             alignItems: "center",
-            gap: 4,
-            paddingRight: 4,
+            gap: 6,
+            padding: "6px 10px 6px 8px",
+            borderRadius: 24,
+            background:
+              "var(--nex-accent-faint, rgba(0,175,255,0.08))",
+            border:
+              "1px solid var(--nex-accent-soft, rgba(0,175,255,0.35))",
+            backdropFilter: "blur(10px) saturate(1.05)",
+            WebkitBackdropFilter: "blur(10px) saturate(1.05)",
           }}
         >
+          {/* Small "+" INSIDE the field · deferred panel (placeholder
+              for future shop/marketing/share). */}
+          <button
+            type="button"
+            aria-label="More actions"
+            disabled
+            title="More actions coming soon"
+            style={{
+              width: 28,
+              height: 28,
+              borderRadius: "50%",
+              border: "none",
+              background: "transparent",
+              color: "var(--nex-accent, #00AFFF)",
+              display: "grid",
+              placeItems: "center",
+              cursor: "not-allowed",
+              opacity: 0.85,
+              flex: "0 0 auto",
+              padding: 0,
+            }}
+          >
+            <PlusIcon />
+          </button>
+
+          {/* Emoji picker toggle · INSIDE the field. */}
           <button
             type="button"
             aria-label="Insert emoji"
             aria-expanded={emojiOpen}
             onClick={() => setEmojiOpen((v) => !v)}
             style={{
-              width: 34,
-              height: 34,
+              width: 28,
+              height: 28,
               padding: 0,
               borderRadius: "50%",
               background: "transparent",
@@ -162,6 +171,9 @@ export function CoverComposer(props: CoverComposerProps): React.JSX.Element {
           >
             <SmileIcon />
           </button>
+
+          {/* Text input · fills remaining width · NO border, NO fill
+              of its own · it draws from the outer field. */}
           <input
             ref={inputRef}
             type="text"
@@ -172,28 +184,21 @@ export function CoverComposer(props: CoverComposerProps): React.JSX.Element {
             disabled={sendState === "sending"}
             maxLength={4000}
             style={{
-              // Founder direction 2026-09-30 · composer input is a
-              // long rounded container with a small corner radius (was
-              // a naked underline). Reads as a real field the visitor
-              // can tap into.
               flex: "1 1 0%",
               minWidth: 0,
               width: "100%",
-              padding: "10px 14px",
-              background:
-                "var(--nex-accent-faint, rgba(0,175,255,0.06))",
-              border:
-                "1px solid var(--nex-accent-soft, rgba(0,175,255,0.35))",
-              borderRadius: 10,
+              padding: "6px 4px",
+              background: "transparent",
+              border: "none",
               color: "var(--nex-text, #F2F5F8)",
-              fontSize: 16,
+              fontSize: 15,
               fontFamily: "inherit",
               outline: "none",
             }}
           />
         </div>
 
-        {/* Right · gradient Send · 42px primary action */}
+        {/* Right · gradient Send · sits alongside the field. */}
         <button
           type="submit"
           disabled={!canSend}
