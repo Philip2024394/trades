@@ -86,9 +86,12 @@ export function LayoutCafe({ content, themeId }: LayoutProps): React.JSX.Element
                 : "Local Delivery")
             }
           />
+          {/* Founder direction 2026-09-30 · pass ALL products · the
+              CoverCatalog now paginates at 4 per page with prev/next
+              controls. Category filter narrows within the pagination. */}
           <CoverCatalog
             sections={content.sections}
-            products={content.products.slice(0, 4)}
+            products={content.products}
             peerAccountId={content.ownerAccountId}
             columns={2}
           />
@@ -807,11 +810,14 @@ function CoverPage({ children }: { children: React.ReactNode }): React.JSX.Eleme
         position: "relative",
         maxWidth: 720,
         margin: "0 auto",
-        // Founder direction 2026-09-30 · header must never sit under the
-        // iPhone/Android notch or earpiece. safe-area-inset-top gives the
-        // OS-reported space; 18px is the fallback for browsers without it.
+        // Founder direction 2026-09-30 (revised) · header must clear
+        // the iPhone/Android earpiece / notch / dynamic island AND the
+        // simulated 38px notch in the preview PhoneFrame. Real iOS
+        // devices fire env(safe-area-inset-top) via viewportFit:cover
+        // (set in src/app/nex-native/layout.tsx); the 44px fallback
+        // matches the iOS status bar height + clears the sim notch.
         paddingTop:
-          "max(env(safe-area-inset-top, 18px), 18px)",
+          "max(env(safe-area-inset-top, 44px), 44px)",
         paddingRight: 20,
         paddingLeft: 20,
         paddingBottom: "calc(env(safe-area-inset-bottom, 0) + 96px)",

@@ -304,6 +304,13 @@ export function CoverIdentityBadge(
               letterSpacing: "-0.015em",
               lineHeight: 1.1,
               textShadow: "0 2px 8px rgba(0,0,0,0.55)",
+              // Founder direction 2026-09-30 · business name must stay
+              // on one line even on the narrowest phone. Overflow the
+              // rest with an ellipsis rather than wrap and push the
+              // subtitle down.
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
             }}
           >
             {props.name}
