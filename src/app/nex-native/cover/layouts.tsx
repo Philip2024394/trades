@@ -366,6 +366,10 @@ export function LayoutProduct({ content, themeId }: LayoutProps): React.JSX.Elem
         <div style={{ marginTop: 20 }}>
           <WhoWeAreCollapsible
             body={content.aboutUs ?? content.tagline ?? ""}
+            hoursLabel={formatTodayHoursLabel(
+              content.hoursByDay,
+              content.hours,
+            )}
           />
         </div>
         <div
@@ -1041,7 +1045,61 @@ export function LayoutPersonalBrand({ content, themeId }: LayoutProps): React.JS
  * the same nex_business.description column that feeds the Info Tray
  * About Us panel · authoring the story once fills both surfaces.
  */
-function WhoWeAreCollapsible({ body }: { body: string }): React.JSX.Element | null {
+/** Convert 24-hour "HH:MM" to a compact 12-hour label ("7am", "9:30pm").
+ *  Founder direction 2026-09-30 · lowercase am/pm · no space between
+ *  number and suffix · omit the ":00" on the hour · so "07:00" reads
+ *  as "7am" and "07:30" reads as "7:30am". */
+function formatTime12(hhmm: string | null | undefined): string | null {
+  if (!hhmm) return null;
+  const parts = hhmm.split(":");
+  const h = Number(parts[0]);
+  const m = Number(parts[1] ?? "0");
+  if (!Number.isFinite(h) || h < 0 || h > 23) return null;
+  const ampm = h >= 12 ? "pm" : "am";
+  const hour12 = h % 12 === 0 ? 12 : h % 12;
+  return m > 0 ? `${hour12}:${String(m).padStart(2, "0")}${ampm}` : `${hour12}${ampm}`;
+}
+
+/** Compact "9am - 10pm" style label for TODAY, derived from a
+ *  WeeklyHours structure. Falls back to the seller's free-text
+ *  content.hours string when hoursByDay isn't populated · returns
+ *  null when today is closed. */
+function formatTodayHoursLabel(
+  hoursByDay:
+    | {
+        mon?: { open?: string | null; close?: string | null; closed?: boolean };
+        tue?: { open?: string | null; close?: string | null; closed?: boolean };
+        wed?: { open?: string | null; close?: string | null; closed?: boolean };
+        thu?: { open?: string | null; close?: string | null; closed?: boolean };
+        fri?: { open?: string | null; close?: string | null; closed?: boolean };
+        sat?: { open?: string | null; close?: string | null; closed?: boolean };
+        sun?: { open?: string | null; close?: string | null; closed?: boolean };
+      }
+    | null
+    | undefined,
+  fallbackText: string | null | undefined,
+): string | null {
+  if (hoursByDay) {
+    const keys = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"] as const;
+    const today = hoursByDay[keys[new Date().getDay()]];
+    if (today) {
+      if (today.closed === true) return "Closed today";
+      const open = formatTime12(today.open);
+      const close = formatTime12(today.close);
+      if (open && close) return `${open} - ${close}`;
+    }
+  }
+  const raw = (fallbackText ?? "").trim();
+  return raw.length > 0 ? raw : null;
+}
+
+function WhoWeAreCollapsible({
+  body,
+  hoursLabel,
+}: {
+  body: string;
+  hoursLabel?: string | null;
+}): React.JSX.Element | null {
   const [expanded, setExpanded] = React.useState(false);
   const trimmed = body.trim();
   if (trimmed.length === 0) return null;
@@ -1055,15 +1113,54 @@ function WhoWeAreCollapsible({ body }: { body: string }): React.JSX.Element | nu
     <section>
       <div
         style={{
-          fontSize: 10,
-          letterSpacing: "0.16em",
-          textTransform: "uppercase",
-          color: "var(--nex-accent)",
-          fontWeight: 700,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: 12,
           marginBottom: 4,
         }}
       >
-        Who We Are
+        <div
+          style={{
+            fontSize: 10,
+            letterSpacing: "0.16em",
+            textTransform: "uppercase",
+            color: "var(--nex-accent)",
+            fontWeight: 700,
+          }}
+        >
+          Who We Are
+        </div>
+        {hoursLabel && (
+          <div
+            aria-label={`Today's hours ${hoursLabel}`}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 6,
+              fontSize: 12,
+              fontWeight: 700,
+              color: "var(--nex-accent)",
+              fontVariantNumeric: "tabular-nums",
+            }}
+          >
+            <svg
+              width={14}
+              height={14}
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden
+            >
+              <circle cx="12" cy="12" r="9" />
+              <polyline points="12 7 12 12 16 14" />
+            </svg>
+            <span>{hoursLabel}</span>
+          </div>
+        )}
       </div>
       <div
         style={{
