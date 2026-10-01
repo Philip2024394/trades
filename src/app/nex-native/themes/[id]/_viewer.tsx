@@ -18,6 +18,15 @@ import {
   type PortraitBloomMessage,
 } from "@/app/nex-native/chat/_portrait-bloom-shell";
 import type { NexChatThemeLayoutStyle } from "@/lib/nex-native/chat-theme-service";
+import {
+  JokerMotionOverlay,
+  type JokerMotionVariant,
+} from "./_joker-motion";
+import { JokerController } from "./_joker-controller";
+import { getThemeAssets } from "@/lib/nex-native/theme-assets";
+import { TrustScan } from "@/app/nex-native/_trust-scan/TrustScan";
+import { mockTrustScanProvider } from "@/app/nex-native/_trust-scan/trust-scan-mock-provider";
+import { NEX_TRUST_SCAN_SKIN } from "@/app/nex-native/_trust-scan/trust-scan-skin";
 
 interface ThemeViewerClientProps {
   themeId: string;
@@ -56,6 +65,22 @@ interface ThemeViewerClientProps {
    *  PeerComposer's EmojiModal so the picker shows image tiles when
    *  the theme has a custom set. */
   themeEmojis?: { slug: string; imageUrl: string; label: string }[];
+  /** Bridge ThemeSticker · sealed 2026-10-01 · this theme's sticker
+   *  set from nex_theme_sticker (Migration 118). Threaded through
+   *  PortraitBloomShell into PeerComposer's EmojiModal so the Stickers
+   *  tab appears when the theme has a sticker set. */
+  themeStickers?: {
+    slug: string;
+    imageUrl: string;
+    label: string;
+    stickerType: "static" | "animated";
+    aspectRatio: number;
+  }[];
+  /** Joker motion prototype · sealed 2026-10-01 · when set, a full-
+   *  screen pointer-events:none overlay renders above the wallpaper
+   *  with the chosen effect (rain · sparks · bat · cards · lightning
+   *  · bubbles · confetti · smoke · embers · glitch). Null hides it. */
+  motionVariant?: JokerMotionVariant | null;
 }
 
 // Mock catalogue for the preview shop slider · 3 products + 2 menu
@@ -141,7 +166,20 @@ export default function ThemeViewerClient(
   // All timestamps come from the SERVER props · no Date.now() here,
   // no hydration mismatch. Bridge 97g.
   const s = props.sentAts;
-  const messages: PortraitBloomMessage[] = React.useMemo(
+  // Scan game dismissal · once the user clicks Dismiss on the Trust
+  // Scan, both the scan AND the glitch overlay (scan sweep + reveal
+  // image) stop rendering so the chat returns to its pre-scan state.
+  const [scanGameCleared, setScanGameCleared] = React.useState(false);
+  // Independent trigger for Trust Scan opened from the 3-dots action
+  // card (not via the glitch motion variant). Lets the user preview
+  // the scan without reloading with ?motion=glitch.
+  const [trustScanOpenRequest, setTrustScanOpenRequest] =
+    React.useState(false);
+
+  // Bridge Reactions-Order · sealed 2026-10-01 · preview now uses
+  // useState so the founder can tap reaction tiles in the picker and
+  // see the big-newest + small-older stack update live · no DB write.
+  const [messages, setMessages] = React.useState<PortraitBloomMessage[]>(
     () => [
       {
         id: "sample-1",
@@ -157,6 +195,7 @@ export default function ThemeViewerClient(
         read_at: s.readEarly,
         mine: true,
         reactions: { "🔥": ["fake"] },
+        reactions_order: ["🔥"],
       },
       {
         id: "sample-3",
@@ -180,15 +219,92 @@ export default function ThemeViewerClient(
         mine: false,
       },
     ],
-    [s],
   );
 
-  // Preview mode: every server action is a no-op stub. PortraitBloom
-  // still renders the composer + long-press affordances so a designer
-  // can see the interaction chrome, but nothing hits the DB.
+  // Preview mode: composer + upload etc. are still no-ops · nothing
+  // writes to the DB. But the reaction toggle IS wired to local state
+  // so the founder can validate the big-newest + small-older behaviour
+  // end-to-end from the picker.
   const noopAction = async () => {
     /* preview only · no writes */
   };
+
+  // Bridge ThemeSticker · sealed 2026-10-01 · preview-mode sticker
+  // send. Matches the live contract: client posts ONLY the slug, the
+  // "server" (here · the mirror of the real server action) resolves
+  // the authoritative sticker record from props.themeStickers (which
+  // was itself DB-sourced server-side in page.tsx). Mirrors how the
+  // real sendPeerStickerAction looks up nex_theme_sticker · keeps the
+  // preview and production paths behaving identically.
+  const previewSendSticker = React.useCallback(
+    async (formData: FormData) => {
+      const slug = String(formData.get("theme_sticker_slug") ?? "").trim();
+      if (!slug) return;
+      if (!/^[a-z0-9][a-z0-9_-]{0,60}$/.test(slug)) return;
+      const sticker = (props.themeStickers ?? []).find((s) => s.slug === slug);
+      if (!sticker) return;
+      if (sticker.stickerType !== "static") return;
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `preview-sticker-${Date.now()}`,
+          body: "",
+          sent_at: new Date().toISOString(),
+          read_at: null,
+          mine: true,
+          attachment_url: sticker.imageUrl,
+          attachment_type: "sticker",
+          attachment_sticker: {
+            theme_id: props.themeId,
+            slug: sticker.slug,
+            label: sticker.label,
+            sticker_type: sticker.stickerType,
+            aspect_ratio: sticker.aspectRatio,
+          },
+        },
+      ]);
+    },
+    [props.themeId, props.themeStickers],
+  );
+
+  // Client-side simulation of toggleMessageReaction · mirrors the
+  // server semantics: 0→1 append to reactions_order, N→0 remove from
+  // reactions_order · other transitions leave the order alone.
+  const previewToggleReaction = React.useCallback(
+    async (formData: FormData) => {
+      const messageId = String(formData.get("message_id") ?? "").trim();
+      const emoji = String(formData.get("emoji") ?? "");
+      if (!messageId || !emoji) return;
+      const selfId = "preview-self";
+      setMessages((prev) =>
+        prev.map((m) => {
+          if (m.id !== messageId) return m;
+          const reactions = { ...(m.reactions ?? {}) };
+          const order = [...(m.reactions_order ?? Object.keys(reactions))];
+          const prevList = reactions[emoji] ?? [];
+          const prevLen = prevList.length;
+          const idx = prevList.indexOf(selfId);
+          const nextList =
+            idx >= 0
+              ? prevList.filter((id) => id !== selfId)
+              : [...prevList, selfId];
+          if (nextList.length === 0) {
+            delete reactions[emoji];
+          } else {
+            reactions[emoji] = nextList;
+          }
+          let nextOrder = order;
+          if (prevLen === 0 && nextList.length > 0) {
+            nextOrder = order.filter((e) => e !== emoji).concat(emoji);
+          } else if (prevLen > 0 && nextList.length === 0) {
+            nextOrder = order.filter((e) => e !== emoji);
+          }
+          return { ...m, reactions, reactions_order: nextOrder };
+        }),
+      );
+    },
+    [],
+  );
 
   // Bubbles is the world-class chrome and works with every theme's
   // wallpaperConfig (halo · drift · sparkle · bubbleStyle). Terminal
@@ -244,14 +360,72 @@ export default function ThemeViewerClient(
         sendCartOrderAction={noopAction}
         productInquiryAction={noopAction}
         uploadAction={noopAction}
-        toggleReactionAction={noopAction}
+        toggleReactionAction={previewToggleReaction}
         themeEmojis={props.themeEmojis}
+        themeStickers={props.themeStickers}
+        sendStickerAction={previewSendSticker}
+        /* Per-theme send button · the Joker theme (theme-0) overrides
+           the default orange disc with the Batman roundel. Other themes
+           fall through to the default rendering. */
+        themeSendButtonUrl={
+          props.themeId === "theme-0"
+            ? "/nex-themes/joker-send-button.png"
+            : null
+        }
         /* Bridge 97h · force Cart button visible in previews even
            while NEX_COMMERCE_ENABLED is false during the Indonesia
            launch. Preview shows the full [Home] [Shop] [Cart]
            cluster · Founder ask: "same buttons as dream theme". */
         forceShowCart
+        /* Per-theme shop backdrop · resolved via theme-assets.ts
+           (same helper the real peer-chat page uses). Joker gets the
+           alley wallpaper; themes without a slot fall through to the
+           modal's default gradient. */
+        shopBackgroundImageUrl={getThemeAssets(props.themeId).shopBackgroundUrl}
       />
+      {/* Joker motion prototype overlay · query-string driven via
+          ?motion=<variant> · see _joker-motion.tsx for the ten
+          sealed variants + the motion-picture animation standards.
+          `scanGameCleared` suppresses the glitch overlay once the
+          user has dismissed the stats card, so the chat returns to
+          its untouched wallpaper state. */}
+      <JokerMotionOverlay
+        variant={
+          scanGameCleared && props.motionVariant === "glitch"
+            ? null
+            : props.motionVariant ?? null
+        }
+      />
+      {/* Joker-theme animation controller · 3-dots floating trigger +
+          full-screen panel of toggles. Only mounted for theme-0 so
+          other themes stay quiet. */}
+      {props.themeId === "theme-0" && (
+        <JokerController
+          onOpenTrustScan={() => setTrustScanOpenRequest(true)}
+        />
+      )}
+      {/* NEX Trust Scan · NEX product with ONE visual identity across
+          every chat theme (Joker, Night Sky, Pink Dream, future).
+          Theme-neutral by sealed doctrine · opened via ?motion=glitch
+          during Phase 1 preview, future trigger is a universal Scan
+          button in the chat header. Dismiss stops the glitch overlay
+          too so the chat returns to its pre-scan state. See
+          `_trust-scan/trust-scan-types.ts` for the typed data contract
+          and `nex_trust_scan_doctrine_2026_10_01.md` in memory for
+          the sealed design. */}
+      {((props.motionVariant === "glitch" && !scanGameCleared) ||
+        trustScanOpenRequest) && (
+        <TrustScan
+          scannedAccountId="preview-peer"
+          viewerAccountId="preview-self"
+          skin={NEX_TRUST_SCAN_SKIN}
+          provider={mockTrustScanProvider}
+          onDismiss={() => {
+            setScanGameCleared(true);
+            setTrustScanOpenRequest(false);
+          }}
+        />
+      )}
     </>
   );
 }

@@ -22,7 +22,9 @@
 import { notFound } from "next/navigation";
 import * as chatThemeService from "@/lib/nex-native/chat-theme-service";
 import { listThemeEmojis } from "@/lib/nex-native/theme-emoji-service";
+import { listThemeStickers } from "@/lib/nex-native/theme-sticker-service";
 import ThemeViewerClient from "./_viewer";
+import { parseJokerMotion } from "./_joker-motion-data";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -32,7 +34,7 @@ export default async function ThemeViewerPage({
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams?: Promise<{ mode?: string }>;
+  searchParams?: Promise<{ mode?: string; motion?: string }>;
 }) {
   const { id } = await params;
   const sp = (await searchParams) ?? {};
@@ -60,6 +62,7 @@ export default async function ThemeViewerPage({
   // the URL flips isVenue so the header icon becomes cutlery and
   // the slider header reads "Menu". Same data structure otherwise.
   const isVenueMode = sp.mode === "menu";
+  const motionVariant = parseJokerMotion(sp.motion);
 
   // Bridge ThemeEmoji-B · load this theme's emoji set (if any) so
   // the composer emoji picker paints the theme's tiles instead of
@@ -69,6 +72,18 @@ export default async function ThemeViewerPage({
     slug: row.slug,
     imageUrl: row.image_url,
     label: row.label,
+  }));
+
+  // Bridge ThemeSticker · sealed 2026-10-01 · load this theme's
+  // sticker set (if any) so the composer exposes the dedicated
+  // Stickers tab. See Migration 118 + theme-sticker-service.ts.
+  const themeStickerRows = await listThemeStickers(theme.id).catch(() => []);
+  const themeStickers = themeStickerRows.map((row) => ({
+    slug: row.slug,
+    imageUrl: row.image_url,
+    label: row.label,
+    stickerType: row.sticker_type,
+    aspectRatio: row.aspect_ratio,
   }));
 
   return (
@@ -84,6 +99,8 @@ export default async function ThemeViewerPage({
       sentAts={sentAts}
       isVenueMode={isVenueMode}
       themeEmojis={themeEmojis}
+      themeStickers={themeStickers}
+      motionVariant={motionVariant}
     />
   );
 }

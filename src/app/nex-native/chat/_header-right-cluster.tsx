@@ -85,6 +85,9 @@ interface Props {
    *  (Kept the name `forceShowCart` for callsite brevity even though
    *  it now controls both commerce buttons together.) */
   forceShowCart?: boolean;
+  /** Optional per-theme shop background image · threaded straight
+   *  into ShopGridModal. Resolved upstream from theme-assets.ts. */
+  shopBackgroundImageUrl?: string | null;
 }
 
 /** Read the total quantity of items currently in the localStorage
@@ -115,6 +118,7 @@ export function HeaderRightCluster({
   sendCartOrderAction,
   inquiryAction,
   forceShowCart = false,
+  shopBackgroundImageUrl,
 }: Props) {
   const [shopOpen, setShopOpen] = React.useState(false);
   const [cartCount, setCartCount] = React.useState(0);
@@ -245,6 +249,7 @@ export function HeaderRightCluster({
           shopContext={shop.context}
           sendCartOrderAction={sendCartOrderAction}
           inquiryAction={inquiryAction}
+          backgroundImageUrl={shopBackgroundImageUrl ?? null}
         />
       )}
     </>

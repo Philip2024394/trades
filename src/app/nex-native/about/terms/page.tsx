@@ -58,7 +58,7 @@ export default function TermsOfUsePage(): React.JSX.Element {
             marginBottom: 12,
           }}
         >
-          Terms of Use · v1 · 2026-09-29
+          Terms of Use · v1.1 · 2026-10-01
         </div>
 
         <h1
@@ -198,6 +198,79 @@ export default function TermsOfUsePage(): React.JSX.Element {
           NEX is operated. For questions about this document or your
           account, message the official NEX support account
           (nex-00001) inside the app.
+        </Section>
+
+        {/* Added v1.1 · 2026-10-01 · founder-sealed language for the
+            NEX Trust Scan + the broader NEX Safe Community & Trust
+            data terms. Full wording is enforceable (specific purposes,
+            no unrelated commercial use). The in-product short notice
+            lives inside the Trust Scan UI itself. */}
+        <Section num="13" title="NEX Safe Community & Trust">
+          <p style={{ margin: "0 0 10px" }}>
+            NEX is designed to provide a safer environment for users
+            communicating, buying, selling, and doing business with one
+            another.
+          </p>
+          <p style={{ margin: "0 0 10px" }}>
+            To support this, NEX may collect and use limited account,
+            activity, transaction, verification, and community-safety
+            information to help users make more informed decisions when
+            interacting or trading with another NEX user.
+          </p>
+          <p style={{ margin: "0 0 8px" }}>
+            This information may be used for purposes including:
+          </p>
+          <List
+            items={[
+              "account and business verification;",
+              "preventing and detecting fraud, scams, abuse, impersonation, spam, and other harmful activity;",
+              "maintaining community safety;",
+              "supporting buyer and seller protection;",
+              "investigating reports, disputes, and suspicious activity;",
+              "providing NEX Trust Scan and related safety features; and",
+              "improving the security and reliability of NEX's trading and communication environment.",
+            ]}
+          />
+          <p style={{ margin: "12px 0 10px" }}>
+            NEX will only use information for these purposes where
+            permitted by applicable law and NEX's Privacy Policy. NEX
+            does not present Trust Scan information as a guarantee that
+            another user is trustworthy or that a transaction will be
+            safe. Users remain responsible for making their own
+            decisions when communicating or trading with others.
+          </p>
+          <p style={{ margin: "0 0 10px" }}>
+            NEX will not make a user's private information publicly
+            available simply because another user performs a Trust
+            Scan. Trust Scan is intended to present relevant safety
+            and account signals while protecting personal information
+            and the identity of users who submit reports.
+          </p>
+          <p style={{ margin: "0 0 10px" }}>
+            NEX does not use Trust Scan to determine or declare that a
+            person is a scammer, dishonest, or unsafe solely because of
+            an automated signal or user report. Where relevant
+            information is unavailable, NEX may show that the
+            information is unknown rather than treating the absence of
+            information as evidence of wrongdoing.
+          </p>
+          <p style={{ margin: "0" }}>
+            For details about what information NEX collects, why it is
+            collected, how long it may be retained, who it may be
+            shared with, and the rights available to users, please see
+            the{" "}
+            <Link
+              href="/nex-native/about/privacy"
+              style={{
+                color: NEX.orange,
+                textDecoration: "none",
+                fontWeight: 600,
+              }}
+            >
+              NEX Privacy Policy
+            </Link>
+            .
+          </p>
         </Section>
 
         <div style={{ marginTop: 32, display: "flex", gap: 12, flexWrap: "wrap" }}>

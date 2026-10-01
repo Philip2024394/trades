@@ -23,6 +23,7 @@ import {
 import type { NexUuid } from "./types";
 import {
   NEX_PEER_MESSAGE_QUICK_REACTIONS,
+  isValidReactionEmoji,
   type NexPeerMessageReactions,
 } from "./peer-message-reactions";
 
@@ -55,6 +56,13 @@ export interface NexPeerMessageRow {
   /** Bridge 66 · migration 091 · emoji → [account_id, ...] map.
    *  Default {} · toggled via toggleMessageReaction. Never NULL. */
   reactions: NexPeerMessageReactions;
+  /** Bridge Reactions-Order · migration 117 · sealed 2026-10-01 ·
+   *  emoji keys in the order they were first added to this message.
+   *  The UI treats the last entry as "newest" · that emoji renders
+   *  as a large stamp overlapping the bubble corner while the rest
+   *  demote to a small chip row. Empty when the message has no
+   *  reactions · never NULL. */
+  reactions_order: string[];
   /** Bridge 76 · when true, body is the sentinel '(encrypted)' and
    *  the real content lives in ciphertext / nonce. */
   encrypted?: boolean;
@@ -107,7 +115,15 @@ export type NexPeerAttachmentKind =
   | "product"
   | "menu_item"
   | "cart_order"
-  | "product_share";
+  | "product_share"
+  // Bridge ThemeSticker · sealed 2026-10-01 · dedicated peer-message
+  // content type for theme stickers (Migration 118 · nex_theme_sticker).
+  // Rendered ~140px tall in the bubble lane · NEVER as an inline emoji
+  // chip. attachment_url points at the sticker's public URL in the
+  // nex-theme-sticker bucket; attachment_meta.sticker carries the
+  // snapshot so the bubble stays renderable if the sticker is later
+  // deleted from the theme.
+  | "sticker";
 
 export interface NexPeerAttachmentMeta {
   duration_ms?: number;
@@ -133,6 +149,26 @@ export interface NexPeerAttachmentMeta {
    *  claim their discount. Rendered as B4 Swiss NEX Banner. Frozen
    *  so the banner keeps working even if the product/ladder edits. */
   product_share?: NexPeerProductShareSnapshot;
+  /** Bridge ThemeSticker · when attachment_type='sticker', a snapshot
+   *  of the sticker captured at send time. Frozen so the bubble stays
+   *  renderable even if the sticker is later deleted from the theme
+   *  set. aspect_ratio drives the ~140px-tall sticker footprint
+   *  render so there's no layout shift while the image loads. */
+  sticker?: NexPeerStickerSnapshot;
+}
+
+/** Bridge ThemeSticker · snapshot embedded in attachment_meta when a
+ *  theme sticker is sent in peer chat. See Migration 118. */
+export interface NexPeerStickerSnapshot {
+  theme_id: string;
+  slug: string;
+  label: string;
+  /** 'static' (Phase 1) or 'animated' (future · APNG/animated-WebP/
+   *  Lottie reaction stickers). Renderer must branch on this. */
+  sticker_type: "static" | "animated";
+  /** width / height · drives the reserved footprint in the bubble so
+   *  the layout doesn't shift while the sticker image loads. */
+  aspect_ratio: number;
 }
 
 /** Bridge 49b · Snapshot embedded in an attachment_meta when a peer
@@ -495,13 +531,16 @@ export async function toggleMessageReaction(
   callerAccountId: NexUuid,
   emoji: string,
 ): Promise<NexPeerMessageReactions> {
-  if (!NEX_PEER_MESSAGE_QUICK_REACTIONS.includes(emoji)) {
+  // Bridge ThemeEmoji · accepts unicode whitelist OR theme-emoji slugs
+  // in `:slug:` form so per-theme reactions can flow through the same
+  // storage path without a schema change.
+  if (!isValidReactionEmoji(emoji)) {
     throw new Error(`reaction '${emoji}' is not on the whitelist`);
   }
 
   const cur = await nexSupabaseAdmin
     .from("nex_peer_message")
-    .select("id, conversation_id, reactions")
+    .select("id, conversation_id, reactions, reactions_order")
     .eq("id", messageId)
     .maybeSingle();
   if (cur.error) {
@@ -515,6 +554,7 @@ export async function toggleMessageReaction(
     id: NexUuid;
     conversation_id: NexUuid;
     reactions: NexPeerMessageReactions | null;
+    reactions_order: string[] | null;
   };
   // Membership check · RLS also enforces this but a clear error is
   // kinder than a silent 0-row update.
@@ -528,6 +568,8 @@ export async function toggleMessageReaction(
   }
 
   const next: NexPeerMessageReactions = { ...(row.reactions ?? {}) };
+  const prevOrder = row.reactions_order ?? [];
+  const prevListLen = next[emoji]?.length ?? 0;
   const list = next[emoji] ? [...next[emoji]!] : [];
   const idx = list.indexOf(callerAccountId);
   if (idx >= 0) {
@@ -541,9 +583,25 @@ export async function toggleMessageReaction(
     next[emoji] = list;
   }
 
+  // Bridge Reactions-Order · migration 117 · maintain reactions_order
+  // so the UI can render the newest emoji as a large stamp overlap.
+  //  · 0 → 1 transition: append emoji (it just became "newest")
+  //  · N → 0 transition: drop the emoji from the array
+  //  · otherwise: leave the array untouched (repeat-toggles by the
+  //    same user shouldn't churn ordering)
+  const nextListLen = list.length;
+  let nextOrder: string[] = prevOrder;
+  if (prevListLen === 0 && nextListLen > 0) {
+    // First reactor picked this emoji · make it the newest by moving
+    // it to the end of the order array (or appending if absent).
+    nextOrder = prevOrder.filter((e) => e !== emoji).concat(emoji);
+  } else if (prevListLen > 0 && nextListLen === 0) {
+    nextOrder = prevOrder.filter((e) => e !== emoji);
+  }
+
   const upd = await nexSupabaseAdmin
     .from("nex_peer_message")
-    .update({ reactions: next })
+    .update({ reactions: next, reactions_order: nextOrder })
     .eq("id", messageId);
   if (upd.error) {
     throw new Error(

@@ -88,6 +88,30 @@ interface PeerComposerProps {
   themeEmojis?:
     | { slug: string; imageUrl: string; label: string }[]
     | null;
+  /** Bridge ThemeSticker · sealed 2026-10-01 · per-theme sticker set
+   *  loaded from nex_theme_sticker (Migration 118). When non-empty,
+   *  the composer's picker renders a dedicated "Stickers" tab with
+   *  portrait tiles. Selecting a sticker SENDS it immediately as a
+   *  peer-message with attachment_type='sticker' — stickers are
+   *  NEVER inserted as inline text or emoji tokens. */
+  themeStickers?:
+    | {
+        slug: string;
+        imageUrl: string;
+        label: string;
+        stickerType: "static" | "animated";
+        aspectRatio: number;
+      }[]
+    | null;
+  /** Server Action that sends a sticker-type peer message. Picker
+   *  calls this directly when a sticker tile is tapped · unlike text
+   *  + emojis which route through the composer form. */
+  sendStickerAction?: (formData: FormData) => Promise<void> | void;
+  /** Optional per-theme send-button artwork. When provided, the
+   *  circular send button renders this image inside the existing
+   *  36×36 footprint instead of the default orange background +
+   *  paper-plane glyph. Pending + disabled states are preserved. */
+  themeSendButtonUrl?: string | null;
 }
 
 export function PeerComposer({
@@ -99,6 +123,9 @@ export function PeerComposer({
   pendingAttachment,
   encryptedUploadEnabled,
   themeEmojis,
+  themeStickers,
+  sendStickerAction,
+  themeSendButtonUrl,
 }: PeerComposerProps) {
   const formRef = React.useRef<HTMLFormElement>(null);
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
@@ -109,9 +136,26 @@ export function PeerComposer({
   const [recorderKind, setRecorderKind] = React.useState<CaptureKind | null>(
     null,
   );
+  // Bridge ThemeEmoji-C · sealed 2026-10-01. When the founder taps a
+  // theme emoji tile in the picker, we don't want to see the ":slug:"
+  // text splatted into the textarea. Instead the tile gets pinned as
+  // an image chip inside the composer pill · reads as if the emoji
+  // lives IN the input bar. On send we serialize the chips back into
+  // the body as ":slug:" markers · the bubble renderer resolves them
+  // back into images so both sides see identical output.
+  const [pendingThemeEmojis, setPendingThemeEmojis] = React.useState<
+    { slug: string; imageUrl: string; label: string }[]
+  >([]);
+  const themeEmojiIndex = React.useMemo(() => {
+    const m = new Map<string, { slug: string; imageUrl: string; label: string }>();
+    for (const t of themeEmojis ?? []) m.set(t.slug, t);
+    return m;
+  }, [themeEmojis]);
   const hasText = text.trim().length > 0;
-  // Send is armed whenever there's text OR a pending attachment.
-  const canSend = hasText || !!pendingAttachment;
+  const hasPendingEmojis = pendingThemeEmojis.length > 0;
+  // Send is armed whenever there's text, a pending attachment, or at
+  // least one pinned theme-emoji chip.
+  const canSend = hasText || !!pendingAttachment || hasPendingEmojis;
 
   /** Desktop check · true when we should prefer the in-browser
    *  recorder (getUserMedia + MediaRecorder) over the native
@@ -168,23 +212,58 @@ export function PeerComposer({
     [uploadAction],
   );
 
-  const insertEmoji = React.useCallback((emoji: string) => {
-    const el = textareaRef.current;
-    if (!el) {
-      setText((prev) => prev + emoji);
-      return;
-    }
-    const start = el.selectionStart ?? el.value.length;
-    const end = el.selectionEnd ?? el.value.length;
-    const next = el.value.slice(0, start) + emoji + el.value.slice(end);
-    setText(next);
-    // Restore cursor after the inserted emoji · defer so React flushes
-    // the new value first.
-    requestAnimationFrame(() => {
-      el.focus();
-      el.setSelectionRange(start + emoji.length, start + emoji.length);
-    });
+  const insertEmoji = React.useCallback(
+    (emoji: string) => {
+      // Bridge ThemeEmoji-C · sealed 2026-10-01. Theme emojis arrive as
+      // ":slug:" values from the picker · route those into the pending-
+      // chip state so the founder sees the actual image inside the
+      // composer pill rather than raw text. Unicode emojis fall through
+      // to the textarea insert-at-caret behaviour unchanged.
+      const themeMatch = /^:([a-z0-9-]{1,40}):$/.exec(emoji);
+      if (themeMatch) {
+        const slug = themeMatch[1]!;
+        const tile = themeEmojiIndex.get(slug);
+        if (tile) {
+          setPendingThemeEmojis((prev) => [...prev, tile]);
+          return;
+        }
+        // Unknown slug · fall back to text-insert so we never silently
+        // drop the pick.
+      }
+      const el = textareaRef.current;
+      if (!el) {
+        setText((prev) => prev + emoji);
+        return;
+      }
+      const start = el.selectionStart ?? el.value.length;
+      const end = el.selectionEnd ?? el.value.length;
+      const next = el.value.slice(0, start) + emoji + el.value.slice(end);
+      setText(next);
+      // Restore cursor after the inserted emoji · defer so React flushes
+      // the new value first.
+      requestAnimationFrame(() => {
+        el.focus();
+        el.setSelectionRange(start + emoji.length, start + emoji.length);
+      });
+    },
+    [themeEmojiIndex],
+  );
+
+  const removePendingEmoji = React.useCallback((index: number) => {
+    setPendingThemeEmojis((prev) => prev.filter((_, i) => i !== index));
   }, []);
+
+  // Bridge ThemeEmoji-C · assemble the wire-format `body` from typed
+  // text + pinned theme-emoji chips. Chips serialize as ":slug:" tokens
+  // separated by single spaces and prepended to the typed text so the
+  // reader's cursor lands on the text portion. When there is no text
+  // the body is chips only, which is legitimate ("react-only" message).
+  const composeBody = React.useCallback((): string => {
+    const chipStr = pendingThemeEmojis.map((t) => `:${t.slug}:`).join(" ");
+    if (!chipStr) return text;
+    if (!text) return chipStr;
+    return `${chipStr} ${text}`;
+  }, [pendingThemeEmojis, text]);
 
   const resizeTextarea = React.useCallback(() => {
     const el = textareaRef.current;
@@ -275,6 +354,8 @@ export function PeerComposer({
       {emojiOpen && (
         <EmojiModal
           themeEmojis={themeEmojis ?? null}
+          themeStickers={themeStickers ?? null}
+          sendStickerAction={sendStickerAction}
           onClose={() => setEmojiOpen(false)}
           onPick={(e) => {
             insertEmoji(e);
@@ -287,7 +368,19 @@ export function PeerComposer({
         ref={formRef}
         action={action as (formData: FormData) => void | Promise<void>}
         data-nex-peer-composer
-        onSubmit={() => setText("")}
+        onSubmit={() => {
+          // Clear both the typed text AND the pending emoji chips ·
+          // the hidden `body` input has already been read by the form
+          // submitter, so this only resets what the founder sees.
+          setText("");
+          setPendingThemeEmojis([]);
+          // Theme-aware broadcast · lets ambient controllers (e.g. the
+          // Joker-theme bats-on-send burst) react to a send without
+          // being coupled to the composer internals.
+          if (typeof window !== "undefined") {
+            window.dispatchEvent(new CustomEvent("nex-joker-send"));
+          }
+        }}
         style={{
           position: "relative",
           display: "flex",
@@ -295,6 +388,12 @@ export function PeerComposer({
           gap: 20,
         }}
       >
+        {/* Bridge ThemeEmoji-C · the wire-format body. The textarea
+         *  itself is no longer named `body` so the Server Action reads
+         *  from this hidden field instead. When there are no pinned
+         *  emoji chips this evaluates to the exact typed text · so the
+         *  regular chat path is byte-identical to before the change. */}
+        <input type="hidden" name="body" value={composeBody()} />
         {/* Bridge 5 · reply header · when the URL carries ?reply=<id>
             the composer shows a "replying to" quote card above the
             pill + smuggles the reply_to_id via a hidden input. */}
@@ -497,7 +596,7 @@ export function PeerComposer({
               cursor: "pointer",
             }}
           >
-            <DotsIcon />
+            <DotsIcon color={themeAccent ?? NEX.cyan} />
           </button>
         </div>
 
@@ -520,9 +619,83 @@ export function PeerComposer({
           }}
         >
             <PlusButton onClick={() => setModalOpen(true)} />
+            {/* Bridge ThemeEmoji-C · pinned theme-emoji chips render
+             *  inline before the textarea so the picked emoji reads as
+             *  if it is inside the input bar. Each chip is tappable ·
+             *  tap × to unpin. The body serialization prepends the
+             *  chips as ":slug:" markers to the outgoing message. */}
+            {hasPendingEmojis && (
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 4,
+                  flexShrink: 0,
+                  maxWidth: "60%",
+                  overflowX: "auto",
+                  scrollbarWidth: "none",
+                }}
+              >
+                {pendingThemeEmojis.map((tile, i) => (
+                  <span
+                    key={`${tile.slug}-${i}`}
+                    style={{
+                      position: "relative",
+                      flex: "0 0 auto",
+                      width: 30,
+                      height: 30,
+                      borderRadius: 8,
+                      background: "rgba(0,159,239,0.14)",
+                      border: "1px solid rgba(0,159,239,0.35)",
+                      display: "grid",
+                      placeItems: "center",
+                    }}
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={tile.imageUrl}
+                      alt={tile.label || tile.slug}
+                      width={22}
+                      height={22}
+                      style={{
+                        width: 22,
+                        height: 22,
+                        objectFit: "contain",
+                        pointerEvents: "none",
+                      }}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => removePendingEmoji(i)}
+                      aria-label={`Remove ${tile.label || tile.slug}`}
+                      title="Remove"
+                      style={{
+                        position: "absolute",
+                        top: -6,
+                        right: -6,
+                        width: 16,
+                        height: 16,
+                        padding: 0,
+                        borderRadius: "50%",
+                        border: "none",
+                        background: "rgba(2,9,20,0.92)",
+                        color: NEX.textPrimary,
+                        fontSize: 10,
+                        lineHeight: 1,
+                        cursor: "pointer",
+                        display: "grid",
+                        placeItems: "center",
+                        boxShadow: "0 2px 6px rgba(0,0,0,0.4)",
+                      }}
+                    >
+                      ×
+                    </button>
+                  </span>
+                ))}
+              </div>
+            )}
             <textarea
               ref={textareaRef}
-              name="body"
               maxLength={4000}
               placeholder={placeholder}
               rows={1}
@@ -552,7 +725,7 @@ export function PeerComposer({
               }}
             />
             <EmojiButton onClick={() => setEmojiOpen(true)} />
-            <SendButton armed={canSend} />
+            <SendButton armed={canSend} themeSendButtonUrl={themeSendButtonUrl ?? null} />
         </div>
       </form>
     </>
@@ -614,9 +787,16 @@ function PlusButton({ onClick }: { onClick: () => void }) {
   );
 }
 
-function SendButton({ armed }: { armed: boolean }) {
+function SendButton({
+  armed,
+  themeSendButtonUrl,
+}: {
+  armed: boolean;
+  themeSendButtonUrl?: string | null;
+}) {
   const { pending } = useFormStatus();
   const active = armed && !pending;
+  const useImage = !!themeSendButtonUrl;
   return (
     <button
       type="submit"
@@ -627,10 +807,13 @@ function SendButton({ armed }: { armed: boolean }) {
         width: 36,
         height: 36,
         borderRadius: "50%",
-        // Always orange · opacity + scale carry the enabled state.
-        background: NEX.orange,
+        // Themed send button swaps the orange disc + paper plane for
+        // the theme's own artwork (e.g. the Joker-theme Batman roundel).
+        // When no theme asset is set the button falls back to the
+        // founder-approved orange + glyph layout.
+        background: useImage ? "transparent" : NEX.orange,
         color: "#0B0F1A",
-        border: `1px solid ${NEX.orangeSoft}`,
+        border: useImage ? "none" : `1px solid ${NEX.orangeSoft}`,
         display: "grid",
         placeItems: "center",
         cursor: pending ? "wait" : armed ? "pointer" : "not-allowed",
@@ -639,10 +822,13 @@ function SendButton({ armed }: { armed: boolean }) {
         transform: active ? "scale(1)" : "scale(0.92)",
         opacity: active ? 1 : pending ? 0.85 : 0.4,
         boxShadow: active
-          ? "0 6px 18px rgba(255,120,0,0.35)"
+          ? useImage
+            ? "0 6px 18px rgba(255,220,70,0.35)"
+            : "0 6px 18px rgba(255,120,0,0.35)"
           : "none",
         marginLeft: 4,
         padding: 0,
+        overflow: "hidden",
       }}
     >
       {pending ? (
@@ -654,6 +840,20 @@ function SendButton({ armed }: { armed: boolean }) {
             borderRadius: "50%",
             background: NEX.textPrimary,
             animation: "nex-composer-pulse 1s ease-in-out infinite",
+          }}
+        />
+      ) : useImage ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={themeSendButtonUrl!}
+          alt=""
+          aria-hidden
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "contain",
+            display: "block",
+            pointerEvents: "none",
           }}
         />
       ) : (
@@ -835,6 +1035,8 @@ function EmojiModal({
   onClose,
   onPick,
   themeEmojis,
+  themeStickers,
+  sendStickerAction,
 }: {
   onClose: () => void;
   onPick: (emoji: string) => void;
@@ -844,9 +1046,25 @@ function EmojiModal({
   themeEmojis?:
     | { slug: string; imageUrl: string; label: string }[]
     | null;
+  /** Bridge ThemeSticker · when non-empty, the picker exposes a
+   *  "Stickers" tab rendering portrait tiles. Tapping a sticker
+   *  posts a FormData payload to `sendStickerAction` which sends
+   *  a peer message with attachment_type='sticker'. */
+  themeStickers?:
+    | {
+        slug: string;
+        imageUrl: string;
+        label: string;
+        stickerType: "static" | "animated";
+        aspectRatio: number;
+      }[]
+    | null;
+  sendStickerAction?: (formData: FormData) => Promise<void> | void;
 }) {
   const useTheme = !!themeEmojis && themeEmojis.length > 0;
-  const [tab, setTab] = React.useState<"emoji" | "mascot">("emoji");
+  const hasStickers =
+    !!themeStickers && themeStickers.length > 0 && !!sendStickerAction;
+  const [tab, setTab] = React.useState<"emoji" | "stickers">("emoji");
   React.useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -865,9 +1083,10 @@ function EmojiModal({
         style={{
           position: "fixed",
           inset: 0,
-          background: "rgba(2,9,20,0.78)",
-          backdropFilter: "blur(14px)",
-          WebkitBackdropFilter: "blur(14px)",
+          // Light dim · no blur · so ambient theme motion (falling
+          // cards, bats, rain, etc.) stays visible behind the picker
+          // instead of being frosted into a flat wash.
+          background: "rgba(2,9,20,0.28)",
           zIndex: 100,
         }}
       />
@@ -889,14 +1108,14 @@ function EmojiModal({
         data-nex-media-modal
         role="dialog"
         aria-modal="true"
-        aria-label="Pick an emoji or mascot"
+        aria-label="Pick an emoji or sticker"
         style={{
           position: "fixed",
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          width: "min(380px, calc(100vw - 32px))",
-          height: "min(560px, calc(100vh - 96px))",
+          width: "min(440px, calc(100vw - 24px))",
+          height: "min(620px, calc(100vh - 72px))",
           padding: "20px 18px 18px",
           // Frosted glass with a subtle theme accent ring · reads
           // higher fidelity than the previous flat panel.
@@ -928,7 +1147,7 @@ function EmojiModal({
             fontWeight: 600,
           }}
         >
-          {tab === "emoji" ? "Pick an emoji" : "Pick a mascot"}
+          {tab === "emoji" ? "Pick an emoji" : "Pick a sticker"}
         </div>
 
         {/* Emoji / Mascot toggle · segmented control */}
@@ -952,9 +1171,9 @@ function EmojiModal({
             label="Emoji"
           />
           <PickerTab
-            active={tab === "mascot"}
-            onClick={() => setTab("mascot")}
-            label="Mascot"
+            active={tab === "stickers"}
+            onClick={() => setTab("stickers")}
+            label="Stickers"
           />
         </div>
 
@@ -966,8 +1185,11 @@ function EmojiModal({
                 flex: 1,
                 overflowY: "auto",
                 display: "grid",
-                gridTemplateColumns: "repeat(6, 1fr)",
-                gap: 6,
+                // 5 columns · bigger tiles so each image emoji is
+                // readable at a glance · 25 jokers land in a clean
+                // 5×5 grid with no overflow.
+                gridTemplateColumns: "repeat(5, 1fr)",
+                gap: 8,
                 paddingRight: 4,
               }}
             >
@@ -1056,11 +1278,127 @@ function EmojiModal({
               ))}
             </div>
           )
+        ) : hasStickers ? (
+          <StickersGrid
+            stickers={themeStickers!}
+            sendStickerAction={sendStickerAction!}
+            onPicked={onClose}
+          />
         ) : (
           <MascotEmpty />
         )}
       </div>
     </>
+  );
+}
+
+// Bridge ThemeSticker · sealed 2026-10-01. Portrait tiles for the
+// Stickers tab · 3-column grid so the natural ~0.72 aspect ratio
+// renders cleanly without distortion. Tapping a sticker POSTs a
+// FormData payload to sendStickerAction (Server Action) and closes
+// the picker · stickers are a DEDICATED content type, never routed
+// through the emoji-token insert path.
+function StickersGrid({
+  stickers,
+  sendStickerAction,
+  onPicked,
+}: {
+  stickers: Array<{
+    slug: string;
+    imageUrl: string;
+    label: string;
+    stickerType: "static" | "animated";
+    aspectRatio: number;
+  }>;
+  sendStickerAction: (formData: FormData) => Promise<void> | void;
+  onPicked: () => void;
+}) {
+  return (
+    <div
+      data-nex-emoji-scroll
+      style={{
+        flex: 1,
+        overflowY: "auto",
+        display: "grid",
+        // 2 columns per founder direction 2026-10-01 · each sticker
+        // uses more of the container width so the portrait artwork
+        // reads at its intended size instead of being pinched.
+        gridTemplateColumns: "repeat(2, 1fr)",
+        gap: 10,
+        paddingRight: 4,
+      }}
+    >
+      {stickers.map((sticker) => (
+        <form
+          key={sticker.slug}
+          action={sendStickerAction}
+          onSubmit={() => {
+            // Close the picker immediately · the Server Action is
+            // already queued by this point so the sticker send
+            // completes in the background.
+            setTimeout(() => onPicked(), 0);
+          }}
+          style={{ margin: 0 }}
+        >
+          {/* Sealed security boundary 2026-10-01 · the browser MUST
+              only post the sticker slug. image_url, label, type, and
+              aspect are DB-resolved server-side in
+              sendPeerStickerAction · never trusted from here. See
+              nex_trust_scan_doctrine (reporter-identity doctrine
+              applies to any client-authored payload). */}
+          <input
+            type="hidden"
+            name="theme_sticker_slug"
+            value={sticker.slug}
+          />
+          <button
+            type="submit"
+            aria-label={`Send sticker ${sticker.label || sticker.slug}`}
+            title={sticker.label || sticker.slug}
+            style={{
+              // Sealed 2026-10-01 · stickers fill the full height and
+              // width of their tile · no padding, no border frame, no
+              // background fill. The sticker artwork IS the chrome.
+              display: "block",
+              width: "100%",
+              aspectRatio: sticker.aspectRatio,
+              background: "transparent",
+              border: "none",
+              borderRadius: 12,
+              padding: 0,
+              overflow: "hidden",
+              cursor: "pointer",
+              transition: "transform 120ms ease, filter 120ms ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "scale(1.03)";
+              e.currentTarget.style.filter =
+                "drop-shadow(0 0 14px rgba(0,159,239,0.45))";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "scale(1)";
+              e.currentTarget.style.filter = "none";
+            }}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={sticker.imageUrl}
+              alt={sticker.label || sticker.slug}
+              style={{
+                display: "block",
+                width: "100%",
+                height: "100%",
+                // Cover · the button's aspect-ratio matches the sticker's
+                // native aspect, so cover == exact edge-to-edge fill
+                // with no letterbox and no crop in practice.
+                objectFit: "cover",
+                pointerEvents: "none",
+              }}
+            />
+          </button>
+        </form>
+      ))}
+    </div>
   );
 }
 
@@ -1274,21 +1612,34 @@ function PlusIcon() {
   );
 }
 
-function DotsIcon() {
-  // Running-light animation · three blue dots pulse in sequence so
-  // the composer's 3-dot menu button reads as "alive" · Founder
-  // direction 2026-09-27 "running light through the dots dancing blue".
+function DotsIcon({ color = "#009FEF" }: { color?: string }) {
+  // Running-light animation · three dots pulse in sequence so the
+  // composer's 3-dot menu button reads as "alive" · Founder direction
+  // 2026-09-27 "running light through the dots dancing blue" · repainted
+  // 2026-10-01 to inherit the peer's chat_theme accent so Joker's dots
+  // read green, Night Sky's read blue, Pink Dream's read pink · ONE NEX
+  // IDENTITY doctrine.
+  //
+  // The pulse's drop-shadow uses the same accent via a CSS variable so
+  // the glow stays theme-consistent without needing per-theme keyframes.
   return (
-    <>
+    <span
+      style={
+        // Scope the CSS variable to this instance so multiple composers
+        // (unlikely but not impossible in prototypes) don't fight over
+        // a single global.
+        { display: "inline-grid", placeItems: "center", ["--nex-dot-color" as string]: color } as React.CSSProperties
+      }
+    >
       <svg
         width={26}
         height={26}
         viewBox="0 0 24 24"
         aria-hidden
       >
-        <circle cx="12" cy="5" r="2.2" fill="#009FEF" data-nex-dot="0" />
-        <circle cx="12" cy="12" r="2.2" fill="#009FEF" data-nex-dot="1" />
-        <circle cx="12" cy="19" r="2.2" fill="#009FEF" data-nex-dot="2" />
+        <circle cx="12" cy="5" r="2.2" fill={color} data-nex-dot="0" />
+        <circle cx="12" cy="12" r="2.2" fill={color} data-nex-dot="1" />
+        <circle cx="12" cy="19" r="2.2" fill={color} data-nex-dot="2" />
       </svg>
       <style>{`
         @keyframes nex-dot-dance {
@@ -1300,7 +1651,7 @@ function DotsIcon() {
           50% {
             opacity: 1;
             transform: scale(1.14);
-            filter: drop-shadow(0 0 4px #00CFFF);
+            filter: drop-shadow(0 0 4px var(--nex-dot-color, #00CFFF));
           }
         }
         [data-nex-dot] {
@@ -1311,7 +1662,7 @@ function DotsIcon() {
         [data-nex-dot="1"] { animation-delay: 0.18s; }
         [data-nex-dot="2"] { animation-delay: 0.36s; }
       `}</style>
-    </>
+    </span>
   );
 }
 

@@ -23,6 +23,7 @@ import * as conversationService from "@/lib/nex-native/conversation-service";
 import * as peerConversationService from "@/lib/nex-native/peer-conversation-service";
 import * as peerMessageService from "@/lib/nex-native/peer-message-service";
 import * as sellerResponsivenessService from "@/lib/nex-native/seller-responsiveness-service";
+import { getThemeStickerBySlug } from "@/lib/nex-native/theme-sticker-service";
 import * as chatThemeService from "@/lib/nex-native/chat-theme-service";
 import * as businessService from "@/lib/nex-native/business-service";
 import * as productService from "@/lib/nex-native/product-service";
@@ -508,6 +509,107 @@ export async function sendPeerMessageAction(
   // Bridge 13 · every send bumps the sender's shop activity so the
   // green pulse on their landing stays honest. Best-effort · a
   // signal failure never blocks the send.
+  await sellerResponsivenessService
+    .markBusinessOwnerActive(session.account.id)
+    .catch(() => {});
+
+  revalidatePath(`/nex-native/chat/peer/${peerAccountId}`);
+  redirect(`/nex-native/chat/peer/${peerAccountId}`);
+}
+
+/** Bridge ThemeSticker · sealed 2026-10-01 · live peer-chat sticker
+ *  send. SECURITY-SENSITIVE boundary · the browser is NOT trusted for
+ *  any sticker metadata.
+ *
+ *  Contract: the client supplies ONLY the sticker slug. The server
+ *  then:
+ *
+ *    1. Requires an authenticated sender (session cookie).
+ *    2. Rejects self-chat.
+ *    3. Validates the slug shape before any DB lookup.
+ *    4. Resolves the sender's chat_theme (per the sealed theme-
+ *       ownership doctrine · a seller can only send stickers from
+ *       their own set).
+ *    5. Looks up the sticker in nex_theme_sticker scoped to that
+ *       theme · a slug from another theme returns null.
+ *    6. Rejects animated stickers at the action layer in Phase 1 so
+ *       no admin seed can accidentally ship a type the renderer
+ *       doesn't yet handle.
+ *    7. Uses the DB-resolved image_url, label, sticker_type, and
+ *       aspect_ratio to build the snapshot. Nothing the browser
+ *       posted — URL, label, type, or aspect — ever reaches the
+ *       nex_peer_message row.
+ *    8. Opens / reuses the peer conversation and inserts the row
+ *       via the same peerMessageService.sendPeerMessage used by
+ *       every other attachment type · snapshot is frozen at send
+ *       time so later edits to the sticker row don't retro-change
+ *       delivered messages. */
+export async function sendPeerStickerAction(
+  peerAccountId: string,
+  formData: FormData,
+): Promise<never> {
+  // ONLY the slug is trusted from the browser.
+  const slugRaw = String(formData.get("theme_sticker_slug") ?? "").trim();
+  if (!slugRaw) redirect(`/nex-native/chat/peer/${peerAccountId}`);
+  // Shape check before DB lookup · stops arbitrary input early.
+  if (!/^[a-z0-9][a-z0-9_-]{0,60}$/.test(slugRaw)) {
+    redirect(`/nex-native/chat/peer/${peerAccountId}`);
+  }
+
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) redirect("/nex-native/sign-in");
+  if (peerAccountId === session.account.id) redirect(`/nex-native/chat`);
+
+  // Theme ownership · sealed doctrine: "every friend sees YOUR theme
+  // when they open your chat." The emoji + sticker surface is driven
+  // by the PEER's chat_theme because that's the appearance the viewer
+  // is interacting with. Consistent with how peerThemeEmojis is
+  // loaded on the peer-chat page.
+  const peerAccount = await accountService.getAccountById(peerAccountId);
+  const peerTheme = peerAccount?.chat_theme ?? "default";
+
+  const sticker = await getThemeStickerBySlug({
+    themeId: peerTheme,
+    slug: slugRaw,
+  });
+  if (!sticker) {
+    // Slug missing, wrong theme, or shape-invalid · silent bounce
+    // with no leak about which case failed.
+    redirect(`/nex-native/chat/peer/${peerAccountId}`);
+  }
+
+  // Phase 1 ships 'static' only · reject other types at the action
+  // layer so a future admin seed can't accidentally light up a
+  // renderer path that isn't finished.
+  if (sticker.sticker_type !== "static") {
+    redirect(`/nex-native/chat/peer/${peerAccountId}`);
+  }
+
+  const conversation = await peerConversationService.getOrCreatePeerConversation(
+    session.account.id,
+    peerAccountId,
+  );
+
+  // Snapshot built entirely from DB values · the browser never
+  // participated in setting image_url, label, type, or aspect.
+  await peerMessageService.sendPeerMessage({
+    conversation_id: conversation.id,
+    sender_account_id: session.account.id,
+    body: "",
+    attachment_url: sticker.image_url,
+    attachment_type: "sticker",
+    attachment_meta: {
+      sticker: {
+        theme_id: sticker.theme_id,
+        slug: sticker.slug,
+        label: sticker.label,
+        sticker_type: sticker.sticker_type,
+        aspect_ratio: sticker.aspect_ratio,
+      },
+    },
+  });
+
+  // Bridge 13 · bump sender's shop activity like every other send.
   await sellerResponsivenessService
     .markBusinessOwnerActive(session.account.id)
     .catch(() => {});

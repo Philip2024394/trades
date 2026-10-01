@@ -98,6 +98,11 @@ interface Props {
   inquiryAction?: (
     formData: FormData,
   ) => Promise<never> | void | Promise<void>;
+  /** Optional per-theme backdrop image · sealed 2026-10-01.
+   *  Resolved upstream from `theme-assets.ts` (e.g. Joker → the alley
+   *  wallpaper). Renders UNDER the modal's dark gradient so product
+   *  cards stay legible. Null = default gradient only. */
+  backgroundImageUrl?: string | null;
 }
 
 export function ShopGridModal({
@@ -112,6 +117,7 @@ export function ShopGridModal({
   shopContext,
   sendCartOrderAction,
   inquiryAction,
+  backgroundImageUrl,
 }: Props) {
   const [mounted, setMounted] = React.useState(false);
   const [selectedProductId, setSelectedProductId] = React.useState<
@@ -193,8 +199,14 @@ export function ShopGridModal({
           right: 0,
           bottom: 0,
           maxHeight: "78vh",
-          background:
-            "linear-gradient(180deg, rgba(6,15,28,0.96) 0%, rgba(3,10,20,0.98) 100%)",
+          // Per-theme backdrop image (sealed 2026-10-01) · when a
+          // theme supplies one, the image reads CLEARLY under a very
+          // light vignette · product cards carry their own
+          // backgrounds so the modal doesn't need a heavy scrim.
+          // Linear-gradient first in the shorthand = top layer.
+          background: backgroundImageUrl
+            ? `linear-gradient(180deg, rgba(6,15,28,0.18) 0%, rgba(3,10,20,0.32) 100%), url(${backgroundImageUrl}) center center / cover no-repeat`
+            : "linear-gradient(180deg, rgba(6,15,28,0.96) 0%, rgba(3,10,20,0.98) 100%)",
           borderTop: `1px solid ${NEX.cyanSoft}`,
           borderTopLeftRadius: 22,
           borderTopRightRadius: 22,

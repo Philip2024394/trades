@@ -21,8 +21,12 @@ import * as friendService from "@/lib/nex-native/friend-service";
 import * as peerConversationService from "@/lib/nex-native/peer-conversation-service";
 import * as peerMessageService from "@/lib/nex-native/peer-message-service";
 import * as chatThemeService from "@/lib/nex-native/chat-theme-service";
+import { listThemeEmojis } from "@/lib/nex-native/theme-emoji-service";
+import { listThemeStickers } from "@/lib/nex-native/theme-sticker-service";
+import { getThemeAssets } from "@/lib/nex-native/theme-assets";
 import {
   sendPeerMessageAction,
+  sendPeerStickerAction,
   deletePeerMessageAction,
   uploadPeerAttachmentAction,
   sendProductInquiryAction,
@@ -152,6 +156,10 @@ export default async function PeerChatPage({
   const bindUpload = uploadPeerAttachmentAction.bind(null, peer.id);
   const bindProductInquiry = sendProductInquiryAction.bind(null, peer.id);
   const bindReaction = toggleMessageReactionAction.bind(null, peer.id);
+  // Bridge ThemeSticker · bind the peer id so the live action knows
+  // which conversation to post into. Server-side validation then
+  // resolves the sticker from the peer's chat_theme.
+  const bindSticker = sendPeerStickerAction.bind(null, peer.id);
 
   // Bridge · shop icon in header · when the peer owns a business
   // with live products, the header renders a shop button that
@@ -307,6 +315,42 @@ export default async function PeerChatPage({
   const themeColours = peerThemeRow
     ? chatThemeService.resolveThemeColours(peerThemeRow)
     : { accent: "#00AFFF", bubbleRim: "#00AFFF", composerRim: "#00AFFF" };
+
+  // Bridge ThemeEmoji-C · sealed 2026-10-01 · load the peer theme's
+  // emoji set (nex_theme_emoji · Migration 116) so both the composer
+  // picker AND the bubble reaction rail paint the theme's own tiles.
+  // Fails soft to an empty list · the shell falls back to the default
+  // unicode set when nothing is returned.
+  const peerThemeEmojis = peerThemeRow
+    ? await listThemeEmojis(peerThemeRow.id)
+        .then((rows) =>
+          rows.map((r) => ({
+            slug: r.slug,
+            imageUrl: r.image_url,
+            label: r.label,
+          })),
+        )
+        .catch(() => [])
+    : [];
+
+  // Bridge ThemeSticker · sealed 2026-10-01 · load the peer theme's
+  // sticker set so the composer exposes the Stickers tab. Mirrors the
+  // emoji lookup above · same sealed theme-ownership doctrine · the
+  // viewer sees the peer's sticker set because the peer's chat_theme
+  // is their public appearance.
+  const peerThemeStickers = peerThemeRow
+    ? await listThemeStickers(peerThemeRow.id)
+        .then((rows) =>
+          rows.map((r) => ({
+            slug: r.slug,
+            imageUrl: r.image_url,
+            label: r.label,
+            stickerType: r.sticker_type,
+            aspectRatio: r.aspect_ratio,
+          })),
+        )
+        .catch(() => [])
+    : [];
 
   // Header contacts menu · list of accepted friends so the user can
   // hop between peer chats without leaving the chat surface. Best-
@@ -465,9 +509,23 @@ export default async function PeerChatPage({
         m.attachment_meta.product_share
           ? m.attachment_meta.product_share
           : null,
+      // Bridge ThemeSticker · project the frozen sticker snapshot so
+      // the bubble renders ~140px tall. Same pattern as product /
+      // menu_item / cart_order / product_share above.
+      attachment_sticker:
+        m.attachment_type === "sticker" &&
+        m.attachment_meta &&
+        typeof m.attachment_meta === "object" &&
+        "sticker" in m.attachment_meta &&
+        m.attachment_meta.sticker
+          ? m.attachment_meta.sticker
+          : null,
       // Bridge 66 · reactions map · defaults to {} when the column
       // is absent (older rows before migration 091 landed).
       reactions: m.reactions ?? {},
+      // Bridge Reactions-Order · migration 117 · insertion-ordered
+      // emoji keys · last entry renders as the newest big stamp.
+      reactions_order: m.reactions_order ?? [],
       // Bridge 81 · project the attachment envelope (if any) as
       // base64-encoded JSON for the _e2e-decryptor to consume from
       // a data attribute. Base64 keeps the DOM attribute compact
@@ -545,6 +603,12 @@ export default async function PeerChatPage({
       uploadAction={bindUpload}
       pendingAttachment={pendingAttachment}
       encryptedUploadEnabled={!isNexOfficialAccount(peer.id)}
+      themeEmojis={peerThemeEmojis}
+      themeStickers={peerThemeStickers}
+      sendStickerAction={bindSticker}
+      shopBackgroundImageUrl={
+        getThemeAssets(peerThemeRow?.id).shopBackgroundUrl
+      }
       peerShop={peerShop}
       sendCartOrderAction={sendCartOrderAction}
       productInquiryAction={bindProductInquiry}

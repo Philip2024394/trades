@@ -22,13 +22,12 @@ import { PeerComposer } from "./peer/[accountId]/_composer";
 import { ScrollToBottomOnMount } from "./_scroll-to-bottom";
 import { MessageBubbleClient } from "./_message-bubble-client";
 import { ReadTick } from "./_read-tick";
-import { ReactionsChipRow } from "./_reactions";
+import { ReactionsChipRow, BubbleTopRightReaction } from "./_reactions";
 import {
   SideNavPanel,
   type SideNavContact,
   type PendingInvite,
 } from "./_side-nav-panel";
-import { AmbientMotion } from "./_ambient-motion";
 import { FirstConnectionEmpty } from "./_first-connection-empty";
 import {
   ShopGridModal,
@@ -109,7 +108,20 @@ export interface PortraitBloomMessage {
     | "menu_item"
     | "cart_order"
     | "product_share"
+    | "sticker"
     | null;
+  /** Bridge ThemeSticker · sealed 2026-10-01 · when attachment_type
+   *  = 'sticker' this carries the frozen sticker snapshot so the
+   *  bubble renders ~140px tall even if the sticker is later removed
+   *  from the theme. image_url is the sticker artwork, aspect_ratio
+   *  reserves the correct portrait/square footprint before load. */
+  attachment_sticker?: {
+    theme_id: string;
+    slug: string;
+    label: string;
+    sticker_type: "static" | "animated";
+    aspect_ratio: number;
+  } | null;
   /** Bridge 11 · when attachment_type='product' this carries the
    *  frozen product snapshot so the card renders correctly even if
    *  the underlying product is later edited or deleted. */
@@ -225,6 +237,10 @@ export interface PortraitBloomMessage {
   /** Bridge 66 · reactions map · emoji → [account_id, ...]. Empty
    *  object when there are no reactions on this message. */
   reactions?: Record<string, string[]>;
+  /** Bridge Reactions-Order · migration 117 · sealed 2026-10-01 ·
+   *  emoji keys in insertion order · last entry is "newest" and
+   *  renders as a big stamp overlapping the bubble corner. */
+  reactions_order?: string[];
   /** Bridge 81 · when this row's attachment is E2E encrypted, the
    *  envelope from attachment_meta.envelope is projected here so the
    *  shell can render a placeholder + let _e2e-decryptor swap it for
@@ -355,6 +371,29 @@ export interface PortraitBloomShellProps {
   themeEmojis?:
     | { slug: string; imageUrl: string; label: string }[]
     | null;
+  /** Optional per-theme send-button artwork · passed straight through
+   *  to PeerComposer's SendButton. When set, the orange disc + paper
+   *  plane is replaced by this image (e.g. the Joker-theme Batman
+   *  roundel). */
+  themeSendButtonUrl?: string | null;
+  /** Bridge ThemeSticker · sealed 2026-10-01 · per-theme sticker set
+   *  from nex_theme_sticker (Migration 118). Threaded through to
+   *  PeerComposer's EmojiModal so a theme with stickers exposes the
+   *  dedicated Stickers tab. Stickers send via `sendStickerAction` as
+   *  attachment_type='sticker' peer messages — never as emoji tokens. */
+  themeStickers?:
+    | {
+        slug: string;
+        imageUrl: string;
+        label: string;
+        stickerType: "static" | "animated";
+        aspectRatio: number;
+      }[]
+    | null;
+  /** Server Action to send a sticker peer message. Only wired through
+   *  when `themeStickers` is non-empty · otherwise the Stickers tab is
+   *  hidden. */
+  sendStickerAction?: (formData: FormData) => Promise<void> | void;
   /** When present, the header renders a shop icon top-right that
    *  opens the peer's product grid bottom sheet. Populated by the
    *  peer chat page after fetching the peer's live products +
@@ -477,6 +516,10 @@ export interface PortraitBloomShellProps {
    *  theme viewer sets this so previews render the full 3-button
    *  cluster. Production peer chat leaves it unset. */
   forceShowCart?: boolean;
+  /** Optional per-theme shop background image · threaded straight
+   *  through to ShopGridModal via HeaderRightCluster. Resolved
+   *  upstream from theme-assets.ts (e.g. Joker → alley wallpaper). */
+  shopBackgroundImageUrl?: string | null;
 }
 
 export function PortraitBloomShell({
@@ -502,10 +545,14 @@ export function PortraitBloomShell({
   wallpaperUrl,
   wallpaperConfig,
   forceShowCart = false,
+  shopBackgroundImageUrl,
   uploadAction,
   pendingAttachment,
   encryptedUploadEnabled,
   themeEmojis,
+  themeSendButtonUrl,
+  themeStickers,
+  sendStickerAction,
   peerShop,
   sendCartOrderAction,
   productInquiryAction,
@@ -580,26 +627,25 @@ export function PortraitBloomShell({
           animation: nex-bloom-ripple 2600ms cubic-bezier(.2,.7,.2,1) both;
         }
         /* Scrollbar hidden + top-fade mask · bubbles dissolve into
-           the header area on scroll instead of cutting hard. The
-           first ~72px of the scroll region fades to transparent
-           so nothing pops behind the identity block. Sealed
-           2026-09-27. */
+           the underside of the header rim rather than fading well
+           into the message area. Tight 32px band hugging the top so
+           the disappear point sits right under the header edge. */
         [data-nex-message-scroll] {
           scrollbar-width: none;
           mask-image: linear-gradient(
             180deg,
             transparent 0px,
-            rgba(0,0,0,0.15) 24px,
-            rgba(0,0,0,0.55) 48px,
-            #000 72px,
+            rgba(0,0,0,0.2) 10px,
+            rgba(0,0,0,0.65) 22px,
+            #000 32px,
             #000 100%
           );
           -webkit-mask-image: linear-gradient(
             180deg,
             transparent 0px,
-            rgba(0,0,0,0.15) 24px,
-            rgba(0,0,0,0.55) 48px,
-            #000 72px,
+            rgba(0,0,0,0.2) 10px,
+            rgba(0,0,0,0.65) 22px,
+            #000 32px,
             #000 100%
           );
         }
@@ -658,19 +704,6 @@ export function PortraitBloomShell({
                   "linear-gradient(180deg, rgba(2,9,20,0.55) 0%, rgba(2,9,20,0.35) 30%, rgba(2,9,20,0.55) 100%)",
                 zIndex: 0,
               }}
-            />
-            {/* Ambient motion · crows + twinkles · only when a
-                wallpaper is present so unthemed surfaces stay quiet.
-                Sits at z-index 2 (above wallpaper + scrim, below
-                header + bubbles). Theme accent painted as ambient
-                tint so distant crows blend with the wallpaper's
-                light instead of reading as flat stickers. Moon
-                glow position comes from the theme's wallpaper_config
-                (sealed 2026-09-27 · migration 056) so every theme
-                declares its own overlay · no more hardcoded values. */}
-            <AmbientMotion
-              ambientTint={`${rippleColor}55`}
-              moonGlow={wallpaperConfig?.moonGlow ?? null}
             />
             {/* Bridge 97 · two lightweight ambient overlays keyed off
                 the theme's wallpaper_config. Both render only when the
@@ -1092,14 +1125,44 @@ export function PortraitBloomShell({
                          the plaintext into IndexedDB with the right
                          timestamp (survives Bridge 78 server purge). */
                       data-nex-msg-sent-at={m.sent_at}
-                      style={{
-                        position: "relative",
-                        padding: m.deleted_for_everyone
-                          ? "9px 14px"
-                          : showTimestamp
-                            ? "11px 14px 9px"
-                            : "10px 14px",
-                        marginTop,
+                      style={(() => {
+                        // Sticker-only bubble · sealed 2026-10-01 ·
+                        // the sticker IS the bubble · drop all chrome
+                        // (padding, background, border, blur) so the
+                        // artwork reads edge-to-edge. Timestamp is
+                        // overlaid on the sticker at top-right.
+                        const isStickerOnly =
+                          m.attachment_type === "sticker" &&
+                          m.attachment_url &&
+                          !m.body &&
+                          !m.deleted_for_everyone;
+                        const base: React.CSSProperties = {
+                          position: "relative",
+                          padding: m.deleted_for_everyone
+                            ? "9px 14px"
+                            : showTimestamp
+                              ? "11px 14px 9px"
+                              : "10px 14px",
+                          marginTop,
+                          color: NEX.text,
+                          fontSize: 15,
+                          lineHeight: 1.42,
+                          whiteSpace: "pre-wrap",
+                          wordBreak: "break-word",
+                        };
+                        if (isStickerOnly) {
+                          return {
+                            ...base,
+                            padding: 0,
+                            background: "transparent",
+                            border: "none",
+                            borderRadius: 14,
+                            boxShadow: "none",
+                            overflow: "hidden",
+                          };
+                        }
+                        return {
+                          ...base,
                         // Bridge 97f · bubble geometry + background +
                         // border resolved from the theme's
                         // wallpaperConfig.bubbleStyle preset. Falls
@@ -1118,18 +1181,42 @@ export function PortraitBloomShell({
                         }),
                         backdropFilter: "blur(24px) saturate(1.2)",
                         WebkitBackdropFilter: "blur(24px) saturate(1.2)",
-                        color: NEX.text,
-                        fontSize: 15,
-                        lineHeight: 1.42,
-                        whiteSpace: "pre-wrap",
-                        wordBreak: "break-word",
                         boxShadow: m.deleted_for_everyone
                           ? "0 4px 14px rgba(0,0,0,0.4)"
                           : m.mine
                             ? "0 0 14px rgba(0,159,239,0.25), 0 6px 20px rgba(0,0,0,0.45)"
                             : "0 6px 22px rgba(0,0,0,0.55)",
-                      }}
+                        };
+                      })()}
                     >
+                      {/* Bridge Reactions-Order · Founder direction
+                          2026-10-01 · newest reaction renders INSIDE
+                          the bubble at top-right · no frame · just the
+                          glyph/image · absolute-positioned relative to
+                          this bubble content div. */}
+                      {toggleReactionAction && selfAccountId && (() => {
+                        const order =
+                          m.reactions_order && m.reactions_order.length > 0
+                            ? m.reactions_order
+                            : Object.keys(m.reactions ?? {});
+                        const live = order.filter((e) => {
+                          const ids = m.reactions?.[e];
+                          return Array.isArray(ids) && ids.length > 0;
+                        });
+                        const newest = live[live.length - 1];
+                        if (!newest) return null;
+                        const ids = m.reactions?.[newest] ?? [];
+                        return (
+                          <BubbleTopRightReaction
+                            messageId={m.id}
+                            emoji={newest}
+                            count={ids.length}
+                            selfSelected={ids.includes(selfAccountId)}
+                            toggleAction={toggleReactionAction}
+                            themeEmojis={themeEmojis ?? null}
+                          />
+                        );
+                      })()}
                       {/* Sender header · avatar top-left + name to
                           the right · shown only on the first
                           incoming bubble of a same-sender group so
@@ -1302,6 +1389,75 @@ export function PortraitBloomShell({
                           share={m.attachment_product_share}
                           hasBody={!!m.body}
                         />
+                      ) : m.attachment_type === "sticker" &&
+                        m.attachment_url &&
+                        m.attachment_sticker ? (
+                        /* Bridge ThemeSticker · sealed 2026-10-01 ·
+                           sticker fills the full bubble (height AND
+                           width per founder direction) · timestamp
+                           overlays top-right of the artwork · the
+                           bubble wrapper above already dropped all
+                           chrome for sticker-only messages. */
+                        <div
+                          style={{
+                            position: "relative",
+                            width: "100%",
+                            aspectRatio: m.attachment_sticker.aspect_ratio,
+                            display: "block",
+                            marginTop: m.body ? 6 : 0,
+                          }}
+                        >
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={m.attachment_url}
+                            alt={
+                              m.attachment_sticker.label ||
+                              m.attachment_sticker.slug
+                            }
+                            style={{
+                              display: "block",
+                              width: "100%",
+                              height: "100%",
+                              objectFit: "cover",
+                              pointerEvents: "none",
+                              borderRadius: m.body ? 10 : 14,
+                            }}
+                          />
+                          {/* Top-right timestamp pill · translucent
+                              dark background so the time reads on
+                              bright + dark sticker artwork alike. */}
+                          {!m.body && (
+                            <div
+                              style={{
+                                position: "absolute",
+                                top: 8,
+                                right: 10,
+                                padding: "3px 9px",
+                                borderRadius: 999,
+                                background: "rgba(0,0,0,0.55)",
+                                color: "rgba(244,247,252,0.95)",
+                                fontSize: 10,
+                                fontWeight: 600,
+                                letterSpacing: "0.03em",
+                                backdropFilter: "blur(6px)",
+                                WebkitBackdropFilter: "blur(6px)",
+                                display: "inline-flex",
+                                alignItems: "center",
+                                gap: 4,
+                                pointerEvents: "none",
+                              }}
+                            >
+                              {formatTime(m.sent_at)}
+                              {m.mine && (
+                                <ReadTick
+                                  sentAtIso={m.sent_at}
+                                  readAtIso={m.read_at ?? null}
+                                  messageId={m.id}
+                                />
+                              )}
+                            </div>
+                          )}
+                        </div>
                       ) : m.attachment_envelope_b64 &&
                         (m.attachment_type === "image" ||
                           m.attachment_type === "video" ||
@@ -1356,7 +1512,12 @@ export function PortraitBloomShell({
                           {m.body}
                         </div>
                       )}
-                      {showTimestamp && (
+                      {showTimestamp &&
+                        !(
+                          m.attachment_type === "sticker" &&
+                          m.attachment_url &&
+                          !m.body
+                        ) && (
                         <div
                           style={{
                             marginTop: 4,
@@ -1392,8 +1553,10 @@ export function PortraitBloomShell({
                         messageId={m.id}
                         selfAccountId={selfAccountId}
                         reactions={m.reactions ?? {}}
+                        reactionsOrder={m.reactions_order ?? []}
                         toggleAction={toggleReactionAction}
                         mine={m.mine}
+                        themeEmojis={themeEmojis ?? null}
                       />
                     )}
                     {/* Bridge 16b · payment-request warning · fires
@@ -1457,6 +1620,9 @@ export function PortraitBloomShell({
               pendingAttachment={pendingAttachment ?? null}
               encryptedUploadEnabled={encryptedUploadEnabled}
               themeEmojis={themeEmojis}
+              themeSendButtonUrl={themeSendButtonUrl}
+              themeStickers={themeStickers ?? null}
+              sendStickerAction={sendStickerAction}
             />
           </div>
         </div>
@@ -1490,6 +1656,7 @@ export function PortraitBloomShell({
         sendCartOrderAction={sendCartOrderAction}
         inquiryAction={productInquiryAction}
         forceShowCart={forceShowCart}
+        shopBackgroundImageUrl={shopBackgroundImageUrl ?? null}
       />
     </>
   );
