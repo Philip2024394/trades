@@ -17,6 +17,10 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
 import { getAffiliateByAccountId } from "@/lib/nex-native/affiliate-service";
+import {
+  listActivePromotions,
+  listPromotedProductsForAffiliate,
+} from "@/lib/nex-native/affiliate-marketplace-service";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -57,6 +61,11 @@ export default async function AffiliateDashboardPage({
 
   const sp = (await searchParams) ?? {};
   const justJoined = sp.joined === "1";
+
+  const [promos, promotedProducts] = await Promise.all([
+    listActivePromotions(session.account.id),
+    listPromotedProductsForAffiliate(session.account.id, 20),
+  ]);
 
   return (
     <div
@@ -134,8 +143,8 @@ export default async function AffiliateDashboardPage({
             marginBottom: 18,
           }}
         >
-          <h2 style={{ margin: "0 0 10px", fontSize: 15, fontWeight: 700 }}>
-            Next · pick sellers to promote
+          <h2 style={{ margin: "0 0 6px", fontSize: 15, fontWeight: 700 }}>
+            Your shop
           </h2>
           <p
             style={{
@@ -145,15 +154,72 @@ export default async function AffiliateDashboardPage({
               lineHeight: 1.55,
             }}
           >
-            The Affiliate Marketplace is being built in the next bridge
-            · it lists sellers who have activated the programme and
-            lets you add their products to your affiliate shop with
-            one tap. Until then, your dashboard is quiet by design — no
-            fake "attributed sale" numbers.
+            {promos.length === 0 ? (
+              <>
+                You're not promoting any sellers yet. Open the Marketplace
+                to pick the shops you want to represent — all of their
+                live products land in your affiliate shop automatically.
+              </>
+            ) : (
+              <>
+                You promote{" "}
+                <strong style={{ color: NEX.text }}>{promos.length}</strong>{" "}
+                {promos.length === 1 ? "seller" : "sellers"} ·{" "}
+                <strong style={{ color: NEX.text }}>
+                  {promotedProducts.length}
+                </strong>{" "}
+                live {promotedProducts.length === 1 ? "product" : "products"}{" "}
+                in your shop.
+              </>
+            )}
           </p>
+
+          {promotedProducts.length > 0 && (
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(72px, 1fr))",
+                gap: 6,
+                marginBottom: 16,
+              }}
+            >
+              {promotedProducts.slice(0, 12).map((p) => (
+                <div
+                  key={p.id}
+                  title={`${p.name} · ${p.business_display_name}`}
+                  style={{
+                    aspectRatio: "1 / 1",
+                    borderRadius: 8,
+                    background: p.image_url
+                      ? `url(${p.image_url}) center/cover no-repeat`
+                      : "rgba(0,0,0,0.4)",
+                    border: "1px solid rgba(255,255,255,0.06)",
+                  }}
+                />
+              ))}
+              {promotedProducts.length > 12 && (
+                <div
+                  style={{
+                    aspectRatio: "1 / 1",
+                    borderRadius: 8,
+                    background: "rgba(0,159,239,0.1)",
+                    border: `1px solid ${NEX.cyanSoft}`,
+                    display: "grid",
+                    placeItems: "center",
+                    fontSize: 11,
+                    fontWeight: 700,
+                    color: NEX.cyan,
+                  }}
+                >
+                  +{promotedProducts.length - 12}
+                </div>
+              )}
+            </div>
+          )}
+
           <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
             <Link
-              href="/nex-native/chat"
+              href="/nex-native/affiliate/marketplace"
               style={{
                 padding: "10px 20px",
                 borderRadius: 999,
@@ -167,7 +233,7 @@ export default async function AffiliateDashboardPage({
                 boxShadow: "0 8px 20px rgba(0,175,255,0.3)",
               }}
             >
-              Back to NEX Chat
+              Open Marketplace →
             </Link>
             <Link
               href="/nex-native/about/terms#section-13"

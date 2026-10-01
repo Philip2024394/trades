@@ -125,16 +125,32 @@ export default async function AffiliateJoinPage({
               lineHeight: 1.55,
             }}
           >
-            <li>Sellers choose to join · they set their commission rate.</li>
+            <li>Sellers choose to join · they set their own catalogue.</li>
             <li>
               You pick sellers from the Affiliate Marketplace · their
-              products appear in your affiliate shop.
+              live products appear in your affiliate shop.
             </li>
             <li>
-              Commission is split <strong style={{ color: NEX.green }}>7%</strong>{" "}
-              to the affiliate who drove the sale +{" "}
-              <strong style={{ color: NEX.green }}>3%</strong> to whoever
-              referred that affiliate into NEX.
+              Sellers pay a flat{" "}
+              <strong style={{ color: NEX.green }}>10%</strong>{" "}
+              commission on every qualifying sale driven through an
+              affiliate shop. The seller pays commission directly from
+              their own payment method.
+            </li>
+            <li>
+              Of that 10%, <strong>7% always goes to the affiliate who
+              drove the sale</strong>. The remaining{" "}
+              <strong style={{ color: NEX.green }}>3%</strong> goes to{" "}
+              <strong>whoever recruited that affiliate</strong> into
+              NEX — one level up only.
+            </li>
+            <li>
+              If you joined NEX on your own with no recruiter, the 3%
+              goes to NEX as the default upline. If you recruit a
+              friend, you earn that 3% on every one of their sales.
+              Recruit two friends, you earn 3% on both of their sales
+              streams · and so on, for every direct recruit you bring
+              in.
             </li>
             <li>
               Commission is only earned on QUALIFYING sales · never on
@@ -241,8 +257,11 @@ export default async function AffiliateJoinPage({
             />
             <span style={{ fontSize: 13, lineHeight: 1.5, color: NEX.text }}>
               I accept the NEX Affiliate Programme terms · I understand
-              NEX does not hold or transfer affiliate funds and that
-              sellers pay commission directly.
+              sellers pay a flat 10% commission split 7% to the
+              direct affiliate + 3% to the recruiter (one level up only,
+              or NEX if there's no recruiter), and that NEX does not
+              hold or transfer affiliate funds — sellers pay commission
+              directly.
             </span>
           </label>
 

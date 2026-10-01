@@ -87,6 +87,7 @@ export function SellerCentralWizard({
   const [logoUploading, setLogoUploading] = React.useState(false);
   const [logoError, setLogoError] = React.useState<string | null>(null);
   const [lane, setLane] = React.useState<SellerLane | null>(preselectLane);
+  const [joinReseller, setJoinReseller] = React.useState(true);
 
   // Sealed 2026-10-01 · wizard gates Next on the SlugInput's callback
   // (available = true) rather than polling the hidden input DOM value
@@ -309,6 +310,22 @@ export function SellerCentralWizard({
                 name="business_category"
                 value={lane ? defaultVerticalSlugForLane(lane) : ""}
               />
+              <input
+                type="hidden"
+                name="join_reseller"
+                value={joinReseller ? "1" : "0"}
+              />
+
+              {/* NEX Reseller opt-in · sealed 2026-10-01 · ticked ON
+                  by default · sellers can un-tick before launch. The
+                  flag is piped to createBusinessAction via a hidden
+                  field · the actual reseller enrolment lives in a
+                  follow-up action once the business row exists. */}
+              <ResellerOptIn
+                checked={joinReseller}
+                onChange={setJoinReseller}
+              />
+
               <button
                 type="submit"
                 disabled={!canSubmit}
@@ -317,6 +334,7 @@ export function SellerCentralWizard({
                   opacity: canSubmit ? 1 : 0.5,
                   cursor: canSubmit ? "pointer" : "not-allowed",
                   width: "100%",
+                  marginTop: 14,
                 }}
               >
                 Launch my shop →
@@ -713,6 +731,122 @@ function LogoUploader({
         A high-quality logo or face image speaks a thousand words.
       </div>
     </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// ResellerOptIn · tick-circle card above the Launch button that
+// invites the seller into the NEX Reseller programme at the moment
+// of go-live. Default = checked so the lazy path is "yes." Sellers
+// can un-tick to decline. Copy stays lane-neutral (works for
+// products / services / makers / food) so one card serves all.
+// ---------------------------------------------------------------------------
+function ResellerOptIn({
+  checked,
+  onChange,
+}: {
+  checked: boolean;
+  onChange: (next: boolean) => void;
+}): React.JSX.Element {
+  return (
+    <label
+      htmlFor="nex-reseller-optin"
+      style={{
+        display: "flex",
+        alignItems: "flex-start",
+        gap: 12,
+        padding: "14px 16px",
+        borderRadius: 14,
+        background: checked
+          ? "linear-gradient(180deg, rgba(0,159,239,0.22) 0%, rgba(0,159,239,0.1) 100%)"
+          : "linear-gradient(180deg, rgba(0,159,239,0.1) 0%, rgba(0,159,239,0.04) 100%)",
+        border: `1px solid ${
+          checked ? NEX.cyan : "rgba(0,159,239,0.4)"
+        }`,
+        cursor: "pointer",
+        transition:
+          "background 160ms ease, border-color 160ms ease",
+      }}
+    >
+      {/* Tick circle · acts as a visual radio/checkbox · the real
+          input is sr-only so native keyboard + accessibility work. */}
+      <input
+        id="nex-reseller-optin"
+        type="checkbox"
+        checked={checked}
+        onChange={(e) => onChange(e.target.checked)}
+        style={{
+          position: "absolute",
+          width: 1,
+          height: 1,
+          padding: 0,
+          margin: -1,
+          overflow: "hidden",
+          clip: "rect(0 0 0 0)",
+          whiteSpace: "nowrap",
+          border: 0,
+        }}
+      />
+      <span
+        aria-hidden
+        style={{
+          flexShrink: 0,
+          width: 22,
+          height: 22,
+          borderRadius: "50%",
+          border: `2px solid ${checked ? NEX.green : "rgba(255,255,255,0.3)"}`,
+          background: checked ? NEX.green : "transparent",
+          display: "grid",
+          placeItems: "center",
+          marginTop: 1,
+          transition: "background 160ms ease, border-color 160ms ease",
+        }}
+      >
+        {checked && (
+          <svg
+            width={12}
+            height={12}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#020914"
+            strokeWidth={3.5}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden
+          >
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+        )}
+      </span>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div
+          style={{
+            fontSize: 14,
+            fontWeight: 700,
+            color: NEX.text,
+            letterSpacing: "0.01em",
+          }}
+        >
+          NEX Resellers · 10% commission
+        </div>
+        <div
+          style={{
+            marginTop: 4,
+            fontSize: 12,
+            fontWeight: 500,
+            lineHeight: 1.5,
+            color: "#B4BAC3",
+            textShadow:
+              "0 0 2px rgba(0,0,0,0.9), 0 1px 2px rgba(0,0,0,0.5)",
+          }}
+        >
+          The NEX Reseller programme pushes your shop in front of buyers
+          actively looking for what you offer. Just extra business — you
+          only pay when an order ships and payment clears. Limited
+          spaces · join today.
+        </div>
+      </div>
+    </label>
   );
 }
 

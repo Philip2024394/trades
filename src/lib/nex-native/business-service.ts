@@ -756,6 +756,20 @@ export async function updateBusinessLocation(
   return data as NexBusinessRow;
 }
 
+/** Seller Central · upload a size-chart image via the onboarding
+ *  storage helper. Public URL is persisted on nex_product.size_chart_url
+ *  by the server action. Sealed 2026-10-01 · Phase 1 Shoppe-grade
+ *  variants. */
+export async function uploadSizeChartImage(
+  accountId: NexUuid,
+  file: File,
+): Promise<{ url: string }> {
+  // Reuse the onboarding logo helper · same bucket, same MIME rules,
+  // path lives under business-logo/onboarding/<accountId>/ which is
+  // fine for a transient upload the seller may discard later.
+  return uploadOnboardingLogo(accountId, file);
+}
+
 /** Set / clear the logo_url on a business. Thin wrapper around
  *  updateBusinessProfile so onboarding + /manage/shop can both set
  *  the logo without threading the whole profile-update interface.

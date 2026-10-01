@@ -554,6 +554,78 @@ export async function joinAffiliateAction(
   redirect("/nex-native/affiliate?joined=1");
 }
 
+/** Affiliate Marketplace · promote a seller.
+ *  Called from the Marketplace page's "Promote this seller" button.
+ *  Idempotent · tapping twice doesn't duplicate (unique partial index
+ *  on nex_affiliate_promotion). Requires the viewer to be a joined
+ *  affiliate; redirects to /affiliate/join if not. Sealed 2026-10-01. */
+export async function promoteSellerAction(
+  formData: FormData,
+): Promise<never> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) redirect("/nex-native/sign-in");
+
+  const businessId = String(formData.get("business_id") ?? "").trim();
+  if (!businessId) {
+    redirect("/nex-native/affiliate/marketplace?e=missing_business");
+  }
+
+  const { isAffiliateAccount } = await import(
+    "@/lib/nex-native/affiliate-service"
+  );
+  const amAffiliate = await isAffiliateAccount(session.account.id);
+  if (!amAffiliate) {
+    redirect("/nex-native/affiliate/join?from=marketplace");
+  }
+
+  const { startPromotion } = await import(
+    "@/lib/nex-native/affiliate-marketplace-service"
+  );
+  try {
+    await startPromotion(session.account.id, businessId);
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    redirect(
+      `/nex-native/affiliate/marketplace?e=promote_failed&m=${encodeURIComponent(msg)}`,
+    );
+  }
+
+  revalidatePath("/nex-native/affiliate/marketplace");
+  revalidatePath("/nex-native/affiliate");
+  redirect("/nex-native/affiliate/marketplace?e=promoted&m=1");
+}
+
+/** Affiliate Marketplace · cancel a currently-active promotion.
+ *  Soft-delete via dropped_at so the attribution-ledger history
+ *  survives. Sealed 2026-10-01. */
+export async function cancelPromotionAction(
+  formData: FormData,
+): Promise<never> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) redirect("/nex-native/sign-in");
+
+  const businessId = String(formData.get("business_id") ?? "").trim();
+  if (!businessId) {
+    redirect("/nex-native/affiliate/marketplace?e=missing_business");
+  }
+
+  const { cancelPromotion } = await import(
+    "@/lib/nex-native/affiliate-marketplace-service"
+  );
+  try {
+    await cancelPromotion(session.account.id, businessId);
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    redirect(
+      `/nex-native/affiliate/marketplace?e=cancel_failed&m=${encodeURIComponent(msg)}`,
+    );
+  }
+
+  revalidatePath("/nex-native/affiliate/marketplace");
+  revalidatePath("/nex-native/affiliate");
+  redirect("/nex-native/affiliate/marketplace?e=cancelled&m=1");
+}
+
 /** Bridge ThemeSticker · sealed 2026-10-01 · live peer-chat sticker
  *  send. SECURITY-SENSITIVE boundary · the browser is NOT trusted for
  *  any sticker metadata.
@@ -3134,6 +3206,34 @@ export async function createBusinessAction(formData: FormData): Promise<never> {
     }
   }
 
+  // NEX Resellers opt-in · sealed 2026-10-01 · the Launch wizard
+  // ticks this ON by default; sellers can un-tick. When ON we flip
+  // the reseller_enabled flag so the Affiliate Marketplace surfaces
+  // this shop to affiliates. Soft-fail · the business is already
+  // created, missing the opt-in just means the seller can toggle it
+  // later from /manage/shop.
+  const joinResellerInput = String(formData.get("join_reseller") ?? "").trim();
+  if (joinResellerInput === "1") {
+    try {
+      const { nexSupabaseAdmin } = await import(
+        "@/lib/nex-native/supabase-admin"
+      );
+      await nexSupabaseAdmin
+        .from("nex_business")
+        .update({
+          reseller_enabled: true,
+          reseller_enabled_at: new Date().toISOString(),
+        })
+        .eq("id", business.id);
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(
+        "createBusinessAction · reseller_enabled soft-fail:",
+        e instanceof Error ? e.message : String(e),
+      );
+    }
+  }
+
   // Sealed 2026-10-01 · first-product create only runs when the
   // caller actually supplied product fields. The Seller Central
   // wizard defers this to a post-launch "add your first product"
@@ -3200,14 +3300,13 @@ export async function createFirstProductAction(
   }
 
   const name = String(formData.get("product_name") ?? "").trim();
-  const priceRaw = String(formData.get("product_price_gbp") ?? "").trim();
+  const priceRaw = String(formData.get("product_price_major") ?? "").trim();
   const description = String(formData.get("product_description") ?? "").trim();
   const imageUrl = String(formData.get("product_image_url") ?? "").trim();
-  // Sealed 2026-10-01 · multi-image · 4-slot picker on the first
-  // product form serializes extra images into a JSON array. Primary
-  // image (slot 0) is `product_image_url` · slots 1-3 come through
-  // here as a JSON string of URLs. Soft-parse so a broken payload
-  // just loses the gallery, never blocks the submit.
+  const currencyRaw = String(formData.get("product_currency") ?? "").trim().toUpperCase();
+  const sizeChartUrl = String(formData.get("product_size_chart_url") ?? "").trim();
+
+  // Multi-image gallery · soft-parse the JSON blob the client sends.
   const galleryRaw = String(formData.get("product_gallery_urls") ?? "").trim();
   let galleryUrls: string[] = [];
   if (galleryRaw.length > 0) {
@@ -3225,6 +3324,46 @@ export async function createFirstProductAction(
     }
   }
 
+  // Sealed 2026-10-01 · Phase 1 Shoppe-grade variants · the client
+  // posts a JSON blob with the chosen variant attribute (size or
+  // colour), the template key (for size), and the list of values.
+  // Soft-parse so a bad payload just drops the variants, never
+  // blocks the product create.
+  const variantsRaw = String(formData.get("product_variants") ?? "").trim();
+  interface ParsedVariant {
+    attribute: string;
+    name: string;
+  }
+  let parsedVariants: ParsedVariant[] = [];
+  if (variantsRaw.length > 0) {
+    try {
+      const parsed = JSON.parse(variantsRaw);
+      if (Array.isArray(parsed)) {
+        parsedVariants = parsed
+          .filter(
+            (x) =>
+              x &&
+              typeof x === "object" &&
+              typeof x.attribute === "string" &&
+              typeof x.name === "string",
+          )
+          .map((x) => ({
+            attribute: String(x.attribute).toLowerCase().trim(),
+            name: String(x.name).trim(),
+          }))
+          .filter((x) => x.name.length > 0 && x.name.length <= 60)
+          // Keep only known attribute slots so we never try to write a
+          // value the DB CHECK constraint will reject.
+          .filter((x) =>
+            ["size", "colour"].includes(x.attribute),
+          )
+          .slice(0, 40);
+      }
+    } catch {
+      // ignore
+    }
+  }
+
   if (!name) {
     redirect(
       `/nex-native/onboarding/first-product?slug=${encodeURIComponent(business.slug)}&e=missing_name&m=${encodeURIComponent("Product name required")}`,
@@ -3235,23 +3374,43 @@ export async function createFirstProductAction(
       `/nex-native/onboarding/first-product?slug=${encodeURIComponent(business.slug)}&e=long_name&m=${encodeURIComponent("Name too long")}`,
     );
   }
-  const priceGbp = Number(priceRaw);
-  if (!priceRaw || !Number.isFinite(priceGbp) || priceGbp <= 0) {
+
+  // Currency validation · defaults to IDR per 2026-09-27 Indonesia
+  // launch package doctrine · falls through to GBP for backward
+  // compat on legacy callers that still post product_price_gbp.
+  const { isSupportedCurrency, DEFAULT_CURRENCY } = await import(
+    "@/lib/nex-native/currencies"
+  );
+  const legacyPriceGbp = String(formData.get("product_price_gbp") ?? "").trim();
+  const effectivePriceRaw = priceRaw || legacyPriceGbp;
+  const effectiveCurrency = currencyRaw && isSupportedCurrency(currencyRaw)
+    ? currencyRaw
+    : legacyPriceGbp
+      ? "GBP"
+      : DEFAULT_CURRENCY;
+
+  const priceMajor = Number(effectivePriceRaw);
+  if (
+    !effectivePriceRaw ||
+    !Number.isFinite(priceMajor) ||
+    priceMajor <= 0
+  ) {
     redirect(
       `/nex-native/onboarding/first-product?slug=${encodeURIComponent(business.slug)}&e=invalid_price&m=${encodeURIComponent("Price required (e.g. 24.50)")}`,
     );
   }
-  const pricePence = Math.round(priceGbp * 100);
+  const pricePence = Math.round(priceMajor * 100);
 
+  let created;
   try {
-    await productService.createProduct({
+    created = await productService.createProduct({
       business_id: business.id,
       name,
       description: description || null,
       image_url: imageUrl || null,
       gallery_urls: galleryUrls.length > 0 ? galleryUrls : null,
       price_pence: pricePence,
-      currency: "GBP",
+      currency: effectiveCurrency,
       status: "live",
     });
   } catch (e) {
@@ -3261,8 +3420,75 @@ export async function createFirstProductAction(
     );
   }
 
+  // Size chart · soft-fail · if the write errors we log and move on,
+  // the product itself is already created. Seller can retry from
+  // /manage/products.
+  if (sizeChartUrl.length > 0) {
+    try {
+      const { nexSupabaseAdmin } = await import(
+        "@/lib/nex-native/supabase-admin"
+      );
+      await nexSupabaseAdmin
+        .from("nex_product")
+        .update({ size_chart_url: sizeChartUrl })
+        .eq("id", created.id);
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error("createFirstProductAction · size_chart soft-fail:", e);
+    }
+  }
+
+  // Variants · each parsed entry becomes a nex_product_variant row.
+  // Soft-fail per variant so one bad row doesn't block the rest.
+  for (let i = 0; i < parsedVariants.length; i += 1) {
+    const v = parsedVariants[i];
+    try {
+      await productService.createVariant({
+        product_id: created.id,
+        name: v.name,
+        attribute: v.attribute as "size" | "colour",
+        position: i,
+      });
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(
+        "createFirstProductAction · variant soft-fail:",
+        v.attribute,
+        v.name,
+        e,
+      );
+    }
+  }
+
   revalidatePath(`/nex-native/${business.slug}`);
   redirect(`/nex-native/${business.slug}`);
+}
+
+/** Seller Central · upload a size-chart image for a product. Called
+ *  from the first-product form (and later from /manage/products).
+ *  Returns the public URL that the form carries as a hidden field
+ *  until final submit. Reuses onboarding storage path family. */
+export async function uploadSizeChartAction(
+  formData: FormData,
+): Promise<{ ok: true; url: string } | { ok: false; error: string }> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) return { ok: false, error: "not_signed_in" };
+  const file = formData.get("size_chart");
+  if (!(file instanceof File) || file.size === 0) {
+    return { ok: false, error: "no_file" };
+  }
+  try {
+    const { url } = await businessService.uploadSizeChartImage(
+      session.account.id,
+      file,
+    );
+    return { ok: true, url };
+  } catch (e) {
+    return {
+      ok: false,
+      error: e instanceof Error ? e.message : "upload_failed",
+    };
+  }
 }
 
 /** Seller Central · post-launch first product · image upload. Returns

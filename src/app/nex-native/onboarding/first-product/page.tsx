@@ -16,6 +16,7 @@ import type * as React from "react";
 import { redirect } from "next/navigation";
 import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
 import * as businessService from "@/lib/nex-native/business-service";
+import { listColorPalette } from "@/lib/nex-native/color-palette-service";
 import { FirstProductClient } from "./_first-product-client";
 
 export const runtime = "nodejs";
@@ -45,6 +46,7 @@ export default async function Page({ searchParams }: PageProps) {
   }
 
   const banner = sp.e && sp.m ? { code: sp.e, message: sp.m } : null;
+  const colorPalette = await listColorPalette().catch(() => []);
 
   return (
     <FirstProductClient
@@ -52,6 +54,11 @@ export default async function Page({ searchParams }: PageProps) {
       displayName={business.display_name}
       logoUrl={business.logo_url ?? null}
       banner={banner}
+      colorPalette={colorPalette.map((c) => ({
+        slug: c.slug,
+        label: c.label,
+        hex: c.hex,
+      }))}
     />
   );
 }
