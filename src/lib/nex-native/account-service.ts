@@ -85,6 +85,10 @@ export async function createAccount(input: NexAccountInsert): Promise<NexAccount
       display_name: input.display_name,
       phone_country_code: cc,
       phone_national_number: nn,
+      // Sealed 2026-10-01 · every brand-new NEX account arrives in
+      // the Joker theme (theme-0 · the sealed launch theme). Picker
+      // at /nex-native/settings/theme can still change it later.
+      chat_theme: input.chat_theme ?? "theme-0",
     })
     .select("*")
     .single();

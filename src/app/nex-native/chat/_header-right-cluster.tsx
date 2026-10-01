@@ -88,6 +88,17 @@ interface Props {
   /** Optional per-theme shop background image · threaded straight
    *  into ShopGridModal. Resolved upstream from theme-assets.ts. */
   shopBackgroundImageUrl?: string | null;
+  /** Shop-type chooser · when true, tapping the Shop icon opens the
+   *  slider in first-time setup mode (3 cards: Products / Food /
+   *  Affiliate) instead of the product grid. */
+  showShopSetupChooser?: boolean;
+  onSelectShopType?: (type: "products" | "food" | "affiliate") => void;
+  /** Peer's chat_theme accent · the cluster icons sit muted at 55%
+   *  white and only light up to this colour on hover / focus / press.
+   *  Scarcity rule applied to chrome · icons disappear into the
+   *  environment until the user actually reaches for them. Defaults
+   *  to NEX cyan. Sealed 2026-10-01. */
+  themeAccent?: string | null;
 }
 
 /** Read the total quantity of items currently in the localStorage
@@ -119,6 +130,9 @@ export function HeaderRightCluster({
   inquiryAction,
   forceShowCart = false,
   shopBackgroundImageUrl,
+  showShopSetupChooser,
+  onSelectShopType,
+  themeAccent,
 }: Props) {
   const [shopOpen, setShopOpen] = React.useState(false);
   const [cartCount, setCartCount] = React.useState(0);
@@ -151,8 +165,20 @@ export function HeaderRightCluster({
     : "Shop";
   const shopTitle = shop ? (shop.isVenue ? "Menu" : "Shop") : "";
 
+  const headerAccent = themeAccent ?? NEX.cyan;
   return (
     <>
+      <style>{`
+        /* Muted-until-touched · sealed 2026-10-01. Cluster icons live
+           at 55% white so they recede into the environment; they
+           light up to the per-theme accent (--nex-header-accent) on
+           hover, keyboard focus, or press. */
+        [data-nex-header-cluster-btn]:hover,
+        [data-nex-header-cluster-btn]:focus-visible,
+        [data-nex-header-cluster-btn]:active {
+          color: var(--nex-header-accent, #00AFFF) !important;
+        }
+      `}</style>
       <div
         data-nex-header-cluster
         style={{
@@ -163,6 +189,7 @@ export function HeaderRightCluster({
           alignItems: "center",
           gap: 4,
           zIndex: 6,
+          ["--nex-header-accent" as unknown as string]: headerAccent,
         }}
       >
         <ClusterLinkButton
@@ -184,34 +211,50 @@ export function HeaderRightCluster({
           title="Cart"
         >
           <CartIcon />
-          {hydrated && cartCount > 0 && (
-            <span
-              aria-hidden
-              style={{
-                position: "absolute",
-                top: -4,
-                right: -4,
-                minWidth: 18,
-                height: 18,
-                padding: "0 5px",
-                borderRadius: 999,
-                background: "linear-gradient(180deg, #FF77BC, #FF3F9F)",
-                color: "#0B0F1A",
-                fontSize: 10,
-                fontWeight: 800,
-                lineHeight: 1,
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                border: "1.5px solid #050f1e",
-                boxShadow: `0 4px 10px ${NEX.pinkGlow}`,
-                fontFamily:
-                  "Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
-              }}
-            >
-              {cartCount > 99 ? "99+" : cartCount}
-            </span>
-          )}
+          {hydrated && cartCount > 0 && (() => {
+            // Sealed 2026-10-01 · the cart-count badge adopts a
+            // theme-specific colour where it makes sense. On Joker
+            // the pink reads as fighting the acid-green palette ·
+            // red (classic playing-card suit red) ties into the
+            // Joker / cards doctrine and still screams "look here"
+            // without introducing a third accent colour. Non-Joker
+            // themes keep the original pink.
+            const isJoker = themeAccent === "#8FFF6E";
+            const bg = isJoker
+              ? "linear-gradient(180deg, #FF4D4D, #D40000)"
+              : "linear-gradient(180deg, #FF77BC, #FF3F9F)";
+            const glow = isJoker
+              ? "rgba(212,0,0,0.6)"
+              : NEX.pinkGlow;
+            return (
+              <span
+                aria-hidden
+                style={{
+                  position: "absolute",
+                  top: -4,
+                  right: -4,
+                  minWidth: 18,
+                  height: 18,
+                  padding: "0 5px",
+                  borderRadius: 999,
+                  background: bg,
+                  color: isJoker ? "#FFFFFF" : "#0B0F1A",
+                  fontSize: 10,
+                  fontWeight: 800,
+                  lineHeight: 1,
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  border: "1.5px solid #050f1e",
+                  boxShadow: `0 4px 10px ${glow}`,
+                  fontFamily:
+                    "Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
+                }}
+              >
+                {cartCount > 99 ? "99+" : cartCount}
+              </span>
+            );
+          })()}
         </ClusterLinkButton>
         )}
 
@@ -250,6 +293,8 @@ export function HeaderRightCluster({
           sendCartOrderAction={sendCartOrderAction}
           inquiryAction={inquiryAction}
           backgroundImageUrl={shopBackgroundImageUrl ?? null}
+          showSetupChooser={showShopSetupChooser}
+          onSelectShopType={onSelectShopType}
         />
       )}
     </>
@@ -266,12 +311,17 @@ const CIRCLE: React.CSSProperties = {
   borderRadius: 0,
   background: "transparent",
   border: "none",
-  color: NEX.orange,
+  // Sealed 2026-10-01 · muted-until-touched · icons sit at 55% white
+  // so they disappear into the environment · they light up to the
+  // theme accent via `[data-nex-header-cluster-btn]:hover` in the
+  // stylesheet attached to the cluster wrapper below. Scarcity rule
+  // applied to chrome.
+  color: "rgba(255,255,255,0.55)",
   padding: 6,
   display: "grid",
   placeItems: "center",
   cursor: "pointer",
-  transition: "opacity 160ms ease, transform 120ms ease",
+  transition: "color 160ms ease, transform 120ms ease",
   textDecoration: "none",
   position: "relative",
   filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.55))",
@@ -293,6 +343,7 @@ function ClusterLinkButton({
       href={href}
       aria-label={ariaLabel}
       title={title}
+      data-nex-header-cluster-btn
       style={CIRCLE}
     >
       {children}
@@ -317,13 +368,8 @@ function ClusterActionButton({
       onClick={onClick}
       aria-label={ariaLabel}
       title={title}
+      data-nex-header-cluster-btn
       style={CIRCLE}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.opacity = "0.7";
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.opacity = "1";
-      }}
     >
       {children}
     </button>

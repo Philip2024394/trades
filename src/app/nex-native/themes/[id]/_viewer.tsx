@@ -60,6 +60,11 @@ interface ThemeViewerClientProps {
   /** ?mode=menu flips the shop slider into venue mode · cutlery icon
    *  in the header + "Menu" eyebrow inside the modal. */
   isVenueMode: boolean;
+  /** ?shop_setup=1 renders the first-time 3-button chooser (Sell
+   *  Products / Sell Food / Affiliate) in the shop slider instead of
+   *  the product grid. Preview-only trigger · the real flow decides
+   *  this based on whether the current user has a configured shop. */
+  showShopSetupChooser?: boolean;
   /** Bridge ThemeEmoji-B · this theme's emoji set from
    *  nex_theme_emoji. Threaded through PortraitBloomShell into
    *  PeerComposer's EmojiModal so the picker shows image tiles when
@@ -181,22 +186,6 @@ export default function ThemeViewerClient(
   // see the big-newest + small-older stack update live · no DB write.
   const [messages, setMessages] = React.useState<PortraitBloomMessage[]>(
     () => [
-      {
-        id: "sample-1",
-        body: "Sunset shoot went perfectly ✨\nWant to see the proofs?",
-        sent_at: s.m1,
-        read_at: s.readEarly,
-        mine: false,
-      },
-      {
-        id: "sample-2",
-        body: "Yes please. Send whenever.",
-        sent_at: s.m2,
-        read_at: s.readEarly,
-        mine: true,
-        reactions: { "🔥": ["fake"] },
-        reactions_order: ["🔥"],
-      },
       {
         id: "sample-3",
         body: "Sending the top 10 now.\nRoll #2 is my favourite.",
@@ -377,6 +366,18 @@ export default function ThemeViewerClient(
            launch. Preview shows the full [Home] [Shop] [Cart]
            cluster · Founder ask: "same buttons as dream theme". */
         forceShowCart
+        /* Shop-type chooser · when ?shop_setup=1 is on the URL the
+           slider opens in first-time setup mode (3 buttons: Sell
+           Products / Sell Food / Affiliate). Preview only. */
+        showShopSetupChooser={props.showShopSetupChooser}
+        onSelectShopType={(type) => {
+          // Preview handler · the real path routes to the Profession
+          // picker (Migrations 113-115) for products/food, or the
+          // affiliate waitlist for affiliate. Here just log so the
+          // founder can confirm the tap wiring works end-to-end.
+          // eslint-disable-next-line no-console
+          console.log("[preview] shop-type selected:", type);
+        }}
         /* Per-theme shop backdrop · resolved via theme-assets.ts
            (same helper the real peer-chat page uses). Joker gets the
            alley wallpaper; themes without a slot fall through to the

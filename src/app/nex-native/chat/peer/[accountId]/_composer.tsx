@@ -16,7 +16,7 @@
 // Sealed 2026-09-27.
 
 import * as React from "react";
-import { useFormStatus } from "react-dom";
+import { createPortal, useFormStatus } from "react-dom";
 import {
   MediaCapture,
   type MediaCaptureHandle,
@@ -569,36 +569,13 @@ export function PeerComposer({
           </>
         )}
 
-        {/* Row 1 · plain 3-dot pushed to the viewport right edge, 20px
-            of breathing room above the pill. No circle, no border, no
-            aurora · just the dots. */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            marginRight: -16,
-            marginBottom: -6,
-          }}
-        >
-          <button
-            type="button"
-            aria-label="More actions"
-            onClick={() => setModalOpen(true)}
-            style={{
-              width: 44,
-              height: 36,
-              background: "transparent",
-              border: "none",
-              color: NEX.text,
-              padding: 0,
-              display: "grid",
-              placeItems: "center",
-              cursor: "pointer",
-            }}
-          >
-            <DotsIcon color={themeAccent ?? NEX.cyan} />
-          </button>
-        </div>
+        {/* Sealed 2026-10-01 · composer Row 1 (floating 3-dot above
+            the pill) retired · the + button inside the pill opens the
+            same "More actions" modal, so there's no feature loss.
+            Removing the second 3-dot also removes a visual conflict
+            with the Joker animations controller 3-dot (bottom-right)
+            — only ONE 3-dot should live on-screen at a time, and it
+            belongs to the theme's animation panel. */}
 
         {/* Row 2 · glass input rectangle · matches the outgoing
             chat bubble family. Rim adopts the peer's chat theme so
@@ -724,7 +701,10 @@ export function PeerComposer({
                 overflow: "auto",
               }}
             />
-            <EmojiButton onClick={() => setEmojiOpen(true)} />
+            <EmojiButton
+              onClick={() => setEmojiOpen(true)}
+              themeAccent={themeAccent ?? null}
+            />
             <SendButton armed={canSend} themeSendButtonUrl={themeSendButtonUrl ?? null} />
         </div>
       </form>
@@ -732,7 +712,23 @@ export function PeerComposer({
   );
 }
 
-function EmojiButton({ onClick }: { onClick: () => void }) {
+function EmojiButton({
+  onClick,
+  themeAccent,
+}: {
+  onClick: () => void;
+  themeAccent?: string | null;
+}) {
+  // Sealed 2026-10-01 · the emoji trigger is now an accent-coloured
+  // dot rather than a smile glyph. Picks up the active peer's chat
+  // theme accent so the composer gets a scarce, electric bite of
+  // theme colour (Joker · acid green dot; Night Sky · blue; etc.)
+  // without crowding the pill with iconography. The dot is also the
+  // smallest tap-target chrome possible, leaving the composer line
+  // visually quiet.
+  const dot = themeAccent ?? NEX.cyan;
+  const dotRgb = hexToRgbTriple(dot);
+  const glow = `rgba(${dotRgb},0.55)`;
   return (
     <button
       type="button"
@@ -745,7 +741,6 @@ function EmojiButton({ onClick }: { onClick: () => void }) {
         borderRadius: "50%",
         background: "transparent",
         border: "none",
-        color: NEX.textSecondary,
         display: "grid",
         placeItems: "center",
         cursor: "pointer",
@@ -753,9 +748,32 @@ function EmojiButton({ onClick }: { onClick: () => void }) {
         marginRight: 2,
       }}
     >
-      <SmileIcon />
+      <span
+        aria-hidden
+        style={{
+          width: 10,
+          height: 10,
+          borderRadius: "50%",
+          background: dot,
+          boxShadow: `0 0 8px ${glow}, 0 0 2px ${glow}`,
+        }}
+      />
     </button>
   );
+}
+
+/** Parse #RRGGBB into "r,g,b" so we can build rgba() glows at any
+ *  alpha without a second helper import. Falls back to NEX cyan on
+ *  parse failure so the composer never crashes on a malformed hex. */
+function hexToRgbTriple(hex: string): string {
+  const clean = (hex || "").replace(/^#/, "");
+  const full =
+    clean.length === 3
+      ? clean.split("").map((c) => c + c).join("")
+      : clean;
+  const n = parseInt(full || "009FEF", 16);
+  if (Number.isNaN(n)) return "0,159,239";
+  return `${(n >> 16) & 0xff},${(n >> 8) & 0xff},${n & 0xff}`;
 }
 
 function PlusButton({ onClick }: { onClick: () => void }) {
@@ -1061,10 +1079,24 @@ function EmojiModal({
     | null;
   sendStickerAction?: (formData: FormData) => Promise<void> | void;
 }) {
-  const useTheme = !!themeEmojis && themeEmojis.length > 0;
+  const hasMascots = !!themeEmojis && themeEmojis.length > 0;
   const hasStickers =
     !!themeStickers && themeStickers.length > 0 && !!sendStickerAction;
-  const [tab, setTab] = React.useState<"emoji" | "stickers">("emoji");
+  // Sealed 2026-10-01 · three tabs: Emoji (universal) · Mascots
+  // (theme-specific image tiles) · Stickers (big portrait tiles).
+  // Mascots / Stickers tabs only render when the backing content
+  // exists so themes without them don't show empty tabs. Legacy
+  // callers that passed `useTheme` emoji inline keep working ·
+  // mascots moves them to their own tab.
+  type PickerTabKey = "emoji" | "mascots" | "stickers";
+  const [tab, setTab] = React.useState<PickerTabKey>("emoji");
+  // Sealed 2026-10-01 · the EmojiModal was nested inside <main> and
+  // the shell's HeaderRightCluster (a sibling of main, z-6) painted
+  // ABOVE main's children regardless of their own z-index. Portal
+  // the modal to document.body so it escapes main's painting layer
+  // and stacks above every chat chrome element.
+  const [mounted, setMounted] = React.useState(false);
+  React.useEffect(() => setMounted(true), []);
   React.useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -1073,23 +1105,12 @@ function EmojiModal({
     return () => window.removeEventListener("keydown", onKey);
   }, [onClose]);
 
-  return (
+  if (!mounted) return null;
+
+  const tabCount = 1 + (hasMascots ? 1 : 0) + (hasStickers ? 1 : 0);
+
+  return createPortal(
     <>
-      <div
-        data-nex-media-backdrop
-        role="button"
-        aria-label="Close emoji picker"
-        onClick={onClose}
-        style={{
-          position: "fixed",
-          inset: 0,
-          // Light dim · no blur · so ambient theme motion (falling
-          // cards, bats, rain, etc.) stays visible behind the picker
-          // instead of being frosted into a flat wash.
-          background: "rgba(2,9,20,0.28)",
-          zIndex: 100,
-        }}
-      />
       <style>{`
         [data-nex-emoji-scroll] {
           scrollbar-width: none;
@@ -1099,67 +1120,114 @@ function EmojiModal({
           width: 0;
           height: 0;
         }
+        /* Full-page takeover · fades in from a slight downward offset
+           so it reads as rising from the composer area · no container
+           chrome · content sits directly on the alley wallpaper. */
         @keyframes nex-emoji-modal-in {
-          from { opacity: 0; transform: translate(-50%, -46%) scale(0.96); }
-          to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+          from { opacity: 0; transform: translateY(10px); }
+          to   { opacity: 1; transform: translateY(0); }
         }
       `}</style>
+      {/* Full-screen takeover · sealed 2026-10-01 · no container
+          chrome. Backdrop IS the content surface: alley wallpaper
+          fills the whole viewport with the same light vignette the
+          3-dots panel + shop slider use. Tab bar + content grid sit
+          directly on the wallpaper · round × top-right closes.
+          Backdrop tap closes · the inner content div stops
+          propagation so grid taps don't bubble. */}
       <div
         data-nex-media-modal
         role="dialog"
         aria-modal="true"
-        aria-label="Pick an emoji or sticker"
+        aria-label="Pick an emoji, mascot, or sticker"
+        onClick={onClose}
         style={{
           position: "fixed",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          width: "min(440px, calc(100vw - 24px))",
-          height: "min(620px, calc(100vh - 72px))",
-          padding: "20px 18px 18px",
-          // Frosted glass with a subtle theme accent ring · reads
-          // higher fidelity than the previous flat panel.
+          inset: 0,
+          width: "100vw",
+          height: "100dvh",
           background:
-            "linear-gradient(180deg, rgba(6,15,28,0.92) 0%, rgba(3,10,20,0.94) 100%)",
-          backdropFilter: "blur(18px) saturate(1.2)",
-          WebkitBackdropFilter: "blur(18px) saturate(1.2)",
-          border: `1px solid ${NEX.cyanSoft}`,
-          borderRadius: 26,
-          boxShadow:
-            "0 32px 80px rgba(0,0,0,0.7), 0 0 60px rgba(0,159,239,0.16), inset 0 1px 0 rgba(255,255,255,0.06)",
+            "linear-gradient(180deg, rgba(6,15,28,0.18) 0%, rgba(3,10,20,0.32) 100%), url(/nex-themes/joker-shop-bg.png) center center / cover no-repeat",
           zIndex: 101,
           color: NEX.textPrimary,
           fontFamily: "inherit",
           display: "flex",
           flexDirection: "column",
-          animation: "nex-emoji-modal-in 220ms cubic-bezier(.2,.7,.2,1) both",
+          padding:
+            "calc(env(safe-area-inset-top, 0) + 76px) 18px 24px",
+          overflowY: "auto",
+          animation:
+            "nex-emoji-modal-in 220ms cubic-bezier(.2,.7,.2,1) both",
         }}
       >
-        {/* Title · plain, no "NEX ·" prefix */}
-        <div
+        {/* Round × close · top-right · matches the 3-dots panel */}
+        <button
+          type="button"
+          aria-label="Close picker"
+          onClick={onClose}
           style={{
-            fontSize: 11,
-            letterSpacing: "0.16em",
-            textTransform: "uppercase",
-            color: NEX.cyan,
-            textAlign: "center",
-            marginBottom: 14,
-            fontWeight: 600,
+            position: "absolute",
+            top: "calc(env(safe-area-inset-top, 0) + 16px)",
+            right: 16,
+            width: 36,
+            height: 36,
+            padding: 0,
+            borderRadius: "50%",
+            background:
+              "linear-gradient(180deg, #0a1a30 0%, #020914 100%)",
+            border: "1px solid rgba(0,159,239,0.65)",
+            color: "#009FEF",
+            cursor: "pointer",
+            display: "grid",
+            placeItems: "center",
+            boxShadow:
+              "0 4px 12px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.04)",
+            zIndex: 2,
           }}
         >
-          {tab === "emoji" ? "Pick an emoji" : "Pick a sticker"}
-        </div>
+          <svg
+            width={14}
+            height={14}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2.4}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden
+          >
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
 
-        {/* Emoji / Mascot toggle · segmented control */}
+        {/* Inner content wrapper · stops click propagation so taps on
+            tabs/tiles don't trigger the backdrop close. Max-width
+            keeps the grid readable on desktop. */}
+        <div
+          onClick={(e) => e.stopPropagation()}
+          style={{
+            width: "100%",
+            maxWidth: 480,
+            marginLeft: "auto",
+            marginRight: "auto",
+            display: "flex",
+            flexDirection: "column",
+            flex: 1,
+            minHeight: 0,
+          }}
+        >
+        {/* Tab bar · segmented control · 1-3 columns depending on
+            what content types are available for this chat. */}
         <div
           role="tablist"
           aria-label="Picker tabs"
           style={{
             display: "grid",
-            gridTemplateColumns: "1fr 1fr",
+            gridTemplateColumns: `repeat(${tabCount}, 1fr)`,
             gap: 4,
             padding: 4,
-            marginBottom: 14,
+            marginBottom: 12,
             background: "rgba(0,0,0,0.35)",
             border: "1px solid rgba(255,255,255,0.06)",
             borderRadius: 12,
@@ -1170,125 +1238,163 @@ function EmojiModal({
             onClick={() => setTab("emoji")}
             label="Emoji"
           />
-          <PickerTab
-            active={tab === "stickers"}
-            onClick={() => setTab("stickers")}
-            label="Stickers"
-          />
+          {hasMascots && (
+            <PickerTab
+              active={tab === "mascots"}
+              onClick={() => setTab("mascots")}
+              label="Mascots"
+            />
+          )}
+          {hasStickers && (
+            <PickerTab
+              active={tab === "stickers"}
+              onClick={() => setTab("stickers")}
+              label="Stickers"
+            />
+          )}
         </div>
 
-        {tab === "emoji" ? (
-          useTheme ? (
-            <div
-              data-nex-emoji-scroll
-              style={{
-                flex: 1,
-                overflowY: "auto",
-                display: "grid",
-                // 5 columns · bigger tiles so each image emoji is
-                // readable at a glance · 25 jokers land in a clean
-                // 5×5 grid with no overflow.
-                gridTemplateColumns: "repeat(5, 1fr)",
-                gap: 8,
-                paddingRight: 4,
-              }}
-            >
-              {themeEmojis!.map((em) => (
-                <button
-                  key={em.slug}
-                  type="button"
-                  title={em.label || em.slug}
-                  aria-label={em.label || em.slug}
-                  onClick={() => onPick(`:${em.slug}:`)}
-                  style={{
-                    width: "100%",
-                    aspectRatio: "1 / 1",
-                    background: "transparent",
-                    border: "none",
-                    borderRadius: 10,
-                    cursor: "pointer",
-                    padding: 4,
-                    display: "grid",
-                    placeItems: "center",
-                    transition:
-                      "background 120ms ease, transform 100ms ease",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background = "rgba(0,159,239,0.14)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = "transparent";
-                  }}
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={em.imageUrl}
-                    alt={em.label || em.slug}
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "contain",
-                      display: "block",
-                    }}
-                  />
-                </button>
-              ))}
-            </div>
-          ) : (
-            <div
-              data-nex-emoji-scroll
-              style={{
-                flex: 1,
-                overflowY: "auto",
-                display: "grid",
-                gridTemplateColumns: "repeat(8, 1fr)",
-                gap: 4,
-                paddingRight: 4,
-              }}
-            >
-              {EMOJI_SET.map((emoji) => (
-                <button
-                  key={emoji}
-                  type="button"
-                  onClick={() => onPick(emoji)}
-                  style={{
-                    width: "100%",
-                    aspectRatio: "1 / 1",
-                    background: "transparent",
-                    border: "none",
-                    borderRadius: 10,
-                    fontSize: 22,
-                    cursor: "pointer",
-                    padding: 0,
-                    lineHeight: 1,
-                    display: "grid",
-                    placeItems: "center",
-                    transition:
-                      "background 120ms ease, transform 100ms ease",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background = "rgba(0,159,239,0.14)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = "transparent";
-                  }}
-                >
-                  {emoji}
-                </button>
-              ))}
-            </div>
-          )
-        ) : hasStickers ? (
-          <StickersGrid
-            stickers={themeStickers!}
-            sendStickerAction={sendStickerAction!}
-            onPicked={onClose}
-          />
-        ) : (
-          <MascotEmpty />
+        {tab === "emoji" && (
+          <div
+            data-nex-emoji-scroll
+            style={{
+              flex: 1,
+              overflowY: "auto",
+              display: "grid",
+              gridTemplateColumns: "repeat(8, 1fr)",
+              gap: 4,
+              paddingRight: 4,
+            }}
+          >
+            {EMOJI_SET.map((emoji) => (
+              <button
+                key={emoji}
+                type="button"
+                onClick={() => onPick(emoji)}
+                style={{
+                  width: "100%",
+                  aspectRatio: "1 / 1",
+                  background: "transparent",
+                  border: "none",
+                  borderRadius: 10,
+                  fontSize: 22,
+                  cursor: "pointer",
+                  padding: 0,
+                  lineHeight: 1,
+                  display: "grid",
+                  placeItems: "center",
+                  transition:
+                    "background 120ms ease, transform 100ms ease",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background =
+                    "rgba(0,159,239,0.14)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "transparent";
+                }}
+              >
+                {emoji}
+              </button>
+            ))}
+          </div>
         )}
+
+        {tab === "mascots" && hasMascots && (
+          <div
+            data-nex-emoji-scroll
+            style={{
+              flex: 1,
+              overflowY: "auto",
+              display: "grid",
+              // 5 columns · bigger tiles so each image mascot reads
+              // at a glance · 25 jokers land in a clean 5×5 grid.
+              gridTemplateColumns: "repeat(5, 1fr)",
+              gap: 8,
+              paddingRight: 4,
+            }}
+          >
+            {themeEmojis!.map((em) => (
+              <button
+                key={em.slug}
+                type="button"
+                title={em.label || em.slug}
+                aria-label={em.label || em.slug}
+                onClick={() => onPick(`:${em.slug}:`)}
+                style={{
+                  width: "100%",
+                  aspectRatio: "1 / 1",
+                  background: "transparent",
+                  border: "none",
+                  borderRadius: 10,
+                  cursor: "pointer",
+                  padding: 4,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  transition:
+                    "background 120ms ease, transform 100ms ease",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background =
+                    "rgba(0,159,239,0.14)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "transparent";
+                }}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={em.imageUrl}
+                  alt={em.label || em.slug}
+                  style={{
+                    flex: 1,
+                    minHeight: 0,
+                    width: "100%",
+                    objectFit: "contain",
+                    display: "block",
+                  }}
+                />
+                <span
+                  aria-hidden={!em.label}
+                  style={{
+                    height: 11,
+                    lineHeight: "11px",
+                    fontSize: 9,
+                    letterSpacing: "0.02em",
+                    color: "rgba(180,195,220,0.85)",
+                    textAlign: "center",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                    width: "100%",
+                    flexShrink: 0,
+                    marginTop: 2,
+                    textShadow:
+                      "0 0 2px rgba(0,0,0,0.9), 0 1px 2px rgba(0,0,0,0.5)",
+                  }}
+                >
+                  {em.label || ""}
+                </span>
+              </button>
+            ))}
+          </div>
+        )}
+
+        {tab === "stickers" &&
+          (hasStickers ? (
+            <StickersGrid
+              stickers={themeStickers!}
+              sendStickerAction={sendStickerAction!}
+              onPicked={onClose}
+            />
+          ) : (
+            <MascotEmpty />
+          ))}
+        </div>
       </div>
-    </>
+    </>,
+    document.body,
   );
 }
 

@@ -29,6 +29,11 @@ const BAT_BURST_MS = 5000;
 // the 8s animation at the 20-80% keyframe band).
 const WISE_CARD_LIFE_MS = 10000;
 const WISE_CARD_ENABLED_KEY = "nex_joker_wise_card_enabled_v1";
+// NEX Trust Scan · auto-open preference · when ON, the Trust Scan
+// overlay fires automatically the first time a chat is opened with a
+// new/unverified peer (consumer wiring handled by the parent). Open
+// button always works regardless of this toggle.
+const TRUST_SCAN_AUTO_KEY = "nex_trust_scan_auto_v1";
 
 type Toggles = Partial<Record<JokerMotionVariant, boolean>>;
 
@@ -61,19 +66,19 @@ const CARDS: CardSpec[] = [
   {
     variant: "rain",
     label: "Rain",
-    caption: "Toxic green streaks fall across the chat.",
+    caption: "Green rain streaks.",
     icon: <RainIcon />,
   },
   {
     variant: "bat",
     label: "Flying Bats",
-    caption: "A short flock bursts up from the send button each time you post.",
+    caption: "Bats fly up on send.",
     icon: <BatIcon />,
   },
   {
     variant: "lightning",
     label: "Lightning",
-    caption: "Sparse strikes · never more than one every ~90 seconds.",
+    caption: "Rare sparse strikes.",
     icon: <BoltIcon />,
   },
 ];
@@ -91,12 +96,30 @@ export function JokerController({
   const [open, setOpen] = React.useState(false);
   const [toggles, setToggles] = React.useState<Toggles>({});
   const [batBurstKey, setBatBurstKey] = React.useState<number | null>(null);
+  // Sealed 2026-10-01 · hide the dancing-dots trigger while the shop
+  // slider is up so the floating button doesn't sit on top of the
+  // slider content. ShopGridModal broadcasts `nex-shop-slider-visible`
+  // when it opens / closes.
+  const [shopSliderOpen, setShopSliderOpen] = React.useState(false);
+  React.useEffect(() => {
+    const onEvt = (e: Event) => {
+      const detail = (e as CustomEvent<{ open: boolean }>).detail;
+      setShopSliderOpen(!!detail?.open);
+    };
+    window.addEventListener("nex-shop-slider-visible", onEvt as EventListener);
+    return () =>
+      window.removeEventListener(
+        "nex-shop-slider-visible",
+        onEvt as EventListener,
+      );
+  }, []);
   // Wise Card · hybrid toggle + button · founder-sealed 2026-10-01.
   // `wiseCardEnabled` persists in localStorage and gates the Draw
   // button · `wiseCardKey` is bumped on each Draw tap so the overlay
   // mounts a fresh instance (restarting the animation cleanly).
   const [wiseCardEnabled, setWiseCardEnabled] = React.useState(false);
   const [wiseCardKey, setWiseCardKey] = React.useState<number | null>(null);
+  const [trustScanAuto, setTrustScanAuto] = React.useState(false);
 
   // Hydrate from localStorage + listen for cross-tab changes.
   React.useEffect(() => {
@@ -104,6 +127,9 @@ export function JokerController({
     try {
       setWiseCardEnabled(
         window.localStorage.getItem(WISE_CARD_ENABLED_KEY) === "1",
+      );
+      setTrustScanAuto(
+        window.localStorage.getItem(TRUST_SCAN_AUTO_KEY) === "1",
       );
     } catch {
       /* no-op */
@@ -113,9 +139,21 @@ export function JokerController({
       if (e.key === WISE_CARD_ENABLED_KEY) {
         setWiseCardEnabled(e.newValue === "1");
       }
+      if (e.key === TRUST_SCAN_AUTO_KEY) {
+        setTrustScanAuto(e.newValue === "1");
+      }
     };
     window.addEventListener("storage", onStorage);
     return () => window.removeEventListener("storage", onStorage);
+  }, []);
+
+  const setTrustScanAutoPersisted = React.useCallback((next: boolean) => {
+    setTrustScanAuto(next);
+    try {
+      window.localStorage.setItem(TRUST_SCAN_AUTO_KEY, next ? "1" : "0");
+    } catch {
+      /* no-op */
+    }
   }, []);
 
   const setWiseCardEnabledPersisted = React.useCallback((next: boolean) => {
@@ -132,13 +170,12 @@ export function JokerController({
   }, []);
 
   const drawWiseCard = React.useCallback(() => {
-    if (!wiseCardEnabled) return;
     const key = Date.now();
     setWiseCardKey(key);
     window.setTimeout(() => {
       setWiseCardKey((prev) => (prev === key ? null : prev));
     }, WISE_CARD_LIFE_MS);
-  }, [wiseCardEnabled]);
+  }, []);
 
   // Flying bats bind: when toggle is on, each send-press mounts a fresh
   // bat overlay keyed by a timestamp so the animation restarts cleanly
@@ -182,38 +219,43 @@ export function JokerController({
           lifetime (8s animation + 2s quiet tail per sealed spec). */}
       {wiseCardKey !== null && <JokerWiseCardDraw key={wiseCardKey} />}
 
-      {/* 3-dots floating trigger · bottom-right · hidden while the
-          panel is open so it doesn't double up as a dismiss target. */}
-      {!open && (
+      {/* 3-dots floating trigger · bottom-right · no circle / border /
+          background · just the dots floating per founder direction
+          2026-10-01 · hidden while the panel is open so it doesn't
+          double up as a dismiss target. */}
+      {!open && !shopSliderOpen && (
         <button
           type="button"
           aria-label="Theme animations"
           onClick={() => setOpen(true)}
           style={{
             position: "fixed",
-            right: 14,
+            right: 4,
             bottom: 96,
-            width: 44,
-            height: 44,
-            borderRadius: "50%",
-            background: "rgba(10,15,25,0.78)",
-            border: "1px solid rgba(143,255,110,0.35)",
+            width: 32,
+            height: 32,
+            padding: 0,
+            borderRadius: 0,
+            background: "transparent",
+            border: "none",
             color: "#8FFF6E",
             cursor: "pointer",
             display: "grid",
             placeItems: "center",
             zIndex: 9995,
-            backdropFilter: "blur(6px)",
-            WebkitBackdropFilter: "blur(6px)",
-            boxShadow: "0 10px 28px rgba(0,0,0,0.55)",
+            filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.75))",
           }}
         >
           <DancingDots />
         </button>
       )}
 
-      {/* Full-screen panel · 100vw x 100dvh · dim backdrop + the stack
-          of landscape cards centered. Backdrop tap closes. */}
+      {/* Full-screen panel · 100vw x 100dvh · alley backdrop + the
+          stack of landscape cards centered. Backdrop tap closes.
+          Sealed 2026-10-01 · backdrop now reuses the exact Joker
+          shop-slider wallpaper (joker-shop-bg.png) under the same
+          light vignette as ShopGridModal so the two surfaces read
+          as one visual family. */}
       {open && (
         <div
           role="dialog"
@@ -226,13 +268,12 @@ export function JokerController({
             width: "100vw",
             height: "100dvh",
             background:
-              "linear-gradient(180deg, rgba(4,10,20,0.94) 0%, rgba(2,6,14,0.96) 100%)",
-            backdropFilter: "blur(14px)",
-            WebkitBackdropFilter: "blur(14px)",
+              "linear-gradient(180deg, rgba(6,15,28,0.18) 0%, rgba(3,10,20,0.32) 100%), url(/nex-themes/joker-shop-bg.png) center center / cover no-repeat",
             zIndex: 10000,
             display: "flex",
             flexDirection: "column",
-            padding: "28px 18px 24px",
+            padding:
+              "calc(env(safe-area-inset-top, 0) + 76px) 18px 24px",
             overflowY: "auto",
             animation: "nex-joker-controller-in 180ms cubic-bezier(.2,.7,.2,1) both",
           }}
@@ -288,12 +329,20 @@ export function JokerController({
               <ActionCard
                 icon={<ShieldIcon />}
                 label="NEX Trust Scan"
-                caption="Open the trust report for this account."
-                actionLabel="Open"
-                onAction={() => {
-                  setOpen(false);
-                  onOpenTrustScan();
+                caption="Account trust report."
+                toggleValue={trustScanAuto}
+                onToggle={(next) => {
+                  setTrustScanAutoPersisted(next);
+                  if (next) {
+                    setOpen(false);
+                    // Same RAF + delay guard as Daily Insight so the
+                    // Trust Scan overlay doesn't race the panel unmount.
+                    requestAnimationFrame(() => {
+                      window.setTimeout(() => onOpenTrustScan(), 140);
+                    });
+                  }
                 }}
+                toggleLabel="NEX Trust Scan"
               />
             )}
             {CARDS.map((c) => (
@@ -311,32 +360,66 @@ export function JokerController({
                 the toggle is off. */}
             <WiseCardControlCard
               enabled={wiseCardEnabled}
-              onToggle={setWiseCardEnabledPersisted}
-              onDraw={() => {
-                setOpen(false);
-                drawWiseCard();
+              onToggle={(next) => {
+                setWiseCardEnabledPersisted(next);
+                if (next) {
+                  setOpen(false);
+                  // Sealed 2026-10-01 · wait a full frame + 140ms
+                  // after closing the panel before firing the draw.
+                  // Earlier setTimeout(0) raced with React 18's
+                  // batched state flush and the card was mounting
+                  // while the panel was still unmounting, so the
+                  // overlay was being hidden before the user could
+                  // see it. RAF + delay guarantees paint-order
+                  // correctness.
+                  requestAnimationFrame(() => {
+                    window.setTimeout(() => drawWiseCard(), 140);
+                  });
+                }
               }}
             />
           </div>
 
+          {/* Round × close · top-right of the panel · sealed 2026-10-01.
+              Floats over the backdrop so it stays reachable regardless
+              of how many cards are stacked below. */}
           <button
             type="button"
+            aria-label="Close"
             onClick={() => setOpen(false)}
             style={{
-              marginTop: 26,
-              alignSelf: "center",
-              padding: "10px 30px",
-              background: "transparent",
-              border: "1px solid rgba(143,255,110,0.45)",
-              color: "#8FFF6E",
-              borderRadius: 999,
+              position: "absolute",
+              top: "calc(env(safe-area-inset-top, 0) + 16px)",
+              right: 16,
+              width: 36,
+              height: 36,
+              padding: 0,
+              borderRadius: "50%",
+              background: "linear-gradient(180deg, #0a1a30 0%, #020914 100%)",
+              border: "1px solid rgba(0,159,239,0.65)",
+              color: "#009FEF",
               cursor: "pointer",
-              fontSize: 13,
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
+              display: "grid",
+              placeItems: "center",
+              boxShadow:
+                "0 4px 12px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.04)",
+              zIndex: 2,
             }}
           >
-            Close
+            <svg
+              width={14}
+              height={14}
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2.4}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden
+            >
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
           </button>
         </div>
       )}
@@ -354,12 +437,21 @@ function ActionCard({
   caption,
   actionLabel,
   onAction,
+  toggleValue,
+  onToggle,
+  toggleLabel,
 }: {
   icon: React.ReactNode;
   label: string;
   caption: string;
-  actionLabel: string;
-  onAction: () => void;
+  /** Fallback action button when the card has no toggle. If a toggle
+   *  is provided the toggle itself becomes the sole control (toggle ON
+   *  fires the action AND persists the enabled state). */
+  actionLabel?: string;
+  onAction?: () => void;
+  toggleValue?: boolean;
+  onToggle?: (next: boolean) => void;
+  toggleLabel?: string;
 }): React.JSX.Element {
   return (
     <div
@@ -367,26 +459,28 @@ function ActionCard({
         display: "flex",
         alignItems: "center",
         gap: 14,
-        padding: "12px 14px",
-        borderRadius: 16,
+        padding: "14px 16px",
+        borderRadius: 14,
+        // Sealed 2026-10-01 · aligned to the ShopTypeButton palette so
+        // the 3-dots panel cards and the "What are you selling on NEX?"
+        // chooser read as the same card family · same cyan tint ·
+        // same border weight · same paddings.
         background:
-          "linear-gradient(180deg, rgba(14,24,38,0.9) 0%, rgba(8,16,28,0.9) 100%)",
-        border: "1px solid rgba(0,175,255,0.45)",
-        boxShadow:
-          "0 0 24px rgba(0,175,255,0.14), 0 8px 20px rgba(0,0,0,0.4)",
+          "linear-gradient(180deg, rgba(0,159,239,0.14) 0%, rgba(0,159,239,0.06) 100%)",
+        border: "1px solid rgba(0,159,239,0.5)",
       }}
     >
       <div
         style={{
           flexShrink: 0,
-          width: 54,
-          height: 54,
-          borderRadius: 14,
-          background: "rgba(0,0,0,0.45)",
-          border: "1px solid rgba(0,175,255,0.3)",
+          width: 48,
+          height: 48,
+          borderRadius: 12,
+          background: "rgba(0,0,0,0.4)",
+          border: "1px solid rgba(0,159,239,0.35)",
           display: "grid",
           placeItems: "center",
-          color: "#00AFFF",
+          color: "#009FEF",
         }}
       >
         {icon}
@@ -394,46 +488,66 @@ function ActionCard({
       <div style={{ flex: 1, minWidth: 0 }}>
         <div
           style={{
-            color: "#F2F5F8",
+            color: "#F4F7FC",
             fontSize: 14,
-            fontWeight: 600,
+            fontWeight: 700,
             letterSpacing: "0.01em",
+            whiteSpace: "nowrap",
           }}
         >
           {label}
         </div>
         <div
           style={{
-            color: "rgba(200,215,235,0.65)",
-            fontSize: 11,
-            lineHeight: 1.35,
-            marginTop: 2,
+            // Sealed 2026-10-01 · proto #05 · TV-broadcast legibility
+            // dual shadow + brighter neutral gray · matches the
+            // ShopTypeButton caption treatment exactly so the two
+            // card families read as one language.
+            color: "#B4BAC3",
+            fontSize: 13,
+            fontWeight: 600,
+            lineHeight: 1.4,
+            marginTop: 3,
+            whiteSpace: "nowrap",
+            textShadow:
+              "0 0 2px rgba(0,0,0,0.9), 0 1px 2px rgba(0,0,0,0.5)",
           }}
         >
           {caption}
         </div>
       </div>
-      <button
-        type="button"
-        onClick={onAction}
-        style={{
-          flexShrink: 0,
-          padding: "8px 18px",
-          borderRadius: 999,
-          background:
-            "linear-gradient(180deg, rgba(0,175,255,0.3) 0%, rgba(0,120,200,0.18) 100%)",
-          border: "1px solid rgba(0,175,255,0.65)",
-          color: "#DCECFF",
-          fontSize: 10,
-          letterSpacing: "0.22em",
-          textTransform: "uppercase",
-          fontWeight: 700,
-          cursor: "pointer",
-          boxShadow: "0 0 16px rgba(0,175,255,0.3)",
-        }}
-      >
-        {actionLabel}
-      </button>
+      {onToggle ? (
+        <ToggleSwitch
+          value={!!toggleValue}
+          onChange={onToggle}
+          ariaLabel={toggleLabel ?? label}
+        />
+      ) : (
+        actionLabel &&
+        onAction && (
+          <button
+            type="button"
+            onClick={onAction}
+            style={{
+              flexShrink: 0,
+              padding: "6px 14px",
+              borderRadius: 999,
+              background: "linear-gradient(180deg, #0a1a30 0%, #020914 100%)",
+              border: "1px solid rgba(0,159,239,0.65)",
+              color: "#009FEF",
+              fontSize: 10,
+              letterSpacing: "0.22em",
+              textTransform: "uppercase",
+              fontWeight: 700,
+              cursor: "pointer",
+              boxShadow:
+                "0 4px 12px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.04)",
+            }}
+          >
+            {actionLabel}
+          </button>
+        )
+      )}
     </div>
   );
 }
@@ -477,54 +591,66 @@ function AnimationCard({
         display: "flex",
         alignItems: "center",
         gap: 14,
-        padding: "12px 14px",
-        borderRadius: 16,
+        padding: "14px 16px",
+        borderRadius: 14,
+        // Sealed 2026-10-01 · aligned to the ShopTypeButton palette so
+        // the 3-dots panel cards and the "What are you selling on NEX?"
+        // chooser read as the same card family · same cyan tint ·
+        // same border weight · same paddings.
         background:
-          "linear-gradient(180deg, rgba(14,24,38,0.9) 0%, rgba(8,16,28,0.9) 100%)",
-        border: enabled
-          ? "1px solid rgba(143,255,110,0.5)"
-          : "1px solid rgba(255,255,255,0.08)",
-        boxShadow: enabled
-          ? "0 0 24px rgba(143,255,110,0.18)"
-          : "0 8px 20px rgba(0,0,0,0.4)",
-        transition: "border 160ms ease, box-shadow 160ms ease",
+          "linear-gradient(180deg, rgba(0,159,239,0.14) 0%, rgba(0,159,239,0.06) 100%)",
+        border: "1px solid rgba(0,159,239,0.5)",
       }}
     >
       {/* Icon frame · left */}
       <div
         style={{
           flexShrink: 0,
-          width: 54,
-          height: 54,
-          borderRadius: 14,
-          background: "rgba(0,0,0,0.45)",
-          border: "1px solid rgba(255,255,255,0.08)",
+          width: 48,
+          height: 48,
+          borderRadius: 12,
+          background: "rgba(0,0,0,0.4)",
+          border: "1px solid rgba(0,159,239,0.35)",
           display: "grid",
           placeItems: "center",
-          color: "#B8F7A3",
+          color: "#009FEF",
         }}
       >
         {spec.icon}
       </div>
 
-      {/* Label + caption · middle */}
+      {/* Label + caption · middle · locked to a single line each so
+          the row heights stay flush across every card and nothing
+          wraps unpredictably over the alley wallpaper. */}
       <div style={{ flex: 1, minWidth: 0 }}>
         <div
           style={{
-            color: "#F2F5F8",
+            color: "#F4F7FC",
             fontSize: 14,
-            fontWeight: 600,
+            fontWeight: 700,
             letterSpacing: "0.01em",
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
           }}
         >
           {spec.label}
         </div>
         <div
           style={{
-            color: "rgba(200,215,235,0.65)",
-            fontSize: 11,
-            lineHeight: 1.35,
-            marginTop: 2,
+            // Sealed 2026-10-01 · proto #05 · TV-broadcast legibility
+            // · matches the ShopTypeButton caption treatment so the
+            // panel cards and the chooser cards read as one family.
+            color: "#B4BAC3",
+            fontSize: 13,
+            fontWeight: 600,
+            lineHeight: 1.4,
+            marginTop: 3,
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            textShadow:
+              "0 0 2px rgba(0,0,0,0.9), 0 1px 2px rgba(0,0,0,0.5)",
           }}
         >
           {spec.caption}
@@ -544,11 +670,9 @@ function AnimationCard({
 function WiseCardControlCard({
   enabled,
   onToggle,
-  onDraw,
 }: {
   enabled: boolean;
   onToggle: (next: boolean) => void;
-  onDraw: () => void;
 }): React.JSX.Element {
   return (
     <div
@@ -556,97 +680,73 @@ function WiseCardControlCard({
         display: "flex",
         alignItems: "center",
         gap: 14,
-        padding: "12px 14px",
-        borderRadius: 16,
+        padding: "14px 16px",
+        borderRadius: 14,
+        // Sealed 2026-10-01 · aligned to the ShopTypeButton palette so
+        // the 3-dots panel cards and the "What are you selling on NEX?"
+        // chooser read as the same card family · same cyan tint ·
+        // same border weight · same paddings.
         background:
-          "linear-gradient(180deg, rgba(14,24,38,0.9) 0%, rgba(8,16,28,0.9) 100%)",
-        border: enabled
-          ? "1px solid rgba(143,255,110,0.5)"
-          : "1px solid rgba(255,255,255,0.08)",
-        boxShadow: enabled
-          ? "0 0 24px rgba(143,255,110,0.18)"
-          : "0 8px 20px rgba(0,0,0,0.4)",
-        transition: "border 160ms ease, box-shadow 160ms ease",
+          "linear-gradient(180deg, rgba(0,159,239,0.14) 0%, rgba(0,159,239,0.06) 100%)",
+        border: "1px solid rgba(0,159,239,0.5)",
       }}
     >
       {/* Icon · playing card glyph */}
       <div
         style={{
           flexShrink: 0,
-          width: 54,
-          height: 54,
-          borderRadius: 14,
-          background: "rgba(0,0,0,0.45)",
-          border: "1px solid rgba(255,255,255,0.08)",
+          width: 48,
+          height: 48,
+          borderRadius: 12,
+          background: "rgba(0,0,0,0.4)",
+          border: "1px solid rgba(0,159,239,0.35)",
           display: "grid",
           placeItems: "center",
-          color: "#B8F7A3",
+          color: "#009FEF",
         }}
       >
         <WiseCardIcon />
       </div>
-      {/* Label + caption */}
+      {/* Label + caption · single-line each · matches ActionCard +
+          AnimationCard so every card in the panel reads the same. */}
       <div style={{ flex: 1, minWidth: 0 }}>
         <div
           style={{
-            color: "#F2F5F8",
+            color: "#F4F7FC",
             fontSize: 14,
-            fontWeight: 600,
+            fontWeight: 700,
             letterSpacing: "0.01em",
+            whiteSpace: "nowrap",
           }}
         >
-          Wise Card
+          Daily Insight
         </div>
         <div
           style={{
-            color: "rgba(200,215,235,0.65)",
-            fontSize: 11,
-            lineHeight: 1.35,
-            marginTop: 2,
+            // Sealed 2026-10-01 · proto #05 · TV-broadcast legibility
+            // dual shadow + brighter neutral gray · matches the
+            // ShopTypeButton caption treatment exactly so the two
+            // card families read as one language.
+            color: "#B4BAC3",
+            fontSize: 13,
+            fontWeight: 600,
+            lineHeight: 1.4,
+            marginTop: 3,
+            whiteSpace: "nowrap",
+            textShadow:
+              "0 0 2px rgba(0,0,0,0.9), 0 1px 2px rgba(0,0,0,0.5)",
           }}
         >
-          Draw a card · 6s to read · one card per tap.
+          A card to read.
         </div>
       </div>
-      {/* Right · Draw button stacked above the toggle */}
-      <div
-        style={{
-          flexShrink: 0,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "flex-end",
-          gap: 8,
-        }}
-      >
-        <button
-          type="button"
-          onClick={onDraw}
-          disabled={!enabled}
-          aria-label="Draw a wise card"
-          style={{
-            padding: "6px 14px",
-            borderRadius: 999,
-            background: enabled
-              ? "linear-gradient(180deg, rgba(143,255,110,0.3) 0%, rgba(90,200,70,0.18) 100%)"
-              : "rgba(143,255,110,0.08)",
-            border: enabled
-              ? "1px solid rgba(143,255,110,0.6)"
-              : "1px solid rgba(255,255,255,0.08)",
-            color: enabled ? "#B8F7A3" : "rgba(200,215,235,0.4)",
-            fontSize: 10,
-            letterSpacing: "0.22em",
-            textTransform: "uppercase",
-            fontWeight: 700,
-            cursor: enabled ? "pointer" : "not-allowed",
-            opacity: enabled ? 1 : 0.6,
-            boxShadow: enabled ? "0 0 14px rgba(143,255,110,0.25)" : "none",
-            transition: "opacity 160ms ease, box-shadow 160ms ease",
-          }}
-        >
-          Draw
-        </button>
-        <ToggleSwitch value={enabled} onChange={onToggle} ariaLabel="Wise Card" />
-      </div>
+      {/* Right · toggle only · tapping ON fires one draw AND persists
+          the enabled state (parent decides the semantics). */}
+      <ToggleSwitch
+        value={enabled}
+        onChange={onToggle}
+        ariaLabel="Daily Insight"
+      />
     </div>
   );
 }
@@ -713,9 +813,9 @@ function ToggleSwitch({
         height: 28,
         borderRadius: 999,
         border: value
-          ? "1px solid rgba(143,255,110,0.65)"
+          ? "1px solid rgba(0,159,239,0.65)"
           : "1px solid rgba(255,255,255,0.12)",
-        background: value ? "rgba(143,255,110,0.22)" : "rgba(0,0,0,0.45)",
+        background: value ? "rgba(0,159,239,0.22)" : "rgba(0,0,0,0.45)",
         position: "relative",
         cursor: "pointer",
         padding: 0,
@@ -731,9 +831,9 @@ function ToggleSwitch({
           width: 22,
           height: 22,
           borderRadius: "50%",
-          background: value ? "#8FFF6E" : "rgba(220,230,245,0.6)",
+          background: value ? "#009FEF" : "rgba(220,230,245,0.6)",
           boxShadow: value
-            ? "0 0 10px rgba(143,255,110,0.65)"
+            ? "0 0 10px rgba(0,159,239,0.65)"
             : "0 1px 3px rgba(0,0,0,0.5)",
           transition: "left 160ms cubic-bezier(.2,.7,.2,1), background 160ms ease",
         }}

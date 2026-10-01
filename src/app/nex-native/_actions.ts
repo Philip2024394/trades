@@ -24,6 +24,10 @@ import * as peerConversationService from "@/lib/nex-native/peer-conversation-ser
 import * as peerMessageService from "@/lib/nex-native/peer-message-service";
 import * as sellerResponsivenessService from "@/lib/nex-native/seller-responsiveness-service";
 import { getThemeStickerBySlug } from "@/lib/nex-native/theme-sticker-service";
+import {
+  joinAffiliate,
+  NEX_AFFILIATE_TERMS_VERSION,
+} from "@/lib/nex-native/affiliate-service";
 import * as chatThemeService from "@/lib/nex-native/chat-theme-service";
 import * as businessService from "@/lib/nex-native/business-service";
 import * as productService from "@/lib/nex-native/product-service";
@@ -515,6 +519,39 @@ export async function sendPeerMessageAction(
 
   revalidatePath(`/nex-native/chat/peer/${peerAccountId}`);
   redirect(`/nex-native/chat/peer/${peerAccountId}`);
+}
+
+/** Join the NEX Affiliate Network · founder-sealed 2026-10-01. The
+ *  user must have an authenticated session and must have accepted the
+ *  current affiliate terms (checkbox on the join page posts
+ *  `terms_accepted=1`). Optional referred_by comes from a visited
+ *  affiliate link (not implemented in Phase 1 · field reserved).
+ *
+ *  Idempotent: calling twice returns the existing membership without
+ *  touching the referrer or terms version (anti-fraud · stop a user
+ *  re-joining to steal a different referral attribution). */
+export async function joinAffiliateAction(
+  formData: FormData,
+): Promise<never> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) redirect("/nex-native/sign-in");
+
+  const termsAccepted =
+    String(formData.get("terms_accepted") ?? "").trim() === "1";
+  if (!termsAccepted) {
+    redirect("/nex-native/affiliate/join?error=terms_required");
+  }
+
+  await joinAffiliate({
+    accountId: session.account.id,
+    termsVersion: NEX_AFFILIATE_TERMS_VERSION,
+    // referredByAccountId · reserved · will be set from a signed
+    // affiliate attribution cookie in a subsequent bridge.
+    referredByAccountId: null,
+  });
+
+  revalidatePath("/nex-native/affiliate");
+  redirect("/nex-native/affiliate?joined=1");
 }
 
 /** Bridge ThemeSticker · sealed 2026-10-01 · live peer-chat sticker
@@ -1153,6 +1190,35 @@ export async function updateBusinessEventsProfileAction(
  *  file picker. Owner-only. Returns the public URL as JSON so the
  *  client can put it into the next empty gallery slot without a page
  *  reload. Rejects non-image files. */
+/** Seller Central onboarding · logo upload action. Called from the
+ *  wizard's step 2 file-picker · returns the public URL that the
+ *  wizard holds in client state until the final submit sends it to
+ *  createBusinessAction as `logo_url`. Sealed 2026-10-01. */
+export async function uploadOnboardingLogoAction(
+  formData: FormData,
+): Promise<{ ok: true; url: string } | { ok: false; error: string }> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) return { ok: false, error: "not_signed_in" };
+
+  const file = formData.get("logo");
+  if (!(file instanceof File) || file.size === 0) {
+    return { ok: false, error: "no_file" };
+  }
+
+  try {
+    const { url } = await businessService.uploadOnboardingLogo(
+      session.account.id,
+      file,
+    );
+    return { ok: true, url };
+  } catch (e) {
+    return {
+      ok: false,
+      error: e instanceof Error ? e.message : "upload_failed",
+    };
+  }
+}
+
 export async function uploadVenuePhotoAction(
   businessId: string,
   formData: FormData,
@@ -2780,10 +2846,20 @@ export async function toggleMessageReactionAction(
 // ---------------------------------------------------------------------------
 
 export async function createBusinessAction(formData: FormData): Promise<never> {
-  const displayName = String(formData.get("display_name") ?? "").trim();
   const slug = String(formData.get("slug") ?? "").trim().toLowerCase();
+  // Sealed 2026-10-01 · Seller Central wizard · display_name is now
+  // OPTIONAL · when blank we derive a title-cased version of the slug
+  // (e.g. "maria-coffee" → "Maria Coffee") so the seller never has to
+  // type two name fields. They can edit the display name later from
+  // /manage/shop. If they DO type one, we honour it.
+  const displayNameRaw = String(formData.get("display_name") ?? "").trim();
   const productName = String(formData.get("product_name") ?? "").trim();
   const priceRaw = String(formData.get("product_price_gbp") ?? "").trim();
+  // Sealed 2026-10-01 · the wizard defers "first product" to a
+  // post-launch step · the product_name + price fields are optional.
+  // Legacy callers that supply them still get the atomic business +
+  // product create for free.
+  const includeFirstProduct = productName.length > 0 && priceRaw.length > 0;
   // Bridge 16e · optional profile fields collected during shop create.
   const cityInput = String(formData.get("city") ?? "").trim();
   const hoursDisplayInput = String(formData.get("hours_display") ?? "").trim();
@@ -2794,12 +2870,27 @@ export async function createBusinessAction(formData: FormData): Promise<never> {
   // vertical then global terminology). Value is a nex_profession.id
   // UUID · validated in the soft-fail block below.
   const professionIdInput = String(formData.get("profession_id") ?? "").trim();
+  // Seller Central wizard · optional logo URL · uploaded during
+  // onboarding step 2 via uploadOnboardingLogoAction, which returns
+  // a public URL the wizard holds in client state until this submit.
+  const logoUrlInput = String(formData.get("logo_url") ?? "").trim();
 
   const session = await resolveNexAppSessionFromContext();
   if (!session) {
     redirectToInboxWithError("unauthenticated", "sign in to create a business");
   }
 
+  // Derive display_name from slug when the seller didn't type one:
+  // "maria-coffee" → "Maria Coffee". Acceptable fallback because the
+  // seller can edit the display name later from /manage/shop. Still
+  // enforce the length cap on whatever we end up with.
+  const displayName = displayNameRaw.length > 0
+    ? displayNameRaw
+    : slug
+        .split("-")
+        .filter(Boolean)
+        .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+        .join(" ");
   if (!displayName) {
     redirectToOnboardingWithError("missing_display_name", "business name required");
   }
@@ -2807,70 +2898,119 @@ export async function createBusinessAction(formData: FormData): Promise<never> {
     redirectToOnboardingWithError("long_display_name", "business name too long");
   }
 
-  // Slug-A · sealed 2026-09-30 · Bisnis-only custom .nex names.
-  // The 2026-09-27 package doctrine says custom name.nex is a Bisnis
-  // feature. Gratis sellers get an auto-generated shop-<6chars> slug.
-  // Bisnis sellers pick their own name at onboarding.
+  // .nex name · sealed 2026-10-01 · policy (B) "Reserved premium
+  // namespace." Every seller picks their own slug up front. Short /
+  // premium single-word slugs are Bisnis-only; Gratis sellers must
+  // use ≥ 7 chars OR a compound name with a hyphen. If a Gratis
+  // seller somehow submits an invalid slug (e.g. client-side rule
+  // bypassed), we fall back to the auto-generated shop-<6chars> so
+  // the create still succeeds instead of blocking the form.
   const { effectiveTier } = await import("@/lib/nex-native/account-service");
   const viewerTier = effectiveTier({
     tier: session.account.tier,
     bisnis_expires_at: session.account.bisnis_expires_at,
     themes_trial_used_at: session.account.themes_trial_used_at ?? null,
   });
+  const RESERVED_SLUG_PREFIXES = [
+    "nex-",
+    "nex_",
+    "system",
+    "admin",
+    "api",
+    "support",
+    "staff",
+    "root",
+    "help",
+  ];
+  const tierAllowsSlug = (candidate: string): boolean => {
+    if (viewerTier === "bisnis") return true;
+    if (candidate.length >= 7) return true;
+    if (candidate.includes("-")) return true;
+    return false;
+  };
   let resolvedSlug: string;
-  if (viewerTier === "bisnis") {
-    // Bisnis path · seller picks their own slug · validate as before.
-    if (!slug) {
-      redirectToOnboardingWithError("missing_slug", "slug required");
+  if (!slug) {
+    redirectToOnboardingWithError("missing_slug", "slug required");
+  }
+  if (!NEX_SLUG_REGEX.test(slug)) {
+    redirectToOnboardingWithError(
+      "invalid_slug",
+      "slug must be lowercase letters, digits, or hyphens · 1-64 chars · no leading/trailing hyphen",
+    );
+  }
+  if (RESERVED_SLUG_PREFIXES.some((p) => slug.startsWith(p))) {
+    redirectToOnboardingWithError(
+      "reserved_slug",
+      "that name starts with a reserved prefix (nex-, admin, system…). pick another",
+    );
+  }
+  if (!tierAllowsSlug(slug)) {
+    redirectToOnboardingWithError(
+      "slug_requires_bisnis",
+      "short single-word names are Bisnis-only · pick a longer name or use a hyphen (e.g. my-shop)",
+    );
+  }
+  // Final live uniqueness check · the SlugInput component already does
+  // this on the client but we re-verify server-side to close the race
+  // between pick-and-submit.
+  const slugClash = await businessService
+    .getBusinessBySlug(slug)
+    .catch(() => null);
+  if (slugClash) {
+    redirectToOnboardingWithError(
+      "slug_taken",
+      `${slug}.nex is already taken · pick another`,
+    );
+  }
+  resolvedSlug = slug;
+  // Product fields only validated when the caller actually supplied
+  // them. The Seller Central wizard DEFERS first-product creation to
+  // a post-launch step, so most new business creations skip this
+  // block entirely. Legacy / direct callers that submit product_name
+  // + product_price_gbp still get the atomic create.
+  let pricePence = 0;
+  if (includeFirstProduct) {
+    if (productName.length > 200) {
+      redirectToOnboardingWithError("long_product_name", "product name too long");
     }
-    if (!NEX_SLUG_REGEX.test(slug)) {
+    const priceGbp = Number(priceRaw);
+    if (!Number.isFinite(priceGbp) || Number.isNaN(priceGbp)) {
       redirectToOnboardingWithError(
-        "invalid_slug",
-        "slug must be lowercase letters, digits, or hyphens · 1-64 chars · no leading/trailing hyphen"
+        "invalid_price",
+        "price must be a number in GBP e.g. 24.50",
       );
     }
-    resolvedSlug = slug;
-  } else {
-    // Gratis path · auto-generate a shop-<6chars> slug regardless of
-    // what came in on the form. Doctrine: custom .nex is a Bisnis
-    // feature. Upgrade CTA lives on the onboarding page + /manage/shop.
-    const { generateAutoBusinessSlug } = await import(
-      "@/lib/nex-native/auto-slug"
-    );
-    resolvedSlug = await generateAutoBusinessSlug();
-  }
-  if (!productName) {
-    redirectToOnboardingWithError("missing_product_name", "product name required");
-  }
-  if (productName.length > 200) {
-    redirectToOnboardingWithError("long_product_name", "product name too long");
-  }
-  if (!priceRaw) {
-    redirectToOnboardingWithError("missing_price", "product price required");
-  }
-  const priceGbp = Number(priceRaw);
-  if (!Number.isFinite(priceGbp) || Number.isNaN(priceGbp)) {
-    redirectToOnboardingWithError("invalid_price", "price must be a number in GBP e.g. 24.50");
-  }
-  if (priceGbp <= 0) {
-    redirectToOnboardingWithError("non_positive_price", "price must be greater than zero");
-  }
-  const pricePence = Math.round(priceGbp * 100);
-  if (!Number.isFinite(pricePence) || pricePence <= 0) {
-    redirectToOnboardingWithError("invalid_price", "price could not be converted to pence");
-  }
-  if (Math.abs(priceGbp * 100 - pricePence) > 0.5) {
-    redirectToOnboardingWithError(
-      "sub_penny_price",
-      "price must be to the penny · e.g. 24.50 not 24.5678"
-    );
+    if (priceGbp <= 0) {
+      redirectToOnboardingWithError(
+        "non_positive_price",
+        "price must be greater than zero",
+      );
+    }
+    pricePence = Math.round(priceGbp * 100);
+    if (!Number.isFinite(pricePence) || pricePence <= 0) {
+      redirectToOnboardingWithError(
+        "invalid_price",
+        "price could not be converted to pence",
+      );
+    }
+    if (Math.abs(priceGbp * 100 - pricePence) > 0.5) {
+      redirectToOnboardingWithError(
+        "sub_penny_price",
+        "price must be to the penny · e.g. 24.50 not 24.5678",
+      );
+    }
   }
 
+  // One-shop-per-account pilot guard · sealed 2026-09-27 · updated
+  // 2026-10-01 · instead of bouncing the seller back to the wizard
+  // with an error banner (confusing dead-end), we send them FORWARD
+  // to the first-product page of their existing shop. The wizard
+  // itself remains unchanged — the guard just redirects them to the
+  // next logical step in the flow using the shop they already own.
   const existing = await businessService.listBusinessesByOwner(session.account.id);
   if (existing.length > 0) {
-    redirectToOnboardingWithError(
-      "already_has_business",
-      `you already own ${existing[0].slug} · one business per account in the pilot`
+    redirect(
+      `/nex-native/onboarding/first-product?slug=${encodeURIComponent(existing[0].slug)}`,
     );
   }
 
@@ -2979,24 +3119,180 @@ export async function createBusinessAction(formData: FormData): Promise<never> {
     );
   }
 
+  // Persist the onboarding logo URL (if the wizard uploaded one in
+  // step 2). Soft-fail · never block the business create if the logo
+  // write fails · the seller can retry from /manage/shop.
+  if (logoUrlInput.length > 0) {
+    try {
+      await businessService.updateBusinessLogo(business.id, logoUrlInput);
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(
+        "createBusinessAction · logo soft-fail:",
+        e instanceof Error ? e.message : String(e),
+      );
+    }
+  }
+
+  // Sealed 2026-10-01 · first-product create only runs when the
+  // caller actually supplied product fields. The Seller Central
+  // wizard defers this to a post-launch "add your first product"
+  // step so onboarding completes faster.
+  if (includeFirstProduct) {
+    try {
+      await productService.createProduct({
+        business_id: business.id,
+        name: productName,
+        price_pence: pricePence,
+        currency: "GBP",
+        status: "live",
+      });
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      const qs = new URLSearchParams({ e: "product_create_failed", m: msg });
+      revalidatePath(`/nex-native/${business.slug}`);
+      redirect(`/nex-native/${business.slug}?${qs.toString()}`);
+    }
+  }
+
+  revalidatePath(`/nex-native/${business.slug}`);
+  revalidatePath("/nex-native/conversations");
+  // Sealed 2026-10-01 · Seller Central wizard · after shop creation,
+  // land on the first-product celebration page instead of jumping
+  // straight to the shop slug. The seller sees "Your shop is live"
+  // and gets guided through adding their first listing. Legacy
+  // callers that supplied product_name + price in the SAME submit
+  // bypass this (they already have a product) and go straight to
+  // the shop page.
+  if (includeFirstProduct) {
+    redirect(`/nex-native/${business.slug}`);
+  }
+  redirect(
+    `/nex-native/onboarding/first-product?slug=${encodeURIComponent(business.slug)}`,
+  );
+}
+
+/** Seller Central · post-launch first product add · sealed 2026-10-01.
+ *  Called from /nex-native/onboarding/first-product when the seller
+ *  submits their first product form. Validates owner, creates the
+ *  product, redirects to the shop's live public page. Soft-fails
+ *  on tier-cap errors with a friendly redirect. */
+export async function createFirstProductAction(
+  formData: FormData,
+): Promise<never> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) {
+    redirectToInboxWithError("unauthenticated", "sign in to add a product");
+  }
+
+  const slugRaw = String(formData.get("slug") ?? "").trim().toLowerCase();
+  if (!slugRaw) {
+    redirect("/nex-native/manage");
+  }
+  const business = await businessService
+    .getBusinessBySlug(slugRaw)
+    .catch(() => null);
+  if (!business) {
+    redirect("/nex-native/manage");
+  }
+  if (business.owner_account_id !== session.account.id) {
+    redirect(`/nex-native/${business.slug}`);
+  }
+
+  const name = String(formData.get("product_name") ?? "").trim();
+  const priceRaw = String(formData.get("product_price_gbp") ?? "").trim();
+  const description = String(formData.get("product_description") ?? "").trim();
+  const imageUrl = String(formData.get("product_image_url") ?? "").trim();
+  // Sealed 2026-10-01 · multi-image · 4-slot picker on the first
+  // product form serializes extra images into a JSON array. Primary
+  // image (slot 0) is `product_image_url` · slots 1-3 come through
+  // here as a JSON string of URLs. Soft-parse so a broken payload
+  // just loses the gallery, never blocks the submit.
+  const galleryRaw = String(formData.get("product_gallery_urls") ?? "").trim();
+  let galleryUrls: string[] = [];
+  if (galleryRaw.length > 0) {
+    try {
+      const parsed = JSON.parse(galleryRaw);
+      if (Array.isArray(parsed)) {
+        galleryUrls = parsed
+          .filter((x) => typeof x === "string")
+          .map((x) => (x as string).trim())
+          .filter((x) => x.length > 0)
+          .slice(0, 3);
+      }
+    } catch {
+      // ignore
+    }
+  }
+
+  if (!name) {
+    redirect(
+      `/nex-native/onboarding/first-product?slug=${encodeURIComponent(business.slug)}&e=missing_name&m=${encodeURIComponent("Product name required")}`,
+    );
+  }
+  if (name.length > 200) {
+    redirect(
+      `/nex-native/onboarding/first-product?slug=${encodeURIComponent(business.slug)}&e=long_name&m=${encodeURIComponent("Name too long")}`,
+    );
+  }
+  const priceGbp = Number(priceRaw);
+  if (!priceRaw || !Number.isFinite(priceGbp) || priceGbp <= 0) {
+    redirect(
+      `/nex-native/onboarding/first-product?slug=${encodeURIComponent(business.slug)}&e=invalid_price&m=${encodeURIComponent("Price required (e.g. 24.50)")}`,
+    );
+  }
+  const pricePence = Math.round(priceGbp * 100);
+
   try {
     await productService.createProduct({
       business_id: business.id,
-      name: productName,
+      name,
+      description: description || null,
+      image_url: imageUrl || null,
+      gallery_urls: galleryUrls.length > 0 ? galleryUrls : null,
       price_pence: pricePence,
       currency: "GBP",
       status: "live",
     });
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
-    const qs = new URLSearchParams({ e: "product_create_failed", m: msg });
-    revalidatePath(`/nex-native/${business.slug}`);
-    redirect(`/nex-native/${business.slug}?${qs.toString()}`);
+    redirect(
+      `/nex-native/onboarding/first-product?slug=${encodeURIComponent(business.slug)}&e=product_create_failed&m=${encodeURIComponent(msg)}`,
+    );
   }
 
   revalidatePath(`/nex-native/${business.slug}`);
-  revalidatePath("/nex-native/conversations");
   redirect(`/nex-native/${business.slug}`);
+}
+
+/** Seller Central · post-launch first product · image upload. Returns
+ *  a public URL that the first-product form carries as a hidden field
+ *  until final submit. Reuses the onboarding logo storage path family
+ *  for simplicity (first-product/onboarding/<accountId>/…). */
+export async function uploadFirstProductImageAction(
+  formData: FormData,
+): Promise<{ ok: true; url: string } | { ok: false; error: string }> {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) return { ok: false, error: "not_signed_in" };
+  const file = formData.get("image");
+  if (!(file instanceof File) || file.size === 0) {
+    return { ok: false, error: "no_file" };
+  }
+  try {
+    // Reuse the same onboarding-logo helper · it accepts any image
+    // and parks it under the account's onboarding path. The returned
+    // URL is public and permanent.
+    const { url } = await businessService.uploadOnboardingLogo(
+      session.account.id,
+      file,
+    );
+    return { ok: true, url };
+  } catch (e) {
+    return {
+      ok: false,
+      error: e instanceof Error ? e.message : "upload_failed",
+    };
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -3846,6 +4142,19 @@ export async function updateChatThemeAction(formData: FormData): Promise<never> 
   }
   revalidatePath("/nex-native/settings/theme");
   revalidatePath("/nex-native/conversations");
+  // Sealed 2026-10-01 · when the caller passes `next` with a safe
+  // in-app path (same-origin absolute path starting with /nex-native/)
+  // land the user there so they see the theme live immediately
+  // instead of bouncing back to the picker. Any other value is
+  // ignored to prevent open-redirect abuse.
+  const nextRaw = String(formData.get("next") ?? "").trim();
+  const safeNext =
+    nextRaw.startsWith("/nex-native/") && !nextRaw.includes("//")
+      ? nextRaw
+      : null;
+  if (safeNext) {
+    redirect(safeNext);
+  }
   const qs = new URLSearchParams({ e: "theme_updated", m: theme ?? "default" });
   redirect(`/nex-native/settings/theme?${qs.toString()}`);
 }

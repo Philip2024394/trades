@@ -15,8 +15,25 @@
 // card can attach directly to the composer as its own message type.
 
 import * as React from "react";
+import Link from "next/link";
 import { createPortal } from "react-dom";
 import { ProductDetailSheet } from "./_product-detail-sheet";
+
+// Sealed 2026-10-01 · the three first-user shop-type destinations.
+// `products` and `food` route into the existing /nex-native/onboarding
+// surface with a type hint so the merchant form pre-selects the right
+// category. `affiliate` goes to the dedicated join page (migration 120).
+//
+// `commerce=1` bypasses the Phase 1 launch gate on the onboarding
+// page (see onboarding/page.tsx · commerceEnabledForRequest). Users
+// tapping Sell Products / Sell Food from the chooser ARE the
+// authorised intent — otherwise the gate silently bounces them to
+// /nex-native/home. Affiliate has no such gate.
+const SHOP_TYPE_HREFS: Record<"products" | "food" | "affiliate", string> = {
+  products: "/nex-native/onboarding?type=product&commerce=1",
+  food: "/nex-native/onboarding?type=food&commerce=1",
+  affiliate: "/nex-native/affiliate/join",
+};
 
 const NEX = {
   panel: "rgba(3,16,29,0.96)",
@@ -103,6 +120,15 @@ interface Props {
    *  wallpaper). Renders UNDER the modal's dark gradient so product
    *  cards stay legible. Null = default gradient only. */
   backgroundImageUrl?: string | null;
+  /** Shop-type chooser · sealed 2026-10-01 · when true the slider
+   *  renders a 3-button first-time chooser (Sell Products / Sell
+   *  Food / Affiliate) INSTEAD of the product grid. Shown when the
+   *  viewer has no shop configured yet (first visit to Shop). */
+  showSetupChooser?: boolean;
+  /** Callback fired when the user taps one of the chooser buttons.
+   *  Parent decides what to do (navigate to onboarding, show the
+   *  profession picker, open the affiliate waitlist, etc.). */
+  onSelectShopType?: (type: "products" | "food" | "affiliate") => void;
 }
 
 export function ShopGridModal({
@@ -118,6 +144,8 @@ export function ShopGridModal({
   sendCartOrderAction,
   inquiryAction,
   backgroundImageUrl,
+  showSetupChooser,
+  onSelectShopType,
 }: Props) {
   const [mounted, setMounted] = React.useState(false);
   const [selectedProductId, setSelectedProductId] = React.useState<
@@ -126,6 +154,26 @@ export function ShopGridModal({
   const [activeSectionId, setActiveSectionId] =
     React.useState<string>(SHOP_ALL_TAB_ID);
   React.useEffect(() => setMounted(true), []);
+
+  // Sealed 2026-10-01 · broadcast open/close so the Joker 3-dots
+   // dancing-dots trigger (and any other floating UI pinned to the
+   // bottom-right) can hide itself while the shop slider is up.
+   // Fires once per open-state change · pure event, no shared store.
+  React.useEffect(() => {
+    if (typeof window === "undefined") return;
+    window.dispatchEvent(
+      new CustomEvent("nex-shop-slider-visible", { detail: { open } }),
+    );
+    return () => {
+      if (open) {
+        window.dispatchEvent(
+          new CustomEvent("nex-shop-slider-visible", {
+            detail: { open: false },
+          }),
+        );
+      }
+    };
+  }, [open]);
 
   React.useEffect(() => {
     if (!open) return;
@@ -291,55 +339,66 @@ export function ShopGridModal({
           </button>
         </div>
 
-        {/* Category Tabs · sealed 2026-09-30 · appears above the grid
-            when the seller has 2+ sections. */}
-        <ShopCategoryTabs
-          sections={sections}
-          activeId={activeSectionId}
-          onSelect={setActiveSectionId}
-        />
+        {showSetupChooser ? (
+          /* First-time setup chooser · sealed 2026-10-01 · replaces
+             the Category Tabs + product grid with a 3-button row that
+             lets a new user declare their shop type before anything
+             else loads. Category Tabs are suppressed because they'd
+             be meaningless with no sections. */
+          <ShopTypeChooser onSelect={onSelectShopType} />
+        ) : (
+          <>
+            {/* Category Tabs · sealed 2026-09-30 · appears above the grid
+                when the seller has 2+ sections. */}
+            <ShopCategoryTabs
+              sections={sections}
+              activeId={activeSectionId}
+              onSelect={setActiveSectionId}
+            />
 
-        {/* Product grid */}
-        <div
-          data-nex-shop-scroll
-          style={{
-            flex: 1,
-            overflowY: "auto",
-            padding: 14,
-          }}
-        >
-          {visibleProducts.length === 0 ? (
+            {/* Product grid */}
             <div
+              data-nex-shop-scroll
               style={{
-                padding: "40px 20px",
-                textAlign: "center",
-                color: NEX.textDim,
-                fontSize: 13,
-                lineHeight: 1.55,
+                flex: 1,
+                overflowY: "auto",
+                padding: 14,
               }}
             >
-              {isVenue
-                ? "This kitchen has no live menu items yet."
-                : "This shop has no live products yet."}
+              {visibleProducts.length === 0 ? (
+                <div
+                  style={{
+                    padding: "40px 20px",
+                    textAlign: "center",
+                    color: NEX.textDim,
+                    fontSize: 13,
+                    lineHeight: 1.55,
+                  }}
+                >
+                  {isVenue
+                    ? "This kitchen has no live menu items yet."
+                    : "This shop has no live products yet."}
+                </div>
+              ) : (
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr",
+                    gap: 10,
+                  }}
+                >
+                  {visibleProducts.map((p) => (
+                    <ProductCard
+                      key={p.id}
+                      product={p}
+                      onOpen={() => setSelectedProductId(p.id)}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
-          ) : (
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: 10,
-              }}
-            >
-              {visibleProducts.map((p) => (
-                <ProductCard
-                  key={p.id}
-                  product={p}
-                  onOpen={() => setSelectedProductId(p.id)}
-                />
-              ))}
-            </div>
-          )}
-        </div>
+          </>
+        )}
 
         {/* Footer · Bridge 11 hint + open shop link */}
         <div
@@ -617,5 +676,294 @@ function ShopCategoryTabs({
         );
       })}
     </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Shop-type chooser · first-time setup slider · sealed 2026-10-01.
+// ---------------------------------------------------------------------------
+// Three side-by-side cards on a single row inside the shop slider.
+// The viewer picks their lane (Sell Products · Sell Food · Affiliate)
+// and the parent (viewer / peer-chat page / manage flow) routes to the
+// appropriate next step. Phase 1 ships the UI only; wiring Products
+// and Food to the sealed Profession picker (nex_profession · 25
+// verticals, Migrations 113-115) lives in a follow-up bridge, and
+// Affiliate is parked behind a "Coming Soon" chip until that business
+// model lands with its own schema.
+
+function ShopTypeChooser({
+  onSelect,
+}: {
+  onSelect?: (type: "products" | "food" | "affiliate") => void;
+}): React.JSX.Element {
+  return (
+    <div
+      style={{
+        flex: 1,
+        padding: "18px 14px",
+        display: "flex",
+        flexDirection: "column",
+        gap: 14,
+      }}
+    >
+      <div
+        style={{
+          textAlign: "center",
+          color: NEX.text,
+          fontSize: 14,
+          fontWeight: 600,
+          lineHeight: 1.3,
+        }}
+      >
+        What are you selling on NEX?
+      </div>
+      <div
+        style={{
+          textAlign: "center",
+          color: NEX.textDim,
+          fontSize: 11,
+          lineHeight: 1.4,
+        }}
+      >
+        Pick a lane · you can change it later from Manage.
+      </div>
+
+      {/* 3 landscape rows · founder direction 2026-10-01 · stacked
+          vertically · each row is a horizontal icon-left / text-right
+          card so the slider reads as a clear choose-your-lane list. */}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 10,
+          marginTop: 4,
+        }}
+      >
+        <ShopTypeButton
+          icon={<ShopTypeProductsIcon />}
+          label="Sell Products"
+          caption="Physical goods · home-made, retail, trades, maker."
+          href={SHOP_TYPE_HREFS.products}
+          onClick={() => onSelect?.("products")}
+        />
+        <ShopTypeButton
+          icon={<ShopTypeFoodIcon />}
+          label="Sell Food"
+          caption="Kitchen, cafe, bar, catering · menu driven."
+          href={SHOP_TYPE_HREFS.food}
+          onClick={() => onSelect?.("food")}
+        />
+        <ShopTypeButton
+          icon={<ShopTypeAffiliateIcon />}
+          label="Affiliate"
+          caption="Promote others' products · earn commission."
+          href={SHOP_TYPE_HREFS.affiliate}
+          onClick={() => onSelect?.("affiliate")}
+        />
+      </div>
+
+      <div
+        style={{
+          marginTop: "auto",
+          textAlign: "center",
+          color: NEX.textMute,
+          fontSize: 10,
+          letterSpacing: "0.04em",
+          lineHeight: 1.5,
+        }}
+      >
+        Setting up your shop takes about a minute · nothing publishes
+        until you're ready.
+      </div>
+    </div>
+  );
+}
+
+function ShopTypeButton({
+  icon,
+  label,
+  caption,
+  href,
+  comingSoon,
+  onClick,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  caption: string;
+  href: string;
+  comingSoon?: boolean;
+  onClick?: () => void;
+}): React.JSX.Element {
+  return (
+    <Link
+      href={href}
+      onClick={onClick}
+      style={{
+        textDecoration: "none",
+        display: "flex",
+        alignItems: "center",
+        gap: 14,
+        padding: "14px 16px",
+        borderRadius: 14,
+        background:
+          "linear-gradient(180deg, rgba(0,159,239,0.14) 0%, rgba(0,159,239,0.06) 100%)",
+        border: `1px solid ${NEX.cyanSoft}`,
+        color: NEX.text,
+        cursor: "pointer",
+        textAlign: "left",
+        position: "relative",
+        width: "100%",
+        transition:
+          "transform 140ms ease, box-shadow 140ms ease, background 140ms ease",
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.transform = "translateX(2px)";
+        e.currentTarget.style.boxShadow =
+          "0 10px 24px rgba(0,159,239,0.25)";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = "translateX(0)";
+        e.currentTarget.style.boxShadow = "none";
+      }}
+    >
+      {/* Icon · left */}
+      <div
+        style={{
+          flexShrink: 0,
+          width: 48,
+          height: 48,
+          borderRadius: 12,
+          background: "rgba(0,0,0,0.4)",
+          border: `1px solid ${NEX.cyanBorder}`,
+          display: "grid",
+          placeItems: "center",
+          color: NEX.cyan,
+        }}
+      >
+        {icon}
+      </div>
+      {/* Label + caption · middle */}
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div
+          style={{
+            fontSize: 14,
+            fontWeight: 700,
+            letterSpacing: "0.01em",
+            color: NEX.text,
+          }}
+        >
+          {label}
+        </div>
+        <div
+          style={{
+            marginTop: 3,
+            // Sealed 2026-10-01 · caption-readability proto #05 ·
+            // "TV-broadcast legibility" · dual-shadow holds the gray
+            // against any backdrop (cyan-tinted card, alley wallpaper,
+            // dark fog) · 0 0 2px tight dark halo + a soft drop
+            // shadow gives every letter its own edge without touching
+            // the structural hierarchy of the card.
+            fontSize: 13,
+            fontWeight: 600,
+            lineHeight: 1.4,
+            color: "#B4BAC3",
+            textShadow:
+              "0 0 2px rgba(0,0,0,0.9), 0 1px 2px rgba(0,0,0,0.5)",
+          }}
+        >
+          {caption}
+        </div>
+      </div>
+      {/* Right · arrow · "Soon" chip removed because every path
+          (Products / Food / Affiliate) now routes to a real page. */}
+      <div
+        aria-hidden
+        style={{
+          flexShrink: 0,
+          color: NEX.cyan,
+          fontSize: 18,
+          lineHeight: 1,
+        }}
+      >
+        →
+      </div>
+    </Link>
+  );
+}
+
+function ShopTypeProductsIcon(): React.JSX.Element {
+  return (
+    <svg width={22} height={22} viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path
+        d="M5 7h14l-1.5 12a2 2 0 0 1-2 1.8H8.5a2 2 0 0 1-2-1.8L5 7Z"
+        stroke="currentColor"
+        strokeWidth={1.6}
+        strokeLinejoin="round"
+      />
+      <path
+        d="M9 7V5a3 3 0 0 1 6 0v2"
+        stroke="currentColor"
+        strokeWidth={1.6}
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+function ShopTypeFoodIcon(): React.JSX.Element {
+  return (
+    <svg width={22} height={22} viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path
+        d="M6 3v8c0 1.1-.9 2-2 2v8"
+        stroke="currentColor"
+        strokeWidth={1.6}
+        strokeLinecap="round"
+      />
+      <path
+        d="M10 3v8c0 1.1-.9 2-2 2v0c-1.1 0-2-.9-2-2V3"
+        stroke="currentColor"
+        strokeWidth={1.6}
+        strokeLinecap="round"
+      />
+      <path
+        d="M18 3v18"
+        stroke="currentColor"
+        strokeWidth={1.6}
+        strokeLinecap="round"
+      />
+      <path
+        d="M14 11c0-4 2-7 4-7v10"
+        stroke="currentColor"
+        strokeWidth={1.6}
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+function ShopTypeAffiliateIcon(): React.JSX.Element {
+  return (
+    <svg width={22} height={22} viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path
+        d="M9 15 L15 9"
+        stroke="currentColor"
+        strokeWidth={1.8}
+        strokeLinecap="round"
+      />
+      <path
+        d="M10 7h-3a4 4 0 0 0 0 8h2"
+        stroke="currentColor"
+        strokeWidth={1.6}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M14 17h3a4 4 0 0 0 0-8h-2"
+        stroke="currentColor"
+        strokeWidth={1.6}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 }

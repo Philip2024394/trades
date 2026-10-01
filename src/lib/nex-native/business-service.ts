@@ -756,6 +756,66 @@ export async function updateBusinessLocation(
   return data as NexBusinessRow;
 }
 
+/** Set / clear the logo_url on a business. Thin wrapper around
+ *  updateBusinessProfile so onboarding + /manage/shop can both set
+ *  the logo without threading the whole profile-update interface.
+ *  Sealed 2026-10-01. */
+export async function updateBusinessLogo(
+  businessId: NexUuid,
+  logoUrl: string | null,
+): Promise<NexBusinessRow> {
+  return updateBusinessProfile(businessId, { logo_url: logoUrl });
+}
+
+/** Seller Central onboarding · upload a business logo DURING onboarding
+ *  (before any nex_business row exists). Path prefix is
+ *  `business-logo/onboarding/<accountId>/…` so later we can distinguish
+ *  from logos uploaded by established sellers. Returns the public URL
+ *  which the client holds in wizard state and passes to
+ *  createBusinessAction as the `logo_url` field. If the user abandons
+ *  onboarding the file is orphaned and swept by a future cron.
+ *
+ *  Sealed 2026-10-01. */
+export async function uploadOnboardingLogo(
+  accountId: NexUuid,
+  file: File,
+): Promise<{ url: string }> {
+  const MAX = 8 * 1024 * 1024;
+  if (file.size > MAX) {
+    throw new Error(`Logo exceeds ${MAX / (1024 * 1024)}MB cap`);
+  }
+  const mime = (file.type || "").toLowerCase();
+  const IMAGE_MIMES: Record<string, string> = {
+    "image/png": "png",
+    "image/jpeg": "jpg",
+    "image/jpg": "jpg",
+    "image/webp": "webp",
+    "image/avif": "avif",
+  };
+  const ext = IMAGE_MIMES[mime];
+  if (!ext) {
+    throw new Error(
+      `Only images allowed (png · jpg · webp · avif) · got ${
+        file.type || "unknown"
+      }`,
+    );
+  }
+  const objectPath = `business-logo/onboarding/${accountId}/${Date.now()}-${Math.random()
+    .toString(36)
+    .slice(2, 8)}.${ext}`;
+  const bucket = nexSupabaseAdmin.storage.from("nex-peer-chat-attachments");
+  const bytes = new Uint8Array(await file.arrayBuffer());
+  const { error } = await bucket.upload(objectPath, bytes, {
+    contentType: file.type,
+    upsert: false,
+  });
+  if (error) {
+    throw new Error(`business-service.uploadOnboardingLogo: ${error.message}`);
+  }
+  const { data: pub } = bucket.getPublicUrl(objectPath);
+  return { url: pub.publicUrl };
+}
+
 /** Bridge 23c · Upload a venue photo to Supabase storage and return
  *  the public URL. Reuses the existing nex-peer-chat-attachments
  *  bucket (public read, image MIMEs allowed, 25MB cap). Path prefix

@@ -308,19 +308,33 @@ export function ThemeBrowserClient({
       )}
 
       {/* Enlarge preview modal · portaled to body to escape any parent
-          stacking context. */}
+          stacking context. Navigation (prev/next) walks the currently
+          filtered list so chevrons respect search + tier filters. */}
       {preview && mounted &&
-        createPortal(
-          <PreviewModal
-            theme={preview}
-            active={preview.id === currentThemeId}
-            locked={preview.tier === "bisnis" && !canUsePremium}
-            activateAction={activateAction}
-            onClose={() => setPreviewId(null)}
-            viewerAvatarUrl={viewerAvatarUrl}
-          />,
-          document.body,
-        )}
+        (() => {
+          const previewIndex = filtered.findIndex((t) => t.id === preview.id);
+          const prevTheme =
+            previewIndex > 0 ? filtered[previewIndex - 1] : null;
+          const nextTheme =
+            previewIndex >= 0 && previewIndex < filtered.length - 1
+              ? filtered[previewIndex + 1]
+              : null;
+          return createPortal(
+            <PreviewModal
+              theme={preview}
+              active={preview.id === currentThemeId}
+              locked={preview.tier === "bisnis" && !canUsePremium}
+              activateAction={activateAction}
+              onClose={() => setPreviewId(null)}
+              viewerAvatarUrl={viewerAvatarUrl}
+              onPrev={prevTheme ? () => setPreviewId(prevTheme.id) : null}
+              onNext={nextTheme ? () => setPreviewId(nextTheme.id) : null}
+              prevLabel={prevTheme?.name ?? null}
+              nextLabel={nextTheme?.name ?? null}
+            />,
+            document.body,
+          );
+        })()}
     </>
   );
 }
@@ -534,6 +548,10 @@ function PreviewModal({
   activateAction,
   onClose,
   viewerAvatarUrl,
+  onPrev,
+  onNext,
+  prevLabel,
+  nextLabel,
 }: {
   theme: BrowserThemeRow;
   active: boolean;
@@ -541,14 +559,20 @@ function PreviewModal({
   activateAction: (formData: FormData) => Promise<never> | void | Promise<void>;
   onClose: () => void;
   viewerAvatarUrl: string | null;
+  onPrev: (() => void) | null;
+  onNext: (() => void) | null;
+  prevLabel: string | null;
+  nextLabel: string | null;
 }) {
   React.useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
+      else if (e.key === "ArrowLeft" && onPrev) onPrev();
+      else if (e.key === "ArrowRight" && onNext) onNext();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [onClose]);
+  }, [onClose, onPrev, onNext]);
 
   // Per-element colours · sealed 2026-09-27 · migration 051.
   //   accent (ripple + halo) = theme.accent_hex
@@ -598,8 +622,9 @@ function PreviewModal({
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          width: "min(360px, calc(100vw - 24px))",
-          maxHeight: "min(88vh, 720px)",
+          width: "min(420px, 100vw)",
+          height: "min(100dvh, 820px)",
+          maxHeight: "100dvh",
           background: NEX.panelSolid,
           border: `1px solid ${outgoingRim}`,
           borderRadius: 24,
@@ -687,219 +712,87 @@ function PreviewModal({
           </button>
         </div>
 
-        {/* Body · enlarged phone preview */}
+        {/* Body · fits-to-screen phone preview + side nav chevrons.
+            flex:1 with min-height:0 lets the phone frame shrink to
+            whatever vertical space the modal has — no scrolling, no
+            overflow. Chevrons live on the sides of the frame and
+            swap the active theme without closing the modal. */}
         <div
           style={{
-            flex: 1,
-            overflowY: "auto",
-            padding: "16px 16px 0",
+            flex: "1 1 0",
+            minHeight: 0,
+            position: "relative",
+            display: "grid",
+            gridTemplateColumns: "40px 1fr 40px",
+            alignItems: "stretch",
+            gap: 4,
+            padding: "10px 6px",
+            overflow: "hidden",
           }}
         >
-          {theme.tagline && (
-            <div
-              style={{
-                fontSize: 13,
-                color: NEX.textDim,
-                lineHeight: 1.5,
-                textAlign: "center",
-                marginBottom: 14,
-              }}
-            >
-              {theme.tagline}
-            </div>
-          )}
-
-          {/* Portrait Bloom identity hint · themes without a built-in
-              hero rely on the viewer's own profile photo. Nudge to
-              upload one when it's still missing. */}
-          {!theme.hero_image_url && (
-            <div
-              style={{
-                marginBottom: 12,
-                padding: "10px 12px",
-                borderRadius: 10,
-                background: viewerAvatarUrl
-                  ? "rgba(0,175,255,0.10)"
-                  : "rgba(255,120,0,0.12)",
-                border: viewerAvatarUrl
-                  ? "1px solid rgba(0,175,255,0.32)"
-                  : "1px solid rgba(255,120,0,0.4)",
-                fontSize: 11,
-                lineHeight: 1.5,
-                color: NEX.text,
-              }}
-            >
-              {viewerAvatarUrl ? (
-                <>
-                  <strong style={{ color: NEX.cyan }}>Portrait Bloom</strong>
-                  {" · "}your profile photo becomes the hero. Everyone
-                  who opens your chat sees you.
-                </>
-              ) : (
-                <>
-                  <strong style={{ color: NEX.orange }}>Upload a photo</strong>
-                  {" · "}this theme uses your profile picture as the
-                  hero.{" "}
-                  <a
-                    href="/nex-native/settings/profile"
-                    style={{ color: NEX.orange, textDecoration: "underline" }}
-                  >
-                    Add one →
-                  </a>
-                </>
-              )}
-            </div>
-          )}
-
-          {/* Rose · themes without a built-in hero use the viewer's
-              own profile photo as the hero. That mechanic is the
-              whole Portrait Bloom identity contract sealed 2026-09-27.
-              Fallback background: a fixed hero image if the theme
-              provides one; else viewer's avatar; else a stub. */}
-          {(() => {
-            const heroSrc = theme.hero_image_url ?? viewerAvatarUrl ?? null;
-            const usesViewerFace =
-              !theme.hero_image_url && !!viewerAvatarUrl;
-            const noHeroYet = !theme.hero_image_url && !viewerAvatarUrl;
-            return (
+          <div style={{ display: "grid", placeItems: "center" }}>
+            <ChevronNavButton
+              direction="prev"
+              label={prevLabel}
+              onClick={onPrev}
+            />
+          </div>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 8,
+              minHeight: 0,
+              overflow: "hidden",
+            }}
+          >
+            {THEME_PREVIEW_HREF[theme.id] ? (
+              <PhoneFramePreview
+                src={THEME_PREVIEW_HREF[theme.id]}
+                accentHex={accentHex}
+                themeName={theme.name}
+              />
+            ) : (
               <div
                 style={{
-                  borderRadius: 18,
-                  background: heroSrc
-                    ? `url(${heroSrc}) center/cover no-repeat, ${NEX.bg}`
-                    : NEX.bg,
-                  border: `1px solid ${outgoingRim}44`,
-                  padding: 14,
-                  minHeight: 300,
-                  position: "relative",
-                  overflow: "hidden",
+                  width: "100%",
+                  height: "100%",
+                  overflow: "auto",
+                  padding: "0 10px",
                 }}
               >
-                {heroSrc && (
-                  <div
-                    aria-hidden
-                    // Abyss gradient · fades from bottom UP onto the
-                    // hero image · sealed Portrait Bloom mechanic.
-                    style={{
-                      position: "absolute",
-                      inset: 0,
-                      background:
-                        "linear-gradient(180deg, transparent 18%, rgba(2,9,20,0.55) 42%, rgba(2,9,20,0.92) 68%, #020914 88%)",
-                    }}
-                  />
-                )}
-                {noHeroYet && (
-                  <div
-                    aria-hidden
-                    style={{
-                      position: "absolute",
-                      inset: 0,
-                      background:
-                        "radial-gradient(ellipse at 50% 30%, rgba(255,255,255,0.06), rgba(2,9,20,0.5) 55%, #020914 90%)",
-                    }}
-                  />
-                )}
-                {usesViewerFace && (
-                  <div
-                    aria-hidden
-                    style={{
-                      position: "absolute",
-                      top: 10,
-                      left: 12,
-                      padding: "3px 8px",
-                      borderRadius: 999,
-                      background: "rgba(0,0,0,0.5)",
-                      backdropFilter: "blur(8px)",
-                      WebkitBackdropFilter: "blur(8px)",
-                      fontSize: 9,
-                      letterSpacing: "0.12em",
-                      textTransform: "uppercase",
-                      color: NEX.text,
-                      fontWeight: 700,
-                      zIndex: 2,
-                    }}
-                  >
-                    Your photo · live
-                  </div>
-                )}
-            <div
-              style={{
-                position: "relative",
-                display: "flex",
-                flexDirection: "column",
-                gap: 6,
-              }}
-            >
-              <MockBubble mine={false} rim={incomingRim}>
-                Hey! Just saw your latest post. Looks amazing 👋
-              </MockBubble>
-              <MockBubble mine={true} rim={outgoingRim}>
-                Thanks! Really happy with how it turned out.
-              </MockBubble>
-              <MockBubble mine={false} rim={incomingRim}>
-                Love the colours. More styles soon?
-              </MockBubble>
-              <MockBubble mine={true} rim={outgoingRim}>
-                Yes! New collection dropping this weekend.
-              </MockBubble>
-            </div>
-            {/* Mock composer · rim uses per-element composer_rim_hex
-                so themes can paint the composer differently from
-                bubbles (Rose = blue bubbles + orange composer). */}
-            <div
-              style={{
-                marginTop: 14,
-                position: "relative",
-                display: "flex",
-                alignItems: "center",
-                gap: 6,
-                padding: "6px 8px",
-                borderRadius: 12,
-                background: "rgba(12,32,58,0.62)",
-                border: `1px solid ${composerRimStyle}`,
-                boxShadow: `0 0 12px ${composerGlow}`,
-              }}
-            >
-              <span
-                style={{
-                  width: 26,
-                  height: 26,
-                  borderRadius: "50%",
-                  background: "rgba(0,0,0,0.42)",
-                  border: "1px solid rgba(255,255,255,0.1)",
-                  color: NEX.textDim,
-                  display: "grid",
-                  placeItems: "center",
-                  fontSize: 14,
-                }}
-              >
-                +
-              </span>
-              <span style={{ flex: 1, color: NEX.textMute, fontSize: 12 }}>
-                Message…
-              </span>
-              <span
-                style={{
-                  width: 26,
-                  height: 26,
-                  borderRadius: "50%",
-                  background: NEX.orange,
-                  color: "#0B0F1A",
-                  display: "grid",
-                  placeItems: "center",
-                  fontSize: 11,
-                  fontWeight: 700,
-                }}
-              >
-                ➤
-              </span>
-            </div>
+                <ThemeMockHero
+                  theme={theme}
+                  viewerAvatarUrl={viewerAvatarUrl}
+                  outgoingRim={outgoingRim}
+                  incomingRim={incomingRim}
+                  composerRimStyle={composerRimStyle}
+                  composerGlow={composerGlow}
+                />
               </div>
-            );
-          })()}
-          {/* End of hero-wrapper IIFE · viewer avatar OR built-in hero
-              image OR stub background · Portrait Bloom fade painted
-              over the top. */}
+            )}
+            <div
+              style={{
+                fontSize: 9,
+                letterSpacing: "0.22em",
+                textTransform: "uppercase",
+                color: NEX.textMute,
+                fontWeight: 700,
+                flexShrink: 0,
+              }}
+            >
+              Fits your phone · swipe sides for next
+            </div>
+          </div>
+          <div style={{ display: "grid", placeItems: "center" }}>
+            <ChevronNavButton
+              direction="next"
+              label={nextLabel}
+              onClick={onNext}
+            />
+          </div>
         </div>
 
         {/* Footer · CTA */}
@@ -910,20 +803,53 @@ function PreviewModal({
           }}
         >
           {active ? (
-            <div
-              style={{
-                textAlign: "center",
-                fontSize: 13,
-                fontWeight: 600,
-                padding: "12px",
-                borderRadius: 10,
-                background: `${theme.accent_hex}22`,
-                border: `1px solid ${theme.accent_hex}`,
-                color: theme.accent_hex,
-              }}
-            >
-              ✓ Currently active on your NEX
-            </div>
+            THEME_PREVIEW_HREF[theme.id] ? (
+              <a
+                href={THEME_PREVIEW_HREF[theme.id]}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  gap: 10,
+                  textDecoration: "none",
+                  padding: "12px 14px",
+                  borderRadius: 10,
+                  background: `${theme.accent_hex}22`,
+                  border: `1px solid ${theme.accent_hex}`,
+                  color: theme.accent_hex,
+                  fontSize: 13,
+                  fontWeight: 600,
+                  cursor: "pointer",
+                }}
+              >
+                <span>✓ Currently active · Open full screen</span>
+                <span
+                  style={{
+                    fontSize: 11,
+                    letterSpacing: "0.18em",
+                    textTransform: "uppercase",
+                    fontWeight: 700,
+                  }}
+                >
+                  Open →
+                </span>
+              </a>
+            ) : (
+              <div
+                style={{
+                  textAlign: "center",
+                  fontSize: 13,
+                  fontWeight: 600,
+                  padding: "12px",
+                  borderRadius: 10,
+                  background: `${theme.accent_hex}22`,
+                  border: `1px solid ${theme.accent_hex}`,
+                  color: theme.accent_hex,
+                }}
+              >
+                ✓ Currently active on your NEX
+              </div>
+            )
           ) : locked ? (
             <a
               href="/nex-native/settings/tier"
@@ -943,32 +869,556 @@ function PreviewModal({
               Upgrade to NEX Bisnis to unlock →
             </a>
           ) : (
-            <form action={activateAction}>
-              <input type="hidden" name="chat_theme" value={theme.id} />
-              <button
-                type="submit"
-                style={{
-                  width: "100%",
-                  padding: "12px",
-                  borderRadius: 10,
-                  background: theme.accent_hex,
-                  color: "#0B0F1A",
-                  border: "none",
-                  fontSize: 14,
-                  fontWeight: 700,
-                  cursor: "pointer",
-                  letterSpacing: "0.02em",
-                }}
-              >
-                Use this theme
-              </button>
-            </form>
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              {THEME_PREVIEW_HREF[theme.id] && (
+                <a
+                  href={THEME_PREVIEW_HREF[theme.id]}
+                  style={{
+                    display: "block",
+                    textAlign: "center",
+                    padding: "11px",
+                    borderRadius: 10,
+                    background: "transparent",
+                    border: `1px solid ${theme.accent_hex}`,
+                    color: theme.accent_hex,
+                    textDecoration: "none",
+                    fontSize: 12,
+                    fontWeight: 700,
+                    letterSpacing: "0.14em",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  Open full screen →
+                </a>
+              )}
+              <form action={activateAction}>
+                <input type="hidden" name="chat_theme" value={theme.id} />
+                {THEME_PREVIEW_HREF[theme.id] && (
+                  <input
+                    type="hidden"
+                    name="next"
+                    value={THEME_PREVIEW_HREF[theme.id]}
+                  />
+                )}
+                <button
+                  type="submit"
+                  style={{
+                    width: "100%",
+                    padding: "12px",
+                    borderRadius: 10,
+                    background: theme.accent_hex,
+                    color: "#0B0F1A",
+                    border: "none",
+                    fontSize: 14,
+                    fontWeight: 700,
+                    cursor: "pointer",
+                    letterSpacing: "0.02em",
+                  }}
+                >
+                  Use this theme
+                </button>
+              </form>
+            </div>
           )}
         </div>
       </div>
     </>
   );
 }
+
+// ---------------------------------------------------------------------------
+// Mobile-phone frame · live iframe preview
+// ---------------------------------------------------------------------------
+
+/**
+ * Renders a mobile-phone silhouette with the live theme page running
+ * inside a scaled iframe. Same-origin so no X-Frame-Options issue.
+ *
+ * Scale is computed at mount via ResizeObserver so the iframe always
+ * fills the available width. Design viewport = 390 × 720 (iPhone-ish
+ * portrait). The iframe is lazy-mounted ~240ms after this component
+ * mounts so the modal entrance animation finishes before Turbopack
+ * boots the inner page.
+ */
+function PhoneFramePreview({
+  src,
+  accentHex,
+  themeName,
+}: {
+  src: string;
+  accentHex: string;
+  themeName: string;
+}) {
+  const outerRef = React.useRef<HTMLDivElement | null>(null);
+  const screenRef = React.useRef<HTMLDivElement | null>(null);
+  const [scale, setScale] = React.useState(0.6);
+  const [iframeMounted, setIframeMounted] = React.useState(false);
+  const [iframeLoaded, setIframeLoaded] = React.useState(false);
+  const [frameSize, setFrameSize] = React.useState<{ w: number; h: number }>({
+    w: 260,
+    h: 480,
+  });
+
+  const DESIGN_W = 390;
+  const DESIGN_H = 720;
+  const ASPECT = DESIGN_W / DESIGN_H;
+  const BEZEL = 8;
+
+  // Fit-to-container: measure the available slot and compute the
+  // largest W×H that honours the design aspect ratio AND fits the
+  // slot — so neither axis overflows and the modal never scrolls.
+  React.useEffect(() => {
+    const el = outerRef.current;
+    if (!el) return;
+    const parent = el.parentElement;
+    if (!parent) return;
+    const compute = () => {
+      const availW = parent.clientWidth;
+      const availH = parent.clientHeight;
+      if (availW <= 0 || availH <= 0) return;
+      // Account for parent gap + label strip (~34px) and bezel pad.
+      const slotW = availW;
+      const slotH = Math.max(0, availH - 34);
+      const widthBoundH = slotW / ASPECT;
+      let w: number, h: number;
+      if (widthBoundH <= slotH) {
+        w = slotW;
+        h = widthBoundH;
+      } else {
+        h = slotH;
+        w = slotH * ASPECT;
+      }
+      setFrameSize({ w: Math.max(180, w), h: Math.max(180 / ASPECT, h) });
+    };
+    compute();
+    const ro = new ResizeObserver(compute);
+    ro.observe(parent);
+    return () => ro.disconnect();
+  }, []);
+
+  // iframe scale = screen width / design width.
+  React.useEffect(() => {
+    const el = screenRef.current;
+    if (!el) return;
+    const w = el.clientWidth;
+    if (w > 0) setScale(w / DESIGN_W);
+  }, [frameSize.w]);
+
+  React.useEffect(() => {
+    const t = window.setTimeout(() => setIframeMounted(true), 240);
+    return () => window.clearTimeout(t);
+  }, []);
+
+  const accentRgb = hexToRgb(accentHex);
+  const accentGlow = `rgba(${accentRgb.r},${accentRgb.g},${accentRgb.b},0.35)`;
+
+  return (
+    <div
+      ref={outerRef}
+      style={{
+        width: frameSize.w,
+        height: frameSize.h,
+        padding: BEZEL,
+        borderRadius: 36,
+        background:
+          "linear-gradient(160deg, #1a1f2a 0%, #0b0f17 55%, #0a0d14 100%)",
+        border: "1px solid rgba(255,255,255,0.07)",
+        boxShadow: `0 24px 50px rgba(0,0,0,0.6), 0 0 0 1px rgba(0,0,0,0.4), 0 0 36px ${accentGlow}`,
+        position: "relative",
+        flexShrink: 0,
+      }}
+    >
+      {/* Side button accents · subtle authenticity */}
+      <span
+        aria-hidden
+        style={{
+          position: "absolute",
+          left: -2,
+          top: 70,
+          width: 3,
+          height: 36,
+          borderRadius: 2,
+          background: "rgba(255,255,255,0.08)",
+        }}
+      />
+      <span
+        aria-hidden
+        style={{
+          position: "absolute",
+          left: -2,
+          top: 120,
+          width: 3,
+          height: 60,
+          borderRadius: 2,
+          background: "rgba(255,255,255,0.08)",
+        }}
+      />
+      <span
+        aria-hidden
+        style={{
+          position: "absolute",
+          right: -2,
+          top: 90,
+          width: 3,
+          height: 80,
+          borderRadius: 2,
+          background: "rgba(255,255,255,0.08)",
+        }}
+      />
+
+      <div
+        ref={screenRef}
+        style={{
+          width: "100%",
+          height: "100%",
+          borderRadius: 28,
+          overflow: "hidden",
+          position: "relative",
+          background: "#000",
+          border: "1px solid rgba(0,0,0,0.6)",
+        }}
+      >
+        {/* Shimmer loader · visible until iframe fires load */}
+        {!iframeLoaded && (
+          <div
+            aria-hidden
+            style={{
+              position: "absolute",
+              inset: 0,
+              background:
+                "linear-gradient(100deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.02) 100%)",
+              backgroundSize: "200% 100%",
+              animation: "nex-phone-shimmer 1.4s linear infinite",
+              display: "grid",
+              placeItems: "center",
+              color: "rgba(255,255,255,0.5)",
+              fontSize: 11,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+              fontWeight: 700,
+              zIndex: 2,
+              pointerEvents: "none",
+            }}
+          >
+            Loading {themeName}
+          </div>
+        )}
+
+        {/* Notch · pure cosmetic */}
+        <div
+          aria-hidden
+          style={{
+            position: "absolute",
+            top: 6,
+            left: "50%",
+            transform: "translateX(-50%)",
+            width: "32%",
+            height: 18,
+            borderRadius: 999,
+            background: "#000",
+            zIndex: 3,
+          }}
+        />
+
+        {iframeMounted && (
+          <iframe
+            src={`${src}?embed=1`}
+            title={`${themeName} live preview`}
+            onLoad={() => setIframeLoaded(true)}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: DESIGN_W,
+              height: DESIGN_H,
+              border: "none",
+              transform: `scale(${scale})`,
+              transformOrigin: "top left",
+              background: "#000",
+            }}
+          />
+        )}
+      </div>
+
+      <style>{`
+        @keyframes nex-phone-shimmer {
+          0% { background-position: 200% 0; }
+          100% { background-position: -200% 0; }
+        }
+      `}</style>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Chevron nav · prev/next theme inside the preview modal.
+// Disabled (muted · non-interactive) when there is no neighbour so the
+// user can see they're at the start/end of the filtered list.
+// ---------------------------------------------------------------------------
+
+function ChevronNavButton({
+  direction,
+  label,
+  onClick,
+}: {
+  direction: "prev" | "next";
+  label: string | null;
+  onClick: (() => void) | null;
+}) {
+  const disabled = !onClick;
+  return (
+    <button
+      type="button"
+      onClick={() => onClick?.()}
+      disabled={disabled}
+      aria-label={
+        disabled
+          ? direction === "prev"
+            ? "No previous theme"
+            : "No next theme"
+          : `${direction === "prev" ? "Previous" : "Next"} theme${label ? ` · ${label}` : ""}`
+      }
+      style={{
+        width: 36,
+        height: 36,
+        borderRadius: "50%",
+        background: disabled ? "rgba(255,255,255,0.03)" : "rgba(0,175,255,0.14)",
+        border: `1px solid ${disabled ? "rgba(255,255,255,0.06)" : "rgba(0,175,255,0.42)"}`,
+        color: disabled ? "rgba(255,255,255,0.18)" : NEX.text,
+        display: "grid",
+        placeItems: "center",
+        cursor: disabled ? "default" : "pointer",
+        padding: 0,
+        margin: "0 auto",
+        transition: "background 140ms ease, border-color 140ms ease",
+      }}
+    >
+      <svg
+        width={18}
+        height={18}
+        viewBox="0 0 24 24"
+        aria-hidden
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={2.4}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        style={{
+          transform: direction === "prev" ? "rotate(180deg)" : undefined,
+        }}
+      >
+        <polyline points="9 6 15 12 9 18" />
+      </svg>
+    </button>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Fallback hero (generic mock) · used only for themes without a sealed
+// preview page. Kept as-is so themes that haven't been built out yet
+// still render a usable swatch.
+// ---------------------------------------------------------------------------
+
+function ThemeMockHero({
+  theme,
+  viewerAvatarUrl,
+  outgoingRim,
+  incomingRim,
+  composerRimStyle,
+  composerGlow,
+}: {
+  theme: BrowserThemeRow;
+  viewerAvatarUrl: string | null;
+  outgoingRim: string;
+  incomingRim: string;
+  composerRimStyle: string;
+  composerGlow: string;
+}) {
+  const heroSrc = theme.hero_image_url ?? viewerAvatarUrl ?? null;
+  const usesViewerFace = !theme.hero_image_url && !!viewerAvatarUrl;
+  const noHeroYet = !theme.hero_image_url && !viewerAvatarUrl;
+  return (
+    <>
+      {!theme.hero_image_url && (
+        <div
+          style={{
+            marginBottom: 12,
+            padding: "10px 12px",
+            borderRadius: 10,
+            background: viewerAvatarUrl
+              ? "rgba(0,175,255,0.10)"
+              : "rgba(255,120,0,0.12)",
+            border: viewerAvatarUrl
+              ? "1px solid rgba(0,175,255,0.32)"
+              : "1px solid rgba(255,120,0,0.4)",
+            fontSize: 11,
+            lineHeight: 1.5,
+            color: NEX.text,
+          }}
+        >
+          {viewerAvatarUrl ? (
+            <>
+              <strong style={{ color: NEX.cyan }}>Portrait Bloom</strong>
+              {" · "}your profile photo becomes the hero. Everyone
+              who opens your chat sees you.
+            </>
+          ) : (
+            <>
+              <strong style={{ color: NEX.orange }}>Upload a photo</strong>
+              {" · "}this theme uses your profile picture as the hero.{" "}
+              <a
+                href="/nex-native/settings/profile"
+                style={{ color: NEX.orange, textDecoration: "underline" }}
+              >
+                Add one →
+              </a>
+            </>
+          )}
+        </div>
+      )}
+
+      <div
+        style={{
+          borderRadius: 18,
+          background: heroSrc
+            ? `url(${heroSrc}) center/cover no-repeat, ${NEX.bg}`
+            : NEX.bg,
+          border: `1px solid ${outgoingRim}44`,
+          padding: 14,
+          minHeight: 300,
+          position: "relative",
+          overflow: "hidden",
+          marginBottom: 14,
+        }}
+      >
+        {heroSrc && (
+          <div
+            aria-hidden
+            style={{
+              position: "absolute",
+              inset: 0,
+              background:
+                "linear-gradient(180deg, transparent 18%, rgba(2,9,20,0.55) 42%, rgba(2,9,20,0.92) 68%, #020914 88%)",
+            }}
+          />
+        )}
+        {noHeroYet && (
+          <div
+            aria-hidden
+            style={{
+              position: "absolute",
+              inset: 0,
+              background:
+                "radial-gradient(ellipse at 50% 30%, rgba(255,255,255,0.06), rgba(2,9,20,0.5) 55%, #020914 90%)",
+            }}
+          />
+        )}
+        {usesViewerFace && (
+          <div
+            aria-hidden
+            style={{
+              position: "absolute",
+              top: 10,
+              left: 12,
+              padding: "3px 8px",
+              borderRadius: 999,
+              background: "rgba(0,0,0,0.5)",
+              backdropFilter: "blur(8px)",
+              WebkitBackdropFilter: "blur(8px)",
+              fontSize: 9,
+              letterSpacing: "0.12em",
+              textTransform: "uppercase",
+              color: NEX.text,
+              fontWeight: 700,
+              zIndex: 2,
+            }}
+          >
+            Your photo · live
+          </div>
+        )}
+        <div
+          style={{
+            position: "relative",
+            display: "flex",
+            flexDirection: "column",
+            gap: 6,
+          }}
+        >
+          <MockBubble mine={false} rim={incomingRim}>
+            Hey! Just saw your latest post. Looks amazing 👋
+          </MockBubble>
+          <MockBubble mine={true} rim={outgoingRim}>
+            Thanks! Really happy with how it turned out.
+          </MockBubble>
+          <MockBubble mine={false} rim={incomingRim}>
+            Love the colours. More styles soon?
+          </MockBubble>
+          <MockBubble mine={true} rim={outgoingRim}>
+            Yes! New collection dropping this weekend.
+          </MockBubble>
+        </div>
+        <div
+          style={{
+            marginTop: 14,
+            position: "relative",
+            display: "flex",
+            alignItems: "center",
+            gap: 6,
+            padding: "6px 8px",
+            borderRadius: 12,
+            background: "rgba(12,32,58,0.62)",
+            border: `1px solid ${composerRimStyle}`,
+            boxShadow: `0 0 12px ${composerGlow}`,
+          }}
+        >
+          <span
+            style={{
+              width: 26,
+              height: 26,
+              borderRadius: "50%",
+              background: "rgba(0,0,0,0.42)",
+              border: "1px solid rgba(255,255,255,0.1)",
+              color: NEX.textDim,
+              display: "grid",
+              placeItems: "center",
+              fontSize: 14,
+            }}
+          >
+            +
+          </span>
+          <span style={{ flex: 1, color: NEX.textMute, fontSize: 12 }}>
+            Message…
+          </span>
+          <span
+            style={{
+              width: 26,
+              height: 26,
+              borderRadius: "50%",
+              background: NEX.orange,
+              color: "#0B0F1A",
+              display: "grid",
+              placeItems: "center",
+              fontSize: 11,
+              fontWeight: 700,
+            }}
+          >
+            ➤
+          </span>
+        </div>
+      </div>
+    </>
+  );
+}
+
+// Themes with a sealed full-preview surface. Opening these shows the
+// theme's real chrome (bubbles · stickers · emojis · composer · 3-dots
+// panel for Joker · etc.) rather than the picker's generic mock.
+const THEME_PREVIEW_HREF: Record<string, string> = {
+  "theme-0": "/nex-native/themes/theme-0",
+  "theme-1": "/nex-native/themes/theme-1",
+  "pink-dream": "/nex-native/themes/pink-dream",
+  "cyber-grid": "/nex-native/themes/cyber-grid",
+};
 
 function MockBubble({
   mine,

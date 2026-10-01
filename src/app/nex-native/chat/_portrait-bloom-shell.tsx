@@ -520,6 +520,12 @@ export interface PortraitBloomShellProps {
    *  through to ShopGridModal via HeaderRightCluster. Resolved
    *  upstream from theme-assets.ts (e.g. Joker → alley wallpaper). */
   shopBackgroundImageUrl?: string | null;
+  /** Shop-type chooser · when true, the Shop header icon opens the
+   *  slider in first-time setup mode. Resolved upstream (viewer / peer-
+   *  chat page) · typically based on whether the current user has a
+   *  configured business yet. */
+  showShopSetupChooser?: boolean;
+  onSelectShopType?: (type: "products" | "food" | "affiliate") => void;
 }
 
 export function PortraitBloomShell({
@@ -546,6 +552,8 @@ export function PortraitBloomShell({
   wallpaperConfig,
   forceShowCart = false,
   shopBackgroundImageUrl,
+  showShopSetupChooser,
+  onSelectShopType,
   uploadAction,
   pendingAttachment,
   encryptedUploadEnabled,
@@ -577,6 +585,17 @@ export function PortraitBloomShell({
     !!lastMessage && !lastMessage.mine && lastAgeMs < 15_000;
   const rippleKey = showFreshRipple ? lastMessage!.id : "idle";
 
+  // Send-flicker gate · sealed 2026-10-01 · the mount-time anchor
+  // marks "we loaded a conversation at T". Any mine message whose
+  // sent_at is NEWER than T is treated as a just-posted message and
+  // gets the one-shot accent flicker on its leading edge. Historical
+  // mine messages (sent before mount) never flicker, so the first
+  // scroll never looks like fireworks.
+  const mountAtRef = React.useRef<number>(0);
+  React.useEffect(() => {
+    mountAtRef.current = Date.now();
+  }, []);
+
   return (
     <>
       <style>{`
@@ -599,12 +618,49 @@ export function PortraitBloomShell({
           70%  { transform: scale(1.32); opacity: 0; }
           100% { transform: scale(1.32); opacity: 0; }
         }
+        /* Joker-specific lamp keyframes retired 2026-10-01 · founder
+           preferred the universal heartbeat ping for every theme ·
+           Joker now reuses nex-presence-heartbeat above with an
+           acid-green border override at the call site. */
+        /* Smoke-drift keyframes retired 2026-10-01 · founder reverted
+           to the static fog floor · the drifting layers read as too
+           much visual noise over the composer. */
         @keyframes nex-bloom-msg-in {
           from { opacity: 0; transform: translateY(8px); }
           to   { opacity: 1; transform: translateY(0); }
         }
         [data-nex-bloom-msg] {
           animation: nex-bloom-msg-in 260ms cubic-bezier(.2,.7,.2,1) both;
+          position: relative;
+        }
+        /* Send flicker · sealed 2026-10-01 · outgoing bubble gets a
+           2px accent-coloured leading-edge pulse for 0.6s when it was
+           JUST posted (within ~2s of mount). The accent is injected
+           per-chat via --nex-send-flicker so every theme pulses in its
+           own colour (Joker · acid green · Night Sky · blue · etc.).
+           Scarce, electric, one moment per interaction. */
+        @keyframes nex-bloom-send-flicker {
+          0%   { opacity: 0;    transform: scaleY(0.5); }
+          15%  { opacity: 1;    transform: scaleY(1); }
+          55%  { opacity: 0.85; transform: scaleY(1); }
+          100% { opacity: 0;    transform: scaleY(1); }
+        }
+        [data-nex-bloom-msg-fresh="true"]::before {
+          content: "";
+          position: absolute;
+          top: 2px;
+          bottom: 2px;
+          right: -1px;
+          width: 2px;
+          border-radius: 2px;
+          background: var(--nex-send-flicker, #00AFFF);
+          box-shadow:
+            0 0 10px var(--nex-send-flicker, #00AFFF),
+            0 0 4px var(--nex-send-flicker, #00AFFF);
+          animation: nex-bloom-send-flicker 600ms cubic-bezier(.2,.7,.2,1) both;
+          animation-delay: 60ms;
+          pointer-events: none;
+          transform-origin: center;
         }
         @keyframes nex-portrait-breathe {
           0%, 100% { transform: scale(1); }
@@ -671,6 +727,10 @@ export function PortraitBloomShell({
           overflow: "hidden",
           display: "flex",
           flexDirection: "column",
+          // Theme-accent CSS variable · read by send-flicker + any
+          // other scarce accent moment that needs the per-theme hex
+          // without threading it through every component tree.
+          ["--nex-send-flicker" as unknown as string]: rippleColor,
         }}
       >
         {/* Theme wallpaper · fills the whole chat surface (Founder
@@ -693,15 +753,23 @@ export function PortraitBloomShell({
                 zIndex: 0,
               }}
             />
-            {/* Legibility scrim · a soft dark tint over the wallpaper
-                so text + bubbles never fight the theme photograph. */}
+            {/* Legibility scrim · sealed 2026-10-01 · flipped from a
+                uniform three-point darkening to a "clear up top, fog
+                settles toward the floor" gradient. The alley / sky
+                / wallpaper now reads crisply through the upper two-
+                thirds; darkness builds progressively from ~65% down
+                so the scrim naturally meets the composer fog floor
+                (which handles the final 96px). Message legibility is
+                covered by proto #05 TV-broadcast text shadows on
+                bubble bodies, so the top can stay almost fully
+                transparent without hurting readability. */}
             <div
               aria-hidden
               style={{
                 position: "absolute",
                 inset: 0,
                 background:
-                  "linear-gradient(180deg, rgba(2,9,20,0.55) 0%, rgba(2,9,20,0.35) 30%, rgba(2,9,20,0.55) 100%)",
+                  "linear-gradient(180deg, rgba(2,9,20,0.08) 0%, rgba(2,9,20,0.14) 40%, rgba(2,9,20,0.32) 70%, rgba(2,9,20,0.6) 95%, rgba(2,9,20,0.78) 100%)",
                 zIndex: 0,
               }}
             />
@@ -797,11 +865,13 @@ export function PortraitBloomShell({
                 height: 42,
               }}
             >
-              {/* Heartbeat pulse ring · sealed 2026-09-27. Renders
-                  only when the peer is online · matches the presence
-                  ring colour · expands + fades at ~75 bpm to signal
-                  "here, right now". GPU-friendly (transform +
-                  opacity, no box-shadow animation). */}
+              {/* Presence ring · sealed 2026-09-27 · reverted 2026-10-01.
+                  Earlier Joker-specific lamp animation (steps + glow
+                  flicker, then smooth breathe) felt either broken or
+                  flat vs. the expand+fade ping. Founder preferred the
+                  heartbeat ping on every theme · we just override the
+                  border colour so Joker's ping lands in acid green and
+                  non-Joker themes keep the default NEX green. */}
               {presenceKind === "online" && (
                 <div
                   aria-hidden
@@ -809,7 +879,9 @@ export function PortraitBloomShell({
                     position: "absolute",
                     inset: -2,
                     borderRadius: "50%",
-                    border: `2px solid ${NEX.green}`,
+                    border: `2px solid ${
+                      rippleColor === "#8FFF6E" ? "#8FFF6E" : NEX.green
+                    }`,
                     animation:
                       "nex-presence-heartbeat 1200ms cubic-bezier(0.4, 0, 0.2, 1) infinite",
                     pointerEvents: "none",
@@ -877,10 +949,18 @@ export function PortraitBloomShell({
               >
                 <div
                   style={{
-                    fontSize: 22,
+                    // Sealed 2026-10-01 · header name reads as
+                    // "cinematic identity" instead of "metadata."
+                    // Bumped from 22→26, pushed to full white, and
+                    // picks up a soft text-shadow so it holds against
+                    // the busy alley wallpaper without needing a bar
+                    // or background chip underneath it.
+                    fontSize: 26,
                     fontWeight: 700,
                     lineHeight: 1.1,
-                    letterSpacing: "-0.005em",
+                    letterSpacing: "-0.01em",
+                    color: "#FFFFFF",
+                    textShadow: "0 1px 3px rgba(0,0,0,0.65)",
                     minWidth: 0,
                     whiteSpace: "nowrap",
                     overflow: "hidden",
@@ -931,14 +1011,18 @@ export function PortraitBloomShell({
                 <div
                   style={{
                     marginTop: 2,
-                    fontSize: 12,
+                    // Sealed 2026-10-01 · proto #05 · TV-broadcast
+                    // legibility · brighter neutral gray + dual
+                    // shadow so the role under the header name holds
+                    // against the alley wallpaper and matches the
+                    // caption treatment used everywhere else (shop
+                    // chooser cards, animation panel cards).
+                    fontSize: 13,
                     fontWeight: 600,
                     letterSpacing: "0.04em",
-                    // Dark gray · profession recedes from the name
-                    // instead of competing with it in orange.
-                    color: "#8B95A5",
-                    // One line · no ellipsis · profession is short
-                    // enough to always fit at 12px.
+                    color: "#B4BAC3",
+                    textShadow:
+                      "0 0 2px rgba(0,0,0,0.9), 0 1px 2px rgba(0,0,0,0.5)",
                     whiteSpace: "nowrap",
                   }}
                 >
@@ -996,12 +1080,12 @@ export function PortraitBloomShell({
             overscrollBehavior: "contain",
             display: "flex",
             flexDirection: "column",
-            // Right padding widened past the side-nav rail so
-            // outgoing bubbles never slip behind the home/friends
-            // icons pinned at right: 2px. Sealed 2026-09-28 · fix
-            // for bubbles running under the rail.
+            // Sealed 2026-10-01 · side-nav rail retired, so the
+            // right padding drops back to 20px (symmetric with the
+            // left). Outgoing bubbles now use the full width of the
+            // chat surface — no more "ghost rail" eating 32px.
             padding:
-              "20px 52px calc(env(safe-area-inset-bottom, 0) + 118px) 20px",
+              "20px 20px calc(env(safe-area-inset-bottom, 0) + 118px) 20px",
           }}
         >
           <div
@@ -1106,6 +1190,12 @@ export function PortraitBloomShell({
                     <div
                       data-nex-bloom-msg
                       data-nex-bloom-msg-mine={m.mine ? "true" : undefined}
+                      data-nex-bloom-msg-fresh={
+                        m.mine &&
+                        new Date(m.sent_at).getTime() > mountAtRef.current
+                          ? "true"
+                          : undefined
+                      }
                       data-nex-bloom-msg-deleted={
                         m.deleted_for_everyone ? "true" : undefined
                       }
@@ -1236,8 +1326,13 @@ export function PortraitBloomShell({
                           <div
                             style={{
                               flexShrink: 0,
-                              width: 22,
-                              height: 22,
+                              // Sealed 2026-10-01 · sized to sit at the
+                              // same height as the stacked name +
+                              // subtitle, dialled back 10% from the
+                              // initial 34px so it anchors the identity
+                              // row without dominating the bubble.
+                              width: 31,
+                              height: 31,
                               borderRadius: "50%",
                               overflow: "hidden",
                               backgroundImage: portraitUrl
@@ -1245,7 +1340,16 @@ export function PortraitBloomShell({
                                 : `linear-gradient(135deg, ${NEX.cyanDeep} 0%, #05101f 100%)`,
                               backgroundSize: "cover",
                               backgroundPosition: "center 22%",
-                              border: "1px solid rgba(255,255,255,0.15)",
+                              // Sealed 2026-10-01 · bubble avatars get
+                              // a thin STATIC theme-accent hairline so
+                              // the per-message face ties back to the
+                              // theme palette without animating (no
+                              // ping — pings only live on the header
+                              // portrait so the scarcity rule holds).
+                              border: (() => {
+                                const r = hexToRgb(rippleColor);
+                                return `1px solid rgba(${r.r},${r.g},${r.b},0.6)`;
+                              })(),
                               position: "relative",
                             }}
                             aria-hidden
@@ -1257,10 +1361,10 @@ export function PortraitBloomShell({
                                   inset: 0,
                                   display: "grid",
                                   placeItems: "center",
-                                  fontSize: 9,
+                                  fontSize: 12,
                                   fontWeight: 700,
                                   color: NEX.cyan,
-                                  letterSpacing: "0.06em",
+                                  letterSpacing: "0.04em",
                                 }}
                               >
                                 {initialsFromName(displayName)}
@@ -1269,17 +1373,49 @@ export function PortraitBloomShell({
                           </div>
                           <div
                             style={{
-                              fontSize: 11,
-                              fontWeight: 700,
-                              color: bubbleRim,
-                              letterSpacing: "0.02em",
-                              whiteSpace: "nowrap",
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
+                              display: "flex",
+                              flexDirection: "column",
+                              gap: 1,
                               minWidth: 0,
                             }}
                           >
-                            {displayName}
+                            <div
+                              style={{
+                                fontSize: 12,
+                                fontWeight: 700,
+                                // Sealed 2026-10-01 · bubble sender
+                                // name reads in the theme accent
+                                // (acid green on Joker) · the subtitle
+                                // (skill / profession) below reads in
+                                // muted gray so identity + role are
+                                // instantly scannable without the two
+                                // competing.
+                                color: rippleColor,
+                                letterSpacing: "0.02em",
+                                whiteSpace: "nowrap",
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                                textShadow:
+                                  "0 1px 2px rgba(0,0,0,0.5)",
+                              }}
+                            >
+                              {displayName}
+                            </div>
+                            {subtitle && (
+                              <div
+                                style={{
+                                  fontSize: 10,
+                                  fontWeight: 500,
+                                  color: "#8B95A5",
+                                  letterSpacing: "0.04em",
+                                  whiteSpace: "nowrap",
+                                  overflow: "hidden",
+                                  textOverflow: "ellipsis",
+                                }}
+                              >
+                                {subtitle}
+                              </div>
+                            )}
                           </div>
                         </div>
                       )}
@@ -1423,14 +1559,17 @@ export function PortraitBloomShell({
                               borderRadius: m.body ? 10 : 14,
                             }}
                           />
-                          {/* Top-right timestamp pill · translucent
-                              dark background so the time reads on
-                              bright + dark sticker artwork alike. */}
+                          {/* BOTTOM-right timestamp pill · sealed
+                              2026-10-01 · moved from top-right so it
+                              never fights the top-right reaction
+                              stamp (BubbleTopRightReaction). Reactions
+                              own the top-right quadrant · time + tick
+                              own the bottom-right. */}
                           {!m.body && (
                             <div
                               style={{
                                 position: "absolute",
-                                top: 8,
+                                bottom: 8,
                                 right: 10,
                                 padding: "3px 9px",
                                 borderRadius: 999,
@@ -1453,6 +1592,7 @@ export function PortraitBloomShell({
                                   sentAtIso={m.sent_at}
                                   readAtIso={m.read_at ?? null}
                                   messageId={m.id}
+                                  themeAccent={rippleColor}
                                 />
                               )}
                             </div>
@@ -1497,21 +1637,43 @@ export function PortraitBloomShell({
                           hasBody={!!m.body}
                         />
                       ) : null}
-                      {m.body && (
-                        <div
-                          /* Bridge 76 · marker so the decryptor can
-                             replace the '(encrypted)' sentinel with
-                             the plaintext once decryption succeeds. */
-                          data-nex-msg-body={m.id}
-                          style={{
-                            // Free legibility insurance for edge cases
-                            // (bright portrait zones + light text).
-                            textShadow: "0 1px 3px rgba(0,0,0,0.35)",
-                          }}
-                        >
-                          {m.body}
-                        </div>
-                      )}
+                      {m.body && (() => {
+                        // Jumbo emoji auto-sizing · sealed 2026-10-01.
+                        // When a message body is ONLY emoji glyphs
+                        // (optionally with whitespace) we scale the
+                        // text up to the WhatsApp/iMessage sizes so
+                        // the emoji carries its own weight.
+                        //   1 glyph  → 48px
+                        //   2 glyphs → 40px
+                        //   3-5      → 32px
+                        //   6+       → 22px
+                        //   any text letters alongside → normal 15px.
+                        const jumboSize = computeJumboEmojiSize(m.body);
+                        return (
+                          <div
+                            /* Bridge 76 · marker so the decryptor can
+                               replace the '(encrypted)' sentinel with
+                               the plaintext once decryption succeeds. */
+                            data-nex-msg-body={m.id}
+                            style={{
+                              fontSize: jumboSize ?? undefined,
+                              lineHeight: jumboSize ? 1.15 : undefined,
+                              // Sealed 2026-10-01 · proto #05 applied ·
+                              // body text uses the muted neutral gray
+                              // (#B4BAC3) with the dual TV-broadcast
+                              // shadow so messages read as cinematic
+                              // noir on the alley wallpaper · every
+                              // letter carries its own dark edge for
+                              // legibility against busy backdrops.
+                              color: "#B4BAC3",
+                              textShadow:
+                                "0 0 2px rgba(0,0,0,0.9), 0 1px 2px rgba(0,0,0,0.5)",
+                            }}
+                          >
+                            {m.body}
+                          </div>
+                        );
+                      })()}
                       {showTimestamp &&
                         !(
                           m.attachment_type === "sticker" &&
@@ -1535,6 +1697,7 @@ export function PortraitBloomShell({
                               sentAtIso={m.sent_at}
                               readAtIso={m.read_at ?? null}
                               messageId={m.id}
+                              themeAccent={rippleColor}
                             />
                           )}
                         </div>
@@ -1585,6 +1748,27 @@ export function PortraitBloomShell({
           </div>
         </section>
 
+        {/* Composer fog floor · sealed 2026-10-01 · a short dark
+            gradient at the very bottom of the viewport that lives
+            BEHIND the composer. Grounds the UI "in the environment"
+            instead of floating on top of the wallpaper · reads as
+            morning fog hugging the alley floor on Joker, as deep
+            water edge on Night Sky, etc. Theme-neutral: the gradient
+            is just dark, not accent-coloured. */}
+        <div
+          aria-hidden
+          style={{
+            position: "absolute",
+            left: 0,
+            right: 0,
+            bottom: 0,
+            height: "calc(env(safe-area-inset-bottom, 0) + 96px)",
+            background:
+              "linear-gradient(180deg, transparent 0%, rgba(2,9,20,0.35) 55%, rgba(2,9,20,0.78) 85%, rgba(2,9,20,0.92) 100%)",
+            zIndex: 3,
+            pointerEvents: "none",
+          }}
+        />
         {/* Composer · absolutely positioned at the bottom so it
             floats over the message list · bubbles scroll freely
             behind it (transparent background, no black panel). */}
@@ -1614,7 +1798,14 @@ export function PortraitBloomShell({
             <PeerComposer
               action={composerAction}
               placeholder={composerPlaceholder}
-              themeAccent={composerRim}
+              themeAccent={
+                // Sealed 2026-10-01 · Joker overrides the muted
+                // dark-forest composer_rim_hex (Migration 121) with
+                // the acid-green rippleColor so the footer carries a
+                // thin visible green hairline. Other themes keep the
+                // stored composer rim as-is.
+                rippleColor === "#8FFF6E" ? rippleColor : composerRim
+              }
               replyTarget={replyTarget ?? null}
               uploadAction={uploadAction}
               pendingAttachment={pendingAttachment ?? null}
@@ -1628,12 +1819,13 @@ export function PortraitBloomShell({
         </div>
         <ScrollToBottomOnMount signal={messages.length} />
       </main>
-      {contacts && (
-        <SideNavPanel
-          contacts={contacts}
-          pendingInvites={pendingInvites ?? []}
-        />
-      )}
+      {/* Sealed 2026-10-01 · the right-rail SideNavPanel (Home +
+          Contacts floating icons) is retired to give the chat surface
+          the full viewport width. Home still lives in the top-right
+          header cluster; Contacts gets reintroduced via a dedicated
+          entry point in a later bridge (not a floating overlay).
+          Keeping the `contacts` prop plumbed so nothing breaks
+          upstream · it's just unused on the surface right now. */}
       {/* Bridge 53 · standard chat header right-cluster · Home + Shop
           /Menu (when peer has a business) + Cart · rendered on every
           chat surface using this shell. Home + Cart ALWAYS render even
@@ -1657,6 +1849,9 @@ export function PortraitBloomShell({
         inquiryAction={productInquiryAction}
         forceShowCart={forceShowCart}
         shopBackgroundImageUrl={shopBackgroundImageUrl ?? null}
+        showShopSetupChooser={showShopSetupChooser}
+        onSelectShopType={onSelectShopType}
+        themeAccent={rippleColor}
       />
     </>
   );
@@ -1698,6 +1893,50 @@ function hexToRgb(hex: string): { r: number; g: number; b: number } {
     g: (num >> 8) & 0xff,
     b: num & 0xff,
   };
+}
+
+/** Jumbo emoji sizing · returns the font-size (in px) a message body
+ *  should render at when it contains ONLY emoji glyphs (plus optional
+ *  whitespace), or `null` when the body has any text letters alongside
+ *  (in which case the caller should use its default size).
+ *
+ *  Sealed 2026-10-01 · matches iOS/WhatsApp conventions:
+ *    1 glyph  → 48px
+ *    2 glyphs → 40px
+ *    3-5      → 32px
+ *    6+       → default size (null)
+ *
+ *  The glyph counter uses `Intl.Segmenter` where available so compound
+ *  emoji (ZWJ sequences like 👨‍👩‍👧 or 👍🏽) count as one grapheme,
+ *  falling back to a code-point counter in older runtimes. */
+function computeJumboEmojiSize(body: string): number | null {
+  const stripped = body.replace(/\s+/g, "");
+  if (!stripped) return null;
+  // Reject any letter / digit · the string must be pure symbol glyphs
+  // to qualify. \p{L} covers all alphabetic scripts; \p{N} covers all
+  // numerals. If either shows up we fall through to normal text.
+  if (/[\p{L}\p{N}]/u.test(stripped)) return null;
+  // Reject any `:slug:` theme-emoji token · they currently render as
+  // raw text in the bubble body and jumbo-sizing them would make the
+  // colons huge too. (A future bridge that swaps tokens for inline
+  // images can revisit this.)
+  if (/:[a-z0-9][a-z0-9_-]{0,60}:/.test(stripped)) return null;
+  // Count graphemes · the correct unit for emoji ZWJ sequences.
+  let count = 0;
+  if (typeof Intl !== "undefined" && typeof Intl.Segmenter === "function") {
+    const seg = new Intl.Segmenter(undefined, { granularity: "grapheme" });
+    for (const _ of seg.segment(stripped)) count++;
+    if (count === 0) return null;
+  } else {
+    // Fallback: code-point count (over-counts ZWJ sequences but still
+    // caps correctly at the 6+ threshold).
+    count = Array.from(stripped).length;
+    if (count === 0) return null;
+  }
+  if (count === 1) return 48;
+  if (count === 2) return 40;
+  if (count <= 5) return 32;
+  return null;
 }
 
 function formatTime(iso: string): string {

@@ -36,6 +36,11 @@ interface ReadTickProps {
   messageId?: string;
   /** Conversation id · scopes which read-ack events apply. */
   conversationId?: string;
+  /** Active peer's chat_theme.accent_hex · when read, the dot flips to
+   *  this colour so the ONE moment of saturated accent per message
+   *  belongs to the theme (Joker · acid green, Night Sky · blue,
+   *  Pink Dream · pink). Falls back to NEX cyan when not provided. */
+  themeAccent?: string | null;
 }
 
 export function ReadTick(props: ReadTickProps): React.JSX.Element {
@@ -58,8 +63,19 @@ export function ReadTick(props: ReadTickProps): React.JSX.Element {
     return () => window.removeEventListener(READ_ACK_EVENT, handler);
   }, [props.conversationId, sentAtMs, read]);
 
-  const color = read ? "#7BC8FF" : "rgba(255,255,255,0.65)";
+  // Dot-only receipt · sealed 2026-10-01.
+  //   · Sent (unread) · hollow muted ring · the message is out but
+  //                      hasn't landed in the peer's eyes yet.
+  //   · Read          · solid accent dot with soft glow · one moment
+  //                      of saturated theme colour per message so the
+  //                      bite feels earned, not ambient.
+  // No tick glyph · the ring→dot transition reads as "message landed"
+  // in a split second without pulling WhatsApp iconography onto a
+  // theme-coded surface.
+  const accent = props.themeAccent ?? "#00AFFF";
   const label = read ? "Read" : "Sent";
+  const dotRgb = hexToRgbTriple(accent);
+  const glow = `rgba(${dotRgb},0.6)`;
 
   return (
     <span
@@ -69,14 +85,37 @@ export function ReadTick(props: ReadTickProps): React.JSX.Element {
         marginLeft: 5,
         display: "inline-flex",
         alignItems: "center",
-        color,
-        transition: "color 220ms ease",
         verticalAlign: "middle",
       }}
     >
-      <TickSvg double={read} />
+      <span
+        aria-hidden
+        style={{
+          width: 8,
+          height: 8,
+          borderRadius: "50%",
+          background: read ? accent : "transparent",
+          border: read
+            ? "none"
+            : "1.5px solid rgba(180,195,220,0.55)",
+          boxShadow: read ? `0 0 8px ${glow}, 0 0 2px ${glow}` : "none",
+          transition:
+            "background 220ms ease, box-shadow 220ms ease, border-color 220ms ease",
+        }}
+      />
     </span>
   );
+}
+
+function hexToRgbTriple(hex: string): string {
+  const clean = (hex || "").replace(/^#/, "");
+  const full =
+    clean.length === 3
+      ? clean.split("").map((c) => c + c).join("")
+      : clean;
+  const n = parseInt(full || "00AFFF", 16);
+  if (Number.isNaN(n)) return "0,175,255";
+  return `${(n >> 16) & 0xff},${(n >> 8) & 0xff},${n & 0xff}`;
 }
 
 /** Emit a read-ack window event · called by _message-events-client
@@ -87,22 +126,3 @@ export function dispatchReadAck(detail: NexMsgReadAckDetail): void {
   window.dispatchEvent(new CustomEvent(READ_ACK_EVENT, { detail }));
 }
 
-function TickSvg({ double }: { double: boolean }): React.JSX.Element {
-  const width = double ? 16 : 10;
-  return (
-    <svg
-      width={width}
-      height={10}
-      viewBox={`0 0 ${double ? 16 : 10} 10`}
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.6}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-    >
-      <path d="M1 5.5 L3.4 8 L9 2.5" />
-      {double && <path d="M7 5.5 L9.4 8 L15 2.5" />}
-    </svg>
-  );
-}

@@ -24,6 +24,7 @@ import * as chatThemeService from "@/lib/nex-native/chat-theme-service";
 import { listThemeEmojis } from "@/lib/nex-native/theme-emoji-service";
 import { listThemeStickers } from "@/lib/nex-native/theme-sticker-service";
 import { getThemeAssets } from "@/lib/nex-native/theme-assets";
+import { JokerChatOverlays } from "@/app/nex-native/themes/[id]/_joker-chat-overlays";
 import {
   sendPeerMessageAction,
   sendPeerStickerAction,
@@ -169,6 +170,16 @@ export default async function PeerChatPage({
     .listBusinessesByOwner(peer.id)
     .catch(() => [] as Awaited<ReturnType<typeof businessService.listBusinessesByOwner>>);
   const peerBusiness = peerBusinesses[0] ?? null;
+
+  // Sealed 2026-10-01 · first-time shop-setup chooser · when the
+  // VIEWER has no business of their own, tapping the shop icon
+  // opens the 3-button chooser (Sell Products / Sell Food / Affiliate)
+  // so new NEX users have an obvious on-ramp to selling. Viewers who
+  // already run a shop go straight to the peer's product grid.
+  const viewerBusinesses = await businessService
+    .listBusinessesByOwner(session.account.id)
+    .catch(() => [] as Awaited<ReturnType<typeof businessService.listBusinessesByOwner>>);
+  const viewerHasBusiness = viewerBusinesses.length > 0;
   const peerProducts = peerBusiness
     ? await productService
         .listProductsByBusiness(peerBusiness.id, "live")
@@ -609,6 +620,8 @@ export default async function PeerChatPage({
       shopBackgroundImageUrl={
         getThemeAssets(peerThemeRow?.id).shopBackgroundUrl
       }
+      themeSendButtonUrl={getThemeAssets(peerThemeRow?.id).sendButtonUrl}
+      showShopSetupChooser={!viewerHasBusiness}
       peerShop={peerShop}
       sendCartOrderAction={sendCartOrderAction}
       productInquiryAction={bindProductInquiry}
@@ -643,6 +656,17 @@ export default async function PeerChatPage({
       />
         );
       })()}
+      {/* Joker theme chat overlays · sealed 2026-10-01 · mounted only
+          when the peer's chat_theme is theme-0 so the 3-dots side
+          panel + Trust Scan trigger live inside the real chat (no
+          longer preview-only). Scoped to the current peer so the Trust
+          Scan reports describe this specific chat partner. */}
+      {peerThemeRow?.id === "theme-0" && (
+        <JokerChatOverlays
+          scannedAccountId={peer.id}
+          viewerAccountId={session.account.id}
+        />
+      )}
       {/* Bridge 68 · voice-call launcher · disabled for NEX1 support so
           ops isn't paged through WebRTC. Own signalling channel keyed on
           conversation.id. */}

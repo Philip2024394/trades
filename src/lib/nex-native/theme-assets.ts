@@ -21,16 +21,23 @@ export interface NexThemeAssets {
   /** Full-bleed image shown behind ShopGridModal's dark gradient.
    *  Null = use the modal's default gradient only. */
   shopBackgroundUrl: string | null;
+  /** Per-theme send-button artwork · replaces the default orange disc
+   *  on the PeerComposer when set. Null = default. */
+  sendButtonUrl: string | null;
 }
 
-const EMPTY: NexThemeAssets = { shopBackgroundUrl: null };
+const EMPTY: NexThemeAssets = {
+  shopBackgroundUrl: null,
+  sendButtonUrl: null,
+};
 
 const THEME_ASSETS: Record<string, NexThemeAssets> = {
   // Joker · sealed 2026-10-01 · founder-set alley wallpaper so the
   // Shop/Menu slider reads as "night-alley storefront" instead of a
-  // generic dark panel.
+  // generic dark panel. Send button is the Batman roundel.
   "theme-0": {
     shopBackgroundUrl: "/nex-themes/joker-shop-bg.png",
+    sendButtonUrl: "/nex-themes/joker-send-button.png",
   },
 };
 
