@@ -189,3 +189,72 @@ data/harvest-osm/osm-*T*Z.jsonl
 
 # WO-13 · substrate-attestation private key must NEVER be committed
 .nex-secrets/
+
+# 2026-09-19 · IP Protection Gate — additional secret / delegation surfaces.
+# nex_founder_delegations.jsonl carries Ed25519 delegation envelopes (signatures + nonces).
+# founder-key-tmp-* directories carry temporary private key material used by delegation tests.
+# Neither should ever land in git history.
+data/nex-storage/nex_founder_delegations.jsonl
+data/founder-key-tmp-*/
+
+# 2026-09-19 · IP Protection Gate — NEX cognitive intelligence corpus.
+# entries.jsonl (investigation conclusions) contains real Q8 selections + provenance.
+# Every jsonl under nex-storage is a durable cognitive/runtime record — never git-tracked.
+# Every subtree under data/nex1-*/ carries experiment receipts + learned patterns.
+# These files ARE the proprietary NEX experience corpus.
+data/nex1-investigation-conclusions/entries.jsonl
+data/nex-storage/*.jsonl
+data/nex1-*/**/*.jsonl
+data/nex1-*/**/*.json
+data/nex1-*/**/*.mjs
+data/nex1-*/**/*.md
+# Historical preservation snapshot receipts (leave already-committed baselines untouched
+# for provenance · but new snapshots stay local).
+data/nex1-preservation/*.json.new
+
+# 2026-09-15 · Wave P0 · NEX Visual Engine weights storage.
+# Model weight files (GB-scale binaries) live here after a bounded engine
+# registration wave downloads them. Weights are content-addressed and
+# never source of truth for git · they are re-downloadable from first-
+# party provenance recorded in data/nex-visual-model-licences.json.
+data/nex-visual-engine-weights/
+
+# 2026-09-15 · SDXL smoke-test outputs · regenerated on demand · not source of truth.
+data/nex-sdxl-smoke-test/
+
+# 2026-10-02 · Background-process runtime artifacts.
+# Continuously written by harvest / scraper / journal workers; never source
+# of truth for git. Pre-existing tracked copies are being `git rm --cached`d
+# in the same commit so the index agrees with these rules.
+
+# Alert daily journals
+data/alerts/*.jsonl
+
+# Harvest + knowledge-acquisition pipeline state
+data/harvest-osm/cursor.json
+data/indonesia/knowledge-gaps.json
+data/knowledge-acquisition/candidate-claims.json
+data/knowledge-acquisition/provenance.json
+data/knowledge-acquisition/runs.json
+data/knowledge-acquisition/verifications.json
+data/knowledge-acquisition/source-snapshots/
+
+# Capability-labs + external-audits runtime output
+data/capability-labs/
+data/external-audits/
+
+# master-ai journals + rotated archives
+data/master-ai/*.jsonl
+data/master-ai/*.jsonl.gz
+data/master-ai/*.jsonl.gz.purged
+
+# nex-agent error ledger
+data/nex-agent-turbopack-errors/ledger.json
+
+# nex-lab process liveness + scraper state + wikidata cache
+data/nex-lab/*.heartbeat
+data/nex-lab/*.pid
+data/nex-lab/hq-*.jsonl
+data/nex-lab/*-cursor.json
+data/nex-lab/*-health.json
+data/nex-lab/wikidata-cache/
