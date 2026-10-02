@@ -20,7 +20,6 @@ const NAV_ITEMS: { href: string; label: string; live: boolean; redZone?: boolean
   { href: "/admin/reviews", label: "Reviews", live: true },
   { href: "/admin/yard", label: "Yard", live: true },
   { href: "/admin/news", label: "News", live: true },
-  { href: "/admin/affiliates", label: "Affiliates", live: true },
   { href: "/admin/hero-library", label: "Hero Library", live: true },
   { href: "/admin/image-submissions", label: "Image Submissions", live: true },
   { href: "/admin/featured-placements", label: "Featured Placements", live: true },
@@ -82,20 +81,6 @@ async function loadPendingReviewsCount(): Promise<number> {
   return count ?? 0;
 }
 
-// Approved commissions awaiting a payout — flagged on the Affiliates
-// nav so the admin notices when there's money to release.
-async function loadPendingAffiliatePayoutsCount(): Promise<number> {
-  const { count, error } = await supabaseAdmin
-    .from("hammerex_affiliate_commissions")
-    .select("id", { count: "exact", head: true })
-    .eq("status", "approved");
-  if (error) {
-    console.error("[admin/layout] affiliate payouts count failed:", error);
-    return 0;
-  }
-  return count ?? 0;
-}
-
 export default async function AdminAuthedLayout({
   children
 }: {
@@ -109,13 +94,11 @@ export default async function AdminAuthedLayout({
   const [
     pendingRecoveryCount,
     pendingYardCount,
-    pendingReviewsCount,
-    pendingAffiliatePayouts
+    pendingReviewsCount
   ] = await Promise.all([
     loadPendingRecoveryCount(),
     loadPendingYardCount(),
-    loadPendingReviewsCount(),
-    loadPendingAffiliatePayoutsCount()
+    loadPendingReviewsCount()
   ]);
 
   return (
@@ -138,9 +121,7 @@ export default async function AdminAuthedLayout({
                       ? pendingYardCount
                       : item.href === "/admin/reviews"
                         ? pendingReviewsCount
-                        : item.href === "/admin/affiliates"
-                          ? pendingAffiliatePayouts
-                          : 0;
+                        : 0;
                 const showBadge = badgeCount > 0;
                 if (item.live) {
                   return (

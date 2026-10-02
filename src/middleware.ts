@@ -25,6 +25,7 @@
 
 import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { createServerClient } from "@supabase/ssr";
 
 // ── W-OBS-1 Path A Layer 1 · CID injection ──────────────────────────
 //
@@ -119,9 +120,7 @@ const LEGACY_MARKETPLACE_PREFIXES = [
 ];
 const MARKETPLACE_CANONICAL_PATH = "/nex-app/centre";
 
-// Affiliate cookie carries the numeric affiliate_id for 30 days.
-const AFFILIATE_REF_COOKIE = "xrated_affiliate_ref";
-const AFFILIATE_REF_MAX_AGE = 60 * 60 * 24 * 30; // 30 days
+// Legacy Xrated affiliate cookie plumbing removed 2026-10-02.
 const ADMIN_PATH_PREFIXES = ["/admin", "/api/"];
 
 // Merchant-to-merchant referral cookie carries the referrer slug for
@@ -142,72 +141,7 @@ export const config = {
   ],
 };
 
-/**
- * Set the affiliate cookie + fire a tracking request when ?ref=N is
- * present and valid. The fetch is fire-and-forget — we never await it
- * with the user blocked. Returns the response (with cookie set) when
- * we want to update the response, or null when no ref was found.
- */
-function applyAffiliateRef(
-  req: NextRequest,
-  response: NextResponse
-): NextResponse {
-  const ref = req.nextUrl.searchParams.get("ref");
-  const pathname = req.nextUrl.pathname;
-
-  // Skip admin and api paths.
-  for (const prefix of ADMIN_PATH_PREFIXES) {
-    if (pathname.startsWith(prefix)) return response;
-  }
-
-  if (!ref) return response;
-
-  const refId = Number(ref);
-  if (!Number.isFinite(refId) || refId <= 0) return response;
-
-  // Set the 30-day cookie. We don't validate the affiliate exists here
-  // (would require a DB round-trip on every request) — the track-click
-  // endpoint validates before insertion, and the listing-create stamp
-  // also re-validates before writing affiliate_referrer_id.
-  response.cookies.set(AFFILIATE_REF_COOKIE, String(refId), {
-    httpOnly: false,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
-    path: "/",
-    maxAge: AFFILIATE_REF_MAX_AGE
-  });
-
-  // Fire-and-forget click log. We use a same-origin fetch to our own
-  // tracking endpoint — no waitUntil needed, the request runs to
-  // completion in the background after the response is sent.
-  const trackUrl = new URL("/api/affiliates/track-click", req.nextUrl.origin);
-  fetch(trackUrl.toString(), {
-    method: "POST",
-    headers: {
-      "content-type": "application/json",
-      "user-agent": req.headers.get("user-agent") ?? "",
-      "x-forwarded-for": req.headers.get("x-forwarded-for") ?? "",
-      "cf-ipcountry": req.headers.get("cf-ipcountry") ?? "",
-      "x-vercel-ip-country": req.headers.get("x-vercel-ip-country") ?? ""
-    },
-    body: JSON.stringify({
-      affiliate_id: refId,
-      landing_page: pathname,
-      referrer_url: req.headers.get("referer") ?? null,
-      country:
-        req.headers.get("cf-ipcountry") ??
-        req.headers.get("x-vercel-ip-country") ??
-        null
-    })
-  }).catch(() => {
-    // Swallow — never block the user request on a tracking failure.
-  });
-
-  return response;
-}
-
-/** Merchant-to-merchant referral cookie. Distinct from the affiliate
- *  ref above — same visitor can carry both. Slug (string) not integer.
+/** Merchant-to-merchant referral cookie. Slug (string) not integer.
  *  Validation is cheap regex-only here; the signup path re-verifies
  *  the slug matches a live listing before writing the attribution. */
 function applyMerchantRef(
@@ -232,6 +166,54 @@ function applyMerchantRef(
   });
 
   return response;
+}
+
+/**
+ * Refresh the Supabase auth session cookie on every request.
+ * ---------------------------------------------------------
+ * Wave B Slice 1c · Founder directive 2026-09-24 "when user logged in they
+ * remain logged in".
+ *
+ * Server Components CANNOT write cookies, so token refresh MUST happen at
+ * middleware time. Without this call, once the access token expires
+ * (default 1 hour) the user is silently signed out because no future RSC
+ * request can refresh it.
+ *
+ * We attach @supabase/ssr's cookie handler to a response that we then
+ * return. The `getAll()` reads inbound cookies · `setAll()` writes refreshed
+ * cookies onto the outbound response. `supabase.auth.getUser()` is the
+ * documented refresh trigger.
+ *
+ * Never throws · never blocks · any failure keeps the request flowing.
+ */
+async function refreshNexAuthSession(
+  req: NextRequest,
+  res: NextResponse
+): Promise<NextResponse> {
+  const nexUrl = process.env.NEX_SUPABASE_URL ?? process.env.NEXT_PUBLIC_NEX_SUPABASE_URL;
+  const anon   = process.env.NEXT_PUBLIC_NEX_SUPABASE_ANON_KEY;
+  if (!nexUrl || !anon) return res;
+
+  try {
+    const supabase = createServerClient(nexUrl, anon, {
+      cookies: {
+        getAll() {
+          return req.cookies.getAll().map((c) => ({ name: c.name, value: c.value }));
+        },
+        setAll(list) {
+          for (const c of list) {
+            res.cookies.set(c.name, c.value, c.options);
+          }
+        },
+      },
+    });
+    // Documented refresh trigger. Returns error+null when signed out ·
+    // which is fine · we still return the response unchanged.
+    await supabase.auth.getUser();
+  } catch {
+    /* never block a page render on auth-refresh failure */
+  }
+  return res;
 }
 
 export async function middleware(req: NextRequest): Promise<NextResponse> {
@@ -296,13 +278,18 @@ export async function middleware(req: NextRequest): Promise<NextResponse> {
   const host = rawHost.toLowerCase().replace(/:\d+$/, "");
   if (!host || SYSTEM_HOSTS.has(host)) {
     // Even on system hosts we still want to capture the ?ref= cookie.
-    return attachCid(applyMerchantRef(req, applyAffiliateRef(req, NextResponse.next())), cid);
+    // Slice 1c: also refresh the NEX auth session so users stay logged in.
+    const base = NextResponse.next();
+    const refreshed = await refreshNexAuthSession(req, base);
+    return attachCid(applyMerchantRef(req, refreshed), cid);
   }
 
   // *.vercel.app preview hosts also bypass — they're system, just
   // dynamically named by Vercel.
   if (host.endsWith(".vercel.app")) {
-    return attachCid(applyMerchantRef(req, applyAffiliateRef(req, NextResponse.next())), cid);
+    const base = NextResponse.next();
+    const refreshed = await refreshNexAuthSession(req, base);
+    return attachCid(applyMerchantRef(req, refreshed), cid);
   }
 
   // Subdomain-per-trade — bobs-plumbing.thenetworkers.app
@@ -322,7 +309,7 @@ export async function middleware(req: NextRequest): Promise<NextResponse> {
     const rewritten = req.nextUrl.clone();
     rewritten.pathname =
       pathname === "/" ? `/trade/${sub}` : `/trade/${sub}${pathname}`;
-    return attachCid(applyMerchantRef(req, applyAffiliateRef(req, NextResponse.rewrite(rewritten))), cid);
+    return attachCid(applyMerchantRef(req, NextResponse.rewrite(rewritten)), cid);
   }
 
   // Strip leading www. so the partial UNIQUE index matches either form.
@@ -352,7 +339,7 @@ export async function middleware(req: NextRequest): Promise<NextResponse> {
     .maybeSingle();
 
   if (!data || !data.slug) {
-    return attachCid(applyMerchantRef(req, applyAffiliateRef(req, NextResponse.next())), cid);
+    return attachCid(applyMerchantRef(req, NextResponse.next()), cid);
   }
 
   // Rewrite the request to /<slug>/<rest>. The marketing site's
@@ -362,5 +349,5 @@ export async function middleware(req: NextRequest): Promise<NextResponse> {
   const url2 = req.nextUrl.clone();
   url2.pathname =
     pathname === "/" ? `/${data.slug}` : `/${data.slug}${pathname}`;
-  return attachCid(applyMerchantRef(req, applyAffiliateRef(req, NextResponse.rewrite(url2))), cid);
+  return attachCid(applyMerchantRef(req, NextResponse.rewrite(url2)), cid);
 }

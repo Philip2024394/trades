@@ -51,16 +51,6 @@ export const HQ_ORPHAN_ALLOWLIST = [
     disposition_phase_3: "inspect vs cle-review · candidate for retirement",
   },
   {
-    route: "/nex-head-quarters/m4-survey/[conversation_id]",
-    reason: "DYNAMIC ROUTE · legal absence from static sidebar · reached from parent page (likely m4-results or Journal)",
-    disposition_phase_3: "permanent · dynamic routes never in static sidebar · document parent reachability",
-  },
-  {
-    route: "/nex-head-quarters/m4-results",
-    reason: "M4 survey results view · verify parent/purpose in Phase 3",
-    disposition_phase_3: "verify purpose · decide sidebar/retire",
-  },
-  {
     route: "/nex-head-quarters/vitals",
     reason: "HQ vitals surface · reachability + purpose unclear · Phase 3 to verify",
     disposition_phase_3: "verify purpose · decide sidebar/retire",
@@ -93,7 +83,6 @@ export const COMPONENT_NAMESPACE_ALLOWLIST = [
   "src/components/home/",
   "src/components/sitebook/",
   "src/components/food/",
-  "src/components/affiliates/",
   "src/components/hero/",
   "src/components/community/",
   // Design/marketing (never operational)

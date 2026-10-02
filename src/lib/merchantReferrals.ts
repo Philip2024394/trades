@@ -14,10 +14,9 @@
 //      immediately, and a 1-month-free credit when the referred merchant
 //      upgrades to a paid tier for the first time).
 //
-// Coexists with the existing third-party affiliate system: that uses
-// `?ref=<int>` + `xrated_affiliate_ref` cookie + `affiliate_referrer_id`
-// column. Merchant referrals use `?mref=<slug>` + `tn_mref` cookie +
-// `merchant_referrer_slug` column. Same visitor can carry both.
+// Uses `?mref=<slug>` + `tn_mref` cookie + `merchant_referrer_slug`
+// column. (Legacy third-party `?ref=<int>` affiliate programme removed
+// 2026-10-02.)
 
 import "server-only";
 import { cookies } from "next/headers";

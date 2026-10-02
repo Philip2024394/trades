@@ -40,8 +40,8 @@ export default async function AdminGrowthPage() {
     merchantSignups7,  merchantSignups14,
     firstPost7,        firstReply7,
     topChannel,
-    mrefFunnel,        affiliateFunnel,
-    mrefTop,           affiliateTop,
+    mrefFunnel,
+    mrefTop,
     shadowFunnel,
     cityStats
   ] = await Promise.all([
@@ -55,9 +55,7 @@ export default async function AdminGrowthPage() {
     countEvents("sitebook.trade_replied", last7Iso),
     topAcquisitionChannel(last30Iso),
     referralFunnel("mref",      last30Iso),
-    referralFunnel("affiliate", last30Iso),
     topReferrers("mref",      last30Iso, 5),
-    topReferrers("affiliate", last30Iso, 5),
     loadShadowFunnel(last30Iso),
     loadCityStats(last30Iso)
   ]);
@@ -110,11 +108,10 @@ export default async function AdminGrowthPage() {
           </div>
         </Section>
 
-        {/* Row 3 · Referral programmes */}
-        <Section title="Referral programmes · 30d">
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        {/* Row 3 · Referral programme */}
+        <Section title="Referral programme · 30d">
+          <div className="grid grid-cols-1 gap-3">
             <ReferralCard title="Merchant → merchant (mref)" funnel={mrefFunnel} topRows={mrefTop}/>
-            <ReferralCard title="Affiliate partner"          funnel={affiliateFunnel} topRows={affiliateTop}/>
           </div>
         </Section>
 
@@ -167,11 +164,10 @@ export default async function AdminGrowthPage() {
           )}
         </Section>
 
-        <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
+        <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3">
           <NavCard href="/admin/coverage"        label="Coverage Map"        note="Where to recruit"/>
           <NavCard href="/admin/revenue"         label="Revenue Centre"       note="MRR + churn"/>
           <NavCard href="/admin/growth/shadow-profiles" label="Shadow pipeline" note="Companies House drip"/>
-          <NavCard href="/admin/affiliates"      label="Affiliates"           note="Partner programme"/>
         </div>
       </div>
     </main>

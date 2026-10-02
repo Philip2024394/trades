@@ -142,7 +142,6 @@ export default async function AdminHomePage() {
             <NavCard href="/admin/api-keys"          label="API keys"           note="Integrations + secrets"/>
             <NavCard href="/admin/growth/shadow-profiles" label="Shadow pipeline" note="Scrape + drip"/>
             <NavCard href="/admin/reviews"           label="Reviews"            note="Moderation"/>
-            <NavCard href="/admin/affiliates"        label="Affiliates"         note="Referral programme"/>
           </div>
         </div>
       </div>
