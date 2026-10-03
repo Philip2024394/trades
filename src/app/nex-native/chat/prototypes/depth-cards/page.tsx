@@ -17,6 +17,7 @@ import * as peerConversationService from "@/lib/nex-native/peer-conversation-ser
 import * as peerMessageService from "@/lib/nex-native/peer-message-service";
 import { sendPeerMessageAction } from "../../../_actions";
 import { PeerComposer } from "../../peer/[accountId]/_composer";
+import { DepthDeck, type DeckMessage } from "./_deck-client";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -31,13 +32,6 @@ const NEX = {
   text: "#F4F7FC",
   textDim: "#8BA9D1",
 };
-
-function formatTime(iso: string): string {
-  return new Date(iso).toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-}
 
 export default async function DepthCardsLivePage() {
   const session = await resolveNexAppSessionFromContext();
@@ -71,8 +65,23 @@ export default async function DepthCardsLivePage() {
   const profession = profile?.profession ?? null;
   const displayName = peer.display_name;
 
-  // Cap at 6 visible cards · anything older is out of the deck.
-  const deck = messages.slice(-6);
+  // Hand off the full history to the client deck. The deck owns the
+  // scroll-peels-the-deck gesture + windowing to 6 visible cards at a
+  // time.
+  const deckMessages: DeckMessage[] = messages.map((m) => ({
+    id: m.id,
+    body: m.body,
+    sender_account_id: m.sender_account_id,
+    sent_at: m.sent_at,
+    read_at: m.read_at,
+  }));
+
+  // Last message from the peer (not me) · shown as a persistent
+  // "replying to" bubble under the header so the viewer always has
+  // context for what they're responding to.
+  const lastPeerMessage =
+    [...messages].reverse().find((m) => m.sender_account_id === peer.id) ??
+    null;
 
   return (
     <>
@@ -90,8 +99,12 @@ export default async function DepthCardsLivePage() {
         style={{
           position: "relative",
           minHeight: "100dvh",
-          background:
-            "radial-gradient(ellipse at 50% 55%, #0a1a30 0%, #020914 80%)",
+          backgroundColor: NEX.bg,
+          backgroundImage:
+            "url(/nex-native/chat/depth-cards-bg.png)",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
           color: NEX.text,
           fontFamily:
             "Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
@@ -247,148 +260,78 @@ export default async function DepthCardsLivePage() {
           </Link>
         </header>
 
-        {/* Deck · 3D stack in perspective */}
-        <section
-          data-nex-deck
-          style={{
-            position: "relative",
-            zIndex: 3,
-            flex: 1,
-            padding: "20px 20px 0",
-            perspective: "1400px",
-          }}
-        >
-          {deck.length === 0 ? (
+        {/* Replying-to context · last message from the peer */}
+        {lastPeerMessage ? (
+          <div
+            style={{
+              position: "relative",
+              zIndex: 4,
+              padding: "0 20px 10px",
+              display: "flex",
+              justifyContent: "flex-start",
+            }}
+          >
             <div
               style={{
-                position: "absolute",
-                inset: 0,
-                display: "grid",
-                placeItems: "center",
-                textAlign: "center",
-                color: NEX.textDim,
+                maxWidth: "72%",
+                padding: "10px 14px 9px",
+                borderRadius: 16,
+                background:
+                  "linear-gradient(145deg, #102B46 0%, #0A1D31 100%)",
+                border: "1px solid rgba(105,170,220,0.14)",
+                color: NEX.text,
                 fontSize: 13,
-                padding: 24,
+                lineHeight: 1.4,
+                boxShadow: "0 10px 24px rgba(0,0,0,0.42)",
               }}
             >
-              <div>
-                <div style={{ fontSize: 32, marginBottom: 10 }}>🃏</div>
-                <div>Deck is empty · say hi to {displayName}.</div>
+              <div
+                style={{
+                  fontSize: 9,
+                  letterSpacing: "0.14em",
+                  textTransform: "uppercase",
+                  color: NEX.textDim,
+                  marginBottom: 4,
+                }}
+              >
+                Replying to {displayName}
+              </div>
+              <div
+                style={{
+                  display: "-webkit-box",
+                  WebkitLineClamp: 2,
+                  WebkitBoxOrient: "vertical",
+                  overflow: "hidden",
+                  wordBreak: "break-word",
+                }}
+              >
+                {lastPeerMessage.body}
               </div>
             </div>
-          ) : (
-            <div
-              style={{
-                position: "relative",
-                width: "100%",
-                height: "100%",
-                transformStyle: "preserve-3d",
-              }}
-            >
-              {deck.map((m, i) => {
-                const depth = deck.length - 1 - i; // 0 = newest (front)
-                const mine = m.sender_account_id === session.account.id;
-                const scale = 1 - depth * 0.05;
-                const translateY = depth * -30;
-                const translateZ = -depth * 32;
-                const opacity = Math.max(0, 1 - depth * 0.16);
-                const isTop = depth === 0;
-                return (
-                  <div
-                    key={m.id}
-                    data-nex-deck-card
-                    data-nex-deck-card-mine={mine ? "true" : undefined}
-                    data-nex-deck-top={isTop ? "true" : undefined}
-                    style={{
-                      position: "absolute",
-                      bottom: 40 + depth * 8,
-                      left: mine ? "16%" : 0,
-                      right: mine ? 0 : "16%",
-                      padding: "16px 20px 14px",
-                      borderRadius: 22,
-                      background: mine
-                        ? "linear-gradient(120deg, #087FFF 0%, #6945F5 100%)"
-                        : "linear-gradient(145deg, #102B46 0%, #0A1D31 100%)",
-                      border: mine
-                        ? "none"
-                        : "1px solid rgba(105,170,220,0.10)",
-                      color: NEX.text,
-                      fontSize: isTop ? 16 : 14,
-                      lineHeight: 1.42,
-                      transform: `translateY(${translateY}px) translateZ(${translateZ}px) scale(${scale})`,
-                      transformOrigin: "50% 100%",
-                      opacity,
-                      boxShadow: mine
-                        ? `0 18px 36px rgba(8,127,255,${0.32 - depth * 0.05})`
-                        : `0 18px 36px rgba(0,0,0,${0.48 - depth * 0.06})`,
-                      zIndex: 100 - depth,
-                      transition:
-                        "transform 320ms cubic-bezier(.2,.7,.2,1), opacity 260ms ease",
-                    }}
-                  >
-                    <div
-                      style={{
-                        whiteSpace: "pre-wrap",
-                        wordBreak: "break-word",
-                      }}
-                    >
-                      {m.body}
-                    </div>
-                    <div
-                      style={{
-                        marginTop: 6,
-                        fontSize: 10,
-                        letterSpacing: "0.04em",
-                        color: mine
-                          ? "rgba(255,255,255,0.78)"
-                          : "rgba(139,169,209,0.9)",
-                        textAlign: "right",
-                        display: "flex",
-                        justifyContent: "flex-end",
-                        gap: 6,
-                        alignItems: "center",
-                      }}
-                    >
-                      <span>{formatTime(m.sent_at)}</span>
-                      {mine && (
-                        <span
-                          style={{
-                            color: m.read_at
-                              ? "#C4E5FF"
-                              : "rgba(255,255,255,0.6)",
-                          }}
-                        >
-                          {m.read_at ? "✓✓" : "✓"}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </section>
+          </div>
+        ) : null}
 
-        {/* Composer */}
+        {/* Deck · 3D stack in perspective · scroll peels the deck */}
+        <DepthDeck
+          messages={deckMessages}
+          viewerAccountId={session.account.id}
+          displayName={displayName}
+        />
+
+        {/* Composer · transparent wrapper · hotel bg shows through */}
         <div
           style={{
             position: "relative",
             zIndex: 5,
             padding:
               "12px 16px calc(env(safe-area-inset-bottom, 0) + 14px)",
-            background:
-              "linear-gradient(180deg, rgba(2,9,20,0) 0%, rgba(2,9,20,0.65) 40%, rgba(2,9,20,0.95) 100%)",
-            backdropFilter: "blur(20px)",
-            WebkitBackdropFilter: "blur(20px)",
-            borderTop: "1px solid rgba(0,159,239,0.12)",
+            background: "transparent",
           }}
         >
-          <div style={{ maxWidth: 480, margin: "0 auto" }}>
-            <PeerComposer
-              action={bind}
-              placeholder={`Message ${displayName}…`}
-            />
-          </div>
+          <PeerComposer
+            action={bind}
+            placeholder={`Message ${displayName}…`}
+          />
         </div>
       </main>
     </>
