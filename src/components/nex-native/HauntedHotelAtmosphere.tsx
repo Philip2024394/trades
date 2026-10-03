@@ -196,14 +196,22 @@ export function HauntedHotelAtmosphere(): React.ReactElement {
         }
       `}</style>
 
-      {/* Root · fixed · the whole thing sits under the chat content. */}
+      {/* Root · fixed · the whole thing sits under the chat content.
+          zIndex: -1 is deliberate: a fixed element at zIndex 0 renders
+          ABOVE static-flow content by CSS stacking rules, which hides
+          the chat's header + cards + composer on any surface that
+          doesn't explicitly set a positive z-index on its own layer.
+          The depth-cards prototype worked around this by setting
+          zIndex 5 on its composer; this value lets every surface
+          (preview, live peer chat, prototype) render over the
+          atmosphere without needing per-surface z-index hacks. */}
       <div
         aria-hidden
         style={{
           position: "fixed",
           inset: 0,
           pointerEvents: "none",
-          zIndex: 0,
+          zIndex: -1,
           overflow: "hidden",
         }}
       >
