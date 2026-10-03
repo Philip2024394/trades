@@ -416,27 +416,37 @@ export function DepthDeck({
                 left: mine ? "16%" : 0,
                 right: mine ? 0 : "16%",
                 padding: "16px 20px 14px",
-                // Haunted Hotel card · Candlelit Parchment (Prototype 02
-                // from the haunted-hotel-bubbles gallery). Warm aged-paper
-                // gradient on the owner side, slightly cooler parchment
-                // on the peer side so you can still read who's talking.
-                // Rim colour rgba(216,168,86,0.85) is the EXACT value
-                // the composer footer uses — derived from the
-                // depth-cards themeAccent "#d8a856" via composerRim()
-                // at 0.85 alpha. One amber tone shared across cards
-                // and composer.
+                // Haunted Hotel chat cards · glass style, two shades.
+                //
+                // Owner (mine): the EXACT recipe the AnimationCard in
+                // the "Haunted Hotel · Animations" panel uses. Amber
+                // glass gradient + amber rim. This makes the owner's
+                // own messages read as a continuation of their own
+                // control-panel identity.
+                //
+                // Peer: a cool misted glass gradient + cool rim so the
+                // other speaker is instantly distinguishable at a
+                // glance without breaking the hotel palette. Stays
+                // translucent so the atmosphere shows through either
+                // way.
                 borderRadius: mine ? "14px 14px 4px 14px" : "14px 14px 14px 4px",
                 background: mine
-                  ? "linear-gradient(145deg, #f5e9ca 0%, #e9d6a4 55%, #d9bf85 100%)"
-                  : "linear-gradient(145deg, #ede4d0 0%, #ddd0ae 55%, #c7b89a 100%)",
-                border: "1px solid rgba(216, 168, 86, 0.85)",
-                color: "#3a2612",
+                  ? "linear-gradient(180deg, rgba(216,168,86,0.14) 0%, rgba(216,168,86,0.06) 100%)"
+                  : "linear-gradient(180deg, rgba(220,215,230,0.14) 0%, rgba(220,215,230,0.06) 100%)",
+                border: mine
+                  ? "1px solid rgba(216,168,86,0.5)"
+                  : "1px solid rgba(220,215,230,0.45)",
+                backdropFilter: "blur(10px) saturate(130%)",
+                WebkitBackdropFilter: "blur(10px) saturate(130%)",
+                color: mine ? "#f6e8d2" : "#e8ebf0",
                 fontSize: isTop ? 16 : 14,
                 lineHeight: 1.42,
                 transform: `translateY(${translateY}px) translateZ(${translateZ}px) scale(${scale})`,
                 transformOrigin: "50% 100%",
                 opacity,
-                boxShadow: `0 ${mine ? 24 : 18}px ${mine ? 42 : 36}px rgba(0,0,0,${0.52 - depth * 0.06}), inset 0 1px 0 rgba(255, 240, 190, 0.4)`,
+                boxShadow: mine
+                  ? `0 24px 42px rgba(0,0,0,${0.52 - depth * 0.06}), inset 0 1px 0 rgba(255,220,160,0.18)`
+                  : `0 18px 36px rgba(0,0,0,${0.52 - depth * 0.06}), inset 0 1px 0 rgba(255,255,255,0.14)`,
                 // Smoke tendrils on the top mine card need to escape
                 // the bubble's rounded box.
                 overflow: mine && isTop ? "visible" : undefined,
@@ -555,10 +565,13 @@ export function DepthDeck({
                   marginTop: 6,
                   fontSize: 10,
                   letterSpacing: "0.04em",
-                  // Parchment uses dark-brown text so timestamps + chevron
-                  // sit legibly on both sides. Same tone as the main body
-                  // text (#3a2612), slightly transparent for subordinacy.
-                  color: "rgba(58, 38, 18, 0.65)",
+                  // Glass over the dark atmosphere · light subordinate
+                  // text on both sides. Mine picks up the amber tint so
+                  // the owner-identity still reads at a glance; peer
+                  // uses a cool off-white matching its glass rim.
+                  color: mine
+                    ? "rgba(246, 232, 210, 0.72)"
+                    : "rgba(232, 235, 240, 0.68)",
                   textAlign: "right",
                   display: "flex",
                   justifyContent: "space-between",
