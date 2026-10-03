@@ -288,6 +288,29 @@ export default async function DepthCardsLivePage(props: DepthCardsPageProps) {
             gap: 12,
           }}
         >
+          {/* User-info glass card · same amber-glass recipe as the
+              owner's message cards and the "Haunted Hotel · Animations"
+              AnimationCard · one owner-identity palette shared across
+              every element the owner touches. */}
+          <div
+            data-nex-haunted-user-card
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 12,
+              flex: 1,
+              minWidth: 0,
+              padding: "8px 14px 8px 8px",
+              borderRadius: 999,
+              background:
+                "linear-gradient(180deg, rgba(216,168,86,0.14) 0%, rgba(216,168,86,0.06) 100%)",
+              border: "1px solid rgba(216,168,86,0.5)",
+              backdropFilter: "blur(10px) saturate(130%)",
+              WebkitBackdropFilter: "blur(10px) saturate(130%)",
+              boxShadow:
+                "0 10px 24px rgba(0,0,0,0.42), inset 0 1px 0 rgba(255,220,160,0.18)",
+            }}
+          >
           <div
             style={{
               position: "relative",
@@ -332,7 +355,7 @@ export default async function DepthCardsLivePage(props: DepthCardsPageProps) {
                 height: 44,
                 borderRadius: "50%",
                 overflow: "hidden",
-                background: NEX.cyanDeep,
+                background: "rgba(10, 6, 4, 0.5)",
               }}
             >
               {avatarUrl ? (
@@ -352,12 +375,14 @@ export default async function DepthCardsLivePage(props: DepthCardsPageProps) {
           </div>
 
           <div style={{ minWidth: 0, flex: 1 }}>
-            <div style={{ fontSize: 15, fontWeight: 600 }}>{displayName}</div>
+            <div style={{ fontSize: 15, fontWeight: 600, color: "#f6e8d2" }}>
+              {displayName}
+            </div>
             <div
               style={{
                 marginTop: 2,
                 fontSize: 12,
-                color: NEX.textDim,
+                color: "rgba(246, 232, 210, 0.65)",
                 whiteSpace: "nowrap",
                 overflow: "hidden",
                 textOverflow: "ellipsis",
@@ -365,6 +390,7 @@ export default async function DepthCardsLivePage(props: DepthCardsPageProps) {
             >
               {profession ?? "friend"}
             </div>
+          </div>
           </div>
 
           {/* Haunted Hotel standard chat header · Home / Shop / Cart.
