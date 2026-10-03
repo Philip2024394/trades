@@ -187,13 +187,23 @@ export function DepthDeck({
             maxWidth: "72%",
             padding: "10px 14px 10px",
             borderRadius: 16,
+            // Peer cool-mist glass · same recipe as the peer's deck
+            // cards. This chip is a QUOTED peer message, so its
+            // identity must match the peer side of the conversation
+            // rather than the owner side. Previously painted
+            // #102B46 → #0A1D31 navy with a cyan-grey rim · that
+            // was the pre-Haunted-Hotel default and read as a blue
+            // bubble under the header on this surface.
             background:
-              "linear-gradient(145deg, #102B46 0%, #0A1D31 100%)",
-            border: "1px solid rgba(105,170,220,0.14)",
-            color: NEX.text,
+              "linear-gradient(180deg, rgba(220,215,230,0.14) 0%, rgba(220,215,230,0.06) 100%)",
+            border: "1px solid rgba(220,215,230,0.45)",
+            backdropFilter: "blur(10px) saturate(130%)",
+            WebkitBackdropFilter: "blur(10px) saturate(130%)",
+            color: "#e8ebf0",
             fontSize: 13,
             lineHeight: 1.4,
-            boxShadow: "0 10px 24px rgba(0,0,0,0.42)",
+            boxShadow:
+              "0 10px 24px rgba(0,0,0,0.42), inset 0 1px 0 rgba(255,255,255,0.14)",
             animation:
               "nex-replying-swap 220ms cubic-bezier(.2,.7,.2,1) both",
             display: "flex",
@@ -206,7 +216,7 @@ export function DepthDeck({
               fontSize: 9,
               letterSpacing: "0.14em",
               textTransform: "uppercase",
-              color: NEX.textDim,
+              color: "rgba(232, 235, 240, 0.65)",
               marginBottom: 4,
             }}
           >
