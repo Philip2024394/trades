@@ -455,39 +455,10 @@ export function DepthDeck({
                   "transform 320ms cubic-bezier(.2,.7,.2,1), opacity 260ms ease",
               }}
             >
-              {/* Spectral Smoke Trail · ghost-white tendrils rising
-                  from the top edge of the owner's front-of-deck
-                  bubble. Eight staggered puffs so the smoke feels
-                  denser and more spectral. Rendered only on the top
-                  mine card so the deck stacks underneath stay calm. */}
-              {mine && isTop
-                ? [0, 1, 2, 3, 4, 5, 6, 7].map((k) => (
-                    <div
-                      key={`hh-smoke-${k}`}
-                      aria-hidden
-                      style={{
-                        position: "absolute",
-                        left: `${8 + k * 12}%`,
-                        top: -10,
-                        width: 54,
-                        height: 54,
-                        marginLeft: -27,
-                        borderRadius: "50%",
-                        background:
-                          "radial-gradient(circle, rgba(255,255,255,0.85) 0%, rgba(230,235,245,0.4) 38%, rgba(255,255,255,0) 70%)",
-                        filter: "blur(12px)",
-                        animationName: "hh-smoke",
-                        animationDuration: `${5 + (k % 4) * 0.7}s`,
-                        animationTimingFunction: "ease-out",
-                        animationIterationCount: "infinite",
-                        animationDelay: `${k * 0.55}s`,
-                        mixBlendMode: "screen",
-                        pointerEvents: "none",
-                        willChange: "transform, opacity, filter",
-                      }}
-                    />
-                  ))
-                : null}
+              {/* Spectral Smoke Trail removed 2026-10-03 per founder
+                  direction. The bottom-anchored room smoke
+                  (HauntedSmokeClient) is the only smoke in the deck
+                  now; cards do not emit their own rising tendrils. */}
               {/* Joker-pattern · newest reaction stamps the top-right
                   corner of the bubble, overlapping the rim. */}
               {reactions[m.id] && reactions[m.id].length > 0 ? (
