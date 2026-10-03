@@ -22,7 +22,7 @@ export const dynamic = "force-static";
 // backend-wired page. Keep in sync with actual routes in this dir.
 const LIVE_PREVIEW_ROUTES: Record<string, string> = {
   "portrait-bloom": "/nex-native/chat/prototypes/portrait-bloom",
-  "depth-cards": "/nex-native/chat/prototypes/depth-cards",
+  "depth-cards": "/nex-native/chat/prototypes/hauntedhoteltheme",
 };
 
 // -----------------------------------------------------------------------------

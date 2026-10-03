@@ -50,7 +50,7 @@ export default async function ThemeViewerPage({
   // that surface so there's one source of truth for the Haunted Hotel
   // chat look, instead of trying to replicate it in two places.
   if (id === "haunted-hotel") {
-    redirect("/nex-native/chat/prototypes/depth-cards");
+    redirect("/nex-native/chat/prototypes/hauntedhoteltheme");
   }
 
   const theme = await chatThemeService.getThemeById(id);
