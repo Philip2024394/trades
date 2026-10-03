@@ -416,27 +416,27 @@ export function DepthDeck({
                 left: mine ? "16%" : 0,
                 right: mine ? 0 : "16%",
                 padding: "16px 20px 14px",
-                // Haunted Hotel owner bubble · Spectral Smoke Trail
-                // (Prototype 10) · frosted translucent glass with
-                // bottom-right speaker point.
-                borderRadius: mine ? "22px 22px 4px 22px" : 22,
+                // Haunted Hotel card · Candlelit Parchment (Prototype 02
+                // from the haunted-hotel-bubbles gallery). Warm aged-paper
+                // gradient on the owner side, slightly cooler parchment
+                // on the peer side so you can still read who's talking.
+                // Rim colour rgba(216,168,86,0.85) is the EXACT value
+                // the composer footer uses — derived from the
+                // depth-cards themeAccent "#d8a856" via composerRim()
+                // at 0.85 alpha. One amber tone shared across cards
+                // and composer.
+                borderRadius: mine ? "14px 14px 4px 14px" : "14px 14px 14px 4px",
                 background: mine
-                  ? "linear-gradient(145deg, rgba(255,255,255,0.12) 0%, rgba(180,195,215,0.18) 100%)"
-                  : "linear-gradient(145deg, #102B46 0%, #0A1D31 100%)",
-                border: mine
-                  ? "1px solid rgba(255,255,255,0.15)"
-                  : "1px solid rgba(105,170,220,0.10)",
-                backdropFilter: mine ? "blur(8px)" : undefined,
-                WebkitBackdropFilter: mine ? "blur(8px)" : undefined,
-                color: mine ? "#f0e7dc" : NEX.text,
+                  ? "linear-gradient(145deg, #f5e9ca 0%, #e9d6a4 55%, #d9bf85 100%)"
+                  : "linear-gradient(145deg, #ede4d0 0%, #ddd0ae 55%, #c7b89a 100%)",
+                border: "1px solid rgba(216, 168, 86, 0.85)",
+                color: "#3a2612",
                 fontSize: isTop ? 16 : 14,
                 lineHeight: 1.42,
                 transform: `translateY(${translateY}px) translateZ(${translateZ}px) scale(${scale})`,
                 transformOrigin: "50% 100%",
                 opacity,
-                boxShadow: mine
-                  ? `0 24px 42px rgba(0,0,0,${0.48 - depth * 0.06}), inset 0 0 30px rgba(255,255,255,0.08)`
-                  : `0 18px 36px rgba(0,0,0,${0.48 - depth * 0.06})`,
+                boxShadow: `0 ${mine ? 24 : 18}px ${mine ? 42 : 36}px rgba(0,0,0,${0.52 - depth * 0.06}), inset 0 1px 0 rgba(255, 240, 190, 0.4)`,
                 // Smoke tendrils on the top mine card need to escape
                 // the bubble's rounded box.
                 overflow: mine && isTop ? "visible" : undefined,
@@ -555,9 +555,10 @@ export function DepthDeck({
                   marginTop: 6,
                   fontSize: 10,
                   letterSpacing: "0.04em",
-                  color: mine
-                    ? "rgba(255,255,255,0.78)"
-                    : "rgba(139,169,209,0.9)",
+                  // Parchment uses dark-brown text so timestamps + chevron
+                  // sit legibly on both sides. Same tone as the main body
+                  // text (#3a2612), slightly transparent for subordinacy.
+                  color: "rgba(58, 38, 18, 0.65)",
                   textAlign: "right",
                   display: "flex",
                   justifyContent: "space-between",
