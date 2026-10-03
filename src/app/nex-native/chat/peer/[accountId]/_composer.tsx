@@ -44,6 +44,12 @@ interface PeerComposerProps {
    *  the composer belongs to "their space" doctrine sealed
    *  2026-09-27. Falls back to NEX cyan if omitted. */
   themeAccent?: string;
+  /** Optional override for the composer bar's background colour.
+   *  Defaults to the sealed `rgba(12,32,58,0.62)` dark-navy that pairs
+   *  with the NEX-cyan default rim. Haunted Hotel passes a warm dark
+   *  (rgba(10,6,4,0.72)) so the composer reads as part of the hotel
+   *  palette rather than cyan-themed. Pass any valid CSS color. */
+  composerBg?: string;
   /** Bridge 5 · when set, the composer shows a "replying to X"
    *  header + sends the message with a reply_to_id. Reply state
    *  lives in the URL (?reply=<id>) so it survives refresh. */
@@ -118,6 +124,7 @@ export function PeerComposer({
   action,
   placeholder,
   themeAccent,
+  composerBg,
   replyTarget,
   uploadAction,
   pendingAttachment,
@@ -588,7 +595,7 @@ export function PeerComposer({
             minHeight: 44,
             padding: "4px 6px 4px 6px",
             borderRadius: 14,
-            background: "rgba(12,32,58,0.62)",
+            background: composerBg ?? "rgba(12,32,58,0.62)",
             backdropFilter: "blur(24px) saturate(1.2)",
             WebkitBackdropFilter: "blur(24px) saturate(1.2)",
             border: `1px solid ${composerRim(themeAccent ?? NEX.cyan)}`,

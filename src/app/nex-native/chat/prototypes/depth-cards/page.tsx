@@ -332,7 +332,7 @@ export default async function DepthCardsLivePage(props: DepthCardsPageProps) {
                 height: 44,
                 borderRadius: "50%",
                 overflow: "hidden",
-                background: NEX.cyanDeep,
+                background: "rgba(10, 6, 4, 0.85)",
               }}
             >
               {avatarUrl ? (
@@ -445,6 +445,8 @@ export default async function DepthCardsLivePage(props: DepthCardsPageProps) {
             <PeerComposer
               action={bind}
               placeholder={`Message ${displayName}…`}
+              themeAccent="#d8a856"
+              composerBg="rgba(10, 6, 4, 0.72)"
             />
           </div>
         </ChatCoreBoundary>
