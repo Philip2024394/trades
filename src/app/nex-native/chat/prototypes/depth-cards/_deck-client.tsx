@@ -29,6 +29,11 @@ const NEX = {
 const WINDOW_SIZE = 6;
 const WHEEL_THRESHOLD = 60; // px of accumulated wheel delta per card step
 const TOUCH_THRESHOLD = 60; // px of touch delta per card step
+// Replying-to bubble char limit before it collapses behind an expand
+// chevron. Sized so ~99% of real messages render in full on first
+// paint (fontSize 13 · line-height 1.4 · ~72% viewport width).
+const LONG_REPLY_THRESHOLD = 240;
+const LONG_REPLY_COLLAPSED_LINES = 4;
 
 function formatTime(iso: string): string {
   // Deterministic UTC-based HH:mm · locale-agnostic so SSR and client
@@ -63,6 +68,11 @@ export function DepthDeck({
   const maxOffset = Math.max(0, total - 1);
 
   const [offset, setOffset] = React.useState(0);
+  // Which replying-to bubble (by message id) is currently expanded.
+  // Only kicks in when the message exceeds LONG_REPLY_THRESHOLD chars.
+  const [expandedReplyId, setExpandedReplyId] = React.useState<string | null>(
+    null,
+  );
   const wheelAccumRef = React.useRef(0);
   const touchYRef = React.useRef<number | null>(null);
 
@@ -188,17 +198,90 @@ export function DepthDeck({
           >
             Replying to {displayName}
           </div>
-          <div
-            style={{
-              display: "-webkit-box",
-              WebkitLineClamp: 2,
-              WebkitBoxOrient: "vertical",
-              overflow: "hidden",
-              wordBreak: "break-word",
-            }}
-          >
-            {replyingTo.body}
-          </div>
+          {(() => {
+            const isLong = replyingTo.body.length > LONG_REPLY_THRESHOLD;
+            const isExpanded = expandedReplyId === replyingTo.id;
+            // 99% of chats: just render the full body, no chevron.
+            if (!isLong) {
+              return (
+                <div
+                  style={{
+                    whiteSpace: "pre-wrap",
+                    wordBreak: "break-word",
+                  }}
+                >
+                  {replyingTo.body}
+                </div>
+              );
+            }
+            // Edge case: long message · collapsible with chevron.
+            return (
+              <>
+                <div
+                  style={
+                    isExpanded
+                      ? {
+                          whiteSpace: "pre-wrap",
+                          wordBreak: "break-word",
+                        }
+                      : {
+                          display: "-webkit-box",
+                          WebkitLineClamp: LONG_REPLY_COLLAPSED_LINES,
+                          WebkitBoxOrient: "vertical",
+                          overflow: "hidden",
+                          wordBreak: "break-word",
+                          whiteSpace: "pre-wrap",
+                        }
+                  }
+                >
+                  {replyingTo.body}
+                </div>
+                <button
+                  type="button"
+                  onClick={() =>
+                    setExpandedReplyId(isExpanded ? null : replyingTo.id)
+                  }
+                  aria-label={isExpanded ? "Collapse message" : "Expand full message"}
+                  aria-expanded={isExpanded}
+                  style={{
+                    marginTop: 6,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 4,
+                    padding: "3px 8px",
+                    background: "rgba(255,255,255,0.06)",
+                    border: "1px solid rgba(255,255,255,0.08)",
+                    borderRadius: 999,
+                    color: NEX.textDim,
+                    fontSize: 10,
+                    letterSpacing: "0.12em",
+                    textTransform: "uppercase",
+                    cursor: "pointer",
+                    alignSelf: "flex-start",
+                  }}
+                >
+                  <span>{isExpanded ? "Show less" : "Show full"}</span>
+                  <svg
+                    width={10}
+                    height={10}
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2.4}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    style={{
+                      transform: isExpanded ? "rotate(180deg)" : "rotate(0deg)",
+                      transition: "transform 180ms ease",
+                    }}
+                    aria-hidden
+                  >
+                    <path d="M6 9l6 6 6-6" />
+                  </svg>
+                </button>
+              </>
+            );
+          })()}
         </div>
       </div>
     ) : null}
@@ -247,25 +330,68 @@ export function DepthDeck({
                 left: mine ? "16%" : 0,
                 right: mine ? 0 : "16%",
                 padding: "16px 20px 14px",
-                borderRadius: 22,
+                // Haunted Hotel owner bubble · Spectral Smoke Trail
+                // (Prototype 10) · frosted translucent glass with
+                // bottom-right speaker point.
+                borderRadius: mine ? "22px 22px 4px 22px" : 22,
                 background: mine
-                  ? "linear-gradient(120deg, #087FFF 0%, #6945F5 100%)"
+                  ? "linear-gradient(145deg, rgba(255,255,255,0.12) 0%, rgba(180,195,215,0.18) 100%)"
                   : "linear-gradient(145deg, #102B46 0%, #0A1D31 100%)",
-                border: mine ? "none" : "1px solid rgba(105,170,220,0.10)",
-                color: NEX.text,
+                border: mine
+                  ? "1px solid rgba(255,255,255,0.15)"
+                  : "1px solid rgba(105,170,220,0.10)",
+                backdropFilter: mine ? "blur(8px)" : undefined,
+                WebkitBackdropFilter: mine ? "blur(8px)" : undefined,
+                color: mine ? "#f0e7dc" : NEX.text,
                 fontSize: isTop ? 16 : 14,
                 lineHeight: 1.42,
                 transform: `translateY(${translateY}px) translateZ(${translateZ}px) scale(${scale})`,
                 transformOrigin: "50% 100%",
                 opacity,
                 boxShadow: mine
-                  ? `0 18px 36px rgba(8,127,255,${0.32 - depth * 0.05})`
+                  ? `0 24px 42px rgba(0,0,0,${0.48 - depth * 0.06}), inset 0 0 30px rgba(255,255,255,0.08)`
                   : `0 18px 36px rgba(0,0,0,${0.48 - depth * 0.06})`,
+                // Smoke tendrils on the top mine card need to escape
+                // the bubble's rounded box.
+                overflow: mine && isTop ? "visible" : undefined,
                 zIndex: 100 - depth,
                 transition:
                   "transform 320ms cubic-bezier(.2,.7,.2,1), opacity 260ms ease",
               }}
             >
+              {/* Spectral Smoke Trail · ghost-white tendrils rising
+                  from the top edge of the owner's front-of-deck
+                  bubble. Eight staggered puffs so the smoke feels
+                  denser and more spectral. Rendered only on the top
+                  mine card so the deck stacks underneath stay calm. */}
+              {mine && isTop
+                ? [0, 1, 2, 3, 4, 5, 6, 7].map((k) => (
+                    <div
+                      key={`hh-smoke-${k}`}
+                      aria-hidden
+                      style={{
+                        position: "absolute",
+                        left: `${8 + k * 12}%`,
+                        top: -10,
+                        width: 54,
+                        height: 54,
+                        marginLeft: -27,
+                        borderRadius: "50%",
+                        background:
+                          "radial-gradient(circle, rgba(255,255,255,0.85) 0%, rgba(230,235,245,0.4) 38%, rgba(255,255,255,0) 70%)",
+                        filter: "blur(12px)",
+                        animationName: "hh-smoke",
+                        animationDuration: `${5 + (k % 4) * 0.7}s`,
+                        animationTimingFunction: "ease-out",
+                        animationIterationCount: "infinite",
+                        animationDelay: `${k * 0.55}s`,
+                        mixBlendMode: "screen",
+                        pointerEvents: "none",
+                        willChange: "transform, opacity, filter",
+                      }}
+                    />
+                  ))
+                : null}
               <div
                 style={{
                   whiteSpace: "pre-wrap",

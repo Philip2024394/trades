@@ -25,6 +25,9 @@ import { OptionalVisualModuleBoundary } from "@/components/nex-native/surface-he
 import { TierOneCanary } from "./_tier-one-canary";
 import { resolveFaultInjection } from "./_test-bridge";
 import { isThemeKillSwitchedSafe } from "@/lib/nex-native/theme-kill-switch";
+import { HauntedHotelAtmosphere } from "@/components/nex-native/HauntedHotelAtmosphere";
+import { HauntedHotelController } from "@/components/nex-native/HauntedHotelController";
+import { HeaderRightCluster } from "../../_header-right-cluster";
 
 const SURFACE_ID = "depth-cards";
 const PILOT_THEME_ID = "depth-cards-hotel";
@@ -94,6 +97,73 @@ export default async function DepthCardsLivePage(props: DepthCardsPageProps) {
     "pink-dream";
   const themeKillSwitched = await isThemeKillSwitchedSafe(effectiveThemeId);
 
+  // Haunted Hotel mock shop catalogue · drives the header shop slider.
+  // Prototype-only · not persisted · not a real nex_business row.
+  const hauntedHotelShop = {
+    name: "The Hotel Curio",
+    href: null as string | null,
+    products: [
+      {
+        id: "hh-mock-01",
+        kind: "product" as const,
+        name: "Candelabra · Hand-cast Bronze",
+        description: "Three-stem · 1890s pattern · never leaves its post.",
+        price_pence: 24000,
+        currency: "GBP",
+        image_url: null,
+        tags: ["brass", "lighting"],
+        stock_status: "in_stock",
+      },
+      {
+        id: "hh-mock-02",
+        kind: "product" as const,
+        name: "Victorian Door Key · Reclaimed",
+        description: "Room 237 · fits one lock only.",
+        price_pence: 8500,
+        currency: "GBP",
+        image_url: null,
+        tags: ["keys"],
+        stock_status: "in_stock",
+      },
+      {
+        id: "hh-mock-03",
+        kind: "product" as const,
+        name: "Haunted Mirror · c. 1890",
+        description: "Silvered glass · subject to occasional breath.",
+        price_pence: 120000,
+        currency: "GBP",
+        image_url: null,
+        tags: ["mirror", "furnishing"],
+        stock_status: "in_stock",
+      },
+      {
+        id: "hh-mock-04",
+        kind: "product" as const,
+        name: "Oil Lamp · Still Working",
+        description: "Reservoir full · wick trimmed · burns longer than it should.",
+        price_pence: 18000,
+        currency: "GBP",
+        image_url: null,
+        tags: ["lighting"],
+        stock_status: "in_stock",
+      },
+      {
+        id: "hh-mock-05",
+        kind: "product" as const,
+        name: "Guest Register · Vol. III",
+        description: "The pages after April 1923 are blank.",
+        price_pence: 32000,
+        currency: "GBP",
+        image_url: null,
+        tags: ["paper", "ephemera"],
+        stock_status: "in_stock",
+      },
+    ],
+    sections: [],
+    isVenue: false,
+    context: undefined,
+  };
+
   // Hand off the full history to the client deck. The deck owns the
   // scroll-peels-the-deck gesture + windowing to 6 visible cards at a
   // time.
@@ -120,6 +190,15 @@ export default async function DepthCardsLivePage(props: DepthCardsPageProps) {
           from { opacity: 0; transform: translateY(-6px); }
           to   { opacity: 1; transform: translateY(0); }
         }
+        /* Spectral Smoke · owner-bubble smoke tendrils rising upward
+         * (denser · taller rise · founder-direction "more ghost white
+         *  shadow coming up from chat bubble") */
+        @keyframes hh-smoke {
+          0%   { transform: translateY(0) translateX(0) scale(0.8); opacity: 0; filter: blur(10px); }
+          20%  { opacity: 0.85; }
+          55%  { opacity: 0.55; filter: blur(18px); }
+          100% { transform: translateY(-150px) translateX(14px) scale(2.4); opacity: 0; filter: blur(34px); }
+        }
         @keyframes nex-smoke-rise {
           0%   { transform: translateY(20px) translateX(0) scale(0.55); opacity: 0; filter: blur(18px); }
           12%  { opacity: 0.42; }
@@ -131,22 +210,27 @@ export default async function DepthCardsLivePage(props: DepthCardsPageProps) {
           50%      { transform: translateX(6px); }
         }
       `}</style>
+      {/* Haunted Hotel · ghost-energy atmosphere · fixed under the main.
+          Two-layer image stack (dark base + lit top with opacity flicker),
+          pulsing light haloes, and welding sparks cascading from each
+          light. */}
+      <HauntedHotelAtmosphere />
+      {/* Haunted Hotel · animation controller · 3-dots trigger +
+          full-screen toggle panel (Joker-pattern). Each enabled card
+          renders a self-contained CSS overlay in the viewport. */}
+      <HauntedHotelController />
       <main
         style={{
           position: "relative",
           minHeight: "100dvh",
-          backgroundColor: NEX.bg,
-          backgroundImage:
-            "url(/nex-native/chat/depth-cards-bg.png)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
+          backgroundColor: "transparent",
           color: NEX.text,
           fontFamily:
             "Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
           overflow: "hidden",
           display: "flex",
           flexDirection: "column",
+          zIndex: 1,
         }}
       >
         {/* Subtle atmosphere blobs */}
@@ -198,39 +282,6 @@ export default async function DepthCardsLivePage(props: DepthCardsPageProps) {
             gap: 12,
           }}
         >
-          <Link
-            href="/nex-native/chat"
-            aria-label="Back to friends"
-            style={{
-              flexShrink: 0,
-              width: 42,
-              height: 42,
-              borderRadius: "50%",
-              background: "rgba(0,0,0,0.35)",
-              backdropFilter: "blur(14px)",
-              WebkitBackdropFilter: "blur(14px)",
-              border: "1px solid rgba(255,255,255,0.12)",
-              color: NEX.text,
-              display: "grid",
-              placeItems: "center",
-              textDecoration: "none",
-            }}
-          >
-            <svg
-              width={22}
-              height={22}
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden
-            >
-              <path d="M15 18l-6-6 6-6" />
-            </svg>
-          </Link>
-
           <div
             aria-hidden
             style={{
@@ -275,25 +326,16 @@ export default async function DepthCardsLivePage(props: DepthCardsPageProps) {
             </div>
           </div>
 
-          <Link
-            href="/nex-native/chat/prototypes"
-            style={{
-              alignSelf: "center",
-              fontSize: 10,
-              letterSpacing: "0.14em",
-              textTransform: "uppercase",
-              color: "rgba(255,255,255,0.75)",
-              padding: "6px 12px",
-              borderRadius: 999,
-              background: "rgba(0,0,0,0.35)",
-              backdropFilter: "blur(14px)",
-              WebkitBackdropFilter: "blur(14px)",
-              border: "1px solid rgba(255,255,255,0.12)",
-              textDecoration: "none",
-            }}
-          >
-            Depth Cards · live
-          </Link>
+          {/* Haunted Hotel standard chat header · Home / Shop / Cart.
+              Same component the Joker viewer uses · drives the in-chat
+              shop slider via ShopGridModal. Shop opens as a slider,
+              not a page navigation. */}
+          <HeaderRightCluster
+            peerName={displayName}
+            shop={hauntedHotelShop}
+            forceShowCart={true}
+            themeAccent="#d8a856"
+          />
         </header>
 
         {/* Tier 1 · Chat Core Boundary wraps everything from here down.
