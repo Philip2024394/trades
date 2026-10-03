@@ -1096,7 +1096,14 @@ function EmojiModal({
   // callers that passed `useTheme` emoji inline keep working ·
   // mascots moves them to their own tab.
   type PickerTabKey = "emoji" | "mascots" | "stickers";
-  const [tab, setTab] = React.useState<PickerTabKey>("emoji");
+  // Default to the theme-specific tab when it exists, so themes that
+  // shipped a custom set (haunted-hotel, joker) land the user on
+  // their own content first rather than on the generic emoji
+  // fallback. Theme-neutral viewers (no stickers, no mascots) still
+  // open on the universal Emoji tab.
+  const [tab, setTab] = React.useState<PickerTabKey>(
+    hasStickers ? "stickers" : hasMascots ? "mascots" : "emoji",
+  );
   // Sealed 2026-10-01 · the EmojiModal was nested inside <main> and
   // the shell's HeaderRightCluster (a sibling of main, z-6) painted
   // ABOVE main's children regardless of their own z-index. Portal
