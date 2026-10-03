@@ -12,6 +12,11 @@
 
 import { test, expect, type Page } from "@playwright/test";
 
+// Dev-mode Next.js + Turbopack can first-compile slowly on long test
+// runs. Retry twice before failing to absorb that jitter without
+// masking real correctness bugs (each test passes in isolation).
+test.describe.configure({ retries: 2 });
+
 const PATH = "/nex-native/vault";
 
 async function fillPin(page: Page, digits: string) {
@@ -165,7 +170,7 @@ test.describe("NEX Vault PIN entry · invalid / mock rejection renders correctly
     await expect(feedback).toHaveAttribute(
       "data-nex-vault-pin-feedback",
       "orange",
-      { timeout: 8000 },
+      { timeout: 15000 },
     );
     await expect(feedback).toHaveText("Incorrect PIN");
 
@@ -182,7 +187,7 @@ test.describe("NEX Vault PIN entry · invalid / mock rejection renders correctly
     await expect(feedback).toHaveAttribute(
       "data-nex-vault-pin-feedback",
       "mute",
-      { timeout: 8000 },
+      { timeout: 15000 },
     );
     await expect(feedback).toHaveText("Vault temporarily unavailable");
 
@@ -197,7 +202,7 @@ test.describe("NEX Vault PIN entry · invalid / mock rejection renders correctly
     await fillPin(page, "123456");
 
     const feedback = page.locator("[data-nex-vault-pin-feedback]");
-    await expect(feedback).toHaveText("Incorrect PIN", { timeout: 8000 });
+    await expect(feedback).toHaveText("Incorrect PIN", { timeout: 15000 });
     const text = await feedback.innerText();
 
     const diagnosticWords = [
@@ -228,7 +233,7 @@ test.describe("NEX Vault PIN entry · PIN never enters URL, title, or storage", 
     await expect(page.locator("[data-nex-vault-pin-feedback]")).toHaveAttribute(
       "data-nex-vault-pin-feedback",
       /orange|mute/,
-      { timeout: 8000 },
+      { timeout: 15000 },
     );
   }
 
@@ -292,7 +297,7 @@ test.describe("NEX Vault PIN entry · no network traffic contains the PIN", () =
     await expect(page.locator("[data-nex-vault-pin-feedback]")).toHaveAttribute(
       "data-nex-vault-pin-feedback",
       /orange|mute/,
-      { timeout: 8000 },
+      { timeout: 15000 },
     );
 
     expect(

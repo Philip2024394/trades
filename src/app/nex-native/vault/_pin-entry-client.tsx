@@ -23,20 +23,7 @@ import {
   PIN_LENGTH,
   type PinEntryState,
 } from "./_pin-entry-reducer";
-
-const NEX = {
-  bg: "#020914",
-  panel: "#03101D",
-  cellBg: "#04101F",
-  textPrimary: "#F2F5F8",
-  textSecondary: "#7D9BC0",
-  cyan: "#00AFFF",
-  cyanSoft: "rgba(0, 175, 255, 0.35)",
-  cyanFaint: "rgba(0, 175, 255, 0.18)",
-  cyanDeep: "rgba(0, 175, 255, 0.12)",
-  orange: "#FF7200",
-  orangeSoft: "rgba(255, 114, 0, 0.14)",
-};
+import { SKIN_NEX, type VaultDoorwaySkin } from "./_doorway-skin";
 
 type MockReason = "incorrect" | "unavailable";
 
@@ -54,9 +41,13 @@ async function mockVerifyPin(
 
 export interface PinEntryClientProps {
   mockReason?: MockReason;
+  skin?: VaultDoorwaySkin;
 }
 
-export function PinEntryClient({ mockReason = "incorrect" }: PinEntryClientProps) {
+export function PinEntryClient({
+  mockReason = "incorrect",
+  skin = SKIN_NEX,
+}: PinEntryClientProps) {
   const [state, dispatch] = useReducer(reducePinState, undefined, initialPinState);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -113,8 +104,8 @@ export function PinEntryClient({ mockReason = "incorrect" }: PinEntryClientProps
       <style>{`
         [data-nex-vault-pin-root] * { box-sizing: border-box; }
         [data-nex-vault-pin-root] [data-vault-cells]:focus-within [data-vault-cell][data-vault-cell-active="true"] {
-          border-color: ${NEX.cyan};
-          box-shadow: 0 0 0 2px ${NEX.cyanDeep};
+          border-color: ${skin.text.brandChip};
+          box-shadow: 0 0 0 2px ${skin.cells.activeGlow};
         }
       `}</style>
 
@@ -147,11 +138,11 @@ export function PinEntryClient({ mockReason = "incorrect" }: PinEntryClientProps
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  background: NEX.cellBg,
-                  border: `1px solid ${isUnavailable ? NEX.cyanFaint : NEX.cyanSoft}`,
+                  background: skin.cells.bg,
+                  border: `1px solid ${isUnavailable ? skin.cells.borderMuted : skin.cells.border}`,
                   borderRadius: 10,
                   fontSize: 22,
-                  color: NEX.textPrimary,
+                  color: skin.cells.filled,
                   lineHeight: 1,
                 }}
               >
@@ -203,9 +194,9 @@ export function PinEntryClient({ mockReason = "incorrect" }: PinEntryClientProps
             letterSpacing: "0.01em",
             color:
               feedback.tone === "orange"
-                ? NEX.orange
+                ? skin.feedback.orange
                 : feedback.tone === "mute"
-                  ? NEX.textSecondary
+                  ? skin.feedback.muted
                   : "transparent",
           }}
         >

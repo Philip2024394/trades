@@ -15,6 +15,7 @@ import { redirect } from "next/navigation";
 import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
 import * as accountService from "@/lib/nex-native/account-service";
 import * as friendService from "@/lib/nex-native/friend-service";
+import * as vaultEntryService from "@/lib/nex-native/vault-entry-service";
 import {
   acceptFriendInviteAction,
   blockAccountAction,
@@ -26,6 +27,7 @@ import {
 } from "../_actions";
 import { SubmitButton } from "../_submit-button";
 import { NexNativeShell } from "../_shell";
+import { MoveToVaultAffordance } from "../vault/_move-to-vault-affordance";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -57,10 +59,14 @@ export default async function Page({ searchParams }: PageProps) {
   const themeId = session.account.chat_theme ?? undefined;
 
   const me = session.account.id;
+  // Vault-filtered: friends the viewer has moved to Vault are hidden from
+  // the main Contacts / Friends surface. See doctrine/vault-build-plan-
+  // 2026-10-03.md D1. Pending invites are NOT filtered — the vault flag
+  // applies to accepted friendships only.
   const [incoming, outgoing, friendIds] = await Promise.all([
     friendService.listPendingIncoming(me),
     friendService.listPendingOutgoing(me),
-    friendService.listFriends(me),
+    vaultEntryService.listMainContactsFriendIdsForAccount(me),
   ]);
 
   const otherFromEdge = (r: { a_account_id: string; b_account_id: string }) =>
@@ -226,6 +232,21 @@ export default async function Page({ searchParams }: PageProps) {
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
+                    <MoveToVaultAffordance
+                      mode={{
+                        kind: "move-friend",
+                        friendId: h.id,
+                        friendName: h.display_name,
+                      }}
+                      showChip={false}
+                    >
+                      <button
+                        type="button"
+                        className="inline-flex min-h-[36px] items-center rounded border border-neutral-300 bg-white px-3 text-xs font-medium text-neutral-800 hover:bg-neutral-100"
+                      >
+                        Move to Vault
+                      </button>
+                    </MoveToVaultAffordance>
                     <form action={removeFriendAction}>
                       <input type="hidden" name="other_account_id" value={h.id} />
                       <SubmitButton label="Remove" pendingLabel="Removing…" variant="secondary" />

@@ -1,18 +1,35 @@
 // src/app/nex-native/vault/page.tsx
 //
-// NEX Vault · entry surface · UI foundation only.
+// NEX Vault · entry doorway (chat_theme-aware).
 //
-// This route exists to render the user-facing Vault PIN entry screen in
-// isolation. There is no Vault cryptography wired up here, no server
-// action, no database, no HSM, no key derivation, no auth boundary beyond
-// a mock. Phase A has not started.
+// Stage 2 · theme inheritance (founder-sealed 2026-10-03 D1-D4 build plan).
+// Resolves the viewer's session + chat_theme and renders the matching
+// DoorwayShell skin. Any chat_theme that doesn't map to a sealed Vault
+// doorway skin falls back to SKIN_NEX. Unauthenticated visitors are
+// bounced to sign-in — the mock PIN screen must not be reachable
+// without a NEX session.
+//
+// There is NO Vault cryptography wired up here, no server action, no
+// HSM, no key derivation, no auth boundary beyond the user's existing
+// NEX session. Phase A has not started.
 //
 // Governed by:
 //   · vault-research.md §10.0 — user-facing simplicity principle
-//     ("Enter your 6-digit Vault PIN" is the entire user-facing surface)
-//   · vault-security-architecture-research.md §14 — Phase A not authorised.
+//   · vault-research.md §10.0.1 — each theme has its own doorway page
+//   · vault-security-architecture-research.md §14 — Phase A not authorised
+//   · build-plan 2026-10-03 Stage 2 — theme inheritance from chat_theme
+//
+// Themed doorway routes stay reachable directly (useful for previews
+// and screenshots per §10.0.1):
+//   · /nex-native/vault/joker
+//   · /nex-native/vault/haunted-hotel
+//   · /nex-native/vault/pink-dream
 
-import { PinEntryClient } from "./_pin-entry-client";
+import { redirect } from "next/navigation";
+import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
+import { DoorwayShell } from "./_doorway-shell";
+import { SKIN_BY_SLUG, SKIN_NEX, type VaultDoorwaySkin } from "./_doorway-skin";
+import { mapChatThemeToDoorwaySlug } from "./home/_resolve-theme";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -21,87 +38,17 @@ interface PageProps {
   searchParams: Promise<{ mock?: string }>;
 }
 
-const NEX = {
-  bg: "#020914",
-  textPrimary: "#F2F5F8",
-  textSecondary: "#7D9BC0",
-  cyan: "#00AFFF",
-};
-
 export default async function VaultPinEntryPage({ searchParams }: PageProps) {
+  const session = await resolveNexAppSessionFromContext();
+  if (!session) {
+    redirect("/nex-native/sign-in?next=/nex-native/vault");
+  }
+
   const params = await searchParams;
   const mockReason = params.mock === "unavailable" ? "unavailable" : "incorrect";
+  const chatTheme = (session.account.chat_theme as string | null) ?? null;
+  const doorwaySlug = mapChatThemeToDoorwaySlug(chatTheme);
+  const skin: VaultDoorwaySkin = SKIN_BY_SLUG[doorwaySlug] ?? SKIN_NEX;
 
-  return (
-    <>
-      <style>{`html, body { background: ${NEX.bg} !important; }`}</style>
-      <main
-        id="main"
-        data-nex-vault-root
-        style={{
-          minHeight: "100dvh",
-          background: NEX.bg,
-          color: NEX.textPrimary,
-          fontFamily:
-            "Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
-          padding: "16px 20px 32px",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <div
-          aria-hidden
-          style={{
-            position: "fixed",
-            inset: 0,
-            background:
-              "radial-gradient(60% 40% at 50% 10%, rgba(0,175,255,0.08), transparent 70%)",
-            pointerEvents: "none",
-          }}
-        />
-
-        <div
-          style={{
-            position: "relative",
-            width: "100%",
-            maxWidth: 360,
-            textAlign: "center",
-          }}
-        >
-          <p
-            data-nex-vault-brand
-            style={{
-              margin: 0,
-              fontSize: 11,
-              letterSpacing: "0.22em",
-              textTransform: "uppercase",
-              color: NEX.cyan,
-            }}
-          >
-            NEX Vault
-          </p>
-
-          <h1
-            data-nex-vault-headline
-            style={{
-              margin: "18px 0 0",
-              fontSize: 22,
-              fontWeight: 500,
-              letterSpacing: "0.005em",
-              lineHeight: 1.3,
-              color: NEX.textPrimary,
-            }}
-          >
-            Enter your 6-digit Vault PIN
-          </h1>
-
-          <div style={{ marginTop: 36 }}>
-            <PinEntryClient mockReason={mockReason} />
-          </div>
-        </div>
-      </main>
-    </>
-  );
+  return <DoorwayShell skin={skin} mockReason={mockReason} />;
 }
