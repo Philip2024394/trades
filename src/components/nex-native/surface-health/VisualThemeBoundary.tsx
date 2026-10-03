@@ -41,6 +41,16 @@ interface Props {
    *  disintegrates. */
   fallbackMessages: SafeFallbackMessage[];
   viewerAccountId: string;
+  /** §12 Item 3 integration · render the Safe Fallback immediately
+   *  without waiting for a child crash. Used when the theme is kill-
+   *  switched (nex_chat_theme.is_active = false) · the server-side
+   *  resolver sets this before any client render happens. When true,
+   *  the boundary emits an informational diagnostic (lifecycle starts
+   *  at fallback-active · recovery_action = fallback). */
+  forceFallback?: boolean;
+  /** Short admin reason surfaced in the fallback status label when
+   *  forceFallback is true (e.g. "theme temporarily disabled"). */
+  forceFallbackLabel?: string;
 }
 
 interface State {
@@ -70,11 +80,16 @@ export class VisualThemeBoundary extends Component<Props, State> {
   }
 
   render(): ReactNode {
-    if (this.state.errored) {
+    if (this.state.errored || this.props.forceFallback) {
       return (
         <SafeFallbackRenderer
           messages={this.props.fallbackMessages}
           viewerAccountId={this.props.viewerAccountId}
+          statusLabel={
+            this.props.forceFallback
+              ? (this.props.forceFallbackLabel ?? "Theme temporarily unavailable")
+              : undefined
+          }
         />
       );
     }

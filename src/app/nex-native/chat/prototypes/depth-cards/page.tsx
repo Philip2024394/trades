@@ -24,6 +24,7 @@ import { VisualThemeBoundary } from "@/components/nex-native/surface-health/Visu
 import { OptionalVisualModuleBoundary } from "@/components/nex-native/surface-health/OptionalVisualModuleBoundary";
 import { TierOneCanary } from "./_tier-one-canary";
 import { resolveFaultInjection } from "./_test-bridge";
+import { isThemeKillSwitchedSafe } from "@/lib/nex-native/theme-kill-switch";
 
 const SURFACE_ID = "depth-cards";
 const PILOT_THEME_ID = "depth-cards-hotel";
@@ -79,6 +80,19 @@ export default async function DepthCardsLivePage(props: DepthCardsPageProps) {
   const avatarUrl = profile?.avatar_url ?? null;
   const profession = profile?.profession ?? null;
   const displayName = peer.display_name;
+
+  // §12 Item 3 integration · resolve the viewer's effective chat theme
+  // (session.account.chat_theme or the sealed default) and check the
+  // kill-switch state. When kill-switched, the Tier 2 VisualThemeBoundary
+  // renders the SafeFallbackRenderer immediately — no crash required.
+  //
+  // Finding #2 fix · use the fail-safe wrapper so a kill-switch service
+  // outage degrades to "not kill-switched" rather than crashing the
+  // pilot render. The wrapper logs a normalized diagnostic for HQ.
+  const effectiveThemeId =
+    (session.account as { chat_theme?: string | null }).chat_theme ??
+    "pink-dream";
+  const themeKillSwitched = await isThemeKillSwitchedSafe(effectiveThemeId);
 
   // Hand off the full history to the client deck. The deck owns the
   // scroll-peels-the-deck gesture + windowing to 6 visible cards at a
@@ -306,6 +320,12 @@ export default async function DepthCardsLivePage(props: DepthCardsPageProps) {
               sent_at: m.sent_at,
             }))}
             viewerAccountId={session.account.id}
+            forceFallback={themeKillSwitched}
+            forceFallbackLabel={
+              themeKillSwitched
+                ? `Theme temporarily unavailable · ${effectiveThemeId}`
+                : undefined
+            }
           >
             <DepthDeck
               messages={deckMessages}
