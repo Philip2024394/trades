@@ -15,8 +15,8 @@ import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
 import * as accountService from "@/lib/nex-native/account-service";
 import * as peerConversationService from "@/lib/nex-native/peer-conversation-service";
 import * as peerMessageService from "@/lib/nex-native/peer-message-service";
-import { sendPeerMessageAction, sendPeerStickerAction } from "../../../_actions";
-import { listThemeStickers } from "@/lib/nex-native/theme-sticker-service";
+import { sendPeerMessageAction } from "../../../_actions";
+import { listThemeEmojis } from "@/lib/nex-native/theme-emoji-service";
 import { PeerComposer } from "../../peer/[accountId]/_composer";
 import { DepthDeck, type DeckMessage } from "@/components/nex-native/HauntedHotelDeck";
 import { HauntedSmokeClient } from "@/components/nex-native/HauntedHotelSmoke";
@@ -81,23 +81,19 @@ export default async function DepthCardsLivePage(props: DepthCardsPageProps) {
   ]);
 
   const bind = sendPeerMessageAction.bind(null, peer.id);
-  // Bridge ThemeSticker · bind the peer id so the sticker-send action
-  // knows which conversation to post into. Server-side validation
-  // resolves the sticker from the peer's chat_theme ('haunted-hotel').
-  const bindSticker = sendPeerStickerAction.bind(null, peer.id);
 
-  // Load the Haunted Hotel sticker set so the composer picker exposes
-  // our 27 uploaded stickers (see nex_theme_sticker rows at theme_id
-  // = 'haunted-hotel'). Fails soft to an empty list — picker then
-  // hides the Stickers tab rather than crashing.
-  const hauntedHotelStickers = await listThemeStickers("haunted-hotel")
+  // Load the Haunted Hotel emoji set so the composer picker exposes
+  // the 27 labelled bellboy mascots (see nex_theme_emoji rows at
+  // theme_id = 'haunted-hotel'). The Mascots tab renders each tile
+  // with its label underneath (same contract Joker uses). Fails soft
+  // to an empty list — picker then hides the Mascots tab rather than
+  // crashing.
+  const hauntedHotelEmojis = await listThemeEmojis("haunted-hotel")
     .then((rows) =>
       rows.map((r) => ({
         slug: r.slug,
         imageUrl: r.image_url,
         label: r.label,
-        stickerType: r.sticker_type,
-        aspectRatio: r.aspect_ratio,
       })),
     )
     .catch(() => []);
@@ -439,8 +435,7 @@ export default async function DepthCardsLivePage(props: DepthCardsPageProps) {
               placeholder={`Message ${displayName}…`}
               themeAccent="#d8a856"
               composerBg="rgba(10, 6, 4, 0.72)"
-              themeStickers={hauntedHotelStickers}
-              sendStickerAction={bindSticker}
+              themeEmojis={hauntedHotelEmojis}
             />
           </div>
         </ChatCoreBoundary>
