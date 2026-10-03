@@ -288,10 +288,12 @@ export default async function DepthCardsLivePage(props: DepthCardsPageProps) {
             gap: 12,
           }}
         >
-          {/* User-info glass card · same amber-glass recipe as the
-              owner's message cards and the "Haunted Hotel · Animations"
-              AnimationCard · one owner-identity palette shared across
-              every element the owner touches. */}
+          {/* Peer-info glass card · uses the PEER card glass recipe
+              (cool misted glass) from HauntedHotelDeck, because this
+              pill is the peer's identity shown in the chat header,
+              and the owner's amber identity already lives on the
+              owner's message cards + the Animations panel. One peer
+              shade across the header card and the peer's deck cards. */}
           <div
             data-nex-haunted-user-card
             style={{
@@ -303,12 +305,12 @@ export default async function DepthCardsLivePage(props: DepthCardsPageProps) {
               padding: "8px 14px 8px 8px",
               borderRadius: 999,
               background:
-                "linear-gradient(180deg, rgba(216,168,86,0.14) 0%, rgba(216,168,86,0.06) 100%)",
-              border: "1px solid rgba(216,168,86,0.5)",
+                "linear-gradient(180deg, rgba(220,215,230,0.14) 0%, rgba(220,215,230,0.06) 100%)",
+              border: "1px solid rgba(220,215,230,0.45)",
               backdropFilter: "blur(10px) saturate(130%)",
               WebkitBackdropFilter: "blur(10px) saturate(130%)",
               boxShadow:
-                "0 10px 24px rgba(0,0,0,0.42), inset 0 1px 0 rgba(255,220,160,0.18)",
+                "0 10px 24px rgba(0,0,0,0.42), inset 0 1px 0 rgba(255,255,255,0.14)",
             }}
           >
           <div
@@ -375,14 +377,14 @@ export default async function DepthCardsLivePage(props: DepthCardsPageProps) {
           </div>
 
           <div style={{ minWidth: 0, flex: 1 }}>
-            <div style={{ fontSize: 15, fontWeight: 600, color: "#f6e8d2" }}>
+            <div style={{ fontSize: 15, fontWeight: 600, color: "#e8ebf0" }}>
               {displayName}
             </div>
             <div
               style={{
                 marginTop: 2,
                 fontSize: 12,
-                color: "rgba(246, 232, 210, 0.65)",
+                color: "rgba(232, 235, 240, 0.68)",
                 whiteSpace: "nowrap",
                 overflow: "hidden",
                 textOverflow: "ellipsis",
