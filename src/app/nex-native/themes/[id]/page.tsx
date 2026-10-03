@@ -25,6 +25,7 @@ import { listThemeEmojis } from "@/lib/nex-native/theme-emoji-service";
 import { listThemeStickers } from "@/lib/nex-native/theme-sticker-service";
 import ThemeViewerClient from "./_viewer";
 import { parseJokerMotion } from "./_joker-motion-data";
+import { HauntedHotelChrome } from "@/components/nex-native/HauntedHotelChrome";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -34,7 +35,11 @@ export default async function ThemeViewerPage({
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams?: Promise<{ mode?: string; motion?: string }>;
+  searchParams?: Promise<{
+    mode?: string;
+    motion?: string;
+    shop_setup?: string;
+  }>;
 }) {
   const { id } = await params;
   const sp = (await searchParams) ?? {};
@@ -63,6 +68,11 @@ export default async function ThemeViewerPage({
   // the slider header reads "Menu". Same data structure otherwise.
   const isVenueMode = sp.mode === "menu";
   const motionVariant = parseJokerMotion(sp.motion);
+  // Sealed 2026-10-01 · default-ON in the theme preview so the
+  // founder sees the 3-button chooser (Sell Products / Sell Food /
+  // Affiliate) the moment they tap the Shop icon. Explicit opt-out
+  // via `?shop_setup=0` falls through to the mock products grid.
+  const showShopSetupChooser = sp.shop_setup !== "0";
 
   // Bridge ThemeEmoji-B · load this theme's emoji set (if any) so
   // the composer emoji picker paints the theme's tiles instead of
@@ -87,20 +97,29 @@ export default async function ThemeViewerPage({
   }));
 
   return (
-    <ThemeViewerClient
-      themeId={theme.id}
-      themeName={theme.name}
-      accent={theme.accent_hex}
-      bubbleRim={theme.bubble_rim_hex ?? theme.accent_hex}
-      composerRim={theme.composer_rim_hex ?? theme.accent_hex}
-      wallpaperUrl={theme.hero_image_url}
-      wallpaperConfig={theme.wallpaper_config}
-      layoutStyle={theme.layout_style}
-      sentAts={sentAts}
-      isVenueMode={isVenueMode}
-      themeEmojis={themeEmojis}
-      themeStickers={themeStickers}
-      motionVariant={motionVariant}
-    />
+    <>
+      <ThemeViewerClient
+        themeId={theme.id}
+        themeName={theme.name}
+        accent={theme.accent_hex}
+        bubbleRim={theme.bubble_rim_hex ?? theme.accent_hex}
+        composerRim={theme.composer_rim_hex ?? theme.accent_hex}
+        wallpaperUrl={theme.hero_image_url}
+        wallpaperConfig={theme.wallpaper_config}
+        layoutStyle={theme.layout_style}
+        sentAts={sentAts}
+        isVenueMode={isVenueMode}
+        showShopSetupChooser={showShopSetupChooser}
+        themeEmojis={themeEmojis}
+        themeStickers={themeStickers}
+        motionVariant={motionVariant}
+      />
+      {/* Haunted Hotel chrome · atmosphere + smoke + FX controller.
+          Mounted as a sibling of the viewer so the server-rendered
+          Atmosphere layer can flow in from a server parent (viewer
+          itself is a client component). Chrome's 10 FX toggles ship
+          OFF by default · discoverable via the floating 3-dots. */}
+      {theme.id === "haunted-hotel" && <HauntedHotelChrome />}
+    </>
   );
 }

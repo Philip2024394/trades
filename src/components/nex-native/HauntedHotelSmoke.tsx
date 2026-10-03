@@ -1,11 +1,15 @@
 "use client";
 
-// src/app/nex-native/chat/prototypes/depth-cards/_haunted-smoke-client.tsx
+// src/components/nex-native/HauntedHotelSmoke.tsx
 //
-// Client-component extraction of the Hollywood haunted-smoke overlay
-// previously inline in page.tsx. Lifting it to the client tree so the
-// Tier 3 OptionalVisualModuleBoundary can catch render-time failures
-// originating here.
+// Hollywood haunted-smoke overlay · 11 particles rising + drifting on
+// a 7-10s loop. Blends with the surface via mix-blend-mode: screen.
+//
+// Originally lived at
+// src/app/nex-native/chat/prototypes/depth-cards/_haunted-smoke-client.tsx
+// and was moved up to the shared components tree 2026-10-03 so it can be
+// reused by HauntedHotelChrome in both the theme-preview viewer and the
+// live peer-chat surface when the active chat_theme is 'haunted-hotel'.
 //
 // A `__faultInject` prop allows the fault-injection tests (and only
 // those tests) to force a render-time throw. The prop is UI-only and

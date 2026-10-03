@@ -25,6 +25,7 @@ import { listThemeEmojis } from "@/lib/nex-native/theme-emoji-service";
 import { listThemeStickers } from "@/lib/nex-native/theme-sticker-service";
 import { getThemeAssets } from "@/lib/nex-native/theme-assets";
 import { JokerChatOverlays } from "@/app/nex-native/themes/[id]/_joker-chat-overlays";
+import { HauntedHotelChrome } from "@/components/nex-native/HauntedHotelChrome";
 import {
   sendPeerMessageAction,
   sendPeerStickerAction,
@@ -667,6 +668,13 @@ export default async function PeerChatPage({
           viewerAccountId={session.account.id}
         />
       )}
+      {/* Haunted Hotel theme chrome · 2026-10-03 · mounted only when
+          the peer's chat_theme is 'haunted-hotel'. Atmosphere (lights
+          + sparks + 60s blow-out one-shot) + smoke overlay + the FX
+          controller's floating 3-dots trigger. Mirrors the Joker
+          mount pattern · theme-ownership doctrine: the chrome tracks
+          the peer's theme, not the viewer's. */}
+      {peerThemeRow?.id === "haunted-hotel" && <HauntedHotelChrome />}
       {/* Bridge 68 · voice-call launcher · disabled for NEX1 support so
           ops isn't paged through WebRTC. Own signalling channel keyed on
           conversation.id. */}

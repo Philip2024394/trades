@@ -18,7 +18,7 @@ import * as peerMessageService from "@/lib/nex-native/peer-message-service";
 import { sendPeerMessageAction } from "../../../_actions";
 import { PeerComposer } from "../../peer/[accountId]/_composer";
 import { DepthDeck, type DeckMessage } from "./_deck-client";
-import { HauntedSmokeClient } from "./_haunted-smoke-client";
+import { HauntedSmokeClient } from "@/components/nex-native/HauntedHotelSmoke";
 import { ChatCoreBoundary } from "@/components/nex-native/surface-health/ChatCoreBoundary";
 import { VisualThemeBoundary } from "@/components/nex-native/surface-health/VisualThemeBoundary";
 import { OptionalVisualModuleBoundary } from "@/components/nex-native/surface-health/OptionalVisualModuleBoundary";
@@ -190,6 +190,12 @@ export default async function DepthCardsLivePage(props: DepthCardsPageProps) {
           from { opacity: 0; transform: translateY(-6px); }
           to   { opacity: 1; transform: translateY(0); }
         }
+        /* Online-ping · green ring that expands and fades, haunted-hotel header */
+        @keyframes nex-online-ping {
+          0%   { transform: scale(1);    opacity: 0.85; }
+          80%  { transform: scale(1.5);  opacity: 0; }
+          100% { transform: scale(1.5);  opacity: 0; }
+        }
         /* Spectral Smoke · owner-bubble smoke tendrils rising upward
          * (denser · taller rise · founder-direction "more ghost white
          *  shadow coming up from chat bubble") */
@@ -283,31 +289,66 @@ export default async function DepthCardsLivePage(props: DepthCardsPageProps) {
           }}
         >
           <div
-            aria-hidden
             style={{
+              position: "relative",
               flexShrink: 0,
               width: 44,
               height: 44,
-              borderRadius: "50%",
-              border: `1.5px solid ${NEX.cyan}`,
-              boxShadow: "0 0 12px rgba(0,159,239,0.28)",
-              overflow: "hidden",
-              background: NEX.cyanDeep,
             }}
           >
-            {avatarUrl ? (
-              /* eslint-disable-next-line @next/next/no-img-element */
-              <img
-                src={avatarUrl}
-                alt=""
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  display: "block",
-                }}
-              />
-            ) : null}
+            {/* Online status · green rim + outward ping */}
+            <span
+              aria-hidden
+              style={{
+                position: "absolute",
+                inset: -2,
+                borderRadius: "50%",
+                border: "2px solid #27e07d",
+                boxShadow:
+                  "0 0 10px rgba(39,224,125,0.55), inset 0 0 6px rgba(39,224,125,0.3)",
+                pointerEvents: "none",
+              }}
+            />
+            <span
+              aria-hidden
+              style={{
+                position: "absolute",
+                inset: -2,
+                borderRadius: "50%",
+                border: "2px solid #27e07d",
+                animationName: "nex-online-ping",
+                animationDuration: "1.9s",
+                animationTimingFunction: "ease-out",
+                animationIterationCount: "infinite",
+                pointerEvents: "none",
+              }}
+            />
+            <div
+              aria-label={`${displayName} · online`}
+              role="img"
+              style={{
+                position: "relative",
+                width: 44,
+                height: 44,
+                borderRadius: "50%",
+                overflow: "hidden",
+                background: NEX.cyanDeep,
+              }}
+            >
+              {avatarUrl ? (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img
+                  src={avatarUrl}
+                  alt=""
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    display: "block",
+                  }}
+                />
+              ) : null}
+            </div>
           </div>
 
           <div style={{ minWidth: 0, flex: 1 }}>
