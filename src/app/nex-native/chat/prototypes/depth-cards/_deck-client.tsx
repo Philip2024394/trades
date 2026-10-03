@@ -42,14 +42,23 @@ function formatTime(iso: string): string {
 interface DepthDeckProps {
   messages: DeckMessage[];
   viewerAccountId: string;
+  peerAccountId: string;
   displayName: string;
+  /** Test-only · forces a render-time throw to exercise the Tier 2
+   *  VisualThemeBoundary. Not set in production call sites. */
+  __faultInject?: boolean;
 }
 
 export function DepthDeck({
   messages,
   viewerAccountId,
+  peerAccountId,
   displayName,
+  __faultInject,
 }: DepthDeckProps) {
+  if (__faultInject) {
+    throw new Error("fault-injection: depth-deck theme");
+  }
   const total = messages.length;
   const maxOffset = Math.max(0, total - 1);
 
@@ -125,11 +134,74 @@ export function DepthDeck({
   const atLatest = offset === 0;
   const atOldest = offset >= maxOffset;
 
+  // Replying-to context tracks scroll · shows the latest peer message
+  // at or before the current front card (deck's newest visible).
+  const replyingTo = React.useMemo(() => {
+    for (let i = end - 1; i >= 0; i--) {
+      const m = messages[i];
+      if (m && m.sender_account_id === peerAccountId) return m;
+    }
+    return null;
+  }, [messages, end, peerAccountId]);
+
   if (total === 0) {
     return <EmptyState displayName={displayName} />;
   }
 
   return (
+    <>
+    {replyingTo ? (
+      <div
+        style={{
+          position: "relative",
+          zIndex: 4,
+          padding: "0 20px 10px",
+          display: "flex",
+          justifyContent: "flex-start",
+        }}
+      >
+        <div
+          key={replyingTo.id}
+          style={{
+            maxWidth: "72%",
+            padding: "10px 14px 9px",
+            borderRadius: 16,
+            background:
+              "linear-gradient(145deg, #102B46 0%, #0A1D31 100%)",
+            border: "1px solid rgba(105,170,220,0.14)",
+            color: NEX.text,
+            fontSize: 13,
+            lineHeight: 1.4,
+            boxShadow: "0 10px 24px rgba(0,0,0,0.42)",
+            animation:
+              "nex-replying-swap 220ms cubic-bezier(.2,.7,.2,1) both",
+          }}
+        >
+          <div
+            style={{
+              fontSize: 9,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+              color: NEX.textDim,
+              marginBottom: 4,
+            }}
+          >
+            Replying to {displayName}
+          </div>
+          <div
+            style={{
+              display: "-webkit-box",
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: "vertical",
+              overflow: "hidden",
+              wordBreak: "break-word",
+            }}
+          >
+            {replyingTo.body}
+          </div>
+        </div>
+      </div>
+    ) : null}
     <section
       data-nex-deck
       tabIndex={0}
@@ -151,7 +223,7 @@ export function DepthDeck({
       <div
         style={{
           position: "absolute",
-          inset: 0,
+          inset: "0 16px 0 16px",
           transformStyle: "preserve-3d",
         }}
       >
@@ -159,7 +231,7 @@ export function DepthDeck({
           const depth = deck.length - 1 - i;
           const mine = m.sender_account_id === viewerAccountId;
           const scale = 1 - depth * 0.05;
-          const translateY = depth * -30;
+          const translateY = depth * -18;
           const translateZ = -depth * 32;
           const opacity = Math.max(0, 1 - depth * 0.16);
           const isTop = depth === 0;
@@ -171,7 +243,7 @@ export function DepthDeck({
               data-nex-deck-top={isTop ? "true" : undefined}
               style={{
                 position: "absolute",
-                bottom: 12 + depth * 8,
+                bottom: 32 + depth * 8,
                 left: mine ? "16%" : 0,
                 right: mine ? 0 : "16%",
                 padding: "16px 20px 14px",
@@ -298,6 +370,7 @@ export function DepthDeck({
         </button>
       )}
     </section>
+    </>
   );
 }
 

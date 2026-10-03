@@ -18,6 +18,15 @@ import * as peerMessageService from "@/lib/nex-native/peer-message-service";
 import { sendPeerMessageAction } from "../../../_actions";
 import { PeerComposer } from "../../peer/[accountId]/_composer";
 import { DepthDeck, type DeckMessage } from "./_deck-client";
+import { HauntedSmokeClient } from "./_haunted-smoke-client";
+import { ChatCoreBoundary } from "@/components/nex-native/surface-health/ChatCoreBoundary";
+import { VisualThemeBoundary } from "@/components/nex-native/surface-health/VisualThemeBoundary";
+import { OptionalVisualModuleBoundary } from "@/components/nex-native/surface-health/OptionalVisualModuleBoundary";
+import { TierOneCanary } from "./_tier-one-canary";
+import { resolveFaultInjection } from "./_test-bridge";
+
+const SURFACE_ID = "depth-cards";
+const PILOT_THEME_ID = "depth-cards-hotel";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -33,7 +42,13 @@ const NEX = {
   textDim: "#8BA9D1",
 };
 
-export default async function DepthCardsLivePage() {
+interface DepthCardsPageProps {
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+}
+
+export default async function DepthCardsLivePage(props: DepthCardsPageProps) {
+  const resolvedSearchParams = props.searchParams ? await props.searchParams : undefined;
+  const faults = resolveFaultInjection(resolvedSearchParams);
   const session = await resolveNexAppSessionFromContext();
   if (!session) redirect("/nex-native/sign-in");
 
@@ -76,13 +91,6 @@ export default async function DepthCardsLivePage() {
     read_at: m.read_at,
   }));
 
-  // Last message from the peer (not me) · shown as a persistent
-  // "replying to" bubble under the header so the viewer always has
-  // context for what they're responding to.
-  const lastPeerMessage =
-    [...messages].reverse().find((m) => m.sender_account_id === peer.id) ??
-    null;
-
   return (
     <>
       <style>{`
@@ -93,6 +101,20 @@ export default async function DepthCardsLivePage() {
         }
         [data-nex-deck-top] {
           animation: nex-card-in 320ms cubic-bezier(.2,.7,.2,1) both;
+        }
+        @keyframes nex-replying-swap {
+          from { opacity: 0; transform: translateY(-6px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes nex-smoke-rise {
+          0%   { transform: translateY(20px) translateX(0) scale(0.55); opacity: 0; filter: blur(18px); }
+          12%  { opacity: 0.42; }
+          55%  { opacity: 0.26; }
+          100% { transform: translateY(-320px) translateX(14px) scale(1.75); opacity: 0; filter: blur(34px); }
+        }
+        @keyframes nex-smoke-drift {
+          0%, 100% { transform: translateX(-6px); }
+          50%      { transform: translateX(6px); }
         }
       `}</style>
       <main
@@ -260,79 +282,69 @@ export default async function DepthCardsLivePage() {
           </Link>
         </header>
 
-        {/* Replying-to context · last message from the peer */}
-        {lastPeerMessage ? (
+        {/* Tier 1 · Chat Core Boundary wraps everything from here down.
+            A crash reaching Tier 1 shows a minimal shell and emits a
+            surface-health event. The composer remains outside tiers
+            below Tier 1 so an optional-chrome failure cannot block
+            message send. */}
+        <ChatCoreBoundary surface={SURFACE_ID} visual_theme={PILOT_THEME_ID}>
+          {/* Dev/test-only Tier 1 canary · throws when the bridge is
+              on and ?__inject=core is set · dead in production. */}
+          <TierOneCanary __faultInject={faults.core} />
+
+          {/* Tier 2 · Visual Theme Boundary wraps the themed deck only.
+              Fallback is the dependency-light SafeFallbackRenderer with
+              the raw messages so the conversation survives even if the
+              theme bundle disintegrates. */}
+          <VisualThemeBoundary
+            surface={SURFACE_ID}
+            visual_theme={PILOT_THEME_ID}
+            fallbackMessages={deckMessages.map((m) => ({
+              id: m.id,
+              body: m.body,
+              sender_account_id: m.sender_account_id,
+              sent_at: m.sent_at,
+            }))}
+            viewerAccountId={session.account.id}
+          >
+            <DepthDeck
+              messages={deckMessages}
+              viewerAccountId={session.account.id}
+              peerAccountId={peer.id}
+              displayName={displayName}
+              __faultInject={faults.theme}
+            />
+          </VisualThemeBoundary>
+
+          {/* Tier 3 · Optional Visual Module Boundary wraps the smoke
+              overlay. If HauntedSmoke crashes, this tier hides it and
+              emits a diagnostic event — the deck and composer continue. */}
+          <OptionalVisualModuleBoundary
+            surface={SURFACE_ID}
+            visual_theme={PILOT_THEME_ID}
+            component_module="haunted-smoke"
+          >
+            <HauntedSmokeClient __faultInject={faults.smoke} />
+          </OptionalVisualModuleBoundary>
+
+          {/* Composer · transparent wrapper · hotel bg shows through.
+              Deliberately NOT inside Tier 2 or Tier 3 so an optional
+              chrome failure cannot block message send. */}
           <div
             style={{
               position: "relative",
-              zIndex: 4,
-              padding: "0 20px 10px",
-              display: "flex",
-              justifyContent: "flex-start",
+              zIndex: 5,
+              padding:
+                "12px 16px calc(env(safe-area-inset-bottom, 0) + 14px)",
+              background: "transparent",
             }}
           >
-            <div
-              style={{
-                maxWidth: "72%",
-                padding: "10px 14px 9px",
-                borderRadius: 16,
-                background:
-                  "linear-gradient(145deg, #102B46 0%, #0A1D31 100%)",
-                border: "1px solid rgba(105,170,220,0.14)",
-                color: NEX.text,
-                fontSize: 13,
-                lineHeight: 1.4,
-                boxShadow: "0 10px 24px rgba(0,0,0,0.42)",
-              }}
-            >
-              <div
-                style={{
-                  fontSize: 9,
-                  letterSpacing: "0.14em",
-                  textTransform: "uppercase",
-                  color: NEX.textDim,
-                  marginBottom: 4,
-                }}
-              >
-                Replying to {displayName}
-              </div>
-              <div
-                style={{
-                  display: "-webkit-box",
-                  WebkitLineClamp: 2,
-                  WebkitBoxOrient: "vertical",
-                  overflow: "hidden",
-                  wordBreak: "break-word",
-                }}
-              >
-                {lastPeerMessage.body}
-              </div>
-            </div>
+            <PeerComposer
+              action={bind}
+              placeholder={`Message ${displayName}…`}
+            />
           </div>
-        ) : null}
-
-        {/* Deck · 3D stack in perspective · scroll peels the deck */}
-        <DepthDeck
-          messages={deckMessages}
-          viewerAccountId={session.account.id}
-          displayName={displayName}
-        />
-
-        {/* Composer · transparent wrapper · hotel bg shows through */}
-        <div
-          style={{
-            position: "relative",
-            zIndex: 5,
-            padding:
-              "12px 16px calc(env(safe-area-inset-bottom, 0) + 14px)",
-            background: "transparent",
-          }}
-        >
-          <PeerComposer
-            action={bind}
-            placeholder={`Message ${displayName}…`}
-          />
-        </div>
+        </ChatCoreBoundary>
       </main>
     </>
   );
