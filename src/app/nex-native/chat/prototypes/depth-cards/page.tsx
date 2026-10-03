@@ -17,7 +17,7 @@ import * as peerConversationService from "@/lib/nex-native/peer-conversation-ser
 import * as peerMessageService from "@/lib/nex-native/peer-message-service";
 import { sendPeerMessageAction } from "../../../_actions";
 import { PeerComposer } from "../../peer/[accountId]/_composer";
-import { DepthDeck, type DeckMessage } from "./_deck-client";
+import { DepthDeck, type DeckMessage } from "@/components/nex-native/HauntedHotelDeck";
 import { HauntedSmokeClient } from "@/components/nex-native/HauntedHotelSmoke";
 import { ChatCoreBoundary } from "@/components/nex-native/surface-health/ChatCoreBoundary";
 import { VisualThemeBoundary } from "@/components/nex-native/surface-health/VisualThemeBoundary";

@@ -51,14 +51,22 @@ export function HauntedSmokeClient(props: HauntedSmokeClientProps): React.ReactE
     <div
       aria-hidden
       style={{
-        position: "absolute",
+        // Viewport-anchored like the atmosphere root. Previously
+        // `position: absolute; zIndex: 2` — fine inside the depth-cards
+        // prototype where the composer sat at zIndex 5, but on surfaces
+        // whose composer uses the default flow (PortraitBloomShell) the
+        // smoke rendered IN FRONT of the composer footer. Fixed +
+        // zIndex: -1 puts it on the same backdrop layer as the
+        // atmosphere, so the chat footer (positioned at z >= 0) always
+        // sits in front.
+        position: "fixed",
         left: 0,
         right: 0,
         bottom: 0,
         height: 380,
         pointerEvents: "none",
         overflow: "visible",
-        zIndex: 2,
+        zIndex: -1,
       }}
     >
       {SMOKE_PARTICLES.map((p, i) => (

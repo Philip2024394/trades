@@ -19,7 +19,7 @@
 // No auth. The viewer uses no-op actions (send/react/delete are all
 // preview stubs) so nothing writes to the DB.
 
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import * as chatThemeService from "@/lib/nex-native/chat-theme-service";
 import { listThemeEmojis } from "@/lib/nex-native/theme-emoji-service";
 import { listThemeStickers } from "@/lib/nex-native/theme-sticker-service";
@@ -43,6 +43,16 @@ export default async function ThemeViewerPage({
 }) {
   const { id } = await params;
   const sp = (await searchParams) ?? {};
+
+  // The Haunted Hotel preview IS the depth-cards experience that the
+  // founder spent 6 hours building: card carousel + atmosphere +
+  // smoke + FX controller. Route this theme's preview URL directly at
+  // that surface so there's one source of truth for the Haunted Hotel
+  // chat look, instead of trying to replicate it in two places.
+  if (id === "haunted-hotel") {
+    redirect("/nex-native/chat/prototypes/depth-cards");
+  }
+
   const theme = await chatThemeService.getThemeById(id);
   if (!theme || !theme.is_active) notFound();
 

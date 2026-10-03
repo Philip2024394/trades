@@ -35,6 +35,11 @@ const TOUCH_THRESHOLD = 60; // px of touch delta per card step
 const LONG_REPLY_THRESHOLD = 240;
 const LONG_REPLY_COLLAPSED_LINES = 4;
 
+// Haunted Hotel reaction set · same shape as the Joker _shared
+// gestures ReactionPicker (8 emojis + the floating-pill panel).
+// Prototype-only · reactions live in local state, not persisted.
+const REACTION_SET = ["❤️", "🔥", "😂", "😢", "👏", "🎉", "👍", "✨"] as const;
+
 function formatTime(iso: string): string {
   // Deterministic UTC-based HH:mm · locale-agnostic so SSR and client
   // produce identical output (prevents hydration mismatch).
@@ -73,6 +78,12 @@ export function DepthDeck({
   const [expandedReplyId, setExpandedReplyId] = React.useState<string | null>(
     null,
   );
+  // Reaction state · per-message emoji list + which bubble's picker is
+  // currently open (if any). Picker anchor is captured from the button's
+  // bounding rect so the floating pill sits above the clicked smiley.
+  const [reactions, setReactions] = React.useState<Record<string, string[]>>({});
+  const [pickerFor, setPickerFor] = React.useState<string | null>(null);
+  const [pickerAnchor, setPickerAnchor] = React.useState<{ x: number; y: number } | null>(null);
   const wheelAccumRef = React.useRef(0);
   const touchYRef = React.useRef<number | null>(null);
 
@@ -174,7 +185,7 @@ export function DepthDeck({
           key={replyingTo.id}
           style={{
             maxWidth: "72%",
-            padding: "10px 14px 9px",
+            padding: "10px 14px 10px",
             borderRadius: 16,
             background:
               "linear-gradient(145deg, #102B46 0%, #0A1D31 100%)",
@@ -185,6 +196,9 @@ export function DepthDeck({
             boxShadow: "0 10px 24px rgba(0,0,0,0.42)",
             animation:
               "nex-replying-swap 220ms cubic-bezier(.2,.7,.2,1) both",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
           }}
         >
           <div
@@ -282,6 +296,78 @@ export function DepthDeck({
               </>
             );
           })()}
+          {/* Reaction chips · existing emoji grouped + counted · appear
+              above the smiley button so stacking reads bubble → chips
+              → trigger. */}
+          {reactions[replyingTo.id] && reactions[replyingTo.id].length > 0 ? (
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: 4,
+                marginTop: 8,
+              }}
+            >
+              {Array.from(
+                reactions[replyingTo.id].reduce((map, e) => {
+                  map.set(e, (map.get(e) ?? 0) + 1);
+                  return map;
+                }, new Map<string, number>()),
+              ).map(([emoji, count]) => (
+                <span
+                  key={emoji}
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 3,
+                    padding: "2px 8px",
+                    borderRadius: 999,
+                    background: "rgba(0,0,0,0.55)",
+                    border: "1px solid rgba(216,168,86,0.4)",
+                    fontSize: 12,
+                    lineHeight: 1,
+                    color: "#FFF",
+                  }}
+                >
+                  <span aria-hidden>{emoji}</span>
+                  {count > 1 && (
+                    <span style={{ fontSize: 10, fontWeight: 700, opacity: 0.85 }}>
+                      {count}
+                    </span>
+                  )}
+                </span>
+              ))}
+            </div>
+          ) : null}
+          {/* Smiley reaction trigger · Joker-flow panel style ·
+              anchored under the replying-to bubble. Click opens the
+              floating 8-emoji pill. */}
+          <button
+            type="button"
+            aria-label="Add reaction"
+            onClick={(e) => {
+              e.stopPropagation();
+              const r = (e.currentTarget as HTMLElement).getBoundingClientRect();
+              setPickerAnchor({ x: r.left + r.width / 2, y: r.top });
+              setPickerFor(pickerFor === replyingTo.id ? null : replyingTo.id);
+            }}
+            style={{
+              marginTop: 6,
+              alignSelf: "flex-start",
+              width: 14,
+              height: 14,
+              padding: 0,
+              borderRadius: "50%",
+              border: "1px solid rgba(180,180,180,0.4)",
+              background: "transparent",
+              color: "rgba(200,200,200,0.75)",
+              cursor: "pointer",
+              display: "inline-grid",
+              placeItems: "center",
+            }}
+          >
+            <SmileyGlyph />
+          </button>
         </div>
       </div>
     ) : null}
@@ -392,6 +478,25 @@ export function DepthDeck({
                     />
                   ))
                 : null}
+              {/* Joker-pattern · newest reaction stamps the top-right
+                  corner of the bubble, overlapping the rim. */}
+              {reactions[m.id] && reactions[m.id].length > 0 ? (
+                <span
+                  aria-hidden
+                  style={{
+                    position: "absolute",
+                    top: -10,
+                    right: -8,
+                    fontSize: 20,
+                    lineHeight: 1,
+                    filter: "drop-shadow(0 3px 6px rgba(0,0,0,0.75))",
+                    pointerEvents: "none",
+                  }}
+                >
+                  {reactions[m.id][reactions[m.id].length - 1]}
+                </span>
+              ) : null}
+
               <div
                 style={{
                   whiteSpace: "pre-wrap",
@@ -400,6 +505,51 @@ export function DepthDeck({
               >
                 {m.body}
               </div>
+
+              {/* Joker-pattern · chip row below the bubble body.
+                  Each distinct emoji becomes a pill with its count. */}
+              {reactions[m.id] && reactions[m.id].length > 0 ? (
+                <div
+                  style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: 4,
+                    marginTop: 6,
+                    justifyContent: mine ? "flex-end" : "flex-start",
+                  }}
+                >
+                  {Array.from(
+                    reactions[m.id].reduce((map, e) => {
+                      map.set(e, (map.get(e) ?? 0) + 1);
+                      return map;
+                    }, new Map<string, number>()),
+                  ).map(([emoji, count]) => (
+                    <span
+                      key={emoji}
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: 3,
+                        padding: "2px 8px",
+                        borderRadius: 999,
+                        background: "rgba(0,0,0,0.55)",
+                        border: "1px solid rgba(216,168,86,0.4)",
+                        fontSize: 12,
+                        lineHeight: 1,
+                        color: "#FFF",
+                      }}
+                    >
+                      <span aria-hidden>{emoji}</span>
+                      {count > 1 && (
+                        <span style={{ fontSize: 10, fontWeight: 700, opacity: 0.85 }}>
+                          {count}
+                        </span>
+                      )}
+                    </span>
+                  ))}
+                </div>
+              ) : null}
+
               <div
                 style={{
                   marginTop: 6,
@@ -410,29 +560,151 @@ export function DepthDeck({
                     : "rgba(139,169,209,0.9)",
                   textAlign: "right",
                   display: "flex",
-                  justifyContent: "flex-end",
+                  justifyContent: "space-between",
                   gap: 6,
                   alignItems: "center",
                 }}
               >
-                <span>{formatTime(m.sent_at)}</span>
-                {mine && (
-                  <span
+                {/* Joker-pattern · tiny +😊 chip opens the reaction
+                    picker · only on the top card so the deck's lower
+                    stack stays visually clean. */}
+                {isTop ? (
+                  <button
+                    type="button"
+                    aria-label="Add reaction"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      const r = (e.currentTarget as HTMLElement).getBoundingClientRect();
+                      setPickerAnchor({ x: r.left + r.width / 2, y: r.top });
+                      setPickerFor(pickerFor === m.id ? null : m.id);
+                    }}
                     style={{
-                      color: m.read_at ? "#C4E5FF" : "rgba(255,255,255,0.6)",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 2,
+                      padding: "2px 6px",
+                      height: 16,
+                      borderRadius: 999,
+                      border: "1px solid rgba(180,180,180,0.4)",
+                      background: "transparent",
+                      color: "rgba(200,200,200,0.75)",
+                      cursor: "pointer",
+                      fontSize: 10,
+                      lineHeight: 1,
                     }}
                   >
-                    {m.read_at ? "✓✓" : "✓"}
-                  </span>
+                    <span style={{ fontWeight: 700 }}>+</span>
+                    <SmileyGlyph />
+                  </button>
+                ) : (
+                  <span aria-hidden style={{ width: 1 }} />
                 )}
+                <span style={{ display: "flex", gap: 6, alignItems: "center" }}>
+                  <span>{formatTime(m.sent_at)}</span>
+                  {mine && (
+                    <span
+                      style={{
+                        color: m.read_at ? "#C4E5FF" : "rgba(255,255,255,0.6)",
+                      }}
+                    >
+                      {m.read_at ? "✓✓" : "✓"}
+                    </span>
+                  )}
+                </span>
               </div>
             </div>
           );
         })}
       </div>
 
-      {/* Position indicator · appears when scrolled back from latest */}
-      {!atLatest && (
+      {/* Floating Joker-style reaction picker · pill with 8 emoji ·
+          anchored to the smiley button of the active message. Click
+          outside dismisses. */}
+      {pickerFor && pickerAnchor ? (
+        <>
+          <div
+            onClick={() => setPickerFor(null)}
+            aria-hidden
+            style={{
+              position: "fixed",
+              inset: 0,
+              zIndex: 400,
+              background: "transparent",
+            }}
+          />
+          <div
+            role="dialog"
+            aria-label="React with emoji"
+            style={{
+              position: "fixed",
+              zIndex: 401,
+              left: Math.max(
+                8,
+                Math.min(
+                  pickerAnchor.x - 160,
+                  (typeof window !== "undefined" ? window.innerWidth : 400) - 328,
+                ),
+              ),
+              top: Math.max(72, pickerAnchor.y - 56),
+              padding: "8px 10px",
+              borderRadius: 999,
+              background: "rgba(20, 14, 10, 0.92)",
+              border: "1px solid rgba(216,168,86,0.55)",
+              boxShadow:
+                "0 12px 32px rgba(0,0,0,0.6), 0 0 24px rgba(216,168,86,0.2)",
+              backdropFilter: "blur(18px) saturate(140%)",
+              WebkitBackdropFilter: "blur(18px) saturate(140%)",
+              display: "flex",
+              alignItems: "center",
+              gap: 4,
+              animationName: "hh-reaction-pop",
+              animationDuration: "180ms",
+              animationTimingFunction: "cubic-bezier(.2,.7,.2,1)",
+              animationFillMode: "both",
+            }}
+          >
+            <style>{`
+              @keyframes hh-reaction-pop {
+                from { opacity: 0; transform: translateY(4px) scale(.92); }
+                to   { opacity: 1; transform: translateY(0)   scale(1);   }
+              }
+            `}</style>
+            {REACTION_SET.map((emoji) => (
+              <button
+                key={emoji}
+                type="button"
+                onClick={() => {
+                  setReactions((prev) => {
+                    const next = { ...prev };
+                    const existing = next[pickerFor] ?? [];
+                    next[pickerFor] = [...existing, emoji];
+                    return next;
+                  });
+                  setPickerFor(null);
+                }}
+                aria-label={`React ${emoji}`}
+                style={{
+                  width: 32,
+                  height: 32,
+                  padding: 0,
+                  borderRadius: 999,
+                  background: "transparent",
+                  border: "none",
+                  fontSize: 20,
+                  cursor: "pointer",
+                  lineHeight: 1,
+                }}
+              >
+                {emoji}
+              </button>
+            ))}
+          </div>
+        </>
+      ) : null}
+
+      {/* Date label · Today / Yesterday / weekday / Month-day pill ·
+          references the newest message currently visible in the deck. */}
+      {deck.length > 0 ? (
         <div
           aria-hidden
           style={{
@@ -453,50 +725,54 @@ export function DepthDeck({
             zIndex: 200,
           }}
         >
-          {`${Math.min(end, total)} / ${total}`}
-          {atOldest ? " · oldest" : ""}
+          <DateLabel iso={deck[deck.length - 1]!.sent_at} />
         </div>
-      )}
+      ) : null}
 
-      {/* Jump-to-latest · appears when scrolled back */}
-      {!atLatest && (
-        <button
-          type="button"
-          onClick={() => setOffset(0)}
-          aria-label="Jump to latest"
-          style={{
-            position: "absolute",
-            right: 16,
-            bottom: 16,
-            width: 42,
-            height: 42,
-            borderRadius: "50%",
-            background: "rgba(0,159,239,0.18)",
-            border: `1px solid ${NEX.cyan}`,
-            color: NEX.text,
-            display: "grid",
-            placeItems: "center",
-            cursor: "pointer",
-            zIndex: 200,
-          }}
-        >
-          <svg
-            width={20}
-            height={20}
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={2}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden
-          >
-            <path d="M6 9l6 6 6-6" />
-          </svg>
-        </button>
-      )}
     </section>
     </>
+  );
+}
+
+// SSR-safe date label · renders the absolute date (deterministic) on
+// the server, then on client mount flips to "Today" / "Yesterday" /
+// weekday for recent dates. This avoids hydration mismatch while
+// still giving the viewer a human-readable anchor.
+function DateLabel({ iso }: { iso: string }): React.JSX.Element {
+  const [hydrated, setHydrated] = React.useState(false);
+  React.useEffect(() => {
+    setHydrated(true);
+  }, []);
+
+  const d = new Date(iso);
+  // Deterministic UTC "Month Day" string for SSR + pre-hydration.
+  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const absolute = `${monthNames[d.getUTCMonth()]} ${d.getUTCDate()}`;
+
+  if (!hydrated) return <>{absolute}</>;
+
+  const now = new Date();
+  const msgLocal = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  const nowLocal = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const diffDays = Math.round(
+    (nowLocal.getTime() - msgLocal.getTime()) / (1000 * 60 * 60 * 24),
+  );
+  if (diffDays === 0) return <>Today</>;
+  if (diffDays === 1) return <>Yesterday</>;
+  if (diffDays > 1 && diffDays < 7) {
+    return <>{d.toLocaleDateString([], { weekday: "long" })}</>;
+  }
+  return <>{absolute}</>;
+}
+
+function SmileyGlyph() {
+  return (
+    <svg width={9} height={9} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} aria-hidden>
+      <circle cx="12" cy="12" r="9" />
+      <circle cx="9" cy="10" r="1.2" fill="currentColor" />
+      <circle cx="15" cy="10" r="1.2" fill="currentColor" />
+      <path d="M 8 14 Q 12 17, 16 14" strokeLinecap="round" />
+    </svg>
   );
 }
 
