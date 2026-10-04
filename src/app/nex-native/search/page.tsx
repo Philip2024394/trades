@@ -1,37 +1,38 @@
 // src/app/nex-native/search/page.tsx
 //
-// NEX Search · Phase 1 universal-discovery surface · sealed 2026-10-04.
-// ---------------------------------------------------------------------
-// Doctrine (see rule_nex_search_phase1_2026_10_04 + master build prompt):
-//   · Narrow launch gate NEX_SEARCH_ENABLED (DOES NOT un-gate commerce).
-//   · One search surface. Five tabs: All · Shops · Companies · Services
-//     · Places. Companies / Services / Places are honestly DORMANT in
-//     Phase 1 — their classification data isn't reliable yet (only
-//     3.6% of businesses have `business_category` set; `nex_service`
-//     is empty).
-//   · Shops tab = businesses that have ≥1 live product · uses
-//     `businessIdsWithLiveProducts()` so the join respects the same
-//     visibility rule as the existing product search.
-//   · Query, pagination and category filter are preserved across tab
-//     switches via URL params.
-//   · Theme scope boundary doctrine 2026-10-04 · search is a NEX
-//     SYSTEM surface · it always renders NEX regardless of the
-//     viewer's chat_theme.
-//   · No fake results · no clickable controls that lead nowhere · no
-//     recent-searches UI until a real persistence story lands.
+// NEX Search · Phase 1.5 visual refresh · 2026-10-04.
+// --------------------------------------------------
+// Landing + results surface built to the sealed design pair:
+//   · c:\Users\Victus\Pictures\pagesearch.png         (landing)
+//   · c:\Users\Victus\Pictures\search page results.png (results)
 //
-// Query params:
-//   ?q=<text>              — free text query (max 100 chars)
-//   ?tab=all|shops|companies|services|places  (default "all")
-//   ?category=<slug>       — business_category filter (All + Shops only)
-//   ?page=<n>              — pagination, 1-indexed
-//   ?search=1              — dev bypass when the launch flag is off
+// What this refresh changes from Phase 1 (shipped 7297d2e6):
+//   · Hero title simplified to "NEX Search" (orange NEX + white Search)
+//   · Search field flattened · dark pill · no gradient rim
+//   · Tab set DIFFERS between landing and results per the design:
+//       Landing · All | Companies | Services | Places
+//       Results · All results | Shops | Companies | Wholesale
+//   · Shops demoted from a landing tab to an Explore tile
+//     (still searchable on results via the Shops sub-tab)
+//   · 2×2 "Explore NEX" grid replaces the single shortcut card
+//   · Example queries row shown on landing only (static illustrative
+//     copy, not clickable prefill)
+//   · Landscape result cards redesigned · thumbnail + name + meta
+//     line (type · city) + description + chip rows + "View shop →" /
+//     "View company →" CTA
+//
+// What stays sealed from Phase 1:
+//   · NEX_SEARCH_ENABLED narrow launch gate · commerce flag untouched
+//   · Companies / Services / Places / Wholesale tabs honestly dormant
+//     where backing data is empty · tapping lands on a "coming later"
+//     panel · no fabricated results, no misleading classifications
+//   · Theme scope boundary · search renders NEX only, never a theme
+//   · Discovery-service calls unchanged · no new DB queries required
+//   · Preserved ?q=, ?tab=, ?category=, ?page=, ?search= semantics
 
 import type * as React from "react";
 import Link from "next/link";
-import {
-  resolveNexAppSessionFromContext,
-} from "@/lib/nex-native/app/session";
+import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
 import * as businessService from "@/lib/nex-native/business-service";
 import * as discoveryService from "@/lib/nex-native/discovery-service";
 import { NEX_BUSINESS_CATEGORIES } from "@/lib/nex-native/site-templates";
@@ -41,58 +42,76 @@ import { NexPageHeader } from "../_page-header";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-/* ─── Palette · NEX brand only (matches Create Account + Call Center) ─ */
+/* ─── Palette · aligned to NEX brand + mock design ───────────────── */
 const NEX = {
   bg: "#020914",
+  surface: "#0E1526",      // dark pills + card backgrounds
+  surfaceHi: "#182540",     // chip row background
   text: "#F2F5F8",
-  textDim: "#7D9BC0",
-  textMuted: "#4B6683",
+  textDim: "#B5C3D6",
+  textMuted: "#7D9BC0",
+  textSoft: "#4B6683",
   orange: "#FF7200",
-  orangeSoft: "rgba(255,114,0,0.14)",
   cyan: "#00AFFF",
-  cyanSoft: "rgba(0,175,255,0.14)",
   cyanFaint: "rgba(0,175,255,0.06)",
   darkRed: "#991B1B",
+  divider: "rgba(255,255,255,0.08)",
+  borderSoft: "rgba(255,255,255,0.06)",
 };
-const RIM_GRADIENT = `linear-gradient(135deg, ${NEX.orange} 0%, ${NEX.cyan} 100%)`;
-const RIM_CYAN_ONLY = `linear-gradient(135deg, ${NEX.cyan} 0%, ${NEX.cyan}66 100%)`;
 
 /* ─── Tabs ───────────────────────────────────────────────────────── */
-type SearchTab = "all" | "shops" | "companies" | "services" | "places";
-const SEARCH_TABS: readonly SearchTab[] = ["all", "shops", "companies", "services", "places"];
-const TAB_LABEL: Record<SearchTab, string> = {
+// Landing (no query) tab set · 4 entry-point categories.
+type LandingTab = "all" | "companies" | "services" | "places";
+const LANDING_TABS: readonly LandingTab[] = ["all", "companies", "services", "places"];
+const LANDING_TAB_LABEL: Record<LandingTab, string> = {
   all: "All",
-  shops: "Shops",
   companies: "Companies",
   services: "Services",
   places: "Places",
 };
-const TAB_ACTIVE: Record<SearchTab, boolean> = {
+// Only "all" is active today. Companies / Services / Places are dormant
+// (0 companies classified · 0 services · no place provider).
+const LANDING_TAB_ACTIVE: Record<LandingTab, boolean> = {
   all: true,
-  shops: true,
   companies: false,
   services: false,
   places: false,
 };
-/** Honest "why this tab is dormant" copy · sealed with the founder
- *  2026-10-04. No fabricated delivery dates. No "soon." */
-const TAB_DORMANT_COPY: Record<SearchTab, { title: string; body: string } | null> = {
-  all: null,
-  shops: null,
+
+// Results (query present) tab set · 4 result-filtering chips.
+type ResultTab = "all" | "shops" | "companies" | "wholesale";
+const RESULT_TABS: readonly ResultTab[] = ["all", "shops", "companies", "wholesale"];
+const RESULT_TAB_LABEL: Record<ResultTab, string> = {
+  all: "All results",
+  shops: "Shops",
+  companies: "Companies",
+  wholesale: "Wholesale",
+};
+// All + Shops operate on real data today. Companies + Wholesale are
+// dormant (no classification coverage · no reliable wholesale signal).
+const RESULT_TAB_ACTIVE: Record<ResultTab, boolean> = {
+  all: true,
+  shops: true,
+  companies: false,
+  wholesale: false,
+};
+
+const DORMANT_COPY: Record<string, { title: string; body: string }> = {
   companies: {
     title: "Company discovery coming later",
-    body:
-      "Business categories are still being added. Company discovery will be available as more businesses complete their profiles.",
+    body: "Business categories are still being added. Company discovery will be available as more businesses complete their profiles.",
   },
   services: {
     title: "Service discovery coming later",
-    body:
-      "Independent professionals and service providers will be discoverable once services are added to NEX.",
+    body: "Independent professionals and service providers will be discoverable once services are added to NEX.",
   },
   places: {
     title: "Place discovery coming later",
-    body:
-      "Restaurants, hotels, tourist destinations and other places will be discoverable in a future update.",
+    body: "Restaurants, hotels, tourist destinations and other places will be discoverable in a future update.",
+  },
+  wholesale: {
+    title: "Wholesale filter coming later",
+    body: "The wholesale filter will activate once businesses declare their wholesale offering reliably across the directory.",
   },
 };
 
@@ -112,9 +131,7 @@ interface PageProps {
 export default async function SearchPage({ searchParams }: PageProps) {
   const sp = await searchParams;
 
-  // NEX Search Phase 1 launch gate · sealed 2026-10-04.
-  // Narrow gate · un-gates ONLY /nex-native/search · never the
-  // broader commerce surfaces. See launch-flags.ts.
+  // NEX Search Phase 1 launch gate (sealed 2026-10-04 · unchanged).
   const { searchEnabledForRequest } = await import(
     "@/lib/nex-native/launch-flags"
   );
@@ -123,13 +140,9 @@ export default async function SearchPage({ searchParams }: PageProps) {
     redirect("/nex-native/home");
   }
 
-  // Parse + normalise params.
   const rawQuery = (sp.q ?? "").trim();
   const query = rawQuery.length > 100 ? rawQuery.slice(0, 100) : rawQuery;
   const rawTab = (sp.tab ?? "all").trim().toLowerCase();
-  const tab: SearchTab = (SEARCH_TABS as readonly string[]).includes(rawTab)
-    ? (rawTab as SearchTab)
-    : "all";
   const rawCategory = (sp.category ?? "").trim().toLowerCase();
   const category =
     rawCategory && SAFE_CATEGORIES.includes(rawCategory) ? rawCategory : "";
@@ -138,25 +151,27 @@ export default async function SearchPage({ searchParams }: PageProps) {
     Number.isFinite(pageRaw) && pageRaw >= 1 ? Math.floor(pageRaw) : 1;
   const offset = (page - 1) * PAGE_SIZE;
 
-  // Session is only used so we can note "signed in" state later; the
-  // search surface itself renders in NEX regardless of chat_theme per
-  // the sealed theme-boundary doctrine (2026-10-04).
   await resolveNexAppSessionFromContext();
 
   const hasSearch = query.length > 0 || category.length > 0;
-  const isDormantTab = !TAB_ACTIVE[tab];
 
-  // ── Data fetch · tab-aware · dormant tabs skip the data layer ────
-  //
-  // The All tab preserves the ORIGINAL discovery behaviour · product
-  // search + business search in parallel · no change to semantics or
-  // pagination.
-  //
-  // The Shops tab routes through `searchShops()` + `countShops()`
-  // which apply the "has ≥1 live product" relationship SERVER-SIDE
-  // BEFORE pagination. A matching shop can never be hidden from
-  // page 1 just because its row fell on a per-page slice where
-  // sibling businesses lacked live products.
+  // Validate the tab against the right set for the current mode.
+  // Switching from landing → results reinterprets `?tab=` so an
+  // explicit landing tab still works on the way in.
+  let tab: LandingTab | ResultTab = "all";
+  if (hasSearch) {
+    tab = (RESULT_TABS as readonly string[]).includes(rawTab)
+      ? (rawTab as ResultTab)
+      : "all";
+  } else {
+    tab = (LANDING_TABS as readonly string[]).includes(rawTab)
+      ? (rawTab as LandingTab)
+      : "all";
+  }
+  const activeMap = hasSearch ? RESULT_TAB_ACTIVE : LANDING_TAB_ACTIVE;
+  const isDormantTab = !activeMap[tab as keyof typeof activeMap];
+
+  // ── Data fetch ────────────────────────────────────────────────────
   let errorMsg: string | null = null;
   let products: NexProductRow[] = [];
   let businesses: NexBusinessRow[] = [];
@@ -167,7 +182,6 @@ export default async function SearchPage({ searchParams }: PageProps) {
     try {
       const businessFilter = category ? { category } : {};
       if (tab === "shops") {
-        // Shops · the live-product filter is pre-pagination.
         [businesses, businessCount] = await Promise.all([
           discoveryService.searchShops(
             query,
@@ -176,14 +190,8 @@ export default async function SearchPage({ searchParams }: PageProps) {
           ),
           discoveryService.countShops(query, businessFilter),
         ]);
-        // Products deliberately not rendered on the Shops tab · the
-        // Shops surface is a shop directory, not a product grid.
       } else {
-        // All tab · unchanged · product + business search in parallel.
         [products, businesses, productCount, businessCount] = await Promise.all([
-          // Product search stays query-driven · category doesn't apply
-          // at the product level (a shop's category doesn't tag its
-          // products individually).
           query.length > 0
             ? discoveryService.searchProducts(query, { limit: PAGE_SIZE, offset })
             : Promise.resolve([]),
@@ -203,21 +211,8 @@ export default async function SearchPage({ searchParams }: PageProps) {
     }
   }
 
-  // Shops branch already returns the correctly filtered page · no
-  // post-filter required. shopIds is only kept so downstream callers
-  // (card components) retain a consistent prop signature.
-  const shopIds: Set<string> = new Set(
-    tab === "shops" ? businesses.map((b) => b.id) : [],
-  );
-
-  // Pagination logic.
-  //   · All   · paginates on the OR of product + biz against their
-  //             native counts (unchanged from pre-Phase 1).
-  //   · Shops · paginates against `countShops()` · pre-filtered.
-  //   · Companies / Services / Places · dormant · no pagination.
   const productsPaged = tab === "all" ? products : [];
-  const businessesPaged =
-    tab === "all" || tab === "shops" ? businesses : [];
+  const businessesPaged = (tab === "all" || tab === "shops") ? businesses : [];
   const hasNextProducts =
     tab === "all" && offset + products.length < productCount;
   const hasNextBusinesses =
@@ -226,9 +221,7 @@ export default async function SearchPage({ searchParams }: PageProps) {
   const hasPrev = page > 1 && !isDormantTab;
   const hasNext = (hasNextProducts || hasNextBusinesses) && !isDormantTab;
 
-  // Enrich product cards with their business slug + name so each
-  // card can link back to the shop it belongs to. Done once per
-  // page render.
+  // Enrich product rows with their parent business for the "View shop" link.
   const productBizIds = Array.from(new Set(productsPaged.map((p) => p.business_id)));
   const productBizRows = await Promise.all(
     productBizIds.map((id) => businessService.getBusinessById(id)),
@@ -237,8 +230,7 @@ export default async function SearchPage({ searchParams }: PageProps) {
     productBizRows.filter(Boolean).map((b) => [b!.id, b!]),
   );
 
-  // Popular tags · only on the landing (no query), only on the All
-  // tab. Server-side computation already exists.
+  // Popular tags only on the landing · All tab (unchanged behaviour).
   let popularTags: Array<{ tag: string; count: number }> = [];
   if (!hasSearch && tab === "all") {
     popularTags = await discoveryService.getPopularTags(12).catch(() => []);
@@ -246,7 +238,7 @@ export default async function SearchPage({ searchParams }: PageProps) {
 
   function hrefFor(opts: {
     q?: string;
-    tab?: SearchTab;
+    tab?: string;
     category?: string;
     page?: number;
     preserveSearchBypass?: boolean;
@@ -260,8 +252,6 @@ export default async function SearchPage({ searchParams }: PageProps) {
     if (nextTab && nextTab !== "all") p.set("tab", nextTab);
     if (nextCategory) p.set("category", nextCategory);
     if (nextPage > 1) p.set("page", String(nextPage));
-    // Preserve the ?search=1 dev bypass so navigating between tabs
-    // doesn't lose it while the launch flag is off.
     if (opts.preserveSearchBypass !== false) {
       const bypass = sp.search === "1" || sp.search === "true";
       if (bypass) p.set("search", "1");
@@ -286,7 +276,6 @@ export default async function SearchPage({ searchParams }: PageProps) {
           overflow: "hidden",
         }}
       >
-        {/* Create Account canvas · single faint cyan radial glow */}
         <div
           aria-hidden
           style={{
@@ -299,46 +288,44 @@ export default async function SearchPage({ searchParams }: PageProps) {
         />
 
         <div
-          style={{ position: "relative", zIndex: 1, maxWidth: 820, margin: "0 auto" }}
+          style={{ position: "relative", zIndex: 1, maxWidth: 720, margin: "0 auto" }}
         >
           <NexPageHeader dataScope="search" />
 
-          <Hero hasSearch={hasSearch} query={query} tab={tab} isDormantTab={isDormantTab} />
-
-          <SearchForm query={query} tab={tab} category={category} hrefFor={hrefFor} />
-
-          <TabBar tab={tab} query={query} category={category} hrefFor={hrefFor} />
-
-          {errorMsg && (
-            <div
-              role="status"
-              style={{
-                marginTop: 18,
-                padding: "12px 14px",
-                borderRadius: 12,
-                border: `1px solid ${NEX.darkRed}99`,
-                background: "rgba(153,27,27,0.14)",
-                color: "#FFB4C0",
-                fontSize: 13,
-              }}
-            >
-              {errorMsg}
-            </div>
+          {hasSearch ? (
+            <ResultsHeading query={query} />
+          ) : (
+            <LandingHero />
           )}
 
+          <SearchForm
+            query={query}
+            hasSearch={hasSearch}
+            tab={tab}
+            category={category}
+          />
+
+          {hasSearch ? (
+            <ResultsTabBar activeTab={tab as ResultTab} query={query} category={category} hrefFor={hrefFor} />
+          ) : (
+            <LandingTabBar activeTab={tab as LandingTab} query={query} category={category} hrefFor={hrefFor} />
+          )}
+
+          {!hasSearch && <ExampleQueriesRow />}
+
+          {errorMsg && <ErrorBanner message={errorMsg} />}
+
           {isDormantTab ? (
-            <DormantPanel tab={tab} />
+            <DormantPanel tabKey={tab} />
           ) : hasSearch ? (
             <ResultsBody
-              tab={tab}
-              query={query}
-              category={category}
               productsPaged={productsPaged}
               businessesPaged={businessesPaged}
-              shopIds={shopIds}
               productBizById={productBizById}
               productCount={productCount}
               businessCount={businessCount}
+              tab={tab as ResultTab}
+              query={query}
               page={page}
               hasPrev={hasPrev}
               hasNext={hasNext}
@@ -357,136 +344,77 @@ export default async function SearchPage({ searchParams }: PageProps) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════ *
- * Hero                                                                *
+ * Landing hero · "NEX Search" + tagline                               *
  * ═══════════════════════════════════════════════════════════════════ */
 
-function Hero({
-  hasSearch,
-  query,
-  tab,
-  isDormantTab,
-}: {
-  hasSearch: boolean;
-  query: string;
-  tab: SearchTab;
-  isDormantTab: boolean;
-}): React.JSX.Element {
-  // Compact "results header" when a search is active · full hero
-  // only on the landing. Keeps the results page information-dense.
-  if (hasSearch) {
-    return (
-      <header style={{ margin: "18px 0 10px", textAlign: "center" }}>
-        <div
-          style={{
-            fontSize: 11,
-            letterSpacing: "0.28em",
-            color: NEX.cyan,
-            fontWeight: 700,
-            textTransform: "uppercase",
-          }}
-        >
-          NEX Search
-        </div>
-        {query && (
-          <h1
-            style={{
-              margin: "8px 0 0",
-              fontSize: 22,
-              fontWeight: 700,
-              letterSpacing: "-0.01em",
-            }}
-          >
-            Showing results for{" "}
-            <span style={{ color: NEX.orange }}>&ldquo;{query}&rdquo;</span>
-            {tab !== "all" && (
-              <>
-                {" "}·{" "}
-                <span style={{ color: NEX.cyan }}>{TAB_LABEL[tab]}</span>
-              </>
-            )}
-          </h1>
-        )}
-      </header>
-    );
-  }
-  // Dormant tab (no query) · the dormant panel below IS the primary
-  // message · keep the chrome minimal so the "coming later" copy
-  // reads as the hero rather than a side-note under a competing
-  // "Discover more" headline.
-  if (isDormantTab) {
-    return (
-      <header style={{ margin: "18px 0 10px", textAlign: "center" }}>
-        <div
-          style={{
-            fontSize: 11,
-            letterSpacing: "0.28em",
-            color: NEX.cyan,
-            fontWeight: 700,
-            textTransform: "uppercase",
-          }}
-        >
-          NEX Search · {TAB_LABEL[tab]}
-        </div>
-      </header>
-    );
-  }
+function LandingHero(): React.JSX.Element {
   return (
-    <header style={{ margin: "32px 0 20px", textAlign: "center" }}>
-      <div
-        style={{
-          fontSize: 11,
-          letterSpacing: "0.3em",
-          color: NEX.cyan,
-          fontWeight: 700,
-          textTransform: "uppercase",
-        }}
-      >
-        NEX Search
-      </div>
+    <header
+      style={{ textAlign: "center", margin: "22px 0 18px", position: "relative", zIndex: 2 }}
+    >
       <h1
         style={{
-          margin: "10px 0 6px",
-          fontSize: 32,
-          lineHeight: 1.1,
+          margin: 0,
+          fontSize: 28,
           fontWeight: 700,
-          letterSpacing: "-0.02em",
-          background: `linear-gradient(180deg, ${NEX.text} 0%, ${NEX.cyan} 100%)`,
-          WebkitBackgroundClip: "text",
-          WebkitTextFillColor: "transparent",
-          backgroundClip: "text",
+          letterSpacing: "-0.01em",
+          lineHeight: 1,
         }}
       >
-        Discover more with NEX
+        <span style={{ color: NEX.orange }}>NEX</span>{" "}
+        <span style={{ color: NEX.text }}>Search</span>
       </h1>
       <p
         style={{
-          margin: "0 auto",
-          maxWidth: 480,
-          fontSize: 14,
+          margin: "12px auto 0",
+          maxWidth: 460,
+          fontSize: 14.5,
           color: NEX.textDim,
           lineHeight: 1.5,
         }}
       >
-        Find places, people, products, services and experiences.
+        Find businesses, products, services and places
       </p>
     </header>
   );
 }
 
 /* ═══════════════════════════════════════════════════════════════════ *
- * Search form · GET-based so bookmarks + history work                 *
+ * Results heading · query echoed back as a title                      *
+ * ═══════════════════════════════════════════════════════════════════ */
+
+function ResultsHeading({ query }: { query: string }): React.JSX.Element {
+  return (
+    <header style={{ margin: "22px 0 14px", position: "relative", zIndex: 2 }}>
+      <h1
+        style={{
+          margin: 0,
+          fontSize: 20,
+          fontWeight: 700,
+          color: NEX.text,
+          letterSpacing: "-0.005em",
+        }}
+      >
+        {query || "Search results"}
+      </h1>
+    </header>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════════ *
+ * Search form · flat dark pill · mic honestly muted                   *
  * ═══════════════════════════════════════════════════════════════════ */
 
 function SearchForm({
   query,
+  hasSearch,
   tab,
   category,
-  hrefFor,
 }: {
   query: string;
-  tab: SearchTab;
+  hasSearch: boolean;
+  tab: string;
   category: string;
-  hrefFor: (opts: { q?: string; tab?: SearchTab; category?: string; page?: number }) => string;
 }): React.JSX.Element {
   return (
     <form
@@ -494,15 +422,11 @@ function SearchForm({
       method="get"
       style={{
         display: "flex",
-        gap: 10,
-        marginBottom: 14,
-        maxWidth: 640,
-        marginLeft: "auto",
-        marginRight: "auto",
+        margin: "0 0 14px",
+        position: "relative",
+        zIndex: 2,
       }}
     >
-      {/* Keep tab + category when the form submits · don't silently
-       *  change the meaning of the search when the user re-queries. */}
       {tab !== "all" && <input type="hidden" name="tab" value={tab} />}
       {category && <input type="hidden" name="category" value={category} />}
       <label
@@ -512,16 +436,13 @@ function SearchForm({
           alignItems: "center",
           gap: 10,
           padding: "12px 16px",
-          borderRadius: 14,
-          border: "1.5px solid transparent",
-          background: `rgba(255,255,255,0.05) padding-box, ${RIM_GRADIENT} border-box`,
-          backdropFilter: "blur(14px)",
-          WebkitBackdropFilter: "blur(14px)",
-          boxShadow:
-            "inset 0 1px 0 rgba(255,255,255,0.1), 0 8px 20px rgba(0,0,0,0.35), 0 0 18px rgba(255,114,0,0.08), 0 0 22px rgba(0,175,255,0.08)",
+          borderRadius: 999,
+          background: NEX.surface,
+          border: `1px solid ${NEX.borderSoft}`,
+          boxShadow: "inset 0 1px 0 rgba(255,255,255,0.03)",
         }}
       >
-        <SearchGlyph tint={NEX.cyan} />
+        <SearchGlyph tint={NEX.orange} />
         <input
           type="text"
           name="q"
@@ -540,69 +461,113 @@ function SearchForm({
             fontFamily: "inherit",
           }}
         />
+        {hasSearch ? (
+          // Results · a quiet filter affordance (visual only · the
+          // sub-tab row below carries the real filter controls today).
+          <span
+            aria-hidden
+            title="Filters"
+            style={{
+              display: "grid",
+              placeItems: "center",
+              width: 32,
+              height: 32,
+              borderRadius: 999,
+              color: NEX.textMuted,
+              background: "rgba(255,255,255,0.03)",
+            }}
+          >
+            <FilterGlyph />
+          </span>
+        ) : (
+          // Landing · honestly-muted mic icon. No handler. aria-label
+          // tells screen readers it's not yet active. Zero fake action.
+          <span
+            aria-label="Voice search coming later"
+            title="Voice search coming later"
+            style={{
+              display: "grid",
+              placeItems: "center",
+              width: 32,
+              height: 32,
+              borderRadius: 999,
+              color: NEX.textSoft,
+              opacity: 0.6,
+            }}
+          >
+            <MicGlyph />
+          </span>
+        )}
       </label>
-      <button
-        type="submit"
-        aria-label="Search"
-        style={{
-          padding: "0 18px",
-          minWidth: 56,
-          borderRadius: 14,
-          border: "2px solid transparent",
-          background: `rgba(255,114,0,0.22) padding-box, ${RIM_GRADIENT} border-box`,
-          backdropFilter: "blur(14px)",
-          WebkitBackdropFilter: "blur(14px)",
-          color: NEX.text,
-          fontSize: 14,
-          fontWeight: 700,
-          letterSpacing: "0.02em",
-          cursor: "pointer",
-          fontFamily: "inherit",
-          boxShadow:
-            "inset 0 1px 0 rgba(255,255,255,0.16), 0 10px 24px rgba(0,0,0,0.4), 0 0 22px rgba(255,114,0,0.28), 0 0 22px rgba(0,175,255,0.2)",
-        }}
-      >
-        Search
-      </button>
-      {query && (
-        <Link
-          href={hrefFor({ q: "", tab, category, page: 1 })}
-          aria-label="Clear search"
-          style={{
-            display: "grid",
-            placeItems: "center",
-            padding: "0 14px",
-            borderRadius: 14,
-            border: `1.5px solid ${NEX.cyan}44`,
-            background: "rgba(255,255,255,0.03)",
-            color: NEX.textDim,
-            fontSize: 13,
-            textDecoration: "none",
-            fontFamily: "inherit",
-          }}
-        >
-          Clear
-        </Link>
-      )}
     </form>
   );
 }
 
 /* ═══════════════════════════════════════════════════════════════════ *
- * Tab bar                                                             *
+ * Tab bars · landing vs results                                       *
  * ═══════════════════════════════════════════════════════════════════ */
 
-function TabBar({
-  tab,
+function LandingTabBar({
+  activeTab,
   query,
   category,
   hrefFor,
 }: {
-  tab: SearchTab;
+  activeTab: LandingTab;
   query: string;
   category: string;
-  hrefFor: (opts: { q?: string; tab?: SearchTab; category?: string; page?: number }) => string;
+  hrefFor: (opts: { q?: string; tab?: string; category?: string; page?: number }) => string;
 }): React.JSX.Element {
+  return (
+    <TabRow>
+      {LANDING_TABS.map((t) => {
+        const active = t === activeTab;
+        const dormant = !LANDING_TAB_ACTIVE[t];
+        return (
+          <TabChip
+            key={t}
+            active={active}
+            dormant={dormant}
+            href={hrefFor({ q: query, tab: t, category, page: 1 })}
+            label={LANDING_TAB_LABEL[t]}
+          />
+        );
+      })}
+    </TabRow>
+  );
+}
+
+function ResultsTabBar({
+  activeTab,
+  query,
+  category,
+  hrefFor,
+}: {
+  activeTab: ResultTab;
+  query: string;
+  category: string;
+  hrefFor: (opts: { q?: string; tab?: string; category?: string; page?: number }) => string;
+}): React.JSX.Element {
+  return (
+    <TabRow>
+      {RESULT_TABS.map((t) => {
+        const active = t === activeTab;
+        const dormant = !RESULT_TAB_ACTIVE[t];
+        return (
+          <TabChip
+            key={t}
+            active={active}
+            dormant={dormant}
+            href={hrefFor({ q: query, tab: t, category, page: 1 })}
+            label={RESULT_TAB_LABEL[t]}
+          />
+        );
+      })}
+    </TabRow>
+  );
+}
+
+function TabRow({ children }: { children: React.ReactNode }): React.JSX.Element {
   return (
     <nav
       aria-label="Search categories"
@@ -610,108 +575,359 @@ function TabBar({
         display: "flex",
         gap: 8,
         overflowX: "auto",
-        padding: "4px 2px 10px",
-        marginBottom: 10,
+        padding: "2px 2px 10px",
+        margin: "0 0 4px",
+        position: "relative",
+        zIndex: 2,
       }}
     >
-      {SEARCH_TABS.map((t) => {
-        const active = t === tab;
-        const dormant = !TAB_ACTIVE[t];
-        return (
-          <Link
-            key={t}
-            href={hrefFor({ q: query, tab: t, category, page: 1 })}
-            aria-current={active ? "page" : undefined}
-            style={{
-              flex: "none",
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 4,
-              padding: "8px 11px",
-              borderRadius: 999,
-              border: "1.5px solid transparent",
-              background: active
-                ? `${NEX.orange}1F padding-box, ${RIM_GRADIENT} border-box`
-                : `rgba(255,255,255,0.03) padding-box, ${RIM_CYAN_ONLY} border-box`,
-              backdropFilter: "blur(10px)",
-              WebkitBackdropFilter: "blur(10px)",
-              color: active ? NEX.text : dormant ? NEX.textMuted : NEX.textDim,
-              fontSize: 12.5,
-              fontWeight: active ? 700 : 600,
-              textDecoration: "none",
-              letterSpacing: "0.01em",
-              boxShadow: active
-                ? `inset 0 1px 0 rgba(255,255,255,0.12), 0 0 14px ${NEX.orange}33, 0 0 16px ${NEX.cyan}22`
-                : "inset 0 1px 0 rgba(255,255,255,0.04)",
-            }}
-          >
-            {TAB_LABEL[t]}
-            {dormant && (
-              <span
-                aria-hidden
-                aria-label="coming later"
-                style={{
-                  width: 5,
-                  height: 5,
-                  borderRadius: 999,
-                  background: NEX.cyan,
-                  opacity: 0.55,
-                  display: "inline-block",
-                }}
-              />
-            )}
-          </Link>
-        );
-      })}
+      {children}
     </nav>
   );
 }
 
+function TabChip({
+  active,
+  dormant,
+  href,
+  label,
+}: {
+  active: boolean;
+  dormant: boolean;
+  href: string;
+  label: string;
+}): React.JSX.Element {
+  return (
+    <Link
+      href={href}
+      aria-current={active ? "page" : undefined}
+      style={{
+        flex: "none",
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 6,
+        padding: "9px 16px",
+        borderRadius: 999,
+        background: active ? NEX.orange : NEX.surface,
+        color: active ? "#0a0608" : dormant ? NEX.textSoft : NEX.textDim,
+        fontSize: 13,
+        fontWeight: active ? 700 : 600,
+        textDecoration: "none",
+        letterSpacing: "0.005em",
+        border: `1px solid ${active ? NEX.orange : NEX.borderSoft}`,
+      }}
+    >
+      {label}
+      {dormant && !active && (
+        <span
+          aria-hidden
+          style={{
+            width: 4,
+            height: 4,
+            borderRadius: 999,
+            background: NEX.cyan,
+            opacity: 0.6,
+          }}
+        />
+      )}
+    </Link>
+  );
+}
+
 /* ═══════════════════════════════════════════════════════════════════ *
- * Dormant panel · honest "coming" state                               *
+ * Example queries row · static illustrative copy (never prefills)     *
  * ═══════════════════════════════════════════════════════════════════ */
 
-function DormantPanel({ tab }: { tab: SearchTab }): React.JSX.Element {
-  const copy = TAB_DORMANT_COPY[tab];
+function ExampleQueriesRow(): React.JSX.Element {
+  const examples = [
+    "Restaurants near me",
+    "Handbag suppliers in Jakarta",
+    "Electrician in Yogyakarta",
+  ];
+  return (
+    <p
+      style={{
+        margin: "4px 0 18px",
+        textAlign: "center",
+        fontSize: 12.5,
+        color: NEX.textMuted,
+        lineHeight: 1.5,
+      }}
+    >
+      Try:{" "}
+      {examples.map((e, i) => (
+        <span key={e}>
+          <span style={{ color: NEX.textDim }}>&ldquo;{e}&rdquo;</span>
+          {i < examples.length - 1 && (
+            <span style={{ color: NEX.textSoft }}> · </span>
+          )}
+        </span>
+      ))}
+    </p>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════════ *
+ * Landing body · Explore NEX 2×2 grid + popular tags                  *
+ * ═══════════════════════════════════════════════════════════════════ */
+
+function LandingBody({
+  popularTags,
+  hrefFor,
+}: {
+  popularTags: Array<{ tag: string; count: number }>;
+  hrefFor: (opts: { q?: string; tab?: string; category?: string; page?: number }) => string;
+}): React.JSX.Element {
+  // Explore grid · four tiles. Only "Shops & products" lands on real
+  // data today. The other three route to their dormant tabs so the
+  // honest "coming later" panel surfaces · never a fabricated result.
+  const exploreTiles: Array<{
+    label: string;
+    glyph: React.ReactNode;
+    href: string;
+    dormant: boolean;
+  }> = [
+    {
+      label: "Shops & products",
+      glyph: <ShopsGlyph />,
+      href: hrefFor({ q: "shops", tab: "shops", page: 1 }),
+      dormant: false,
+    },
+    {
+      label: "Skilled services",
+      glyph: <ServicesGlyph />,
+      href: hrefFor({ tab: "services" }),
+      dormant: true,
+    },
+    {
+      label: "Places near you",
+      glyph: <PlacesGlyph />,
+      href: hrefFor({ tab: "places" }),
+      dormant: true,
+    },
+    {
+      label: "Companies & suppliers",
+      glyph: <CompaniesGlyph />,
+      href: hrefFor({ tab: "companies" }),
+      dormant: true,
+    },
+  ];
+  return (
+    <div style={{ marginTop: 8 }}>
+      <HairlineDivider />
+      <section aria-label="Explore NEX" style={{ margin: "22px 0 8px" }}>
+        <h2
+          style={{
+            margin: "0 0 16px",
+            fontSize: 16,
+            fontWeight: 700,
+            color: NEX.text,
+            textAlign: "center",
+            letterSpacing: "0.005em",
+          }}
+        >
+          Explore NEX
+        </h2>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(2, 1fr)",
+            gap: 12,
+          }}
+        >
+          {exploreTiles.map((t) => (
+            <ExploreTile key={t.label} {...t} />
+          ))}
+        </div>
+      </section>
+
+      {popularTags.length > 0 && (
+        <section aria-label="Popular tags" style={{ marginTop: 28 }}>
+          <div
+            style={{
+              fontSize: 10.5,
+              color: NEX.textMuted,
+              letterSpacing: "0.2em",
+              fontWeight: 700,
+              marginBottom: 12,
+              textAlign: "center",
+            }}
+          >
+            POPULAR TAGS
+          </div>
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: 8,
+              justifyContent: "center",
+            }}
+          >
+            {popularTags.map(({ tag, count }) => (
+              <Link
+                key={tag}
+                href={hrefFor({ q: tag, tab: "all", category: "", page: 1 })}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 6,
+                  padding: "6px 12px",
+                  borderRadius: 999,
+                  background: NEX.surface,
+                  border: `1px solid ${NEX.borderSoft}`,
+                  color: NEX.textDim,
+                  fontSize: 12.5,
+                  fontWeight: 600,
+                  textDecoration: "none",
+                }}
+              >
+                {tag}
+                <span style={{ color: NEX.textSoft, fontSize: 10.5 }}>{count}</span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <section
+        aria-label="About NEX Search"
+        style={{
+          margin: "32px 0 0",
+          padding: "16px 18px",
+          borderRadius: 14,
+          background: NEX.cyanFaint,
+          border: `1px solid ${NEX.borderSoft}`,
+          color: NEX.textDim,
+          fontSize: 12.5,
+          lineHeight: 1.55,
+          textAlign: "center",
+        }}
+      >
+        NEX Search will grow into a universal discovery experience across
+        places, people, products, services and experiences. Today it surfaces
+        live NEX shops and products. Other verticals arrive as the data and
+        infrastructure land.
+      </section>
+    </div>
+  );
+}
+
+function ExploreTile({
+  label,
+  glyph,
+  href,
+  dormant,
+}: {
+  label: string;
+  glyph: React.ReactNode;
+  href: string;
+  dormant: boolean;
+}): React.JSX.Element {
+  return (
+    <Link
+      href={href}
+      style={{
+        position: "relative",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: 10,
+        padding: "22px 14px",
+        borderRadius: 16,
+        background: NEX.surface,
+        border: `1px solid ${NEX.borderSoft}`,
+        color: NEX.text,
+        textDecoration: "none",
+        minHeight: 110,
+        opacity: dormant ? 0.78 : 1,
+      }}
+    >
+      <span aria-hidden style={{ color: NEX.orange }}>{glyph}</span>
+      <span
+        style={{
+          fontSize: 14.5,
+          fontWeight: 700,
+          color: NEX.text,
+          textAlign: "center",
+          letterSpacing: "0.005em",
+        }}
+      >
+        {label}
+      </span>
+      {dormant && (
+        <span
+          aria-label="coming later"
+          style={{
+            position: "absolute",
+            top: 10,
+            right: 10,
+            fontSize: 9,
+            letterSpacing: "0.18em",
+            color: NEX.cyan,
+            fontWeight: 700,
+            opacity: 0.7,
+          }}
+        >
+          SOON
+        </span>
+      )}
+    </Link>
+  );
+}
+
+function HairlineDivider(): React.JSX.Element {
+  return (
+    <div
+      aria-hidden
+      style={{
+        height: 1,
+        margin: "4px 0 0",
+        background: NEX.divider,
+      }}
+    />
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════════ *
+ * Dormant panel · honest "coming later" state                         *
+ * ═══════════════════════════════════════════════════════════════════ */
+
+function DormantPanel({ tabKey }: { tabKey: string }): React.JSX.Element {
+  const copy = DORMANT_COPY[tabKey];
   if (!copy) return <></>;
   return (
     <section
       aria-live="polite"
       style={{
-        marginTop: 24,
-        padding: "40px 24px",
-        borderRadius: 20,
-        border: "1.5px solid transparent",
-        background: `rgba(255,255,255,0.04) padding-box, ${RIM_CYAN_ONLY} border-box`,
-        backdropFilter: "blur(14px)",
-        WebkitBackdropFilter: "blur(14px)",
+        marginTop: 18,
+        padding: "32px 24px",
+        borderRadius: 16,
+        background: NEX.surface,
+        border: `1px solid ${NEX.borderSoft}`,
         textAlign: "center",
-        boxShadow:
-          "inset 0 1px 0 rgba(255,255,255,0.08), 0 10px 24px rgba(0,0,0,0.3)",
       }}
     >
       <div
         aria-hidden
         style={{
           margin: "0 auto 14px",
-          width: 60,
-          height: 60,
-          borderRadius: 20,
-          border: "1.5px solid transparent",
-          background: `${NEX.cyan}1A padding-box, ${RIM_CYAN_ONLY} border-box`,
+          width: 54,
+          height: 54,
+          borderRadius: 14,
+          background: NEX.surfaceHi,
           color: NEX.cyan,
           display: "grid",
           placeItems: "center",
+          border: `1px solid ${NEX.cyan}22`,
         }}
       >
-        {tab === "companies" && <CompaniesGlyph />}
-        {tab === "services" && <ServicesGlyph />}
-        {tab === "places" && <PlacesGlyph />}
+        <SearchGlyph tint={NEX.cyan} />
       </div>
       <h2
         style={{
           margin: 0,
-          fontSize: 17,
+          fontSize: 16,
           fontWeight: 700,
           color: NEX.text,
           letterSpacing: "-0.005em",
@@ -735,234 +951,79 @@ function DormantPanel({ tab }: { tab: SearchTab }): React.JSX.Element {
 }
 
 /* ═══════════════════════════════════════════════════════════════════ *
- * Landing body · discovery shortcuts + popular tags                   *
- * ═══════════════════════════════════════════════════════════════════ */
-
-function LandingBody({
-  popularTags,
-  hrefFor,
-}: {
-  popularTags: Array<{ tag: string; count: number }>;
-  hrefFor: (opts: { q?: string; tab?: SearchTab; category?: string; page?: number }) => string;
-}): React.JSX.Element {
-  // Discovery shortcuts · only categories backed by actual data today.
-  // Shops + Products are the only verticals with real content. The
-  // other visions (Hotels, Things to do, Companies, Services) stay
-  // represented in the dormant tabs above but we do NOT render shortcut
-  // tiles that lead to empty searches.
-  const shortcuts = [
-    {
-      icon: <ShopsGlyph />,
-      title: "Shops & products",
-      body: "Browse live shops and the products on them.",
-      href: hrefFor({ q: "", tab: "shops", category: "", page: 1 }),
-    },
-  ];
-  return (
-    <div style={{ marginTop: 10 }}>
-      <section
-        aria-label="Discovery shortcuts"
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-          gap: 12,
-          marginBottom: 24,
-        }}
-      >
-        {shortcuts.map((s) => (
-          <Link
-            key={s.title}
-            href={s.href}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 14,
-              padding: "16px 16px",
-              borderRadius: 18,
-              border: "1.5px solid transparent",
-              background: `rgba(255,255,255,0.05) padding-box, ${RIM_GRADIENT} border-box`,
-              backdropFilter: "blur(14px)",
-              WebkitBackdropFilter: "blur(14px)",
-              color: NEX.text,
-              textDecoration: "none",
-              boxShadow:
-                "inset 0 1px 0 rgba(255,255,255,0.1), 0 8px 20px rgba(0,0,0,0.3), 0 0 16px rgba(255,114,0,0.08), 0 0 18px rgba(0,175,255,0.08)",
-            }}
-          >
-            <span
-              aria-hidden
-              style={{
-                width: 46,
-                height: 46,
-                borderRadius: 14,
-                border: "1.5px solid transparent",
-                background: `${NEX.orange}1F padding-box, ${RIM_GRADIENT} border-box`,
-                color: NEX.orange,
-                display: "grid",
-                placeItems: "center",
-                boxShadow: `inset 0 1px 0 rgba(255,255,255,0.14), 0 0 14px ${NEX.orange}33`,
-              }}
-            >
-              {s.icon}
-            </span>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontSize: 15, fontWeight: 700 }}>{s.title}</div>
-              <div style={{ fontSize: 12.5, color: NEX.textDim, marginTop: 2 }}>
-                {s.body}
-              </div>
-            </div>
-            <span aria-hidden style={{ color: NEX.cyan, fontSize: 18 }}>→</span>
-          </Link>
-        ))}
-      </section>
-
-      {popularTags.length > 0 && (
-        <section aria-label="Popular tags" style={{ marginBottom: 32 }}>
-          <div
-            style={{
-              fontSize: 10.5,
-              color: NEX.textDim,
-              letterSpacing: "0.2em",
-              fontWeight: 700,
-              marginBottom: 12,
-            }}
-          >
-            POPULAR TAGS
-          </div>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-            {popularTags.map(({ tag, count }) => (
-              <Link
-                key={tag}
-                href={hrefFor({ q: tag, tab: "all", category: "", page: 1 })}
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 6,
-                  padding: "6px 12px",
-                  borderRadius: 999,
-                  border: "1.5px solid transparent",
-                  background: `rgba(255,255,255,0.03) padding-box, ${RIM_CYAN_ONLY} border-box`,
-                  color: NEX.cyan,
-                  fontSize: 12.5,
-                  fontWeight: 600,
-                  textDecoration: "none",
-                }}
-              >
-                {tag}
-                <span style={{ color: NEX.textMuted, fontSize: 10.5 }}>
-                  {count}
-                </span>
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* Honest footer · tells the user what the surface will become
-       *  without implying any dates. Matches the dormant tabs' tone. */}
-      <section
-        aria-label="About NEX Search"
-        style={{
-          padding: "16px 18px",
-          borderRadius: 16,
-          border: `1px solid ${NEX.cyanFaint}`,
-          background: "rgba(0,175,255,0.03)",
-          color: NEX.textDim,
-          fontSize: 12.5,
-          lineHeight: 1.6,
-        }}
-      >
-        NEX Search will grow into a universal discovery experience
-        covering places, people, products, services and experiences.
-        Right now it surfaces live NEX shops and products. Other
-        verticals arrive as the data and infrastructure land.
-      </section>
-    </div>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════════════════ *
- * Results body · landscape glass cards                                *
+ * Results body · landscape result cards + pagination                  *
  * ═══════════════════════════════════════════════════════════════════ */
 
 function ResultsBody({
-  tab,
-  query,
   productsPaged,
   businessesPaged,
-  productCount,
+  productBizById,
   businessCount,
+  productCount,
+  tab,
+  query,
   page,
   hasPrev,
   hasNext,
-  productBizById,
   hrefFor,
 }: {
-  tab: SearchTab;
-  query: string;
-  category: string;
   productsPaged: NexProductRow[];
   businessesPaged: NexBusinessRow[];
-  shopIds: Set<string>;
   productBizById: Map<string, NexBusinessRow>;
-  productCount: number;
   businessCount: number;
+  productCount: number;
+  tab: ResultTab;
+  query: string;
   page: number;
   hasPrev: boolean;
   hasNext: boolean;
-  hrefFor: (opts: { q?: string; tab?: SearchTab; category?: string; page?: number }) => string;
+  hrefFor: (opts: { q?: string; tab?: string; category?: string; page?: number }) => string;
 }): React.JSX.Element {
-  const combinedEmpty =
+  const noResults =
     productsPaged.length === 0 && businessesPaged.length === 0;
-
   return (
-    <div style={{ marginTop: 10, display: "flex", flexDirection: "column", gap: 20 }}>
+    <div style={{ marginTop: 14, display: "flex", flexDirection: "column", gap: 18 }}>
       <ResultsSummary
         tab={tab}
-        productCount={productCount}
         businessCount={businessCount}
-        productsOnThisPage={productsPaged.length}
-        businessesOnThisPage={businessesPaged.length}
+        productCount={productCount}
       />
 
-      {combinedEmpty ? (
+      {noResults ? (
         <EmptyState query={query} tab={tab} />
       ) : (
         <>
           {businessesPaged.length > 0 && (
-            <section aria-label="Businesses">
-              <SectionHeader label={tab === "shops" ? "Shops" : "Businesses"} count={businessesPaged.length} />
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 10,
-                }}
-              >
-                {businessesPaged.map((b) => (
-                  <GlassBusinessCard key={b.id} business={b} />
-                ))}
-              </div>
+            <section
+              aria-label={tab === "shops" ? "Shops" : "Businesses"}
+              style={{ display: "flex", flexDirection: "column", gap: 14 }}
+            >
+              {businessesPaged.map((b, idx) => (
+                <ResultBusinessCard
+                  key={b.id}
+                  business={b}
+                  isLastInSection={idx === businessesPaged.length - 1}
+                />
+              ))}
             </section>
           )}
 
           {productsPaged.length > 0 && (
-            <section aria-label="Products">
-              <SectionHeader label="Products" count={productsPaged.length} />
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 10,
-                }}
-              >
-                {productsPaged.map((p) => {
-                  const biz = productBizById.get(p.business_id);
-                  return (
-                    <GlassProductCard key={p.id} product={p} business={biz ?? null} />
-                  );
-                })}
-              </div>
+            <section
+              aria-label="Products"
+              style={{ display: "flex", flexDirection: "column", gap: 14 }}
+            >
+              {productsPaged.map((p, idx) => {
+                const biz = productBizById.get(p.business_id);
+                return (
+                  <ResultProductCard
+                    key={p.id}
+                    product={p}
+                    business={biz ?? null}
+                    isLastInSection={idx === productsPaged.length - 1}
+                  />
+                );
+              })}
             </section>
           )}
 
@@ -981,16 +1042,12 @@ function ResultsBody({
 
 function ResultsSummary({
   tab,
-  productCount,
   businessCount,
-  productsOnThisPage,
-  businessesOnThisPage,
+  productCount,
 }: {
-  tab: SearchTab;
-  productCount: number;
+  tab: ResultTab;
   businessCount: number;
-  productsOnThisPage: number;
-  businessesOnThisPage: number;
+  productCount: number;
 }): React.JSX.Element {
   const parts: string[] = [];
   if (tab === "all") {
@@ -1001,99 +1058,33 @@ function ResultsSummary({
       parts.push(`${productCount} ${productCount === 1 ? "product" : "products"}`);
     }
   } else if (tab === "shops") {
-    // Count comes from countShops() · reflects the pre-filtered
-    // universe of businesses-with-live-products that match the query.
     if (businessCount > 0) {
       parts.push(
         `${businessCount} ${businessCount === 1 ? "shop" : "shops"} with live products`,
       );
     }
   }
-  if (parts.length === 0) {
-    void productsOnThisPage;
-    void businessesOnThisPage;
-    return (
-      <div style={{ fontSize: 12, color: NEX.textDim }}>
-        {tab === "shops"
-          ? "Shops are businesses with at least one live product on NEX."
-          : "No results."}
-      </div>
-    );
-  }
+  if (parts.length === 0) return <></>;
   return (
-    <div
-      style={{
-        fontSize: 12,
-        color: NEX.textDim,
-        letterSpacing: "0.02em",
-      }}
-    >
+    <div style={{ fontSize: 12, color: NEX.textMuted, letterSpacing: "0.02em" }}>
       {parts.join(" · ")}
     </div>
   );
 }
 
-function SectionHeader({
-  label,
-  count,
-}: {
-  label: string;
-  count: number;
-}): React.JSX.Element {
-  return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "baseline",
-        justifyContent: "space-between",
-        marginBottom: 10,
-      }}
-    >
-      <h2
-        style={{
-          margin: 0,
-          fontSize: 11,
-          fontWeight: 700,
-          letterSpacing: "0.2em",
-          color: NEX.textDim,
-          textTransform: "uppercase",
-        }}
-      >
-        {label}
-      </h2>
-      <span style={{ fontSize: 11, color: NEX.textMuted }}>{count}</span>
-    </div>
-  );
-}
-
-function EmptyState({ query, tab }: { query: string; tab: SearchTab }): React.JSX.Element {
+function EmptyState({ query, tab }: { query: string; tab: ResultTab }): React.JSX.Element {
   return (
     <section
       style={{
-        marginTop: 10,
-        padding: "32px 20px",
-        borderRadius: 18,
-        border: "1.5px solid transparent",
-        background: `rgba(255,255,255,0.04) padding-box, ${RIM_CYAN_ONLY} border-box`,
+        marginTop: 4,
+        padding: "28px 20px",
+        borderRadius: 16,
+        background: NEX.surface,
+        border: `1px solid ${NEX.borderSoft}`,
         textAlign: "center",
       }}
     >
-      <div
-        style={{
-          margin: "0 auto 10px",
-          width: 48,
-          height: 48,
-          borderRadius: 14,
-          border: `1.5px solid ${NEX.cyan}44`,
-          background: `${NEX.cyan}1A`,
-          color: NEX.cyan,
-          display: "grid",
-          placeItems: "center",
-        }}
-      >
-        <SearchGlyph tint={NEX.cyan} />
-      </div>
-      <h3 style={{ margin: 0, fontSize: 15, fontWeight: 700 }}>
+      <h3 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: NEX.text }}>
         No results{query ? ` for “${query}”` : ""}
       </h3>
       <p
@@ -1102,16 +1093,325 @@ function EmptyState({ query, tab }: { query: string; tab: SearchTab }): React.JS
           maxWidth: 360,
           fontSize: 12.5,
           color: NEX.textDim,
-          lineHeight: 1.5,
+          lineHeight: 1.55,
         }}
       >
         {tab === "shops"
-          ? "Try removing a filter, broadening the query, or switching to All."
+          ? "Try removing a filter, broadening the query, or switching to All results."
           : "Try a different query or check the spelling."}
       </p>
     </section>
   );
 }
+
+/* ═══════════════════════════════════════════════════════════════════ *
+ * Result cards · landscape · match the mock exactly                   *
+ * ═══════════════════════════════════════════════════════════════════ */
+
+function ResultBusinessCard({
+  business,
+  isLastInSection,
+}: {
+  business: NexBusinessRow;
+  isLastInSection: boolean;
+}): React.JSX.Element {
+  const b = business as NexBusinessRow & {
+    city?: string | null;
+    business_category?: string | null;
+    verified_at?: string | null;
+    search_keywords?: string[] | null;
+  };
+  const typeLabel = businessTypeLabel(b.business_category);
+  const location = b.city ?? null;
+  const metaParts = [typeLabel, location].filter(Boolean) as string[];
+  // Visible chips: first 3 search keywords when present. No fabrication.
+  const chips = (b.search_keywords ?? [])
+    .filter((k): k is string => typeof k === "string" && k.trim().length > 0)
+    .slice(0, 3);
+  const cta = typeLabel && typeLabel.toLowerCase().includes("company")
+    ? "View company →"
+    : typeLabel && typeLabel.toLowerCase().includes("manufactur")
+      ? "View company →"
+      : "View shop →";
+  return (
+    <div>
+      <Link
+        href={`/nex-native/${business.slug}`}
+        style={{
+          display: "flex",
+          alignItems: "stretch",
+          gap: 16,
+          padding: "4px 4px 20px",
+          textDecoration: "none",
+          color: NEX.text,
+        }}
+      >
+        <ResultThumb src={business.logo_url ?? null} alt={business.display_name} />
+        <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 6 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0 }}>
+            <span
+              style={{
+                fontSize: 16,
+                fontWeight: 700,
+                letterSpacing: "-0.005em",
+                color: NEX.text,
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
+              {business.display_name}
+            </span>
+            {b.verified_at && (
+              <VerifiedBadge />
+            )}
+          </div>
+          {metaParts.length > 0 && (
+            <div style={{ fontSize: 12.5, color: NEX.orange, fontWeight: 600 }}>
+              {metaParts.join(" · ")}
+            </div>
+          )}
+          {business.description && (
+            <p
+              style={{
+                margin: 0,
+                fontSize: 13.5,
+                color: NEX.textDim,
+                lineHeight: 1.45,
+                display: "-webkit-box",
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: "vertical",
+                overflow: "hidden",
+              }}
+            >
+              {business.description}
+            </p>
+          )}
+          {chips.length > 0 && (
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 2 }}>
+              {chips.map((c) => (
+                <ChipPill key={c} label={c} />
+              ))}
+            </div>
+          )}
+          <span style={{ marginTop: 4, color: NEX.orange, fontSize: 13.5, fontWeight: 700 }}>
+            {cta}
+          </span>
+        </div>
+      </Link>
+      {!isLastInSection && (
+        <div aria-hidden style={{ height: 1, background: NEX.divider, margin: 0 }} />
+      )}
+    </div>
+  );
+}
+
+function ResultProductCard({
+  product,
+  business,
+  isLastInSection,
+}: {
+  product: NexProductRow;
+  business: NexBusinessRow | null;
+  isLastInSection: boolean;
+}): React.JSX.Element {
+  const b = business as (NexBusinessRow & { city?: string | null; business_category?: string | null }) | null;
+  const location = b?.city ?? null;
+  const bizTypeLabel = b ? businessTypeLabel(b.business_category) : null;
+  const metaParts = ["Product", bizTypeLabel, location].filter(Boolean) as string[];
+  const price =
+    typeof product.price_pence === "number" && product.price_pence > 0
+      ? formatPrice(product.price_pence, product.currency)
+      : null;
+  const chips = (product.tags ?? [])
+    .filter((t): t is string => typeof t === "string" && t.trim().length > 0)
+    .slice(0, 3);
+  return (
+    <div>
+      <Link
+        href={business ? `/nex-native/${business.slug}` : `/nex-native/search`}
+        style={{
+          display: "flex",
+          alignItems: "stretch",
+          gap: 16,
+          padding: "4px 4px 20px",
+          textDecoration: "none",
+          color: NEX.text,
+        }}
+      >
+        <ResultThumb src={product.image_url ?? null} alt={product.name} />
+        <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 6 }}>
+          <div style={{ display: "flex", alignItems: "flex-start", gap: 10, minWidth: 0 }}>
+            <span
+              style={{
+                flex: 1,
+                fontSize: 16,
+                fontWeight: 700,
+                letterSpacing: "-0.005em",
+                color: NEX.text,
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
+              {product.name}
+            </span>
+            {price && (
+              <span style={{ color: NEX.orange, fontSize: 14, fontWeight: 700, flex: "none" }}>
+                {price}
+              </span>
+            )}
+          </div>
+          {metaParts.length > 0 && (
+            <div style={{ fontSize: 12.5, color: NEX.orange, fontWeight: 600 }}>
+              {metaParts.join(" · ")}
+            </div>
+          )}
+          {product.description && (
+            <p
+              style={{
+                margin: 0,
+                fontSize: 13.5,
+                color: NEX.textDim,
+                lineHeight: 1.45,
+                display: "-webkit-box",
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: "vertical",
+                overflow: "hidden",
+              }}
+            >
+              {product.description}
+            </p>
+          )}
+          {chips.length > 0 && (
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 2 }}>
+              {chips.map((c) => (
+                <ChipPill key={c} label={c} />
+              ))}
+            </div>
+          )}
+          <span style={{ marginTop: 4, color: NEX.orange, fontSize: 13.5, fontWeight: 700 }}>
+            {business ? "View shop →" : "View details →"}
+          </span>
+        </div>
+      </Link>
+      {!isLastInSection && (
+        <div aria-hidden style={{ height: 1, background: NEX.divider, margin: 0 }} />
+      )}
+    </div>
+  );
+}
+
+function ResultThumb({ src, alt }: { src: string | null; alt: string }): React.JSX.Element {
+  return (
+    <span
+      aria-hidden={!src}
+      style={{
+        width: 92,
+        height: 92,
+        flex: "none",
+        borderRadius: 14,
+        overflow: "hidden",
+        background: src
+          ? `url(${src}) center/cover`
+          : `linear-gradient(135deg, ${NEX.orange}22, ${NEX.cyan}22)`,
+        border: `1px solid ${NEX.borderSoft}`,
+        display: "grid",
+        placeItems: "center",
+        color: NEX.textMuted,
+      }}
+    >
+      {!src && <ShopsGlyph />}
+      {src && <span style={{ display: "none" }}>{alt}</span>}
+    </span>
+  );
+}
+
+function ChipPill({ label }: { label: string }): React.JSX.Element {
+  return (
+    <span
+      style={{
+        display: "inline-block",
+        padding: "4px 10px",
+        borderRadius: 999,
+        background: NEX.surfaceHi,
+        border: `1px solid ${NEX.borderSoft}`,
+        color: NEX.textDim,
+        fontSize: 11.5,
+        fontWeight: 600,
+        letterSpacing: "0.01em",
+      }}
+    >
+      {label}
+    </span>
+  );
+}
+
+function VerifiedBadge(): React.JSX.Element {
+  return (
+    <span
+      aria-label="Verified"
+      title="Verified business"
+      style={{
+        flex: "none",
+        fontSize: 10,
+        color: NEX.cyan,
+        padding: "2px 7px",
+        borderRadius: 999,
+        border: `1px solid ${NEX.cyan}44`,
+        background: `${NEX.cyan}14`,
+        fontWeight: 700,
+        letterSpacing: "0.06em",
+        textTransform: "uppercase",
+      }}
+    >
+      ✓
+    </span>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════════ *
+ * Business-type label derivation · honest, data-backed only           *
+ * ═══════════════════════════════════════════════════════════════════ */
+
+/** Convert nex_business.business_category (nullable, snake-case
+ *  vertical slug) into a human-readable label that fits the mock's
+ *  "{Type} · {Location}" line. Returns null when the category is
+ *  not populated · which is the common case (96.4% null in current
+ *  data). Honest · never fabricates a type to populate the slot. */
+function businessTypeLabel(cat: string | null | undefined): string | null {
+  if (!cat) return null;
+  const map: Record<string, string> = {
+    bakery: "Bakery",
+    restaurant: "Restaurant",
+    cafe: "Café",
+    "ice-cream": "Ice cream shop",
+    "dessert-shop": "Dessert shop",
+    "drinks-shop": "Drinks shop",
+    "juice-bar": "Juice bar",
+    tradesperson: "Tradesperson",
+    construction: "Construction",
+    "staircase-company": "Staircase company",
+    salon: "Salon",
+    beauty: "Beauty",
+    fitness: "Fitness",
+    consultant: "Consultant",
+    agency: "Agency",
+    ecommerce: "Online shop",
+    "product-brand": "Brand",
+    "local-service": "Local service",
+    portfolio: "Portfolio",
+    community: "Community",
+    event: "Event",
+    creator: "Creator",
+    "professional-service": "Professional service",
+  };
+  return map[cat] ?? null;
+}
+
+/* ═══════════════════════════════════════════════════════════════════ *
+ * Pagination · minimal · matches the Phase 1 behaviour                *
+ * ═══════════════════════════════════════════════════════════════════ */
 
 function Pagination({
   page,
@@ -1139,19 +1439,15 @@ function Pagination({
       }}
     >
       {hasPrev ? (
-        <Link href={prevHref} style={pagerLinkStyle(true)}>
-          ← Prev
-        </Link>
+        <Link href={prevHref} style={pagerLinkStyle(true)}>← Prev</Link>
       ) : (
         <span style={pagerLinkStyle(false)}>← Prev</span>
       )}
-      <span style={{ fontSize: 12, color: NEX.textDim, letterSpacing: "0.02em" }}>
+      <span style={{ fontSize: 12, color: NEX.textMuted, letterSpacing: "0.02em" }}>
         Page {page}
       </span>
       {hasNext ? (
-        <Link href={nextHref} style={pagerLinkStyle(true)}>
-          Next →
-        </Link>
+        <Link href={nextHref} style={pagerLinkStyle(true)}>Next →</Link>
       ) : (
         <span style={pagerLinkStyle(false)}>Next →</span>
       )}
@@ -1162,256 +1458,45 @@ function Pagination({
 function pagerLinkStyle(enabled: boolean): React.CSSProperties {
   return {
     display: "inline-block",
-    padding: "9px 16px",
+    padding: "8px 16px",
     borderRadius: 999,
-    border: "1.5px solid transparent",
-    background: enabled
-      ? `rgba(255,255,255,0.04) padding-box, ${RIM_GRADIENT} border-box`
-      : "transparent",
-    color: enabled ? NEX.text : NEX.textMuted,
+    background: enabled ? NEX.surface : "transparent",
+    border: `1px solid ${enabled ? NEX.borderSoft : "transparent"}`,
+    color: enabled ? NEX.text : NEX.textSoft,
     fontSize: 12.5,
     fontWeight: 600,
     textDecoration: "none",
     cursor: enabled ? "pointer" : "not-allowed",
     pointerEvents: enabled ? "auto" : "none",
-    opacity: enabled ? 1 : 0.4,
+    opacity: enabled ? 1 : 0.45,
     fontFamily: "inherit",
   };
 }
 
 /* ═══════════════════════════════════════════════════════════════════ *
- * Glass cards · landscape, image + content block + CTA                *
+ * Error banner                                                        *
  * ═══════════════════════════════════════════════════════════════════ */
 
-function GlassBusinessCard({ business }: { business: NexBusinessRow }): React.JSX.Element {
-  const b = business as NexBusinessRow & {
-    city?: string | null;
-    business_category?: string | null;
-    verified_at?: string | null;
-  };
+function ErrorBanner({ message }: { message: string }): React.JSX.Element {
   return (
-    <Link
-      href={`/nex-native/${business.slug}`}
+    <div
+      role="status"
       style={{
-        display: "flex",
-        alignItems: "stretch",
-        gap: 14,
-        padding: "14px 14px",
-        borderRadius: 18,
-        border: "1.5px solid transparent",
-        background: `rgba(255,255,255,0.05) padding-box, ${RIM_GRADIENT} border-box`,
-        backdropFilter: "blur(14px)",
-        WebkitBackdropFilter: "blur(14px)",
-        color: NEX.text,
-        textDecoration: "none",
-        boxShadow:
-          "inset 0 1px 0 rgba(255,255,255,0.08), 0 8px 20px rgba(0,0,0,0.35), 0 0 16px rgba(255,114,0,0.07), 0 0 20px rgba(0,175,255,0.07)",
+        marginTop: 10,
+        padding: "12px 14px",
+        borderRadius: 12,
+        border: `1px solid ${NEX.darkRed}99`,
+        background: "rgba(153,27,27,0.14)",
+        color: "#FFB4C0",
+        fontSize: 13,
       }}
     >
-      <CardImage src={business.logo_url ?? null} alt={business.display_name} />
-      <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 3 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0 }}>
-          <span
-            style={{
-              fontSize: 15.5,
-              fontWeight: 700,
-              letterSpacing: "-0.005em",
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-            }}
-          >
-            {business.display_name}
-          </span>
-          {b.verified_at && (
-            <span
-              aria-label="Verified"
-              title="Verified business"
-              style={{
-                flex: "none",
-                fontSize: 10,
-                color: NEX.cyan,
-                padding: "2px 7px",
-                borderRadius: 999,
-                border: `1px solid ${NEX.cyan}66`,
-                background: NEX.cyanSoft,
-                fontWeight: 700,
-                letterSpacing: "0.06em",
-                textTransform: "uppercase",
-              }}
-            >
-              ✓
-            </span>
-          )}
-        </div>
-        {b.business_category && (
-          <div
-            style={{
-              fontSize: 12,
-              color: NEX.cyan,
-              fontWeight: 600,
-              letterSpacing: "0.02em",
-              textTransform: "capitalize",
-            }}
-          >
-            {b.business_category.replace(/-/g, " ")}
-          </div>
-        )}
-        {business.description && (
-          <div
-            style={{
-              fontSize: 12.5,
-              color: NEX.textDim,
-              lineHeight: 1.45,
-              display: "-webkit-box",
-              WebkitLineClamp: 2,
-              WebkitBoxOrient: "vertical",
-              overflow: "hidden",
-            }}
-          >
-            {business.description}
-          </div>
-        )}
-        {b.city && (
-          <div style={{ fontSize: 11.5, color: NEX.textMuted, marginTop: 2 }}>
-            {b.city}
-          </div>
-        )}
-      </div>
-      <span
-        aria-hidden
-        style={{
-          alignSelf: "center",
-          color: NEX.orange,
-          fontSize: 18,
-          flex: "none",
-        }}
-      >
-        →
-      </span>
-    </Link>
-  );
-}
-
-function GlassProductCard({
-  product,
-  business,
-}: {
-  product: NexProductRow;
-  business: NexBusinessRow | null;
-}): React.JSX.Element {
-  const price =
-    typeof product.price_pence === "number" && product.price_pence > 0
-      ? formatPrice(product.price_pence, product.currency)
-      : null;
-  return (
-    <Link
-      href={business ? `/nex-native/${business.slug}` : `/nex-native/search`}
-      style={{
-        display: "flex",
-        alignItems: "stretch",
-        gap: 14,
-        padding: "14px 14px",
-        borderRadius: 18,
-        border: "1.5px solid transparent",
-        background: `rgba(255,255,255,0.04) padding-box, ${RIM_CYAN_ONLY} border-box`,
-        backdropFilter: "blur(14px)",
-        WebkitBackdropFilter: "blur(14px)",
-        color: NEX.text,
-        textDecoration: "none",
-        boxShadow:
-          "inset 0 1px 0 rgba(255,255,255,0.06), 0 6px 16px rgba(0,0,0,0.3)",
-      }}
-    >
-      <CardImage src={product.image_url ?? null} alt={product.name} />
-      <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 3 }}>
-        <div style={{ fontSize: 10.5, color: NEX.textDim, letterSpacing: "0.12em", fontWeight: 700 }}>
-          PRODUCT
-        </div>
-        <div
-          style={{
-            fontSize: 15,
-            fontWeight: 700,
-            letterSpacing: "-0.005em",
-            whiteSpace: "nowrap",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-          }}
-        >
-          {product.name}
-        </div>
-        {business && (
-          <div style={{ fontSize: 12, color: NEX.cyan, fontWeight: 600 }}>
-            at {business.display_name}
-          </div>
-        )}
-        {product.description && (
-          <div
-            style={{
-              fontSize: 12.5,
-              color: NEX.textDim,
-              lineHeight: 1.45,
-              display: "-webkit-box",
-              WebkitLineClamp: 2,
-              WebkitBoxOrient: "vertical",
-              overflow: "hidden",
-            }}
-          >
-            {product.description}
-          </div>
-        )}
-      </div>
-      <div
-        style={{
-          alignSelf: "center",
-          color: NEX.orange,
-          fontSize: 14,
-          fontWeight: 700,
-          flex: "none",
-          textAlign: "right",
-          minWidth: 60,
-        }}
-      >
-        {price ?? "→"}
-      </div>
-    </Link>
-  );
-}
-
-function CardImage({
-  src,
-  alt,
-}: {
-  src: string | null;
-  alt: string;
-}): React.JSX.Element {
-  return (
-    <span
-      aria-hidden={!src}
-      style={{
-        width: 72,
-        height: 72,
-        borderRadius: 14,
-        flex: "none",
-        overflow: "hidden",
-        background: src
-          ? `url(${src}) center/cover`
-          : `linear-gradient(135deg, ${NEX.orange}22, ${NEX.cyan}22)`,
-        border: `1.5px solid ${NEX.cyan}22`,
-        display: "grid",
-        placeItems: "center",
-        color: NEX.textDim,
-        fontSize: 20,
-      }}
-    >
-      {!src && <ShopsGlyph />}
-      {src && <span style={{ display: "none" }}>{alt}</span>}
-    </span>
+      {message}
+    </div>
   );
 }
 
 function formatPrice(pence: number, currency: string | null | undefined): string {
-  // Lightweight · lean on the currency string. Never fabricate.
   const amount = pence / 100;
   const c = (currency ?? "").toUpperCase();
   if (c === "IDR") return `Rp ${Math.round(amount).toLocaleString("id-ID")}`;
@@ -1423,40 +1508,54 @@ function formatPrice(pence: number, currency: string | null | undefined): string
 }
 
 /* ═══════════════════════════════════════════════════════════════════ *
- * Inline glyphs · no external SVG dependency                          *
+ * Inline glyphs                                                       *
  * ═══════════════════════════════════════════════════════════════════ */
 
 function SearchGlyph({ tint }: { tint: string }): React.JSX.Element {
   return (
     <svg width={20} height={20} viewBox="0 0 24 24" fill="none"
-         stroke={tint} strokeWidth={1.9} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+         stroke={tint} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
       <circle cx={11} cy={11} r={7} />
       <line x1={21} y1={21} x2={16.65} y2={16.65} />
     </svg>
   );
 }
+function MicGlyph(): React.JSX.Element {
+  return (
+    <svg width={18} height={18} viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" strokeWidth={1.9} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <rect x={9} y={2} width={6} height={12} rx={3} />
+      <path d="M5 10v2a7 7 0 0 0 14 0v-2" />
+      <line x1={12} y1={19} x2={12} y2={22} />
+      <line x1={8} y1={22} x2={16} y2={22} />
+    </svg>
+  );
+}
+function FilterGlyph(): React.JSX.Element {
+  return (
+    <svg width={18} height={18} viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" strokeWidth={1.9} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <line x1={4} y1={6} x2={14} y2={6} />
+      <line x1={4} y1={12} x2={11} y2={12} />
+      <line x1={4} y1={18} x2={8} y2={18} />
+      <circle cx={17} cy={6} r={2} />
+      <circle cx={14} cy={12} r={2} />
+      <circle cx={11} cy={18} r={2} />
+    </svg>
+  );
+}
 function ShopsGlyph(): React.JSX.Element {
   return (
-    <svg width={22} height={22} viewBox="0 0 24 24" fill="none"
+    <svg width={28} height={28} viewBox="0 0 24 24" fill="none"
          stroke="currentColor" strokeWidth={1.9} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
       <path d="M3 7h18l-1.5 11a2 2 0 0 1-2 1.75H6.5A2 2 0 0 1 4.5 18L3 7z" />
       <path d="M8 7V5a4 4 0 0 1 8 0v2" />
     </svg>
   );
 }
-function CompaniesGlyph(): React.JSX.Element {
-  return (
-    <svg width={22} height={22} viewBox="0 0 24 24" fill="none"
-         stroke="currentColor" strokeWidth={1.9} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-      <rect x={3} y={6} width={18} height={14} rx={2} />
-      <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-      <line x1={3} y1={11} x2={21} y2={11} />
-    </svg>
-  );
-}
 function ServicesGlyph(): React.JSX.Element {
   return (
-    <svg width={22} height={22} viewBox="0 0 24 24" fill="none"
+    <svg width={28} height={28} viewBox="0 0 24 24" fill="none"
          stroke="currentColor" strokeWidth={1.9} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
       <path d="M14.7 6.3a4 4 0 0 1 5.3 5.3L10.5 21.1 3 22l.9-7.5L14.7 6.3z" />
     </svg>
@@ -1464,10 +1563,20 @@ function ServicesGlyph(): React.JSX.Element {
 }
 function PlacesGlyph(): React.JSX.Element {
   return (
-    <svg width={22} height={22} viewBox="0 0 24 24" fill="none"
+    <svg width={28} height={28} viewBox="0 0 24 24" fill="none"
          stroke="currentColor" strokeWidth={1.9} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
       <path d="M12 22s7-6.5 7-12a7 7 0 1 0-14 0c0 5.5 7 12 7 12z" />
       <circle cx={12} cy={10} r={2.4} />
+    </svg>
+  );
+}
+function CompaniesGlyph(): React.JSX.Element {
+  return (
+    <svg width={28} height={28} viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" strokeWidth={1.9} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <rect x={3} y={6} width={18} height={14} rx={2} />
+      <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+      <line x1={3} y1={11} x2={21} y2={11} />
     </svg>
   );
 }
