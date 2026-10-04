@@ -61,16 +61,21 @@ const NEX = {
  * If you touch the hub palette (PAL in _calls-client.tsx), update
  * these values in the same change so the two don't drift. */
 const CALL_SURFACE = {
-  bg1: "#06091A",
-  bg2: "#0B1024",
-  accent: "#FF8A2A",
-  accentSoft: "rgba(255,138,42,0.18)",
+  bg1: "#0A1230",
+  bg2: "#132A5E",
+  bgGlow: "rgba(76,141,242,0.28)",
+  accent: "#FF9933",
+  accentSoft: "rgba(255,153,51,0.16)",
+  ping: "#4C8DF2",
   green: "#22C55E",
-  red: "#EF4444",
+  red: "#E63946",
   text: "#F2F5FA",
   textDim: "#A6ADC2",
-  btnBg: "#121737",
-  btnBorder: "rgba(255,255,255,0.08)",
+  textMuted: "#6B7490",
+  btnBg: "#162544",
+  btnBorder: "rgba(76,141,242,0.22)",
+  wordmarkA: "#F2F5FA",
+  wordmarkB: "#FF9933",
 };
 
 const CALL_BUTTON_STYLE: React.CSSProperties = {
@@ -712,7 +717,7 @@ function CallOverlay(p: OverlayProps): React.JSX.Element {
         position: "fixed",
         inset: 0,
         zIndex: 1000,
-        background: `radial-gradient(1200px 600px at 50% -10%, ${CALL_SURFACE.accentSoft} 0%, transparent 60%), linear-gradient(180deg, ${CALL_SURFACE.bg1} 0%, ${CALL_SURFACE.bg2} 100%)`,
+        background: `radial-gradient(900px 500px at 50% 110%, ${CALL_SURFACE.bgGlow} 0%, transparent 60%), linear-gradient(180deg, ${CALL_SURFACE.bg1} 0%, ${CALL_SURFACE.bg2} 100%)`,
         color: CALL_SURFACE.text,
         display: "flex",
         flexDirection: "column",
@@ -801,6 +806,40 @@ function CallOverlay(p: OverlayProps): React.JSX.Element {
           )}
         </div>
       )}
+
+      {/* NEX wordmark header · centered. White "NE" + orange "X" with
+          the CHAT · CONNECT · BUILD tagline underneath. */}
+      <div
+        style={{
+          position: "relative",
+          zIndex: 3,
+          textAlign: "center",
+          marginBottom: 10,
+        }}
+      >
+        <div
+          style={{
+            fontSize: 22,
+            fontWeight: 800,
+            letterSpacing: "0.14em",
+            lineHeight: 1,
+          }}
+        >
+          <span style={{ color: CALL_SURFACE.wordmarkA }}>NE</span>
+          <span style={{ color: CALL_SURFACE.wordmarkB }}>X</span>
+        </div>
+        <div
+          style={{
+            marginTop: 4,
+            fontSize: 9,
+            fontWeight: 600,
+            letterSpacing: "0.32em",
+            color: CALL_SURFACE.textDim,
+          }}
+        >
+          CHAT · CONNECT · BUILD
+        </div>
+      </div>
 
       {/* Top-left: phone icon + call type + live timer · matches mock */}
       {(
@@ -1155,8 +1194,8 @@ function CallSurfaceButton({
             ? "0 10px 24px rgba(239,68,68,0.35)"
             : "0 4px 12px rgba(0,0,0,0.35)",
           animation: pulse ? "nex-call-heartbeat 1.4s ease-out infinite" : undefined,
-          ["--nex-pulse" as string]: "rgba(239,68,68,0.55)",
-          ["--nex-pulse-fade" as string]: "rgba(239,68,68,0)",
+          ["--nex-pulse" as string]: "rgba(230,57,70,0.55)",
+          ["--nex-pulse-fade" as string]: "rgba(230,57,70,0)",
         } as React.CSSProperties}
       >
         {children}
@@ -1392,21 +1431,33 @@ function subStatusLabel(
 function PulseKeyframes(): React.JSX.Element {
   return (
     <style>{`
+      /* Short double-beat · still used by the Record button to signal
+       * active capture. */
       @keyframes nex-call-heartbeat {
-        0%   { transform: scale(1);     box-shadow: 0 0 0 0 var(--nex-pulse, rgba(255,138,42,0.55)); }
-        14%  { transform: scale(1.06);  box-shadow: 0 0 0 10px var(--nex-pulse-fade, rgba(255,138,42,0)); }
-        28%  { transform: scale(1);     box-shadow: 0 0 0 0 var(--nex-pulse, rgba(255,138,42,0.0)); }
-        42%  { transform: scale(1.04);  box-shadow: 0 0 0 14px var(--nex-pulse-fade, rgba(255,138,42,0)); }
-        70%  { transform: scale(1);     box-shadow: 0 0 0 0 rgba(255,138,42,0); }
-        100% { transform: scale(1);     box-shadow: 0 0 0 0 rgba(255,138,42,0); }
+        0%   { transform: scale(1);     box-shadow: 0 0 0 0 var(--nex-pulse, rgba(230,57,70,0.55)); }
+        14%  { transform: scale(1.06);  box-shadow: 0 0 0 10px var(--nex-pulse-fade, rgba(230,57,70,0)); }
+        28%  { transform: scale(1);     box-shadow: 0 0 0 0 rgba(230,57,70,0); }
+        42%  { transform: scale(1.04);  box-shadow: 0 0 0 14px var(--nex-pulse-fade, rgba(230,57,70,0)); }
+        70%  { transform: scale(1);     box-shadow: 0 0 0 0 rgba(230,57,70,0); }
+        100% { transform: scale(1);     box-shadow: 0 0 0 0 rgba(230,57,70,0); }
+      }
+      /* Cyan ping rings · emanate out from the avatar while ringing.
+       * Rendered as 3 absolutely-positioned circles with staggered
+       * animation-delay so you see a continuous "radar" sweep. */
+      @keyframes nex-call-ping {
+        0%   { transform: translate(-50%, -50%) scale(0.6); opacity: 0.75; }
+        70%  { transform: translate(-50%, -50%) scale(1.9); opacity: 0;    }
+        100% { transform: translate(-50%, -50%) scale(1.9); opacity: 0;    }
       }
     `}</style>
   );
 }
 
-/* Avatar · orange glow ring per mock design.
- * When `ringing` is true, the ring plays a double-beat heartbeat so
- * the viewer sees "we're calling" without needing to read the label. */
+/* Avatar · orange glow ring per NEX Futuristic Call Screen mock.
+ * When `ringing` is true, three cyan ping rings fan out from behind
+ * the photo — a classic radar sweep so the viewer sees "we're
+ * dialing" without reading the label. The avatar itself stays
+ * still; the motion is in the pings. */
 function PeerAvatarOrange({
   name,
   url,
@@ -1422,31 +1473,78 @@ function PeerAvatarOrange({
     .slice(0, 2)
     .map((p) => p.charAt(0).toUpperCase())
     .join("");
+  const SIZE = 132;
   return (
     <div
       aria-hidden
       style={{
-        width: 132,
-        height: 132,
-        borderRadius: "50%",
-        background: url
-          ? `url(${url}) center/cover`
-          : `linear-gradient(135deg, ${CALL_SURFACE.accentSoft} 0%, rgba(255,138,42,0.08) 100%)`,
-        border: `3px solid ${CALL_SURFACE.accent}`,
-        boxShadow: `0 0 48px ${CALL_SURFACE.accent}55, 0 0 0 10px rgba(255,138,42,0.06)`,
+        position: "relative",
+        width: SIZE,
+        height: SIZE,
         display: "grid",
         placeItems: "center",
-        color: CALL_SURFACE.text,
-        fontSize: 40,
-        fontWeight: 700,
-        letterSpacing: "-0.02em",
-        animation: ringing ? "nex-call-heartbeat 1.4s ease-out infinite" : undefined,
-        ["--nex-pulse" as string]: `${CALL_SURFACE.accent}99`,
-        ["--nex-pulse-fade" as string]: "rgba(255,138,42,0)",
-      } as React.CSSProperties}
+      }}
     >
-      {url ? "" : initials || "?"}
+      {ringing && (
+        <>
+          <PingRing size={SIZE} delaySec={0} />
+          <PingRing size={SIZE} delaySec={0.9} />
+          <PingRing size={SIZE} delaySec={1.8} />
+        </>
+      )}
+      <div
+        style={{
+          position: "relative",
+          zIndex: 1,
+          width: SIZE,
+          height: SIZE,
+          borderRadius: "50%",
+          background: url
+            ? `url(${url}) center/cover`
+            : `linear-gradient(135deg, ${CALL_SURFACE.accentSoft} 0%, rgba(255,153,51,0.08) 100%)`,
+          border: `3px solid ${CALL_SURFACE.accent}`,
+          boxShadow: `0 0 36px ${CALL_SURFACE.accent}66, 0 0 0 6px rgba(255,153,51,0.06)`,
+          display: "grid",
+          placeItems: "center",
+          color: CALL_SURFACE.text,
+          fontSize: 40,
+          fontWeight: 700,
+          letterSpacing: "-0.02em",
+        }}
+      >
+        {url ? "" : initials || "?"}
+      </div>
     </div>
+  );
+}
+
+/** One concentric cyan ring, absolutely-positioned so three staggered
+ *  copies form a continuous radar sweep around the avatar. */
+function PingRing({
+  size,
+  delaySec,
+}: {
+  size: number;
+  delaySec: number;
+}): React.JSX.Element {
+  return (
+    <span
+      aria-hidden
+      style={{
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        width: size,
+        height: size,
+        borderRadius: "50%",
+        border: `2px solid ${CALL_SURFACE.ping}`,
+        transform: "translate(-50%, -50%) scale(0.6)",
+        animation: "nex-call-ping 2.7s ease-out infinite",
+        animationDelay: `${delaySec}s`,
+        pointerEvents: "none",
+        zIndex: 0,
+      }}
+    />
   );
 }
 
