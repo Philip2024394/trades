@@ -1,35 +1,35 @@
 // src/app/nex-native/vault/page.tsx
 //
-// NEX Vault · entry doorway (chat_theme-aware).
+// NEX Vault · entry doorway (NEX-only).
 //
-// Stage 2 · theme inheritance (founder-sealed 2026-10-03 D1-D4 build plan).
-// Resolves the viewer's session + chat_theme and renders the matching
-// DoorwayShell skin. Any chat_theme that doesn't map to a sealed Vault
-// doorway skin falls back to SKIN_NEX. Unauthenticated visitors are
-// bounced to sign-in — the mock PIN screen must not be reachable
-// without a NEX session.
+// Theme scope boundary doctrine · 2026-10-04
+// (doctrine_theme_scope_boundary_2026_10_04). The Vault is a SYSTEM
+// surface — never a conversation surface — so the entry doorway
+// renders in NEX regardless of the viewer's picked chat_theme. The
+// previously-themed doorways (Joker, Haunted Hotel, Pink Dream)
+// stay reachable at their explicit `/vault/{slug}` routes for
+// preview + screenshot use per vault-research.md §10.0.1, but the
+// default entry (`/nex-native/vault`) now ALWAYS resolves SKIN_NEX.
 //
-// There is NO Vault cryptography wired up here, no server action, no
-// HSM, no key derivation, no auth boundary beyond the user's existing
-// NEX session. Phase A has not started.
+// Unauthenticated visitors still bounce to sign-in · the mock PIN
+// screen must not be reachable without a NEX session.
+//
+// There is NO Vault cryptography wired up here, no server action,
+// no HSM, no key derivation, no auth boundary beyond the user's
+// existing NEX session. Phase A has not started.
 //
 // Governed by:
+//   · doctrine_theme_scope_boundary_2026_10_04 · THIS SURFACE
 //   · vault-research.md §10.0 — user-facing simplicity principle
-//   · vault-research.md §10.0.1 — each theme has its own doorway page
-//   · vault-security-architecture-research.md §14 — Phase A not authorised
-//   · build-plan 2026-10-03 Stage 2 — theme inheritance from chat_theme
-//
-// Themed doorway routes stay reachable directly (useful for previews
-// and screenshots per §10.0.1):
-//   · /nex-native/vault/joker
-//   · /nex-native/vault/haunted-hotel
-//   · /nex-native/vault/pink-dream
+//   · vault-research.md §10.0.1 — themed routes remain reachable
+//     directly for preview use (not as default entry)
+//   · vault-security-architecture-research.md §14 — Phase A not
+//     authorised
 
 import { redirect } from "next/navigation";
 import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
 import { DoorwayShell } from "./_doorway-shell";
-import { SKIN_BY_SLUG, SKIN_NEX, type VaultDoorwaySkin } from "./_doorway-skin";
-import { mapChatThemeToDoorwaySlug } from "./home/_resolve-theme";
+import { SKIN_NEX } from "./_doorway-skin";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -46,9 +46,9 @@ export default async function VaultPinEntryPage({ searchParams }: PageProps) {
 
   const params = await searchParams;
   const mockReason = params.mock === "unavailable" ? "unavailable" : "incorrect";
-  const chatTheme = (session.account.chat_theme as string | null) ?? null;
-  const doorwaySlug = mapChatThemeToDoorwaySlug(chatTheme);
-  const skin: VaultDoorwaySkin = SKIN_BY_SLUG[doorwaySlug] ?? SKIN_NEX;
 
-  return <DoorwayShell skin={skin} mockReason={mockReason} />;
+  // Doctrine 2026-10-04 · default Vault entry is ALWAYS NEX, never
+  // repainted from chat_theme. Themed previews remain at their own
+  // explicit `/vault/{slug}` routes.
+  return <DoorwayShell skin={SKIN_NEX} mockReason={mockReason} />;
 }

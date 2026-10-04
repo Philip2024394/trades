@@ -133,20 +133,21 @@ export default async function HomePage() {
     (b) => (b as unknown as { profile?: unknown }).profile != null,
   );
 
-  // Resolve the viewer's current theme per One NEX Identity doctrine:
-  // chat_theme governs every signed-in surface, /home included. Falls
-  // back to "theme-0" (Joker · the sealed launch default per
-  // account-service.ts createAccount) so a null column — common on
-  // pre-existing dev-admin rows that pre-date the default — still
-  // paints the home surface under a real theme instead of generic.
+  // Theme scope boundary doctrine · 2026-10-04 ·
+  // doctrine_theme_scope_boundary_2026_10_04. The Home page is a
+  // SYSTEM surface, not a conversation surface, so it always paints
+  // in the NEX brand regardless of the viewer's picked chat_theme.
+  // We still resolve `currentTheme` from the themes list so the
+  // cover-preview SLIDES below can render each slide in the user's
+  // theme (that's content showing them THEIR covers), but the page
+  // chrome — hero gradient, atmosphere, headlines, panels — stays
+  // locked to the NEX cyan accent.
   const rawTheme = (session.account.chat_theme as string | null) ?? null;
   const currentThemeId: string = rawTheme && rawTheme.length > 0 ? rawTheme : "theme-0";
-  // Resolve the full theme row from the already-loaded list so we can
-  // read its accent_hex and name without an extra round-trip.
   const currentTheme =
     themes.find((t) => t.id === currentThemeId) ?? themes[0] ?? null;
-  const themeAccent = currentTheme?.accent_hex ?? "#00AFFF";
-  const themeName = currentTheme?.name ?? "NEX";
+  const themeAccent: string = NEX.cyan;
+  const themeName: string = "NEX";
 
   const slides: ThemeCoverSlide[] = currentTheme
     ? HOME_SHOWCASE_LAYOUTS.map((layoutId): ThemeCoverSlide => ({
@@ -228,11 +229,12 @@ export default async function HomePage() {
           overflow: "hidden",
         }}
       >
-        {/* One NEX Identity · the signed-in home surface repaints under
-            the viewer's chat_theme. Base palette stays brand-stable
-            (bg + panel), only the atmospheric glow + accent trim pick
-            up the theme's accent_hex — so brand continuity is kept
-            while the viewer's theme is unmistakably loaded. */}
+        {/* Theme scope boundary doctrine · 2026-10-04 · the Home page
+            is a NEX SYSTEM surface. Every atmospheric glow, grid and
+            accent trim renders in NEX cyan regardless of the viewer's
+            picked chat_theme. Only the cover-preview slides below can
+            carry per-slide theme colour (that's content preview, not
+            chrome). */}
         <div
           aria-hidden
           style={{
