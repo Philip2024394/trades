@@ -61,9 +61,14 @@ const NEX = {
  * If you touch the hub palette (PAL in _calls-client.tsx), update
  * these values in the same change so the two don't drift. */
 const CALL_SURFACE = {
-  bg1: "#0A1230",
-  bg2: "#132A5E",
-  bgGlow: "rgba(76,141,242,0.28)",
+  // Matches the Create Account page canvas (#020914) + the same
+  // single faint cyan radial glow from the top centre. The Call
+  // Center hub (PAL in _calls-client.tsx) uses the identical
+  // treatment. If you touch any of these three surfaces, update
+  // the other two in the same change.
+  bg1: "#020914",
+  bg2: "#020914",
+  bgGlow: "rgba(0,175,255,0.09)",
   accent: "#FF9933",
   accentSoft: "rgba(255,153,51,0.16)",
   ping: "#4C8DF2",
@@ -717,7 +722,7 @@ function CallOverlay(p: OverlayProps): React.JSX.Element {
         position: "fixed",
         inset: 0,
         zIndex: 1000,
-        background: `radial-gradient(900px 500px at 50% 110%, ${CALL_SURFACE.bgGlow} 0%, transparent 60%), linear-gradient(180deg, ${CALL_SURFACE.bg1} 0%, ${CALL_SURFACE.bg2} 100%)`,
+        background: `radial-gradient(60% 40% at 50% 0%, ${CALL_SURFACE.bgGlow} 0%, transparent 70%), ${CALL_SURFACE.bg1}`,
         color: CALL_SURFACE.text,
         display: "flex",
         flexDirection: "column",

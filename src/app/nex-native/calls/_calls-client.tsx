@@ -54,8 +54,12 @@ interface CallsClientProps {
 // Palette tuned to the reference image · deep navy base, rich card
 // surfaces, orange brand accent, green voice, blue video, red missed.
 const PAL = {
-  bg: "#06091A",
-  bg2: "#0B1024",
+  // Call Center + call surface share the Create Account page's deep
+  // navy canvas (#020914) + the same single cyan radial glow at the
+  // top. If you change these, update CALL_SURFACE in _call-launcher
+  // so the three surfaces stay aligned.
+  bg: "#020914",
+  bg2: "#020914",
   card: "#121737",
   cardBorder: "rgba(255,255,255,0.06)",
   cardBorderStrong: "rgba(255,255,255,0.10)",
@@ -129,15 +133,32 @@ function CallsClientInner({
         data-nex-calls
         style={{
           minHeight: "100dvh",
-          background: `linear-gradient(180deg, ${PAL.bg} 0%, ${PAL.bg2} 100%)`,
+          background: PAL.bg,
           color: PAL.text,
           fontFamily:
             "Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
           paddingBottom: 32,
+          position: "relative",
+          overflow: "hidden",
         }}
       >
+        {/* Create Account page's cyan atmosphere · single faint
+            top-centre radial glow. Keeps the Calls hub and Create
+            Account in visual lockstep. */}
+        <div
+          aria-hidden
+          style={{
+            position: "absolute",
+            inset: 0,
+            background:
+              "radial-gradient(60% 40% at 50% 0%, rgba(0,175,255,0.09), transparent 70%)",
+            pointerEvents: "none",
+          }}
+        />
         <main
           style={{
+            position: "relative",
+            zIndex: 1,
             maxWidth: 480,
             margin: "0 auto",
             padding:
