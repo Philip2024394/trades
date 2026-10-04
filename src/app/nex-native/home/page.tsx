@@ -230,33 +230,18 @@ export default async function HomePage() {
         }}
       >
         {/* Theme scope boundary doctrine · 2026-10-04 · the Home page
-            is a NEX SYSTEM surface. Every atmospheric glow, grid and
-            accent trim renders in NEX cyan regardless of the viewer's
-            picked chat_theme. Only the cover-preview slides below can
-            carry per-slide theme colour (that's content preview, not
-            chrome). */}
+            is a NEX SYSTEM surface. Uses the EXACT same atmospheric
+            treatment as Create Account and Sign In · one single faint
+            cyan radial glow at 9% from the top centre. No extra glows
+            or grid overlays · those were painting the page blue and
+            drifted from the brand canvas. */}
         <div
           aria-hidden
           style={{
             position: "absolute",
             inset: 0,
-            background: `
-              radial-gradient(60% 48% at 50% 18%, ${themeAccent}3a, transparent 72%),
-              radial-gradient(80% 60% at 50% 100%, ${themeAccent}1a, transparent 72%),
-              radial-gradient(circle at 20% 10%, ${themeAccent}1c, transparent 50%)
-            `,
-            pointerEvents: "none",
-          }}
-        />
-        <div
-          aria-hidden
-          style={{
-            position: "absolute",
-            inset: 0,
-            backgroundImage: `linear-gradient(${themeAccent}08 1px, transparent 1px), linear-gradient(90deg, ${themeAccent}08 1px, transparent 1px)`,
-            backgroundSize: "32px 32px",
-            mask: "radial-gradient(70% 50% at 50% 30%, black 10%, transparent 85%)",
-            WebkitMask: "radial-gradient(70% 50% at 50% 30%, black 10%, transparent 85%)",
+            background:
+              "radial-gradient(60% 40% at 50% 0%, rgba(0,175,255,0.09), transparent 70%)",
             pointerEvents: "none",
           }}
         />
