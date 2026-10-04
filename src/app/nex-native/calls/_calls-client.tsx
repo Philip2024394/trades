@@ -20,6 +20,7 @@ import {
   presenceFor,
   type PresenceKind,
 } from "./_presence-client";
+import { createCallLinkAction } from "./_create-call-link-action";
 
 export interface CallsPerson {
   id: string;
@@ -92,6 +93,7 @@ function CallsClientInner({
   const [pickerFor, setPickerFor] = React.useState<CallKind | null>(null);
   const [recentsFilter, setRecentsFilter] =
     React.useState<RecentsFilter>("missed");
+  const [linkModalOpen, setLinkModalOpen] = React.useState(false);
 
   return (
     <>
@@ -139,7 +141,7 @@ function CallsClientInner({
         >
           <Header />
           <PrimaryCards onPick={(kind) => setPickerFor(kind)} />
-          <QuickActions />
+          <QuickActions onCreateLink={() => setLinkModalOpen(true)} />
           <PeopleRow people={people.slice(0, 10)} />
           <RecentCalls
             calls={recentCalls}
@@ -154,6 +156,9 @@ function CallsClientInner({
             people={people}
             onClose={() => setPickerFor(null)}
           />
+        )}
+        {linkModalOpen && (
+          <CreateCallLinkModal onClose={() => setLinkModalOpen(false)} />
         )}
       </div>
     </>
@@ -359,7 +364,11 @@ function PrimaryCard({
 
 /* ─── Quick actions ─────────────────────────────────────────────── */
 
-function QuickActions(): React.JSX.Element {
+function QuickActions({
+  onCreateLink,
+}: {
+  onCreateLink: () => void;
+}): React.JSX.Element {
   return (
     <section
       aria-label="Quick actions"
@@ -375,10 +384,10 @@ function QuickActions(): React.JSX.Element {
         label="Group call"
         disabledReason="Group calls are not yet available"
       />
-      <QuickAction
+      <QuickActionButton
         icon={<LinkIcon />}
         label="Call link"
-        disabledReason="Call links are not yet available"
+        onClick={onCreateLink}
       />
       <QuickActionLink
         icon={<InviteIcon />}
@@ -386,6 +395,38 @@ function QuickActions(): React.JSX.Element {
         href="/nex-native/friends"
       />
     </section>
+  );
+}
+
+function QuickActionButton({
+  icon,
+  label,
+  onClick,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  onClick: () => void;
+}): React.JSX.Element {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label={label}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: 6,
+        padding: "14px 8px",
+        borderRadius: 16,
+        background: PAL.card,
+        border: `1px solid ${PAL.cardBorder}`,
+        color: PAL.text,
+      }}
+    >
+      <span aria-hidden style={{ color: PAL.orange }}>{icon}</span>
+      <span style={{ fontSize: 12, fontWeight: 500 }}>{label}</span>
+    </button>
   );
 }
 
@@ -1033,6 +1074,332 @@ function RecentsFilterDropdown({
         </>
       )}
     </div>
+  );
+}
+
+/* ─── Create-call-link modal ────────────────────────────────────── */
+
+function CreateCallLinkModal({
+  onClose,
+}: {
+  onClose: () => void;
+}): React.JSX.Element {
+  const [mediaType, setMediaType] = React.useState<"audio" | "video">("audio");
+  const [busy, setBusy] = React.useState(false);
+  const [err, setErr] = React.useState<string | null>(null);
+  const [result, setResult] = React.useState<{
+    shareUrl: string;
+    mediaType: "audio" | "video";
+    expiresAt: string | null;
+  } | null>(null);
+  const [copied, setCopied] = React.useState(false);
+
+  React.useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  async function onCreate(): Promise<void> {
+    setBusy(true);
+    setErr(null);
+    const r = await createCallLinkAction({ mediaType, maxUses: 1 });
+    setBusy(false);
+    if (!r.ok) {
+      setErr(r.reason);
+      return;
+    }
+    setResult({
+      shareUrl: r.shareUrl,
+      mediaType: r.mediaType,
+      expiresAt: r.expiresAt,
+    });
+  }
+
+  async function onCopy(): Promise<void> {
+    if (!result) return;
+    try {
+      await navigator.clipboard.writeText(result.shareUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1600);
+    } catch {
+      /* no-op · browser blocked clipboard */
+    }
+  }
+
+  const tint = mediaType === "video" ? PAL.blue : PAL.green;
+  const tintSoft = mediaType === "video" ? PAL.blueSoft : PAL.greenSoft;
+
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label="Create a call link"
+      onClick={onClose}
+      style={{
+        position: "fixed",
+        inset: 0,
+        background: "rgba(2, 5, 15, 0.72)",
+        backdropFilter: "blur(10px)",
+        WebkitBackdropFilter: "blur(10px)",
+        zIndex: 100,
+        display: "flex",
+        alignItems: "flex-end",
+        justifyContent: "center",
+        padding: 16,
+      }}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          width: "100%",
+          maxWidth: 440,
+          background: PAL.card,
+          border: `1px solid ${PAL.cardBorderStrong}`,
+          borderRadius: 22,
+          padding: "20px 18px",
+          boxShadow: "0 24px 60px rgba(0,0,0,0.6)",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+            marginBottom: 14,
+          }}
+        >
+          <span
+            aria-hidden
+            style={{
+              width: 34,
+              height: 34,
+              borderRadius: 999,
+              background: PAL.orangeSoft,
+              color: PAL.orange,
+              display: "grid",
+              placeItems: "center",
+              border: `1px solid ${PAL.orange}44`,
+            }}
+          >
+            <LinkIcon />
+          </span>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ fontSize: 15, fontWeight: 700, color: PAL.text }}>
+              Create a call link
+            </div>
+            <div style={{ fontSize: 12, color: PAL.textDim }}>
+              Shareable URL · 24h expiry · single use
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close"
+            style={{
+              width: 32,
+              height: 32,
+              borderRadius: 999,
+              background: "rgba(255,255,255,0.06)",
+              border: "none",
+              color: PAL.textDim,
+              display: "grid",
+              placeItems: "center",
+            }}
+          >
+            <CloseIcon />
+          </button>
+        </div>
+
+        {!result ? (
+          <>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(2, 1fr)",
+                gap: 10,
+                marginBottom: 14,
+              }}
+            >
+              <MediaKindOption
+                active={mediaType === "audio"}
+                tint={PAL.green}
+                tintSoft={PAL.greenSoft}
+                label="Voice"
+                icon={<PhoneIcon size={18} />}
+                onClick={() => setMediaType("audio")}
+              />
+              <MediaKindOption
+                active={mediaType === "video"}
+                tint={PAL.blue}
+                tintSoft={PAL.blueSoft}
+                label="Video"
+                icon={<VideoIcon size={18} />}
+                onClick={() => setMediaType("video")}
+              />
+            </div>
+            {err && (
+              <p
+                style={{
+                  fontSize: 12.5,
+                  color: "#FFB199",
+                  margin: "0 0 10px",
+                }}
+              >
+                {err}
+              </p>
+            )}
+            <button
+              type="button"
+              onClick={() => void onCreate()}
+              disabled={busy}
+              style={{
+                width: "100%",
+                padding: "12px 18px",
+                borderRadius: 999,
+                background: tintSoft,
+                border: `1px solid ${tint}`,
+                color: tint,
+                fontSize: 14,
+                fontWeight: 700,
+                cursor: busy ? "wait" : "pointer",
+                opacity: busy ? 0.7 : 1,
+                fontFamily: "inherit",
+              }}
+            >
+              {busy ? "Creating…" : "Create link"}
+            </button>
+          </>
+        ) : (
+          <>
+            <div
+              style={{
+                padding: "14px 14px",
+                borderRadius: 14,
+                background: tintSoft,
+                border: `1px solid ${tint}66`,
+                marginBottom: 12,
+              }}
+            >
+              <div
+                style={{
+                  fontSize: 10.5,
+                  color: tint,
+                  letterSpacing: "0.14em",
+                  textTransform: "uppercase",
+                  fontWeight: 700,
+                  marginBottom: 6,
+                }}
+              >
+                {result.mediaType === "video" ? "Video call link" : "Voice call link"}
+              </div>
+              <div
+                style={{
+                  fontSize: 13,
+                  color: PAL.text,
+                  wordBreak: "break-all",
+                  fontFamily: "ui-monospace, monospace",
+                  lineHeight: 1.4,
+                }}
+              >
+                {result.shareUrl}
+              </div>
+            </div>
+            <div style={{ display: "flex", gap: 10 }}>
+              <button
+                type="button"
+                onClick={() => void onCopy()}
+                style={{
+                  flex: 1,
+                  padding: "12px",
+                  borderRadius: 999,
+                  background: PAL.orange,
+                  color: "#0a0608",
+                  border: "none",
+                  fontSize: 13.5,
+                  fontWeight: 700,
+                  fontFamily: "inherit",
+                  cursor: "pointer",
+                }}
+              >
+                {copied ? "Copied ✓" : "Copy link"}
+              </button>
+              <button
+                type="button"
+                onClick={onClose}
+                style={{
+                  padding: "12px 20px",
+                  borderRadius: 999,
+                  background: "transparent",
+                  border: `1px solid ${PAL.cardBorderStrong}`,
+                  color: PAL.textDim,
+                  fontSize: 13.5,
+                  fontWeight: 600,
+                  fontFamily: "inherit",
+                  cursor: "pointer",
+                }}
+              >
+                Done
+              </button>
+            </div>
+            {result.expiresAt && (
+              <p
+                style={{
+                  margin: "12px 0 0",
+                  fontSize: 11.5,
+                  color: PAL.textMuted,
+                  textAlign: "center",
+                }}
+              >
+                Expires {new Date(result.expiresAt).toLocaleString("en-GB")}
+              </p>
+            )}
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function MediaKindOption({
+  active,
+  tint,
+  tintSoft,
+  label,
+  icon,
+  onClick,
+}: {
+  active: boolean;
+  tint: string;
+  tintSoft: string;
+  label: string;
+  icon: React.ReactNode;
+  onClick: () => void;
+}): React.JSX.Element {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 10,
+        padding: "12px 14px",
+        borderRadius: 14,
+        background: active ? tintSoft : "transparent",
+        border: `1px solid ${active ? tint : PAL.cardBorderStrong}`,
+        color: active ? tint : PAL.textDim,
+        fontSize: 13.5,
+        fontWeight: 600,
+        fontFamily: "inherit",
+        cursor: "pointer",
+      }}
+    >
+      {icon}
+      <span>{label}</span>
+    </button>
   );
 }
 
