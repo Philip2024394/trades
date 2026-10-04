@@ -23,6 +23,7 @@
 
 import type * as React from "react";
 import Link from "next/link";
+import { NexPageHeader } from "../_page-header";
 
 export const runtime = "nodejs";
 export const dynamic = "force-static";
@@ -79,29 +80,16 @@ export default async function SupportPage({
       }}
     >
       {/* Top nav */}
-      <header
-        style={{
-          padding: "calc(env(safe-area-inset-top, 0) + 14px) 20px 12px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          borderBottom: `1px solid ${NEX.border}`,
-        }}
-      >
-        <Link
-          href="/nex-native"
+      <div style={{ padding: "0 20px", borderBottom: `1px solid ${NEX.border}` }}>
+        <NexPageHeader dataScope="support" />
+        <div
           style={{
-            fontSize: 11,
-            color: NEX.textDim,
-            textDecoration: "none",
-            letterSpacing: "0.06em",
-            textTransform: "uppercase",
-            fontWeight: 700,
+            display: "flex",
+            gap: 16,
+            paddingBottom: 10,
+            justifyContent: "flex-end",
           }}
         >
-          ← NEX
-        </Link>
-        <div style={{ display: "flex", gap: 16 }}>
           <Link
             href="/nex-native/safe-trade"
             style={{
@@ -129,7 +117,7 @@ export default async function SupportPage({
             Terms ↗
           </Link>
         </div>
-      </header>
+      </div>
 
       <main style={{ maxWidth: 720, margin: "0 auto", padding: "40px 20px" }}>
         {topic === null && <TopicPicker />}

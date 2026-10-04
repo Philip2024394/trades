@@ -15,6 +15,7 @@
 
 import type * as React from "react";
 import Link from "next/link";
+import { NexPageHeader } from "../_page-header";
 import {
   NEX_PAYMENT_METHODS,
   NEX_PAYMENT_METHOD_META,
@@ -63,30 +64,17 @@ export default function SafeTradePage() {
         paddingBottom: 80,
       }}
     >
-      {/* Top nav */}
-      <header
-        style={{
-          padding: "calc(env(safe-area-inset-top, 0) + 14px) 20px 12px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          borderBottom: `1px solid ${NEX.border}`,
-        }}
-      >
-        <Link
-          href="/nex-native"
+      {/* Top nav · shared NEX header + context links strap */}
+      <div style={{ padding: "0 20px", borderBottom: `1px solid ${NEX.border}` }}>
+        <NexPageHeader dataScope="safe-trade" />
+        <div
           style={{
-            fontSize: 11,
-            color: NEX.textDim,
-            textDecoration: "none",
-            letterSpacing: "0.06em",
-            textTransform: "uppercase",
-            fontWeight: 700,
+            display: "flex",
+            gap: 16,
+            paddingBottom: 10,
+            justifyContent: "flex-end",
           }}
         >
-          ← NEX
-        </Link>
-        <div style={{ display: "flex", gap: 16 }}>
           <Link
             href="/nex-native/terms"
             style={{
@@ -114,7 +102,7 @@ export default function SafeTradePage() {
             Packages ↗
           </Link>
         </div>
-      </header>
+      </div>
 
       <main style={{ maxWidth: 720, margin: "0 auto", padding: "40px 20px" }}>
         {/* --- Hero --------------------------------------------------- */}

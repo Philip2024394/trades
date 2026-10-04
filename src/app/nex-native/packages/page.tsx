@@ -14,6 +14,7 @@
 import type * as React from "react";
 import Link from "next/link";
 import { NEX_OFFICIAL_CHAT_HREF } from "@/lib/nex-native/nex-official";
+import { NexPageHeader } from "../_page-header";
 
 export const dynamic = "force-static";
 
@@ -48,48 +49,10 @@ export default function PackagesPage() {
         fontFamily: SANS,
       }}
     >
-      {/* --- HEADER · brand + home + settings ---------------------- */}
-      <header
-        style={{
-          position: "sticky",
-          top: 0,
-          zIndex: 10,
-          padding:
-            "calc(env(safe-area-inset-top, 0) + 12px) 14px 8px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          background: "transparent",
-        }}
-      >
-        <Link
-          href="/nex-native"
-          aria-label="NEX home"
-          style={{
-            display: "inline-flex",
-            alignItems: "baseline",
-            gap: 2,
-            textDecoration: "none",
-            fontSize: 22,
-            lineHeight: 1,
-            fontWeight: 600,
-            letterSpacing: "0.08em",
-            padding: "6px 4px",
-            textShadow: "0 2px 12px rgba(0,0,0,0.75)",
-          }}
-        >
-          <span style={{ color: "#F2F5F8" }}>NE</span>
-          <span style={{ color: NEX.orange }}>X</span>
-        </Link>
-        <div style={{ display: "flex", gap: 6 }}>
-          <HeaderIcon href="/nex-native/home" ariaLabel="Home">
-            <HomeIcon />
-          </HeaderIcon>
-          <HeaderIcon href="/nex-native/settings" ariaLabel="Settings">
-            <SettingsIcon />
-          </HeaderIcon>
-        </div>
-      </header>
+      {/* --- HEADER · shared NEX chrome ----------------------------- */}
+      <div style={{ padding: "0 14px" }}>
+        <NexPageHeader dataScope="packages" />
+      </div>
 
       {/* --- HERO --------------------------------------------------- */}
       <section
@@ -975,76 +938,5 @@ function SectionHead({
   );
 }
 
-/* ────────────────────────────────────────────────────────────────
- * Header icons
- * ──────────────────────────────────────────────────────────────── */
-
-function HeaderIcon({
-  href,
-  ariaLabel,
-  children,
-}: {
-  href: string;
-  ariaLabel: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <Link
-      href={href}
-      aria-label={ariaLabel}
-      style={{
-        width: 32,
-        height: 32,
-        borderRadius: "50%",
-        background: "#0B0F1A",
-        border: "1px solid rgba(255,255,255,0.18)",
-        color: "#FFFFFF",
-        display: "grid",
-        placeItems: "center",
-        textDecoration: "none",
-        boxShadow:
-          "0 4px 12px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.08)",
-      }}
-    >
-      {children}
-    </Link>
-  );
-}
-
-function HomeIcon() {
-  return (
-    <svg
-      width={15}
-      height={15}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.9}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-    >
-      <path d="M3 12l9-9 9 9" />
-      <path d="M5 10v10a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1V10" />
-    </svg>
-  );
-}
-
-function SettingsIcon() {
-  return (
-    <svg
-      width={15}
-      height={15}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.8}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-    >
-      <circle cx="12" cy="12" r="3" />
-      <path d="M19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 01-4 0v-.1a1.7 1.7 0 00-1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 010-4h.1a1.7 1.7 0 001.5-1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3H9a1.7 1.7 0 001-1.5V3a2 2 0 014 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8V9a1.7 1.7 0 001.5 1H21a2 2 0 010 4h-.1a1.7 1.7 0 00-1.5 1z" />
-    </svg>
-  );
-}
+/* Header icon helpers removed · shared NexPageHeader owns the chrome
+ * now (home + search + gear). */

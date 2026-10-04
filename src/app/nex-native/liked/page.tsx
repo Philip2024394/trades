@@ -9,6 +9,7 @@
 import type * as React from "react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { NexPageHeader } from "../_page-header";
 import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
 import * as likedProductService from "@/lib/nex-native/liked-product-service";
 import {
@@ -87,29 +88,9 @@ export default async function LikedPage({
         paddingBottom: 80,
       }}
     >
-      <header
-        style={{
-          padding: "calc(env(safe-area-inset-top, 0) + 14px) 20px 12px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          borderBottom: `1px solid ${NEX.border}`,
-        }}
-      >
-        <Link
-          href="/nex-native/home"
-          style={{
-            fontSize: 11,
-            color: NEX.textDim,
-            textDecoration: "none",
-            letterSpacing: "0.06em",
-            textTransform: "uppercase",
-            fontWeight: 700,
-          }}
-        >
-          ← NEX
-        </Link>
-      </header>
+      <div style={{ padding: "0 20px", borderBottom: `1px solid ${NEX.border}` }}>
+        <NexPageHeader dataScope="liked" />
+      </div>
 
       <main style={{ maxWidth: 640, margin: "0 auto", padding: "36px 20px" }}>
         <div
