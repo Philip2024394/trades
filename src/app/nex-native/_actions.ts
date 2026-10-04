@@ -4364,7 +4364,7 @@ export async function updateChatThemeAction(formData: FormData): Promise<never> 
         e: "invalid_theme",
         m: `unknown theme '${raw}'`,
       });
-      redirect(`/nex-native/settings/theme?${qs.toString()}`);
+      redirect(`/nex-native/chat-themes-library?${qs.toString()}`);
     }
     // Phase 1 premium gate · only runs when the catalogue returned a
     // row (which means we also know its tier). Static-list fallback
@@ -4379,7 +4379,7 @@ export async function updateChatThemeAction(formData: FormData): Promise<never> 
           e: "premium_required",
           m: `${row.name} is a premium theme · start a 7-day trial or subscribe to apply it`,
         });
-        redirect(`/nex-native/settings/theme?${qs.toString()}`);
+        redirect(`/nex-native/chat-themes-library?${qs.toString()}`);
       }
     }
   }
@@ -4388,9 +4388,9 @@ export async function updateChatThemeAction(formData: FormData): Promise<never> 
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
     const qs = new URLSearchParams({ e: "theme_update_failed", m: msg });
-    redirect(`/nex-native/settings/theme?${qs.toString()}`);
+    redirect(`/nex-native/chat-themes-library?${qs.toString()}`);
   }
-  revalidatePath("/nex-native/settings/theme");
+  revalidatePath("/nex-native/chat-themes-library");
   revalidatePath("/nex-native/conversations");
   // Sealed 2026-10-01 · when the caller passes `next` with a safe
   // in-app path (same-origin absolute path starting with /nex-native/)
@@ -4406,7 +4406,7 @@ export async function updateChatThemeAction(formData: FormData): Promise<never> 
     redirect(safeNext);
   }
   const qs = new URLSearchParams({ e: "theme_updated", m: theme ?? "default" });
-  redirect(`/nex-native/settings/theme?${qs.toString()}`);
+  redirect(`/nex-native/chat-themes-library?${qs.toString()}`);
 }
 
 /** Bridge 56g · start the one-shot 7-day premium-theme trial.
@@ -4438,12 +4438,12 @@ export async function startThemesTrialAction(
     redirect(`/nex-native/settings/tier?${qs.toString()}`);
   }
   revalidatePath("/nex-native/settings/tier");
-  revalidatePath("/nex-native/settings/theme");
+  revalidatePath("/nex-native/chat-themes-library");
   const qs = new URLSearchParams({
     trial_started: "1",
     expires: result.trialExpiresAt,
   });
-  redirect(`/nex-native/settings/theme?${qs.toString()}`);
+  redirect(`/nex-native/chat-themes-library?${qs.toString()}`);
 }
 
 // ---------------------------------------------------------------------------
@@ -5846,7 +5846,7 @@ export async function adminSetAccountTierAction(formData: FormData): Promise<nev
       const expiresLine = bisnisExpiresAt
         ? `Renews on ${bisnisExpiresAt.slice(0, 10)}.`
         : "Lifetime access · no expiry.";
-      const body = `🎉 Your ${planLabel} plan is now active. ${expiresLine} Head to /settings/theme to pick your look. Any questions, message us right here.`;
+      const body = `🎉 Your ${planLabel} plan is now active. ${expiresLine} Head to /nex-native/chat-themes-library to pick your look. Any questions, message us right here.`;
       await peerMessageService.sendPeerMessage({
         conversation_id: conv.id,
         sender_account_id: NEX_OFFICIAL_ACCOUNT_ID,
@@ -6007,7 +6007,7 @@ export async function adminCreateChatThemeAction(
   }
 
   revalidatePath("/nex-head-quarters/nex-native-themes");
-  revalidatePath("/nex-native/settings/theme");
+  revalidatePath("/nex-native/chat-themes-library");
   redirectToAdminThemeWithBanner(
     "theme_created",
     `${name} (${id}) created${heroImageUrl ? " with background image" : ""}`,

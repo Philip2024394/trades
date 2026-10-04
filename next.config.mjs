@@ -172,6 +172,14 @@ const nextConfig = {
       { source: "/nex-app/chat", destination: "/nex-appchat", permanent: true },
       { source: "/nex-app/talk", destination: "/nex-appchat", permanent: true },
 
+      // Founder 2026-10-04 · Chat Themes page canonical URL rename.
+      // /nex-native/settings/theme → /nex-native/chat-themes-library.
+      // The permanent (308) redirect preserves query strings
+      // automatically, so the themes-trial start link
+      // (?trial_started=1&expires=...) and any existing bookmarks still
+      // land on the new page.
+      { source: "/nex-native/settings/theme", destination: "/nex-native/chat-themes-library", permanent: true },
+
       // Trade Center Week 4 · ADR-053 — canteens migrate under
       // /community/*. Permanent redirect + edge cache invalidation
       // per TRADE_CENTER_2_SPEC.md §19.9.

@@ -132,7 +132,7 @@ const GREEN_TILES: Tile[] = [
     label: "Theme",
     Icon: Palette,
     color: "#a855f7",
-    href: "/nex-native/settings/theme",
+    href: "/nex-native/chat-themes-library",
     hint: "Pick a chat theme · saved to your account",
   },
   {

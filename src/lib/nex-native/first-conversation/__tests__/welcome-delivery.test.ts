@@ -99,7 +99,7 @@ describe("deliverNex1WelcomeToAccount · direct invocation", () => {
     // the helper returns the whole string as first_name. We only assert
     // the body IS the helper output (not that specific first_name).
     expect(q.rows[0].body).toContain("🎉 Welcome to NEX,");
-    expect(q.rows[0].body).toContain("/settings/theme");
+    expect(q.rows[0].body).toContain("/nex-native/chat-themes-library");
     void expectedBody;
   });
 

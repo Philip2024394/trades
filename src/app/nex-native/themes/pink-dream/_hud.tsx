@@ -141,7 +141,7 @@ export function PinkDreamHud() {
             <ActionTile label="Camera" icon={<CameraIcon />} />
             <ActionTile label="Mic" icon={<MicIcon />} />
             <Link
-              href="/nex-native/settings/theme"
+              href="/nex-native/chat-themes-library"
               onClick={() => setActionsOpen(false)}
               style={{ textDecoration: "none", gridColumn: "1 / -1" }}
             >

@@ -118,7 +118,7 @@ export const NEX_FEATURES: readonly ProductKnowledgeEntry[] = [
     keywords: ["theme", "look", "colour", "color", "style", "default", "titanium", "pink", "gold", "night"],
     sealed_at: "2026-09-29",
     required_plan: "gratis",
-    entry_href: "/nex-native/settings/theme",
+    entry_href: "/nex-native/chat-themes-library",
   },
   {
     id: "feature.themes_premium",
@@ -129,7 +129,7 @@ export const NEX_FEATURES: readonly ProductKnowledgeEntry[] = [
     keywords: ["theme", "premium", "night", "sky", "pink", "dream", "mascot", "wallpaper", "trial"],
     sealed_at: "2026-09-29",
     required_plan: "bisnis",
-    entry_href: "/nex-native/settings/theme",
+    entry_href: "/nex-native/chat-themes-library",
   },
   {
     id: "feature.themes_trial",
@@ -373,10 +373,10 @@ export const NEX_WORKFLOWS: readonly ProductKnowledgeEntry[] = [
     kind: "workflow",
     title: "Change your chat theme",
     content:
-      "Go to /nex-native/settings/theme · tap any unlocked theme card. Selection saves immediately. Every friend sees your new theme when they open your chat (theme-ownership doctrine).",
+      "Go to /nex-native/chat-themes-library · tap any unlocked theme card. Selection saves immediately. Every friend sees your new theme when they open your chat (theme-ownership doctrine).",
     keywords: ["theme", "change", "switch", "pick", "select"],
     sealed_at: "2026-09-29",
-    entry_href: "/nex-native/settings/theme",
+    entry_href: "/nex-native/chat-themes-library",
   },
   {
     id: "workflow.subscribe_bisnis",

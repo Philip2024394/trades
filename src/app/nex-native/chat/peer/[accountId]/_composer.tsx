@@ -1079,7 +1079,7 @@ function MediaModal({
             icon={<PaletteIcon size={26} />}
             label="Themes"
             onClose={onClose}
-            href="/nex-native/settings/theme"
+            href="/nex-native/chat-themes-library"
           />
           {showAnimationsOption && (
             <ModalOption

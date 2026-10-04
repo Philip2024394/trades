@@ -3,8 +3,9 @@
 // Bridge 4 · chat theme catalogue.
 // --------------------------------
 // Reads + writes for nex_chat_theme (migration 048). Peer chat surface
-// and the /settings/theme picker consume this via listActiveThemes()
-// and getThemeById(); the admin builder at /nex-native/admin/theme/new
+// and the /nex-native/chat-themes-library picker consume this via
+// listActiveThemes() and getThemeById(); the admin builder at
+// /nex-native/admin/theme/new
 // consumes createTheme() / updateTheme().
 //
 // Doctrine · doctrine_theme_ownership_2026_09_27.md.

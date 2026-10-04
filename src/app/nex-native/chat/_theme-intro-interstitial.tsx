@@ -120,8 +120,24 @@ export function ThemeIntroInterstitial(props: ThemeIntroInterstitialProps): Reac
       data-nex-theme-intro
       data-theme-id={props.themeId}
       style={{
+        // Full-viewport edge-to-edge on every mobile screen.
+        //   · position:fixed+inset:0 locks the element to the viewport
+        //   · width:100vw + height:100dvh are belt-and-braces for the
+        //     iOS/Android URL-bar show/hide dance · 100dvh (dynamic
+        //     viewport height) follows the visible area, 100vh is the
+        //     fallback for older browsers that don't support dvh.
+        //   · minHeight:100vh guards against any parent chain that
+        //     tries to constrain height.
+        //   · Combined with viewport-fit=cover in the root layout, the
+        //     video goes all the way to the notch / home indicator with
+        //     ZERO black bars at top or bottom on any phone size.
         position: "fixed",
         inset: 0,
+        width: "100vw",
+        height: "100dvh",
+        minHeight: "100vh",
+        margin: 0,
+        padding: 0,
         zIndex: 2000,
         background: UI.bg,
         display: "flex",
@@ -145,10 +161,18 @@ export function ThemeIntroInterstitial(props: ThemeIntroInterstitialProps): Reac
           // never recovers the hard safety ceiling will catch it.
         }}
         style={{
+          // Fill the parent container edge-to-edge · object-fit:cover
+          // crops horizontally when the viewport is taller than the
+          // video's 9:16 aspect (modern phones are ~9:19.5 to 9:20).
+          // object-position:center keeps the subject centered under
+          // the crop. NEVER produces top/bottom black bars because
+          // the video always scales to fill at least the full height.
           width: "100%",
           height: "100%",
           objectFit: "cover",
+          objectPosition: "center center",
           background: UI.bg,
+          display: "block",
         }}
       />
       <button

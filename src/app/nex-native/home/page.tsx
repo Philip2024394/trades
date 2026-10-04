@@ -57,7 +57,7 @@ interface TileCopy {
 /** Compact doorway · nav strip beneath the carousel. */
 function shopTile(kind: NexAccountKind | null, hasBusiness: boolean): TileCopy {
   if (!NEX_COMMERCE_ENABLED) {
-    return { href: "/nex-native/settings/theme", emoji: "🎨", title: "Themes" };
+    return { href: "/nex-native/chat-themes-library", emoji: "🎨", title: "Themes" };
   }
   if (kind === "professional") {
     return { href: "/nex-native/settings/profile", emoji: "🧰", title: "My work" };
@@ -606,7 +606,7 @@ export default async function HomePage() {
               </p>
               <div style={{ marginTop: 14, display: "flex", justifyContent: "flex-end" }}>
                 <Link
-                  href="/nex-native/settings/theme"
+                  href="/nex-native/chat-themes-library"
                   style={{
                     display: "inline-flex",
                     alignItems: "center",

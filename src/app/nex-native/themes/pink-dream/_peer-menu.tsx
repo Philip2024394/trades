@@ -89,7 +89,7 @@ export function PinkDreamPeerHeader() {
               Bunny 💗 · options
             </div>
             <MenuRow icon={<BellIcon />} label="Mute chat" />
-            <MenuRow icon={<PaletteIcon />} label="Change wallpaper" href="/nex-native/settings/theme" onNavigate={() => setMenuOpen(false)} />
+            <MenuRow icon={<PaletteIcon />} label="Change wallpaper" href="/nex-native/chat-themes-library" onNavigate={() => setMenuOpen(false)} />
             <MenuRow icon={<InfoIcon />} label="Chat info" />
             <div style={{ height: 1, background: "rgba(255,139,197,0.20)", margin: "6px 0" }} />
             <MenuRow icon={<BlockIcon />} label="Block" danger />

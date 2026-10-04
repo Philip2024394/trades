@@ -1,10 +1,13 @@
-// src/app/nex-native/settings/theme/page.tsx
+// src/app/nex-native/chat-themes-library/page.tsx
 //
 // User-facing chat theme browser · Bridge 4.
 // ------------------------------------------
 // Server component · fetches every active theme + resolves the caller's
 // effective tier + current active theme id, then hands over to the
 // client browser (search / filter / grid / enlarge preview).
+//
+// URL renamed 2026-10-04 · was /nex-native/settings/theme ·
+// old URL still 301s to this location (see next.config.mjs redirects).
 //
 // Doctrine · doctrine_theme_ownership_2026_09_27.md.
 
@@ -17,13 +20,13 @@ import {
   isThemesTrialActive,
   themesTrialExpiresAt,
 } from "@/lib/nex-native/account-service";
-import { startThemesTrialAction } from "../../_actions";
+import { startThemesTrialAction } from "../_actions";
 import * as chatThemeService from "@/lib/nex-native/chat-theme-service";
 import { nexSupabaseAdmin } from "@/lib/nex-native/supabase-admin";
-import { updateChatThemeAction } from "../../_actions";
+import { updateChatThemeAction } from "../_actions";
 import type { NexAccountRow } from "@/lib/nex-native/types";
 import { ThemeBrowserClient, type BrowserThemeRow } from "./_theme-browser-client";
-import { NexPageHeader } from "../../_page-header";
+import { NexPageHeader } from "../_page-header";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -99,6 +102,9 @@ export default async function ThemePickerPage({
     category: t.category,
     hero_image_url: t.hero_image_url,
     sort_order: t.sort_order,
+    // Phase 4A · gallery-always-plays intro.
+    intro_video_url: t.intro_video_url,
+    intro_poster_url: t.intro_poster_url,
   }));
 
   const sp = await searchParams;

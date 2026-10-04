@@ -34,7 +34,7 @@ export function renderNex1WelcomeBody(
   const firstName = raw.split(/\s+/)[0] || "there";
   return (
     `🎉 Welcome to NEX, ${firstName}!\n\n` +
-    `I'm NEX · your support account. Everything about your NEX chat lives here — tap /settings/theme to try any premium theme free for 7 days, or reply to this message any time you have a question.\n\n` +
+    `I'm NEX · your support account. Everything about your NEX chat lives here — tap /nex-native/chat-themes-library to try any premium theme free for 7 days, or reply to this message any time you have a question.\n\n` +
     `Enjoy your first look 💜`
   );
 }

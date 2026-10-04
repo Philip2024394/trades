@@ -52,7 +52,7 @@ export default async function SettingsIndex() {
         "See your current tier · compare Gratis vs. Bisnis · upgrade path",
     },
     {
-      href: "/nex-native/settings/theme",
+      href: "/nex-native/chat-themes-library",
       emoji: "🎨",
       title: "Chat theme",
       subtitle: "Pick the theme applied to your chat bubbles",

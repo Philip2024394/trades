@@ -380,7 +380,7 @@ export default async function PeerChatPage({
   //   whose own nex_account.chat_theme matches this theme) never see
   //   the intro at chat entry · they get fast entry from the first
   //   open. Theme owners experience the intro via the theme gallery /
-  //   /settings/theme (separate surface · unchanged). The intro must
+  //   /nex-native/chat-themes-library (separate surface · unchanged). The intro must
   //   NEVER be an obstacle for the owner.
   //
   //   We do NOT fake a nex_theme_intro_seen row for the owner — we

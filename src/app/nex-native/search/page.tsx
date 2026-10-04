@@ -60,23 +60,11 @@ const NEX = {
 };
 
 /* ─── Tabs ───────────────────────────────────────────────────────── */
-// Landing (no query) tab set · 4 entry-point categories.
-type LandingTab = "all" | "companies" | "services" | "places";
-const LANDING_TABS: readonly LandingTab[] = ["all", "companies", "services", "places"];
-const LANDING_TAB_LABEL: Record<LandingTab, string> = {
-  all: "All",
-  companies: "Companies",
-  services: "Services",
-  places: "Places",
-};
-// Only "all" is active today. Companies / Services / Places are dormant
-// (0 companies classified · 0 services · no place provider).
-const LANDING_TAB_ACTIVE: Record<LandingTab, boolean> = {
-  all: true,
-  companies: false,
-  services: false,
-  places: false,
-};
+// Landing tab bar removed 2026-10-04 · replaced by the Food & Drinks +
+// Taxi Service vertical-entry buttons at the top of the landing. The
+// old All | Companies | Services | Places chrome and its dormant copy
+// cards are no longer surfaced. Results (query mode) retains its own
+// tab set below.
 
 // Results (query present) tab set · 4 result-filtering chips.
 type ResultTab = "all" | "shops" | "companies" | "wholesale";
@@ -155,21 +143,17 @@ export default async function SearchPage({ searchParams }: PageProps) {
 
   const hasSearch = query.length > 0 || category.length > 0;
 
-  // Validate the tab against the right set for the current mode.
-  // Switching from landing → results reinterprets `?tab=` so an
-  // explicit landing tab still works on the way in.
-  let tab: LandingTab | ResultTab = "all";
+  // Validate the tab against the result set when a query is present.
+  // The landing surface has no tab UI anymore (replaced by the Food &
+  // Drinks + Taxi Service quick-entry buttons) · so landing always
+  // runs as tab="all" and a URL-manipulated `?tab=` is ignored.
+  let tab: ResultTab = "all";
   if (hasSearch) {
     tab = (RESULT_TABS as readonly string[]).includes(rawTab)
       ? (rawTab as ResultTab)
       : "all";
-  } else {
-    tab = (LANDING_TABS as readonly string[]).includes(rawTab)
-      ? (rawTab as LandingTab)
-      : "all";
   }
-  const activeMap = hasSearch ? RESULT_TAB_ACTIVE : LANDING_TAB_ACTIVE;
-  const isDormantTab = !activeMap[tab as keyof typeof activeMap];
+  const isDormantTab = hasSearch && !RESULT_TAB_ACTIVE[tab];
 
   // ── Data fetch ────────────────────────────────────────────────────
   let errorMsg: string | null = null;
@@ -306,9 +290,9 @@ export default async function SearchPage({ searchParams }: PageProps) {
           />
 
           {hasSearch ? (
-            <ResultsTabBar activeTab={tab as ResultTab} query={query} category={category} hrefFor={hrefFor} />
+            <ResultsTabBar activeTab={tab} query={query} category={category} hrefFor={hrefFor} />
           ) : (
-            <LandingTabBar activeTab={tab as LandingTab} query={query} category={category} hrefFor={hrefFor} />
+            <VerticalButtonsRow hrefFor={hrefFor} />
           )}
 
           {!hasSearch && <ExampleQueriesRow />}
@@ -324,7 +308,7 @@ export default async function SearchPage({ searchParams }: PageProps) {
               productBizById={productBizById}
               productCount={productCount}
               businessCount={businessCount}
-              tab={tab as ResultTab}
+              tab={tab}
               query={query}
               page={page}
               hasPrev={hasPrev}
@@ -350,7 +334,7 @@ export default async function SearchPage({ searchParams }: PageProps) {
 function LandingHero(): React.JSX.Element {
   return (
     <header
-      style={{ textAlign: "center", margin: "22px 0 18px", position: "relative", zIndex: 2 }}
+      style={{ textAlign: "center", margin: "48px 0 18px", position: "relative", zIndex: 2 }}
     >
       <h1
         style={{
@@ -507,36 +491,6 @@ function SearchForm({
  * Tab bars · landing vs results                                       *
  * ═══════════════════════════════════════════════════════════════════ */
 
-function LandingTabBar({
-  activeTab,
-  query,
-  category,
-  hrefFor,
-}: {
-  activeTab: LandingTab;
-  query: string;
-  category: string;
-  hrefFor: (opts: { q?: string; tab?: string; category?: string; page?: number }) => string;
-}): React.JSX.Element {
-  return (
-    <TabRow>
-      {LANDING_TABS.map((t) => {
-        const active = t === activeTab;
-        const dormant = !LANDING_TAB_ACTIVE[t];
-        return (
-          <TabChip
-            key={t}
-            active={active}
-            dormant={dormant}
-            href={hrefFor({ q: query, tab: t, category, page: 1 })}
-            label={LANDING_TAB_LABEL[t]}
-          />
-        );
-      })}
-    </TabRow>
-  );
-}
-
 function ResultsTabBar({
   activeTab,
   query,
@@ -583,6 +537,133 @@ function TabRow({ children }: { children: React.ReactNode }): React.JSX.Element 
     >
       {children}
     </nav>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════════ *
+ * Vertical quick-entry buttons · landing only                         *
+ * ─────────────────────────────────────────────────────────────────── *
+ * Replaces the old All | Companies | Services | Places tab row.       *
+ * Two primary verticals land first:                                   *
+ *   · Food & Drinks → runs a q=food search (hits restaurants, cafes,  *
+ *     bakeries, ice-cream, juice bars, etc. · all existing categories *
+ *     in NEX_BUSINESS_CATEGORIES already classified as menu-first).   *
+ *   · Taxi Service → runs a q=taxi search · honestly empty today      *
+ *     (no taxi businesses on NEX yet) · lights up when drivers join.  *
+ *                                                                     *
+ * These are app-wide verticals, not UI-only chips · they go through   *
+ * the same full-text search path as the search box so pagination,     *
+ * category filters and shop/product mixing stay consistent.           *
+ * ═══════════════════════════════════════════════════════════════════ */
+
+function VerticalButtonsRow({
+  hrefFor,
+}: {
+  hrefFor: (opts: { q?: string; tab?: string; category?: string; page?: number }) => string;
+}): React.JSX.Element {
+  return (
+    <nav
+      aria-label="Quick verticals"
+      style={{
+        display: "grid",
+        gridTemplateColumns: "1fr 1fr",
+        gap: 10,
+        padding: "2px 2px 12px",
+        margin: "0 0 4px",
+        position: "relative",
+        zIndex: 2,
+      }}
+    >
+      <VerticalButton
+        label="Food & Drinks"
+        glyph={<FoodDrinksGlyph />}
+        href={hrefFor({ q: "food", page: 1 })}
+      />
+      <VerticalButton
+        label="Taxi Service"
+        glyph={<TaxiGlyph />}
+        href={hrefFor({ q: "taxi", page: 1 })}
+      />
+    </nav>
+  );
+}
+
+function VerticalButton({
+  label,
+  glyph,
+  href,
+}: {
+  label: string;
+  glyph: React.ReactNode;
+  href: string;
+}): React.JSX.Element {
+  return (
+    <Link
+      href={href}
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: 10,
+        padding: "16px 14px",
+        borderRadius: 14,
+        background: NEX.surface,
+        border: `1px solid ${NEX.borderSoft}`,
+        color: NEX.text,
+        fontSize: 14.5,
+        fontWeight: 600,
+        letterSpacing: "0.01em",
+        textDecoration: "none",
+      }}
+    >
+      <span aria-hidden style={{ display: "inline-flex", color: NEX.orange }}>
+        {glyph}
+      </span>
+      {label}
+    </Link>
+  );
+}
+
+function FoodDrinksGlyph(): React.JSX.Element {
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <path d="M4 3v8a4 4 0 0 0 4 4v6" />
+      <path d="M8 3v8" />
+      <path d="M12 3v8" />
+      <path d="M18 3c-1.5 0-3 1.5-3 4v6a2 2 0 0 0 2 2h1v6" />
+    </svg>
+  );
+}
+
+function TaxiGlyph(): React.JSX.Element {
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <path d="M9 3h6l1 3H8z" />
+      <rect x="3" y="10" width="18" height="7" rx="2" />
+      <circle cx="7.5" cy="18.5" r="1.5" />
+      <circle cx="16.5" cy="18.5" r="1.5" />
+      <path d="M3 13h18" />
+    </svg>
   );
 }
 
@@ -678,9 +759,11 @@ function LandingBody({
   popularTags: Array<{ tag: string; count: number }>;
   hrefFor: (opts: { q?: string; tab?: string; category?: string; page?: number }) => string;
 }): React.JSX.Element {
-  // Explore grid · four tiles. Only "Shops & products" lands on real
-  // data today. The other three route to their dormant tabs so the
-  // honest "coming later" panel surfaces · never a fabricated result.
+  // Explore grid · "Shops & products" tile only.
+  // The Services / Places / Companies dormant tiles were removed
+  // 2026-10-04 along with the Companies / Services / Places landing
+  // tabs · the Food & Drinks + Taxi Service buttons at the top of the
+  // landing are now the primary vertical entry points.
   const exploreTiles: Array<{
     label: string;
     glyph: React.ReactNode;
@@ -692,24 +775,6 @@ function LandingBody({
       glyph: <ShopsGlyph />,
       href: hrefFor({ q: "shops", tab: "shops", page: 1 }),
       dormant: false,
-    },
-    {
-      label: "Skilled services",
-      glyph: <ServicesGlyph />,
-      href: hrefFor({ tab: "services" }),
-      dormant: true,
-    },
-    {
-      label: "Places near you",
-      glyph: <PlacesGlyph />,
-      href: hrefFor({ tab: "places" }),
-      dormant: true,
-    },
-    {
-      label: "Companies & suppliers",
-      glyph: <CompaniesGlyph />,
-      href: hrefFor({ tab: "companies" }),
-      dormant: true,
     },
   ];
   return (
@@ -731,7 +796,8 @@ function LandingBody({
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(2, 1fr)",
+            gridTemplateColumns:
+              exploreTiles.length === 1 ? "1fr" : "repeat(2, 1fr)",
             gap: 12,
           }}
         >
@@ -789,25 +855,6 @@ function LandingBody({
         </section>
       )}
 
-      <section
-        aria-label="About NEX Search"
-        style={{
-          margin: "32px 0 0",
-          padding: "16px 18px",
-          borderRadius: 14,
-          background: NEX.cyanFaint,
-          border: `1px solid ${NEX.borderSoft}`,
-          color: NEX.textDim,
-          fontSize: 12.5,
-          lineHeight: 1.55,
-          textAlign: "center",
-        }}
-      >
-        NEX Search will grow into a universal discovery experience across
-        places, people, products, services and experiences. Today it surfaces
-        live NEX shops and products. Other verticals arrive as the data and
-        infrastructure land.
-      </section>
     </div>
   );
 }

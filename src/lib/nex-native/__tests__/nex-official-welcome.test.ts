@@ -19,7 +19,7 @@ function originalBridge62Body(fullName: string): string {
   const firstName = fullName.split(/\s+/)[0] || "there";
   return (
     `🎉 Welcome to NEX, ${firstName}!\n\n` +
-    `I'm NEX · your support account. Everything about your NEX chat lives here — tap /settings/theme to try any premium theme free for 7 days, or reply to this message any time you have a question.\n\n` +
+    `I'm NEX · your support account. Everything about your NEX chat lives here — tap /nex-native/chat-themes-library to try any premium theme free for 7 days, or reply to this message any time you have a question.\n\n` +
     `Enjoy your first look 💜`
   );
 }
@@ -51,7 +51,7 @@ describe("renderNex1WelcomeBody · regression parity with Bridge 62 inline", () 
   });
 
   it("output contains the sealed premium-theme trial CTA", () => {
-    expect(renderNex1WelcomeBody({ first_name: "x" })).toContain("/settings/theme");
+    expect(renderNex1WelcomeBody({ first_name: "x" })).toContain("/nex-native/chat-themes-library");
     expect(renderNex1WelcomeBody({ first_name: "x" })).toContain("7 days");
   });
 });

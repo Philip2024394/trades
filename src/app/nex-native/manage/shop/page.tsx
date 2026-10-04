@@ -837,10 +837,10 @@ export default async function ShopSettingsPage({
           >
             Change your chat theme on{" "}
             <Link
-              href="/nex-native/settings/theme"
+              href="/nex-native/chat-themes-library"
               style={{ color: NEX.cyan, textDecoration: "none" }}
             >
-              /settings/theme
+              /nex-native/chat-themes-library
             </Link>{" "}
             · every cover preview below repaints when you do.
           </p>

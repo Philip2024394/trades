@@ -27,7 +27,7 @@ const ROWS: SettingsRow[] = [
     title: "Change your door theme",
     description:
       "The visual world you see when you unlock Vault. The inside of the Vault stays consistent across all themes.",
-    href: "/nex-native/settings/theme",
+    href: "/nex-native/chat-themes-library",
   },
   {
     key: "lock-vault",

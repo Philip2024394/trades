@@ -36,6 +36,15 @@ export interface BrowserThemeRow {
   category: "standard" | "premium";
   hero_image_url: string | null;
   sort_order: number;
+  /** Phase 4A · optional intro video shown in the preview modal.
+   *  Unlike the chat-entry interstitial (which plays once per viewer
+   *  × theme), the gallery ALWAYS plays the intro on preview-open ·
+   *  this is the surface where owners come to showcase + replay the
+   *  cinematic. No seen-state check here. */
+  intro_video_url: string | null;
+  /** Phase 4A · poster frame rendered while the video loads · also
+   *  shown as a still after end if the user hasn't tapped Replay. */
+  intro_poster_url: string | null;
 }
 
 type FilterMode = "all" | "gratis" | "bisnis";
@@ -748,31 +757,22 @@ function PreviewModal({
               overflow: "hidden",
             }}
           >
-            {THEME_PREVIEW_HREF[theme.id] ? (
-              <PhoneFramePreview
-                src={THEME_PREVIEW_HREF[theme.id]}
-                accentHex={accentHex}
-                themeName={theme.name}
-              />
-            ) : (
-              <div
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  overflow: "auto",
-                  padding: "0 10px",
-                }}
-              >
-                <ThemeMockHero
-                  theme={theme}
-                  viewerAvatarUrl={viewerAvatarUrl}
-                  outgoingRim={outgoingRim}
-                  incomingRim={incomingRim}
-                  composerRimStyle={composerRimStyle}
-                  composerGlow={composerGlow}
-                />
-              </div>
-            )}
+            {/* Chat preview + optional intro overlay. The preview is
+                ALWAYS mounted (same pattern as chat-entry · chat tree
+                warms behind the intro so there's no stall when the
+                video ends and the preview is revealed). When the
+                theme has an intro video the overlay sits on top until
+                it ends; a Replay affordance then floats over the
+                revealed preview. */}
+            <GalleryPreviewArea
+              theme={theme}
+              accentHex={accentHex}
+              outgoingRim={outgoingRim}
+              incomingRim={incomingRim}
+              composerRimStyle={composerRimStyle}
+              composerGlow={composerGlow}
+              viewerAvatarUrl={viewerAvatarUrl}
+            />
             <div
               style={{
                 fontSize: 9,
@@ -783,7 +783,9 @@ function PreviewModal({
                 flexShrink: 0,
               }}
             >
-              Fits your phone · swipe sides for next
+              {theme.intro_video_url
+                ? "Intro → themed chat · tap ↻ to replay"
+                : "Fits your phone · swipe sides for next"}
             </div>
           </div>
           <div style={{ display: "grid", placeItems: "center" }}>
@@ -940,6 +942,195 @@ function PreviewModal({
  * mounts so the modal entrance animation finishes before Turbopack
  * boots the inner page.
  */
+
+// ---------------------------------------------------------------------------
+// Gallery preview area · chat preview with optional intro-video overlay
+// ---------------------------------------------------------------------------
+//
+// Mounts the themed chat preview (phone frame iframe or mock hero)
+// permanently so it warms behind any intro overlay. When the theme
+// has an intro_video_url, a full-size video overlay sits on top:
+//
+//   · autoplay, muted, playsInline (browser autoplay policy compliant)
+//   · poster frame paints instantly · no black box while video loads
+//   · object-fit: cover · fills the preview area edge-to-edge
+//   · when the video ends, the overlay fades away and the themed chat
+//     preview is revealed underneath (zero stall because it was already
+//     mounted and rendering during the intro)
+//   · a glass "↻ Replay" button lands over the revealed preview so the
+//     user can watch the intro again · unlimited replays
+//
+// When the user cycles to another theme via prev/next, the whole
+// GalleryPreviewArea gets a new key (via theme.id in React's reconciler)
+// so state resets and autoplay triggers fresh.
+//
+// UNLIKE the chat-entry interstitial (one-shot per viewer × theme),
+// the gallery ALWAYS plays the intro — the gallery is where owners
+// come back to enjoy the cinematic and where premium-curious viewers
+// decide if they want the theme. NO seen-state writes here.
+// Sealed per theme-scope-boundary doctrine 2026-10-04.
+function GalleryPreviewArea({
+  theme,
+  accentHex,
+  outgoingRim,
+  incomingRim,
+  composerRimStyle,
+  composerGlow,
+  viewerAvatarUrl,
+}: {
+  theme: BrowserThemeRow;
+  accentHex: string;
+  outgoingRim: string;
+  incomingRim: string;
+  composerRimStyle: string;
+  composerGlow: string;
+  viewerAvatarUrl: string | null;
+}) {
+  const videoRef = React.useRef<HTMLVideoElement | null>(null);
+  // Intro visible = overlay covers the chat preview. Starts true when
+  // the theme has an intro video · set false when video ends.
+  const [introVisible, setIntroVisible] = React.useState<boolean>(
+    !!theme.intro_video_url,
+  );
+
+  // Theme switches via prev/next change `theme.id` · re-arm the intro.
+  React.useEffect(() => {
+    setIntroVisible(!!theme.intro_video_url);
+  }, [theme.id, theme.intro_video_url]);
+
+  // Kick off playback on mount / theme change. Browser autoplay policies
+  // require muted (we are) · if play() still rejects (power-save, etc.)
+  // we fall straight through to the revealed preview rather than hang.
+  React.useEffect(() => {
+    if (!introVisible) return;
+    const el = videoRef.current;
+    if (!el) return;
+    const p = el.play();
+    if (p && typeof p.catch === "function") {
+      p.catch(() => setIntroVisible(false));
+    }
+  }, [introVisible, theme.id]);
+
+  const replay = React.useCallback(() => {
+    setIntroVisible(true);
+    // The video element remounts via introVisible toggling · its own
+    // autoplay + the effect above pick it up from currentTime=0.
+  }, []);
+
+  return (
+    <div
+      style={{
+        position: "relative",
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        overflow: "hidden",
+      }}
+    >
+      {/* ─── CHAT PREVIEW · always mounted · warms behind the intro ─── */}
+      {THEME_PREVIEW_HREF[theme.id] ? (
+        <PhoneFramePreview
+          src={THEME_PREVIEW_HREF[theme.id]}
+          accentHex={accentHex}
+          themeName={theme.name}
+        />
+      ) : (
+        <div
+          style={{
+            width: "100%",
+            height: "100%",
+            overflow: "auto",
+            padding: "0 10px",
+          }}
+        >
+          <ThemeMockHero
+            theme={theme}
+            viewerAvatarUrl={viewerAvatarUrl}
+            outgoingRim={outgoingRim}
+            incomingRim={incomingRim}
+            composerRimStyle={composerRimStyle}
+            composerGlow={composerGlow}
+          />
+        </div>
+      )}
+
+      {/* ─── INTRO OVERLAY · sits on top until video ends ─── */}
+      {introVisible && theme.intro_video_url ? (
+        <div
+          data-nex-gallery-intro
+          data-theme-id={theme.id}
+          style={{
+            position: "absolute",
+            inset: 0,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            overflow: "hidden",
+            borderRadius: 16,
+            background: "#020914",
+            zIndex: 2,
+          }}
+        >
+          <video
+            ref={videoRef}
+            key={theme.intro_video_url}
+            src={theme.intro_video_url}
+            poster={theme.intro_poster_url ?? undefined}
+            autoPlay
+            muted
+            playsInline
+            preload="auto"
+            onEnded={() => setIntroVisible(false)}
+            onError={() => setIntroVisible(false)}
+            aria-label={`${theme.name} theme intro`}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              objectPosition: "center center",
+              background: "#020914",
+              display: "block",
+            }}
+          />
+        </div>
+      ) : null}
+
+      {/* ─── REPLAY BUTTON · only when the overlay is dismissed and the
+          theme has an intro to replay. Floats over the chat preview. */}
+      {!introVisible && theme.intro_video_url ? (
+        <button
+          type="button"
+          onClick={replay}
+          aria-label={`Replay ${theme.name} intro`}
+          style={{
+            position: "absolute",
+            bottom: 14,
+            right: 14,
+            padding: "8px 14px",
+            borderRadius: 999,
+            background: "rgba(0,0,0,0.55)",
+            border: `1px solid ${accentHex}`,
+            color: "#F4F7FC",
+            fontSize: 12,
+            fontWeight: 700,
+            letterSpacing: "0.08em",
+            textTransform: "uppercase",
+            cursor: "pointer",
+            backdropFilter: "blur(8px)",
+            WebkitBackdropFilter: "blur(8px)",
+            boxShadow: `0 2px 18px ${accentHex}66`,
+            zIndex: 3,
+          }}
+        >
+          ↻ Replay intro
+        </button>
+      ) : null}
+    </div>
+  );
+}
+
 function PhoneFramePreview({
   src,
   accentHex,
