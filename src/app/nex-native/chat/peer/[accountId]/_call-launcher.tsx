@@ -737,15 +737,15 @@ function CallOverlay(p: OverlayProps): React.JSX.Element {
         <div
           style={{
             position: "absolute",
-            top: "calc(env(safe-area-inset-top, 0) + 64px)",
+            top: "calc(env(safe-area-inset-top, 0) + 118px)",
             left: 20,
             right: 20,
             bottom: 220,
             borderRadius: 22,
             overflow: "hidden",
             background: "#000",
-            boxShadow: "0 24px 60px rgba(0,0,0,0.55)",
-            border: `1px solid ${CALL_SURFACE.btnBorder}`,
+            boxShadow: `0 24px 60px rgba(0,0,0,0.6), 0 0 0 1px ${CALL_SURFACE.ping}22, 0 0 40px ${CALL_SURFACE.ping}22`,
+            border: `1px solid ${CALL_SURFACE.ping}44`,
             zIndex: 0,
           }}
         >
@@ -769,8 +769,8 @@ function CallOverlay(p: OverlayProps): React.JSX.Element {
                     width: 108,
                     height: 144,
                     borderRadius: 14,
-                    border: "2px solid rgba(255,255,255,0.35)",
-                    boxShadow: "0 8px 24px rgba(0,0,0,0.6)",
+                    border: `2px solid ${CALL_SURFACE.ping}88`,
+                    boxShadow: `0 8px 24px rgba(0,0,0,0.6), 0 0 18px ${CALL_SURFACE.ping}33`,
                   }
                 : {}),
             }}
