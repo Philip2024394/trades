@@ -21,6 +21,7 @@ import {
   type PresenceKind,
 } from "./_presence-client";
 import { createCallLinkAction } from "./_create-call-link-action";
+import { startGroupCallAction } from "./_start-group-call-action";
 
 export interface CallsPerson {
   id: string;
@@ -94,6 +95,7 @@ function CallsClientInner({
   const [recentsFilter, setRecentsFilter] =
     React.useState<RecentsFilter>("missed");
   const [linkModalOpen, setLinkModalOpen] = React.useState(false);
+  const [groupPickerOpen, setGroupPickerOpen] = React.useState(false);
 
   return (
     <>
@@ -141,7 +143,10 @@ function CallsClientInner({
         >
           <Header />
           <PrimaryCards onPick={(kind) => setPickerFor(kind)} />
-          <QuickActions onCreateLink={() => setLinkModalOpen(true)} />
+          <QuickActions
+            onCreateLink={() => setLinkModalOpen(true)}
+            onGroupCall={() => setGroupPickerOpen(true)}
+          />
           <PeopleRow people={people.slice(0, 10)} />
           <RecentCalls
             calls={recentCalls}
@@ -159,6 +164,12 @@ function CallsClientInner({
         )}
         {linkModalOpen && (
           <CreateCallLinkModal onClose={() => setLinkModalOpen(false)} />
+        )}
+        {groupPickerOpen && (
+          <GroupPickerModal
+            people={people}
+            onClose={() => setGroupPickerOpen(false)}
+          />
         )}
       </div>
     </>
@@ -366,8 +377,10 @@ function PrimaryCard({
 
 function QuickActions({
   onCreateLink,
+  onGroupCall,
 }: {
   onCreateLink: () => void;
+  onGroupCall: () => void;
 }): React.JSX.Element {
   return (
     <section
@@ -379,10 +392,10 @@ function QuickActions({
         marginBottom: 22,
       }}
     >
-      <QuickAction
+      <QuickActionButton
         icon={<GroupIcon />}
         label="Group call"
-        disabledReason="Group calls are not yet available"
+        onClick={onGroupCall}
       />
       <QuickActionButton
         icon={<LinkIcon />}
@@ -1085,11 +1098,13 @@ function CreateCallLinkModal({
   onClose: () => void;
 }): React.JSX.Element {
   const [mediaType, setMediaType] = React.useState<"audio" | "video">("audio");
+  const [partySize, setPartySize] = React.useState<1 | 2 | 3>(1);
   const [busy, setBusy] = React.useState(false);
   const [err, setErr] = React.useState<string | null>(null);
   const [result, setResult] = React.useState<{
     shareUrl: string;
     mediaType: "audio" | "video";
+    maxUses: number;
     expiresAt: string | null;
   } | null>(null);
   const [copied, setCopied] = React.useState(false);
@@ -1105,7 +1120,7 @@ function CreateCallLinkModal({
   async function onCreate(): Promise<void> {
     setBusy(true);
     setErr(null);
-    const r = await createCallLinkAction({ mediaType, maxUses: 1 });
+    const r = await createCallLinkAction({ mediaType, maxUses: partySize });
     setBusy(false);
     if (!r.ok) {
       setErr(r.reason);
@@ -1114,6 +1129,7 @@ function CreateCallLinkModal({
     setResult({
       shareUrl: r.shareUrl,
       mediaType: r.mediaType,
+      maxUses: r.maxUses,
       expiresAt: r.expiresAt,
     });
   }
@@ -1191,7 +1207,7 @@ function CreateCallLinkModal({
               Create a call link
             </div>
             <div style={{ fontSize: 12, color: PAL.textDim }}>
-              Shareable URL · 24h expiry · single use
+              Shareable URL · 24h expiry · 1-3 joiners
             </div>
           </div>
           <button
@@ -1238,6 +1254,42 @@ function CreateCallLinkModal({
                 label="Video"
                 icon={<VideoIcon size={18} />}
                 onClick={() => setMediaType("video")}
+              />
+            </div>
+            <div
+              style={{
+                fontSize: 11,
+                color: PAL.textMuted,
+                marginBottom: 6,
+              }}
+            >
+              Who can join
+            </div>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(3, 1fr)",
+                gap: 8,
+                marginBottom: 14,
+              }}
+            >
+              <PartyOption
+                active={partySize === 1}
+                label="1:1"
+                sub="One joiner"
+                onClick={() => setPartySize(1)}
+              />
+              <PartyOption
+                active={partySize === 2}
+                label="Group of 3"
+                sub="You + 2 others"
+                onClick={() => setPartySize(2)}
+              />
+              <PartyOption
+                active={partySize === 3}
+                label="Group of 4"
+                sub="You + 3 others"
+                onClick={() => setPartySize(3)}
               />
             </div>
             {err && (
@@ -1293,7 +1345,13 @@ function CreateCallLinkModal({
                   marginBottom: 6,
                 }}
               >
-                {result.mediaType === "video" ? "Video call link" : "Voice call link"}
+                {result.maxUses === 1
+                  ? result.mediaType === "video"
+                    ? "1:1 video call link"
+                    : "1:1 voice call link"
+                  : result.mediaType === "video"
+                    ? `Group video call link (up to ${result.maxUses + 1})`
+                    : `Group voice call link (up to ${result.maxUses + 1})`}
               </div>
               <div
                 style={{
@@ -1363,6 +1421,41 @@ function CreateCallLinkModal({
   );
 }
 
+function PartyOption({
+  active,
+  label,
+  sub,
+  onClick,
+}: {
+  active: boolean;
+  label: string;
+  sub: string;
+  onClick: () => void;
+}): React.JSX.Element {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      style={{
+        padding: "9px 8px",
+        borderRadius: 12,
+        background: active ? PAL.orangeSoft : "transparent",
+        border: `1px solid ${active ? PAL.orange + "66" : PAL.cardBorderStrong}`,
+        color: active ? PAL.orange : PAL.textDim,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: 2,
+        fontFamily: "inherit",
+        cursor: "pointer",
+      }}
+    >
+      <span style={{ fontSize: 12, fontWeight: 700 }}>{label}</span>
+      <span style={{ fontSize: 10, opacity: 0.7 }}>{sub}</span>
+    </button>
+  );
+}
+
 function MediaKindOption({
   active,
   tint,
@@ -1401,6 +1494,312 @@ function MediaKindOption({
       <span>{label}</span>
     </button>
   );
+}
+
+/* ─── Group picker modal (host-initiated group call) ────────────── */
+
+function GroupPickerModal({
+  people,
+  onClose,
+}: {
+  people: CallsPerson[];
+  onClose: () => void;
+}): React.JSX.Element {
+  const router = useRouter();
+  const presenceSets = usePresence();
+  const [mediaType, setMediaType] = React.useState<"audio" | "video">("video");
+  const [selected, setSelected] = React.useState<Set<string>>(new Set());
+  const [busy, setBusy] = React.useState(false);
+  const [err, setErr] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  function toggle(id: string): void {
+    setSelected((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else if (next.size < 3) next.add(id);
+      return next;
+    });
+  }
+
+  async function onStart(): Promise<void> {
+    if (busy) return;
+    setBusy(true);
+    setErr(null);
+    const r = await startGroupCallAction({
+      mediaType,
+      inviteeAccountIds: Array.from(selected),
+    });
+    setBusy(false);
+    if (!r.ok) {
+      setErr(r.reason);
+      return;
+    }
+    router.push(`/nex-native/call/g/${r.sessionId}`);
+  }
+
+  const tint = mediaType === "video" ? PAL.blue : PAL.green;
+  const tintSoft = mediaType === "video" ? PAL.blueSoft : PAL.greenSoft;
+
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label="Start group call"
+      onClick={onClose}
+      style={{
+        position: "fixed",
+        inset: 0,
+        background: "rgba(2, 5, 15, 0.72)",
+        backdropFilter: "blur(10px)",
+        WebkitBackdropFilter: "blur(10px)",
+        zIndex: 100,
+        display: "flex",
+        alignItems: "flex-end",
+        justifyContent: "center",
+        padding: 16,
+      }}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          width: "100%",
+          maxWidth: 460,
+          background: PAL.card,
+          border: `1px solid ${PAL.cardBorderStrong}`,
+          borderRadius: 22,
+          padding: "20px 16px 18px",
+          maxHeight: "80dvh",
+          display: "flex",
+          flexDirection: "column",
+          boxShadow: "0 24px 60px rgba(0,0,0,0.6)",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
+          <span
+            aria-hidden
+            style={{
+              width: 34,
+              height: 34,
+              borderRadius: 999,
+              background: PAL.orangeSoft,
+              color: PAL.orange,
+              display: "grid",
+              placeItems: "center",
+              border: `1px solid ${PAL.orange}44`,
+            }}
+          >
+            <GroupIcon />
+          </span>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ fontSize: 15, fontWeight: 700, color: PAL.text }}>
+              Start group call
+            </div>
+            <div style={{ fontSize: 12, color: PAL.textDim }}>
+              You + up to 3 others · mesh WebRTC
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close"
+            style={{
+              width: 32,
+              height: 32,
+              borderRadius: 999,
+              background: "rgba(255,255,255,0.06)",
+              border: "none",
+              color: PAL.textDim,
+              display: "grid",
+              placeItems: "center",
+            }}
+          >
+            <CloseIcon />
+          </button>
+        </div>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(2, 1fr)",
+            gap: 10,
+            marginBottom: 14,
+          }}
+        >
+          <MediaKindOption
+            active={mediaType === "audio"}
+            tint={PAL.green}
+            tintSoft={PAL.greenSoft}
+            label="Voice"
+            icon={<PhoneIcon size={18} />}
+            onClick={() => setMediaType("audio")}
+          />
+          <MediaKindOption
+            active={mediaType === "video"}
+            tint={PAL.blue}
+            tintSoft={PAL.blueSoft}
+            label="Video"
+            icon={<VideoIcon size={18} />}
+            onClick={() => setMediaType("video")}
+          />
+        </div>
+
+        <div
+          style={{
+            fontSize: 11,
+            color: PAL.textMuted,
+            marginBottom: 8,
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+          <span>Invite up to 3 people (optional)</span>
+          <span>{selected.size}/3 selected</span>
+        </div>
+
+        {people.length === 0 ? (
+          <div
+            style={{
+              padding: "16px 10px",
+              textAlign: "center",
+              color: PAL.textDim,
+              fontSize: 13,
+            }}
+          >
+            You can start the call solo and share the room link from inside.
+          </div>
+        ) : (
+          <ul
+            style={{
+              listStyle: "none",
+              margin: 0,
+              padding: "4px 0",
+              overflowY: "auto",
+              maxHeight: 260,
+              display: "flex",
+              flexDirection: "column",
+              gap: 4,
+            }}
+          >
+            {people.map((p) => {
+              const checked = selected.has(p.accountId);
+              const busyPeer = presenceFor(presenceSets, p.accountId) === "busy";
+              return (
+                <li key={p.accountId}>
+                  <button
+                    type="button"
+                    onClick={() => toggle(p.accountId)}
+                    disabled={!checked && selected.size >= 3}
+                    style={{
+                      width: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 12,
+                      padding: "10px 12px",
+                      borderRadius: 12,
+                      background: checked ? PAL.orangeSoft : "transparent",
+                      border: `1px solid ${checked ? PAL.orange + "66" : "transparent"}`,
+                      color: PAL.text,
+                      textAlign: "left",
+                      cursor:
+                        !checked && selected.size >= 3 ? "not-allowed" : "pointer",
+                      fontFamily: "inherit",
+                      opacity: !checked && selected.size >= 3 ? 0.4 : 1,
+                    }}
+                  >
+                    <span
+                      aria-hidden
+                      style={{
+                        width: 36,
+                        height: 36,
+                        borderRadius: 999,
+                        background: "rgba(255,255,255,0.06)",
+                        color: PAL.text,
+                        display: "grid",
+                        placeItems: "center",
+                        fontSize: 13,
+                        fontWeight: 700,
+                        flex: "none",
+                      }}
+                    >
+                      {initialsFromName(p.displayName)}
+                    </span>
+                    <span style={{ flex: 1, minWidth: 0 }}>
+                      <span style={{ display: "block", fontSize: 14, fontWeight: 600 }}>
+                        {p.displayName}
+                      </span>
+                      <span style={{ fontSize: 11, color: PAL.textDim }}>
+                        {busyPeer ? "On a call" : "Online"}
+                      </span>
+                    </span>
+                    <span
+                      aria-hidden
+                      style={{
+                        width: 20,
+                        height: 20,
+                        borderRadius: 999,
+                        border: `1.5px solid ${checked ? PAL.orange : "rgba(255,255,255,0.2)"}`,
+                        background: checked ? PAL.orange : "transparent",
+                        display: "grid",
+                        placeItems: "center",
+                        color: "#0a0608",
+                        fontSize: 11,
+                        fontWeight: 800,
+                        flex: "none",
+                      }}
+                    >
+                      {checked ? "✓" : ""}
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+
+        {err && (
+          <p style={{ fontSize: 12.5, color: "#FFB199", margin: "10px 0 0" }}>
+            {err}
+          </p>
+        )}
+
+        <button
+          type="button"
+          onClick={() => void onStart()}
+          disabled={busy}
+          style={{
+            marginTop: 14,
+            padding: "13px 18px",
+            borderRadius: 999,
+            background: tintSoft,
+            border: `1px solid ${tint}`,
+            color: tint,
+            fontSize: 14.5,
+            fontWeight: 700,
+            cursor: busy ? "wait" : "pointer",
+            opacity: busy ? 0.7 : 1,
+            fontFamily: "inherit",
+          }}
+        >
+          {busy ? "Starting…" : "Start group call"}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function initialsFromName(name: string): string {
+  const parts = name.trim().split(/\s+/);
+  if (parts.length === 0 || !parts[0]) return "·";
+  if (parts.length === 1) return parts[0]!.slice(0, 2).toUpperCase();
+  return (parts[0]![0]! + parts[parts.length - 1]![0]!).toUpperCase();
 }
 
 /* ─── Contact picker modal (voice / video) ──────────────────────── */

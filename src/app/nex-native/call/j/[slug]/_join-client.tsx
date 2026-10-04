@@ -1,13 +1,16 @@
 "use client";
 
-// Lobby + join handler. 1:1 (max_uses=1) → consume + redirect to the
-// creator's peer chat with ?start_call. Group (max_uses > 1) still
-// shows a honest "group calls land in phase 3" notice.
+// Lobby + join handler. Routes the viewer by link kind + role:
+//   · 1:1 link           → consume + redirect to peer chat with ?start_call
+//   · Group link, creator → openGroupLinkCallAction → /call/g/{sessionId}
+//   · Group link, guest, session exists → consume + join + /call/g/{sessionId}
+//   · Group link, guest, session not yet open → "Waiting for host" state.
 
 import * as React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { consumeCallLinkAction } from "./_consume-call-link-action";
+import { openGroupLinkCallAction } from "./_open-group-link-action";
 
 interface JoinCallLinkClientProps {
   slug: string;
@@ -38,6 +41,7 @@ const PAL = {
 export function JoinCallLinkClient(props: JoinCallLinkClientProps): React.JSX.Element {
   const router = useRouter();
   const [busy, setBusy] = React.useState(false);
+  const [waitingNotice, setWaitingNotice] = React.useState<string | null>(null);
   const [err, setErr] = React.useState<string | null>(null);
 
   const isGroup = props.maxUses > 1;
@@ -47,18 +51,27 @@ export function JoinCallLinkClient(props: JoinCallLinkClientProps): React.JSX.El
   async function onJoin(): Promise<void> {
     if (busy) return;
     setErr(null);
-    if (props.selfIsCreator) {
-      // Creator opened their own link · just send them to Calls hub.
+    setWaitingNotice(null);
+
+    // Creator of a group link opens the room directly.
+    if (isGroup && props.selfIsCreator) {
+      setBusy(true);
+      const r = await openGroupLinkCallAction(props.slug);
+      if (!r.ok) {
+        setBusy(false);
+        setErr(r.reason);
+        return;
+      }
+      router.push(`/nex-native/call/g/${r.sessionId}`);
+      return;
+    }
+
+    // Creator of a 1:1 link lands back on Calls.
+    if (!isGroup && props.selfIsCreator) {
       router.push("/nex-native/calls");
       return;
     }
-    if (isGroup) {
-      // Group link flow lands in phase 3 · intentional guard here.
-      setErr(
-        "Group calls are still being built. Ask the creator to send a 1:1 link, or try again soon.",
-      );
-      return;
-    }
+
     setBusy(true);
     const result = await consumeCallLinkAction(props.slug);
     if (!result.ok) {
@@ -66,12 +79,31 @@ export function JoinCallLinkClient(props: JoinCallLinkClientProps): React.JSX.El
       setErr(result.reason);
       return;
     }
-    // Redirect into the real peer chat · the ?start_call deep-link
-    // is picked up by _call-launcher.tsx and dials the creator.
-    router.push(
-      `/nex-native/chat/peer/${props.creatorId}?start_call=${props.mediaType}`,
+
+    if (result.kind === "1:1") {
+      router.push(
+        `/nex-native/chat/peer/${result.creatorId}?start_call=${result.mediaType}`,
+      );
+      return;
+    }
+    if (result.kind === "group") {
+      router.push(`/nex-native/call/g/${result.sessionId}`);
+      return;
+    }
+    // group-waiting: creator hasn't opened the room yet.
+    setBusy(false);
+    setWaitingNotice(
+      `${props.creatorName} hasn't opened the room yet. Refresh in a moment.`,
     );
   }
+
+  const primaryLabel = (() => {
+    if (busy) return "Opening…";
+    if (props.selfIsCreator && isGroup) return "Open group call";
+    if (props.selfIsCreator && !isGroup) return "Back to Calls";
+    if (isGroup) return props.mediaType === "video" ? "Join group video call" : "Join group voice call";
+    return props.mediaType === "video" ? "Join video call" : "Join voice call";
+  })();
 
   return (
     <main
@@ -109,7 +141,7 @@ export function JoinCallLinkClient(props: JoinCallLinkClientProps): React.JSX.El
             fontWeight: 700,
           }}
         >
-          NEX · Call link
+          NEX · {isGroup ? "Group call link" : "Call link"}
         </div>
         <Avatar
           name={props.creatorName}
@@ -133,33 +165,24 @@ export function JoinCallLinkClient(props: JoinCallLinkClientProps): React.JSX.El
             color: PAL.textDim,
           }}
         >
-          wants to {props.mediaType === "video" ? "video-call" : "voice-call"} you
+          {isGroup
+            ? props.selfIsCreator
+              ? "This is your group call link"
+              : `invites you to a group ${props.mediaType === "video" ? "video" : "voice"} call`
+            : `wants to ${props.mediaType === "video" ? "video-call" : "voice-call"} you`}
         </p>
-        {props.selfIsCreator && (
+        {isGroup && (
           <p
             style={{
-              margin: "14px 0 0",
-              fontSize: 12,
+              margin: "10px 0 0",
+              fontSize: 11.5,
               color: PAL.textMuted,
-              fontStyle: "italic",
             }}
           >
-            You created this link. Send it to someone to call you.
+            Up to {props.maxUses + 1} participants · mesh WebRTC
           </p>
         )}
-        {isGroup && !props.selfIsCreator && (
-          <p
-            style={{
-              margin: "14px 0 0",
-              fontSize: 12,
-              color: PAL.textMuted,
-              lineHeight: 1.5,
-            }}
-          >
-            Group call · up to {props.maxUses} participants (coming later).
-          </p>
-        )}
-        {props.expiresAt && !props.selfIsCreator && (
+        {props.expiresAt && (
           <p
             style={{
               margin: "10px 0 0",
@@ -168,6 +191,18 @@ export function JoinCallLinkClient(props: JoinCallLinkClientProps): React.JSX.El
             }}
           >
             Link expires {formatExpiry(props.expiresAt)}
+          </p>
+        )}
+        {waitingNotice && (
+          <p
+            style={{
+              marginTop: 16,
+              fontSize: 13,
+              color: PAL.orange,
+              lineHeight: 1.5,
+            }}
+          >
+            {waitingNotice}
           </p>
         )}
         {err && (
@@ -192,7 +227,7 @@ export function JoinCallLinkClient(props: JoinCallLinkClientProps): React.JSX.El
         >
           <button
             type="button"
-            disabled={busy || (isGroup && !props.selfIsCreator)}
+            disabled={busy}
             onClick={() => void onJoin()}
             style={{
               padding: "14px 20px",
@@ -202,22 +237,32 @@ export function JoinCallLinkClient(props: JoinCallLinkClientProps): React.JSX.El
               color: tint,
               fontSize: 15,
               fontWeight: 700,
-              cursor:
-                busy || (isGroup && !props.selfIsCreator)
-                  ? "not-allowed"
-                  : "pointer",
-              opacity: busy || (isGroup && !props.selfIsCreator) ? 0.55 : 1,
+              cursor: busy ? "not-allowed" : "pointer",
+              opacity: busy ? 0.55 : 1,
               fontFamily: "inherit",
             }}
           >
-            {busy
-              ? "Joining…"
-              : props.selfIsCreator
-                ? "Back to Calls"
-                : props.mediaType === "video"
-                  ? "Join video call"
-                  : "Join voice call"}
+            {primaryLabel}
           </button>
+          {waitingNotice && (
+            <button
+              type="button"
+              onClick={() => router.refresh()}
+              style={{
+                padding: "10px 20px",
+                borderRadius: 999,
+                background: "transparent",
+                border: `1px solid ${PAL.orange}66`,
+                color: PAL.orange,
+                fontSize: 13,
+                fontWeight: 600,
+                cursor: "pointer",
+                fontFamily: "inherit",
+              }}
+            >
+              Refresh
+            </button>
+          )}
           <Link
             href="/nex-native/calls"
             style={{
