@@ -146,15 +146,16 @@ function Header(): React.JSX.Element {
       }}
     >
       <span
-        aria-hidden
+        aria-label="NEX"
         style={{
-          color: PAL.orange,
           fontSize: 18,
           fontWeight: 800,
           letterSpacing: "0.14em",
+          display: "inline-flex",
         }}
       >
-        NEX
+        <span style={{ color: PAL.text }}>NE</span>
+        <span style={{ color: PAL.orange }}>X</span>
       </span>
       <div style={{ flex: 1, minWidth: 0 }}>
         <h1
