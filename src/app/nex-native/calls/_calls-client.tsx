@@ -22,9 +22,22 @@ export interface CallsPerson {
   avatarUrl: string | null;
 }
 
+export interface RecentCallRow {
+  id: string;
+  peerId: string;
+  peerName: string;
+  peerAvatarUrl: string | null;
+  direction: "incoming" | "outgoing";
+  mediaType: "audio" | "video";
+  outcome: "completed" | "missed" | "declined" | "failed";
+  startedAt: string;
+  durationSeconds: number | null;
+}
+
 interface CallsClientProps {
   viewerId: string;
   people: CallsPerson[];
+  recentCalls: RecentCallRow[];
 }
 
 // Palette tuned to the reference image · deep navy base, rich card
@@ -51,9 +64,13 @@ const PAL = {
 type CallKind = "voice" | "video";
 type RecentsFilter = "missed" | "incoming" | "outgoing" | "voice" | "video";
 
-export function CallsClient({ people }: CallsClientProps): React.JSX.Element {
+export function CallsClient({
+  people,
+  recentCalls,
+}: CallsClientProps): React.JSX.Element {
   const [pickerFor, setPickerFor] = React.useState<CallKind | null>(null);
-  const [recentsFilter, setRecentsFilter] = React.useState<RecentsFilter>("missed");
+  const [recentsFilter, setRecentsFilter] =
+    React.useState<RecentsFilter>("missed");
 
   return (
     <>
@@ -96,7 +113,11 @@ export function CallsClient({ people }: CallsClientProps): React.JSX.Element {
           <PrimaryCards onPick={(kind) => setPickerFor(kind)} />
           <QuickActions />
           <PeopleRow people={people.slice(0, 10)} />
-          <RecentCalls filter={recentsFilter} onFilter={setRecentsFilter} />
+          <RecentCalls
+            calls={recentCalls}
+            filter={recentsFilter}
+            onFilter={setRecentsFilter}
+          />
         </main>
 
         {pickerFor && (
@@ -484,9 +505,11 @@ function PeopleRow({ people }: { people: CallsPerson[] }): React.JSX.Element {
 /* ─── Recent calls (empty-state only · no call-log table yet) ──── */
 
 function RecentCalls({
+  calls,
   filter,
   onFilter,
 }: {
+  calls: RecentCallRow[];
   filter: RecentsFilter;
   onFilter: (f: RecentsFilter) => void;
 }): React.JSX.Element {
@@ -497,6 +520,7 @@ function RecentCalls({
     { key: "voice", label: "Voice" },
     { key: "video", label: "Video" },
   ];
+  const filtered = React.useMemo(() => applyFilter(calls, filter), [calls, filter]);
   return (
     <section data-nex-calls-recent>
       <SectionHeader title="Recent calls" linkLabel="View all" linkHref="#" />
@@ -505,56 +529,270 @@ function RecentCalls({
         options={filters}
         onChange={onFilter}
       />
+      {filtered.length === 0 ? (
+        <RecentCallsEmpty hasAny={calls.length > 0} filter={filter} />
+      ) : (
+        <ul
+          data-nex-calls-recent-list
+          style={{
+            listStyle: "none",
+            margin: 0,
+            padding: 0,
+            display: "flex",
+            flexDirection: "column",
+            gap: 4,
+          }}
+        >
+          {filtered.map((c) => (
+            <li key={c.id}>
+              <RecentCallRowView row={c} />
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
+  );
+}
+
+function applyFilter(
+  rows: RecentCallRow[],
+  filter: RecentsFilter,
+): RecentCallRow[] {
+  switch (filter) {
+    case "missed":
+      return rows.filter((r) => r.outcome === "missed");
+    case "incoming":
+      return rows.filter((r) => r.direction === "incoming");
+    case "outgoing":
+      return rows.filter((r) => r.direction === "outgoing");
+    case "voice":
+      return rows.filter((r) => r.mediaType === "audio");
+    case "video":
+      return rows.filter((r) => r.mediaType === "video");
+  }
+}
+
+function RecentCallsEmpty({
+  hasAny,
+  filter,
+}: {
+  hasAny: boolean;
+  filter: RecentsFilter;
+}): React.JSX.Element {
+  const label = (() => {
+    if (!hasAny) return "Your recent calls will appear here";
+    switch (filter) {
+      case "missed":   return "No missed calls";
+      case "incoming": return "No incoming calls yet";
+      case "outgoing": return "No outgoing calls yet";
+      case "voice":    return "No voice calls yet";
+      case "video":    return "No video calls yet";
+    }
+  })();
+  const sub = hasAny
+    ? "Try another filter above."
+    : "Start a call from the cards above or from a friend's chat.";
+  return (
+    <div
+      style={{
+        padding: "28px 20px",
+        borderRadius: 16,
+        background: PAL.card,
+        border: `1px solid ${PAL.cardBorder}`,
+        textAlign: "center",
+      }}
+    >
       <div
+        aria-hidden
         style={{
-          padding: "28px 20px",
-          borderRadius: 16,
-          background: PAL.card,
-          border: `1px solid ${PAL.cardBorder}`,
-          textAlign: "center",
+          margin: "0 auto 10px",
+          width: 44,
+          height: 44,
+          borderRadius: 999,
+          background: PAL.orangeSoft,
+          color: PAL.orange,
+          display: "grid",
+          placeItems: "center",
         }}
       >
-        <div
-          aria-hidden
-          style={{
-            margin: "0 auto 10px",
-            width: 44,
-            height: 44,
-            borderRadius: 999,
-            background: PAL.orangeSoft,
-            color: PAL.orange,
-            display: "grid",
-            placeItems: "center",
-          }}
-        >
-          <PhoneIcon size={20} />
-        </div>
-        <p
-          style={{
-            margin: 0,
-            fontSize: 14,
-            fontWeight: 600,
-            color: PAL.text,
-          }}
-        >
-          Your recent calls will appear here
-        </p>
-        <p
-          style={{
-            margin: "6px 0 0",
-            fontSize: 12,
-            color: PAL.textDim,
-            lineHeight: 1.5,
-            maxWidth: 300,
-            marginLeft: "auto",
-            marginRight: "auto",
-          }}
-        >
-          Call history is tracked once a call log is wired up. For now,
-          start a call from the cards above or from a friend&rsquo;s chat.
-        </p>
+        <PhoneIcon size={20} />
       </div>
-    </section>
+      <p style={{ margin: 0, fontSize: 14, fontWeight: 600, color: PAL.text }}>
+        {label}
+      </p>
+      <p
+        style={{
+          margin: "6px auto 0",
+          fontSize: 12,
+          color: PAL.textDim,
+          lineHeight: 1.5,
+          maxWidth: 300,
+        }}
+      >
+        {sub}
+      </p>
+    </div>
+  );
+}
+
+function RecentCallRowView({ row }: { row: RecentCallRow }): React.JSX.Element {
+  const missed = row.outcome === "missed";
+  const callBackHref = `/nex-native/chat/peer/${row.peerId}?start_call=${
+    row.mediaType === "video" ? "video" : "voice"
+  }`;
+  return (
+    <Link
+      href={callBackHref}
+      aria-label={`Call back ${row.peerName}`}
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 12,
+        padding: "10px 10px",
+        borderRadius: 12,
+        background: "transparent",
+      }}
+    >
+      <Avatar name={row.peerName} avatarUrl={row.peerAvatarUrl} size={44} />
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "baseline",
+            justifyContent: "space-between",
+            gap: 10,
+          }}
+        >
+          <span
+            style={{
+              fontSize: 14.5,
+              fontWeight: 600,
+              color: missed ? PAL.red : PAL.text,
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              maxWidth: "60vw",
+            }}
+          >
+            {row.peerName}
+          </span>
+          <span
+            style={{
+              fontSize: 11,
+              color: PAL.textDim,
+              fontVariantNumeric: "tabular-nums",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {formatRecentDate(row.startedAt)}
+          </span>
+        </div>
+        <div
+          style={{
+            marginTop: 2,
+            display: "flex",
+            alignItems: "center",
+            gap: 6,
+            fontSize: 12,
+            color: missed ? PAL.red : PAL.textDim,
+          }}
+        >
+          <DirectionIcon direction={row.direction} outcome={row.outcome} />
+          <span>{recentCallSubtitle(row)}</span>
+        </div>
+      </div>
+      <span
+        aria-hidden
+        style={{
+          display: "grid",
+          placeItems: "center",
+          width: 36,
+          height: 36,
+          borderRadius: 999,
+          background: row.mediaType === "video" ? PAL.blueSoft : PAL.greenSoft,
+          color: row.mediaType === "video" ? PAL.blue : PAL.green,
+          border: `1px solid ${(row.mediaType === "video" ? PAL.blue : PAL.green) + "44"}`,
+        }}
+      >
+        {row.mediaType === "video" ? (
+          <VideoIcon size={16} />
+        ) : (
+          <PhoneIcon size={16} />
+        )}
+      </span>
+    </Link>
+  );
+}
+
+function recentCallSubtitle(row: RecentCallRow): string {
+  const kind = row.mediaType === "video" ? "Video" : "Voice";
+  if (row.outcome === "missed") {
+    return row.direction === "incoming" ? `Missed ${kind.toLowerCase()} call` : `No answer`;
+  }
+  if (row.outcome === "declined") {
+    return row.direction === "incoming" ? `Declined ${kind.toLowerCase()}` : `Declined`;
+  }
+  if (row.outcome === "failed") {
+    return `${kind} · failed`;
+  }
+  // completed · show duration if available
+  const dur = row.durationSeconds;
+  if (dur == null || dur < 1) return `${kind} call`;
+  const mm = Math.floor(dur / 60);
+  const ss = dur % 60;
+  return `${kind} · ${mm}:${String(ss).padStart(2, "0")}`;
+}
+
+function formatRecentDate(iso: string): string {
+  const d = new Date(iso);
+  const now = new Date();
+  const sameDay =
+    d.getUTCFullYear() === now.getUTCFullYear() &&
+    d.getUTCMonth() === now.getUTCMonth() &&
+    d.getUTCDate() === now.getUTCDate();
+  if (sameDay) {
+    const h = String(d.getHours()).padStart(2, "0");
+    const m = String(d.getMinutes()).padStart(2, "0");
+    return `${h}:${m}`;
+  }
+  const dayMs = 86_400_000;
+  const diffDays = Math.floor((now.getTime() - d.getTime()) / dayMs);
+  if (diffDays === 1) return "Yesterday";
+  if (diffDays < 7) {
+    return d.toLocaleDateString("en-GB", { weekday: "short" });
+  }
+  return d.toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+}
+
+function DirectionIcon({
+  direction,
+  outcome,
+}: {
+  direction: "incoming" | "outgoing";
+  outcome: "completed" | "missed" | "declined" | "failed";
+}): React.JSX.Element {
+  const red = outcome === "missed" || outcome === "declined";
+  const color = red ? PAL.red : direction === "incoming" ? PAL.green : PAL.blue;
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden>
+      {direction === "incoming" ? (
+        <path
+          d="M19 5L8 16M8 16h6M8 16v-6"
+          stroke={color}
+          strokeWidth="1.9"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      ) : (
+        <path
+          d="M5 19L16 8M16 8h-6M16 8v6"
+          stroke={color}
+          strokeWidth="1.9"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      )}
+    </svg>
   );
 }
 

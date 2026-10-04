@@ -37,7 +37,12 @@ import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
 import * as friendService from "@/lib/nex-native/friend-service";
 import * as accountService from "@/lib/nex-native/account-service";
 import { getProfileByAccountId } from "@/lib/nex-native/account-profile-service";
-import { CallsClient, type CallsPerson } from "./_calls-client";
+import { listRecentCallsForAccount } from "@/lib/nex-native/call-log-service";
+import {
+  CallsClient,
+  type CallsPerson,
+  type RecentCallRow,
+} from "./_calls-client";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -70,5 +75,54 @@ export default async function CallsPage(): Promise<React.JSX.Element> {
     }),
   );
 
-  return <CallsClient viewerId={session.account.id} people={people} />;
+  // Load this viewer's call-log rows + hydrate peer identity.
+  const rawCalls = await listRecentCallsForAccount(session.account.id, {
+    limit: 50,
+  }).catch(() => []);
+
+  const peopleById = new Map<string, CallsPerson>();
+  for (const p of people) peopleById.set(p.id, p);
+  // Hydrate call-row peers that aren't in the friends list (deleted
+  // friends, strangers who called in, etc.) so the row still renders.
+  const extraPeerIds = new Set<string>();
+  for (const r of rawCalls) {
+    if (!peopleById.has(r.peer_account_id)) extraPeerIds.add(r.peer_account_id);
+  }
+  await Promise.all(
+    [...extraPeerIds].map(async (id) => {
+      const [acc, profile] = await Promise.all([
+        accountService.getAccountById(id).catch(() => null),
+        getProfileByAccountId(id).catch(() => null),
+      ]);
+      peopleById.set(id, {
+        id,
+        displayName: acc?.display_name ?? "Unknown contact",
+        handle: acc?.nex_handle ?? null,
+        avatarUrl: profile?.avatar_url ?? null,
+      });
+    }),
+  );
+
+  const recentCalls: RecentCallRow[] = rawCalls.map((r) => {
+    const peer = peopleById.get(r.peer_account_id);
+    return {
+      id: r.id,
+      peerId: r.peer_account_id,
+      peerName: peer?.displayName ?? "Unknown contact",
+      peerAvatarUrl: peer?.avatarUrl ?? null,
+      direction: r.direction,
+      mediaType: r.media_type,
+      outcome: r.outcome,
+      startedAt: r.started_at,
+      durationSeconds: r.duration_seconds,
+    };
+  });
+
+  return (
+    <CallsClient
+      viewerId={session.account.id}
+      people={people}
+      recentCalls={recentCalls}
+    />
+  );
 }

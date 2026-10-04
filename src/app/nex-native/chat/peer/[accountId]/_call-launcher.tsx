@@ -23,6 +23,8 @@ import {
   type PeerCallState,
 } from "@/lib/nex-native/calls/peer-call";
 import { createRingtone, type Ringtone } from "@/lib/nex-native/calls/ringtone";
+import { logCallAction } from "@/app/nex-native/calls/_log-call-action";
+import type { CallLogOutcome } from "@/lib/nex-native/call-log-service";
 
 export interface PeerCallLauncherProps {
   conversationId: string;
@@ -77,6 +79,15 @@ export function PeerCallLauncher(props: PeerCallLauncherProps): React.JSX.Elemen
   const localVideoRef = React.useRef<HTMLVideoElement | null>(null);
   const connectedAtRef = React.useRef<number | null>(null);
   const ringtoneRef = React.useRef<Ringtone | null>(null);
+  // Call-log tracking · refs because they live inside the PeerCall
+  // handler closure which is set up once in the effect below.
+  const callDirectionRef = React.useRef<"outgoing" | "incoming" | null>(null);
+  const callStartedAtRef = React.useRef<string | null>(null);
+  const wasConnectedRef = React.useRef<boolean>(false);
+  const currentMediaRef = React.useRef<PeerCallMedia>("audio");
+  React.useEffect(() => {
+    currentMediaRef.current = currentMedia;
+  }, [currentMedia]);
 
   // Instantiate PeerCall once per conversation.
   React.useEffect(() => {
@@ -89,9 +100,26 @@ export function PeerCallLauncher(props: PeerCallLauncherProps): React.JSX.Elemen
       handlers: {
         onStateChange: (s) => {
           setState(s);
+          // Capture direction + start time on the first transition
+          // out of idle so onEnded can log a complete record.
+          if (
+            s === "dialing" &&
+            callDirectionRef.current === null
+          ) {
+            callDirectionRef.current = "outgoing";
+            callStartedAtRef.current = new Date().toISOString();
+          }
+          if (
+            s === "incoming" &&
+            callDirectionRef.current === null
+          ) {
+            callDirectionRef.current = "incoming";
+            callStartedAtRef.current = new Date().toISOString();
+          }
           if (s === "connected") {
             connectedAtRef.current = Date.now();
             setElapsedSec(0);
+            wasConnectedRef.current = true;
           }
           if (s === "idle") {
             connectedAtRef.current = null;
@@ -100,6 +128,11 @@ export function PeerCallLauncher(props: PeerCallLauncherProps): React.JSX.Elemen
             setMuted(false);
             setCameraOff(false);
             setCurrentMedia("audio");
+            // Reset call-log tracking for the next call on this
+            // launcher instance.
+            callDirectionRef.current = null;
+            callStartedAtRef.current = null;
+            wasConnectedRef.current = false;
           }
         },
         onIncoming: (name, media) => {
@@ -113,6 +146,40 @@ export function PeerCallLauncher(props: PeerCallLauncherProps): React.JSX.Elemen
           setEndReason(reason);
           setRemoteStream(null);
           setLocalStream(null);
+          // Fire-and-forget call-log insert. One row per viewer per
+          // call lifecycle; the counterparty inserts their own row
+          // from their own launcher instance. Soft-fails so a logging
+          // hiccup doesn't disturb the call-ended UX.
+          const direction = callDirectionRef.current;
+          const startedAt = callStartedAtRef.current;
+          if (direction && startedAt) {
+            const connectedAt = connectedAtRef.current;
+            const nowMs = Date.now();
+            const durationSeconds =
+              connectedAt !== null
+                ? Math.max(0, Math.round((nowMs - connectedAt) / 1000))
+                : null;
+            const outcome: CallLogOutcome = (() => {
+              if (reason === "error") return "failed";
+              if (wasConnectedRef.current) return "completed";
+              if (reason === "declined" || reason === "peer-declined") return "declined";
+              // unanswered / hangup / peer-hangup before connecting =
+              // treated as missed from the viewer's perspective.
+              return "missed";
+            })();
+            void logCallAction({
+              peerAccountId: props.peerAccountId,
+              conversationId: props.conversationId,
+              direction,
+              mediaType: currentMediaRef.current,
+              outcome,
+              startedAt,
+              endedAt: new Date(nowMs).toISOString(),
+              durationSeconds,
+            }).catch(() => {
+              /* soft-fail · UI unaffected */
+            });
+          }
         },
         onError: (msg) => setError(msg),
       },
