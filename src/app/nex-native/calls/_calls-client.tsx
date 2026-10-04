@@ -52,18 +52,8 @@ type CallKind = "voice" | "video";
 type RecentsFilter = "missed" | "incoming" | "outgoing" | "voice" | "video";
 
 export function CallsClient({ people }: CallsClientProps): React.JSX.Element {
-  const [search, setSearch] = React.useState("");
   const [pickerFor, setPickerFor] = React.useState<CallKind | null>(null);
   const [recentsFilter, setRecentsFilter] = React.useState<RecentsFilter>("missed");
-
-  const filteredPeople = React.useMemo(() => {
-    const q = search.trim().toLowerCase();
-    if (!q) return people;
-    return people.filter((p) =>
-      p.displayName.toLowerCase().includes(q) ||
-      (p.handle ?? "").toLowerCase().includes(q),
-    );
-  }, [people, search]);
 
   return (
     <>
@@ -103,7 +93,6 @@ export function CallsClient({ people }: CallsClientProps): React.JSX.Element {
           }}
         >
           <Header />
-          <SearchField value={search} onChange={setSearch} />
           <PrimaryCards onPick={(kind) => setPickerFor(kind)} />
           <QuickActions />
           <PeopleRow people={people.slice(0, 10)} />
@@ -113,7 +102,7 @@ export function CallsClient({ people }: CallsClientProps): React.JSX.Element {
         {pickerFor && (
           <ContactPickerModal
             kind={pickerFor}
-            people={filteredPeople}
+            people={people}
             onClose={() => setPickerFor(null)}
           />
         )}
@@ -147,23 +136,18 @@ function Header(): React.JSX.Element {
         NEX
       </span>
       <div style={{ flex: 1, minWidth: 0 }}>
-        <h1 style={{ margin: 0, fontSize: 22, fontWeight: 700, letterSpacing: "-0.01em" }}>
-          Calls
-        </h1>
-        <p
+        <h1
           style={{
-            margin: "1px 0 0",
-            fontSize: 12,
+            margin: 0,
+            fontSize: 13,
+            fontWeight: 600,
+            letterSpacing: "0.02em",
             color: PAL.textDim,
-            letterSpacing: "0.005em",
           }}
         >
-          Connect with your people
-        </p>
+          Call Center
+        </h1>
       </div>
-      <IconButton ariaLabel="Search">
-        <SearchIcon />
-      </IconButton>
       <IconButton ariaLabel="More options">
         <DotsIcon />
       </IconButton>
@@ -202,70 +186,9 @@ function IconButton({
   );
 }
 
-/* ─── Search ────────────────────────────────────────────────────── */
-
-function SearchField({
-  value,
-  onChange,
-}: {
-  value: string;
-  onChange: (v: string) => void;
-}): React.JSX.Element {
-  return (
-    <div
-      data-nex-calls-search
-      style={{
-        display: "flex",
-        alignItems: "center",
-        gap: 10,
-        padding: "12px 14px",
-        borderRadius: 16,
-        background: PAL.card,
-        border: `1px solid ${PAL.cardBorder}`,
-        marginBottom: 18,
-      }}
-    >
-      <SearchIcon color={PAL.orange} />
-      <input
-        type="search"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder="Search people to call"
-        aria-label="Search people to call"
-        style={{
-          flex: 1,
-          minWidth: 0,
-          background: "transparent",
-          border: "none",
-          outline: "none",
-          color: PAL.text,
-          fontSize: 14.5,
-          fontFamily: "inherit",
-        }}
-      />
-      {value && (
-        <button
-          type="button"
-          aria-label="Clear search"
-          onClick={() => onChange("")}
-          style={{
-            width: 22,
-            height: 22,
-            borderRadius: 999,
-            background: "rgba(255,255,255,0.06)",
-            border: "none",
-            display: "grid",
-            placeItems: "center",
-            color: PAL.textDim,
-            padding: 0,
-          }}
-        >
-          <CloseIcon />
-        </button>
-      )}
-    </div>
-  );
-}
+/* Search bar removed 2026-10-04 per founder direction. The picker
+   modal still receives the full People list; search inside the
+   picker can be re-added if the friend list grows large. */
 
 /* ─── Primary cards ─────────────────────────────────────────────── */
 
@@ -1027,14 +950,6 @@ function firstName(name: string): string {
 
 /* ─── Icons ─────────────────────────────────────────────────────── */
 
-function SearchIcon({ color }: { color?: string } = {}): React.JSX.Element {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <circle cx="11" cy="11" r="7" stroke={color ?? "currentColor"} strokeWidth="1.8" />
-      <path d="M20 20l-3.5-3.5" stroke={color ?? "currentColor"} strokeWidth="1.8" strokeLinecap="round" />
-    </svg>
-  );
-}
 function DotsIcon(): React.JSX.Element {
   return (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
