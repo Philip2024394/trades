@@ -23,6 +23,7 @@ import { nexSupabaseAdmin } from "@/lib/nex-native/supabase-admin";
 import { updateChatThemeAction } from "../../_actions";
 import type { NexAccountRow } from "@/lib/nex-native/types";
 import { ThemeBrowserClient, type BrowserThemeRow } from "./_theme-browser-client";
+import { NexPageHeader } from "../../_page-header";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -106,7 +107,18 @@ export default async function ThemePickerPage({
 
   return (
     <>
-      <style>{`html, body { background: ${NEX.bg} !important; }`}</style>
+      <style>{`
+        html, body { background: ${NEX.bg} !important; }
+        /* Slow pulse for the "FREE" badge on the trial banner · one
+         * cycle every ~2.4s · ease-in-out so the fade in/out feels
+         * breathing, not blinking. Governed by the themes-trial rule
+         * sealed 2026-10-04. */
+        @keyframes nex-themes-trial-free-pulse {
+          0%   { opacity: 1;    transform: scale(1);    box-shadow: 0 0 0 0 rgba(255,120,0,0.5); }
+          50%  { opacity: 0.55; transform: scale(1.04); box-shadow: 0 0 0 8px rgba(255,120,0,0); }
+          100% { opacity: 1;    transform: scale(1);    box-shadow: 0 0 0 0 rgba(255,120,0,0); }
+        }
+      `}</style>
       <main
         style={{
           minHeight: "100dvh",
@@ -118,24 +130,11 @@ export default async function ThemePickerPage({
         }}
       >
         <div style={{ maxWidth: 720, margin: "0 auto" }}>
-          <div style={{ marginBottom: 14 }}>
-            <Link
-              href="/nex-native/settings"
-              style={{
-                fontSize: 11,
-                letterSpacing: "0.14em",
-                textTransform: "uppercase",
-                color: NEX.cyan,
-                textDecoration: "none",
-              }}
-            >
-              ← Settings
-            </Link>
-          </div>
+          <NexPageHeader dataScope="settings-theme" />
 
           <h1
             style={{
-              margin: "0 0 6px",
+              margin: "18px 0 6px",
               fontSize: 24,
               fontWeight: 700,
               letterSpacing: "-0.01em",
@@ -273,15 +272,40 @@ export default async function ThemePickerPage({
               <div style={{ minWidth: 0 }}>
                 <div
                   style={{
-                    fontSize: 10,
-                    letterSpacing: "0.22em",
-                    textTransform: "uppercase",
-                    color: NEX.orange,
-                    fontWeight: 800,
-                    marginBottom: 4,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 8,
+                    marginBottom: 6,
                   }}
                 >
-                  🎁 Your first premium theme is on us
+                  <span
+                    aria-hidden
+                    style={{
+                      display: "inline-block",
+                      padding: "3px 8px",
+                      borderRadius: 999,
+                      background: `linear-gradient(180deg, #FF9033 0%, ${NEX.orange} 100%)`,
+                      color: "#0B0F1A",
+                      fontSize: 9.5,
+                      fontWeight: 900,
+                      letterSpacing: "0.14em",
+                      animation:
+                        "nex-themes-trial-free-pulse 2.4s ease-in-out infinite",
+                    }}
+                  >
+                    FREE
+                  </span>
+                  <span
+                    style={{
+                      fontSize: 10,
+                      letterSpacing: "0.22em",
+                      textTransform: "uppercase",
+                      color: NEX.orange,
+                      fontWeight: 800,
+                    }}
+                  >
+                    Your first premium theme is on us
+                  </span>
                 </div>
                 <div
                   style={{
