@@ -50,19 +50,25 @@ const NEX = {
   textDim: "#8BA9D1",
 };
 
-/* Mock-driven palette for the full-screen call surface — matches the
- * founder's call-page.png (orange avatar glow, dark background,
- * circular dark-grey control buttons). */
+/* Full-screen call surface palette — kept in lockstep with the NEX
+ * Call Center page (src/app/nex-native/calls/_calls-client.tsx PAL)
+ * so the voice/video page and the hub share one visual language.
+ * The orange accent glow stays — that's the identifying call-page
+ * flourish from call-page.png — but the background and button
+ * surfaces now mirror the hub's dark-navy card palette.
+ *
+ * If you touch the hub palette (PAL in _calls-client.tsx), update
+ * these values in the same change so the two don't drift. */
 const CALL_SURFACE = {
-  bg1: "#0D0806",
-  bg2: "#1A0F08",
+  bg1: "#06091A",
+  bg2: "#0B1024",
   accent: "#FF8A2A",
-  accentSoft: "rgba(255,138,42,0.22)",
+  accentSoft: "rgba(255,138,42,0.18)",
   green: "#22C55E",
   red: "#EF4444",
-  text: "#F6F2EE",
-  textDim: "#A89C92",
-  btnBg: "rgba(255,255,255,0.06)",
+  text: "#F2F5FA",
+  textDim: "#A6ADC2",
+  btnBg: "#121737",
   btnBorder: "rgba(255,255,255,0.08)",
 };
 
