@@ -13,6 +13,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { NexPageHeader } from "../_page-header";
 import { useRouter } from "next/navigation";
 import {
   PresenceProvider,
@@ -166,7 +167,19 @@ function CallsClientInner({
               "calc(env(safe-area-inset-top, 0) + 16px) 18px 24px",
           }}
         >
-          <Header />
+          <NexPageHeader dataScope="calls" />
+          <div
+            style={{
+              fontSize: 11,
+              fontWeight: 600,
+              letterSpacing: "0.14em",
+              color: NEX_BRAND.textDim,
+              textTransform: "uppercase",
+              margin: "4px 0 14px",
+            }}
+          >
+            Call Center
+          </div>
           <PrimaryCards onPick={(kind) => setPickerFor(kind)} />
           <QuickActions
             onCreateLink={() => setLinkModalOpen(true)}
