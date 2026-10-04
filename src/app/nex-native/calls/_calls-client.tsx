@@ -458,6 +458,7 @@ function QuickActionLink({
 
 function PeopleRow({ people }: { people: CallsPerson[] }): React.JSX.Element {
   const presenceSets = usePresence();
+  const router = useRouter();
   if (people.length === 0) {
     return (
       <section data-nex-calls-people-empty style={{ marginBottom: 22 }}>
@@ -498,46 +499,120 @@ function PeopleRow({ people }: { people: CallsPerson[] }): React.JSX.Element {
       >
         {people.map((p) => {
           const presence = presenceFor(p.id, presenceSets);
+          const busy = presence === "busy";
           return (
-            <Link
+            <div
               key={p.id}
-              href={`/nex-native/chat/peer/${p.id}`}
               role="listitem"
-              aria-label={`${p.displayName}${presence === "online" ? " · online" : presence === "busy" ? " · on a call" : ""}`}
+              aria-label={`${p.displayName}${presence === "online" ? " · online" : busy ? " · on a call" : ""}`}
               style={{
                 flex: "0 0 auto",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
                 gap: 6,
-                width: 64,
+                width: 72,
                 scrollSnapAlign: "start",
               }}
             >
-              <Avatar
-                name={p.displayName}
-                avatarUrl={p.avatarUrl}
-                size={56}
-                presence={presence}
-              />
-              <span
+              <Link
+                href={`/nex-native/chat/peer/${p.id}`}
+                aria-label={`Open chat with ${p.displayName}`}
                 style={{
-                  fontSize: 11.5,
-                  color: PAL.text,
-                  textAlign: "center",
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  width: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: 6,
                 }}
               >
-                {firstName(p.displayName)}
-              </span>
-            </Link>
+                <Avatar
+                  name={p.displayName}
+                  avatarUrl={p.avatarUrl}
+                  size={56}
+                  presence={presence}
+                />
+                <span
+                  style={{
+                    fontSize: 11.5,
+                    color: PAL.text,
+                    textAlign: "center",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    width: "100%",
+                  }}
+                >
+                  {firstName(p.displayName)}
+                </span>
+              </Link>
+              <div style={{ display: "flex", gap: 6 }}>
+                <PeopleActionButton
+                  kind="voice"
+                  busy={busy}
+                  peerName={p.displayName}
+                  onActivate={() =>
+                    router.push(`/nex-native/chat/peer/${p.id}?start_call=voice`)
+                  }
+                />
+                <PeopleActionButton
+                  kind="video"
+                  busy={busy}
+                  peerName={p.displayName}
+                  onActivate={() =>
+                    router.push(`/nex-native/chat/peer/${p.id}?start_call=video`)
+                  }
+                />
+              </div>
+            </div>
           );
         })}
       </div>
     </section>
+  );
+}
+
+function PeopleActionButton({
+  kind,
+  busy,
+  peerName,
+  onActivate,
+}: {
+  kind: "voice" | "video";
+  busy: boolean;
+  peerName: string;
+  onActivate: () => void;
+}): React.JSX.Element {
+  const color = kind === "voice" ? PAL.green : PAL.blue;
+  const soft = kind === "voice" ? PAL.greenSoft : PAL.blueSoft;
+  const label =
+    kind === "voice" ? `Call ${peerName}` : `Video call ${peerName}`;
+  const disabledLabel = `${peerName} is on a call`;
+  return (
+    <button
+      type="button"
+      disabled={busy}
+      aria-label={busy ? disabledLabel : label}
+      title={busy ? disabledLabel : label}
+      onClick={() => {
+        if (busy) return;
+        onActivate();
+      }}
+      style={{
+        width: 26,
+        height: 26,
+        padding: 0,
+        borderRadius: 999,
+        display: "grid",
+        placeItems: "center",
+        background: busy ? "rgba(255,255,255,0.04)" : soft,
+        border: `1px solid ${busy ? PAL.cardBorder : color + "66"}`,
+        color: busy ? PAL.textMuted : color,
+        cursor: busy ? "not-allowed" : "pointer",
+        opacity: busy ? 0.55 : 1,
+      }}
+    >
+      {kind === "voice" ? <PhoneIcon size={12} /> : <VideoIcon size={12} />}
+    </button>
   );
 }
 
