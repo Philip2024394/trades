@@ -1,3 +1,5 @@
+"use client";
+
 // src/app/nex-native/chat/_portrait-bloom-shell.tsx
 //
 // Portrait Bloom · shared chat surface shell for NEX-native.
@@ -1959,6 +1961,16 @@ function formatTime(iso: string): string {
  *   · Older → short date (Sep 24)
  *  Uses local time so the boundary matches what the user sees on
  *  the timestamps inside each bubble. */
+// Locale-independent month + weekday tables · toLocaleDateString with
+// an unspecified locale produces different output on the server (Node
+// default, usually en-US → "Sep 27") vs. the browser (user agent
+// locale, e.g. en-GB → "27 Sept"), which triggers a React hydration
+// mismatch on the chat day divider. Pinning to fixed strings removes
+// the mismatch entirely without imposing an opinion on the user's
+// locale (dates everywhere else in the app already read day-first).
+const DAY_LABEL_MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"] as const;
+const DAY_LABEL_WEEKDAYS = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"] as const;
+
 function formatDayLabel(iso: string): string {
   const d = new Date(iso);
   const now = new Date();
@@ -1969,12 +1981,9 @@ function formatDayLabel(iso: string): string {
   if (diffDays === 0) return "Today";
   if (diffDays === 1) return "Yesterday";
   if (diffDays > 1 && diffDays < 7) {
-    return d.toLocaleDateString(undefined, { weekday: "long" });
+    return DAY_LABEL_WEEKDAYS[d.getDay()]!;
   }
-  return d.toLocaleDateString(undefined, {
-    day: "numeric",
-    month: "short",
-  });
+  return `${d.getDate()} ${DAY_LABEL_MONTHS[d.getMonth()]!}`;
 }
 
 /** Bridge 8+9 · inline attachment renderer for a bubble.
