@@ -73,7 +73,7 @@ const CALL_SURFACE = {
   accentSoft: "rgba(255,153,51,0.16)",
   ping: "#4C8DF2",
   green: "#22C55E",
-  red: "#E63946",
+  red: "#991B1B",
   text: "#F2F5FA",
   textDim: "#A6ADC2",
   textMuted: "#6B7490",
@@ -1155,17 +1155,18 @@ function CallSurfaceButton({
   children: React.ReactNode;
 }): React.JSX.Element {
   const isDanger = tone === "danger";
+  // Mock-aligned: solid orange NEX accent for every non-destructive
+  // control, white icon on top. Active state (muted / camera-off /
+  // speaker-on) flips to white bg + orange icon so the viewer sees
+  // the toggle without needing to read the label. End stays solid
+  // red regardless.
   const bg = isDanger
     ? CALL_SURFACE.red
     : active
       ? "#ffffff"
-      : CALL_SURFACE.btnBg;
-  const color = isDanger ? "#fff" : active ? "#0a0608" : CALL_SURFACE.text;
-  const border = isDanger
-    ? "transparent"
-    : active
-      ? "transparent"
-      : CALL_SURFACE.btnBorder;
+      : CALL_SURFACE.accent;
+  const color = isDanger ? "#fff" : active ? CALL_SURFACE.accent : "#ffffff";
+  const border = "transparent";
   return (
     <button
       type="button"
@@ -1196,8 +1197,8 @@ function CallSurfaceButton({
           display: "grid",
           placeItems: "center",
           boxShadow: isDanger
-            ? "0 10px 24px rgba(239,68,68,0.35)"
-            : "0 4px 12px rgba(0,0,0,0.35)",
+            ? "0 10px 24px rgba(153,27,27,0.45)"
+            : "0 6px 16px rgba(255,153,51,0.28)",
           animation: pulse ? "nex-call-heartbeat 1.4s ease-out infinite" : undefined,
           ["--nex-pulse" as string]: "rgba(230,57,70,0.55)",
           ["--nex-pulse-fade" as string]: "rgba(230,57,70,0)",
