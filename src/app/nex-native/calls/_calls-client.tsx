@@ -49,12 +49,12 @@ const PAL = {
 };
 
 type CallKind = "voice" | "video";
-type RecentsFilter = "all" | "missed" | "incoming" | "outgoing" | "voice" | "video";
+type RecentsFilter = "missed" | "incoming" | "outgoing" | "voice" | "video";
 
 export function CallsClient({ people }: CallsClientProps): React.JSX.Element {
   const [search, setSearch] = React.useState("");
   const [pickerFor, setPickerFor] = React.useState<CallKind | null>(null);
-  const [recentsFilter, setRecentsFilter] = React.useState<RecentsFilter>("all");
+  const [recentsFilter, setRecentsFilter] = React.useState<RecentsFilter>("missed");
 
   const filteredPeople = React.useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -73,6 +73,15 @@ export function CallsClient({ people }: CallsClientProps): React.JSX.Element {
         [data-nex-calls] a { text-decoration: none; color: inherit; }
         [data-nex-calls] button { font-family: inherit; cursor: pointer; }
         [data-nex-calls] input::placeholder { color: ${PAL.textMuted}; }
+        /* Hide scrollbars globally on the Calls page · the People row
+           and any dropdowns still scroll naturally, just without the
+           bar visually. */
+        [data-nex-calls] *::-webkit-scrollbar { width: 0; height: 0; display: none; }
+        [data-nex-calls] * { scrollbar-width: none; -ms-overflow-style: none; }
+        @keyframes nex-calls-dropdown-in {
+          from { opacity: 0; transform: translateY(-6px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
       `}</style>
       <div
         data-nex-calls
@@ -126,23 +135,17 @@ function Header(): React.JSX.Element {
         padding: "6px 0 18px",
       }}
     >
-      <div
+      <span
         aria-hidden
         style={{
-          width: 34,
-          height: 34,
-          borderRadius: 10,
-          background: PAL.orange,
-          color: "#0a0608",
-          display: "grid",
-          placeItems: "center",
-          fontSize: 11,
+          color: PAL.orange,
+          fontSize: 18,
           fontWeight: 800,
-          letterSpacing: "0.08em",
+          letterSpacing: "0.14em",
         }}
       >
         NEX
-      </div>
+      </span>
       <div style={{ flex: 1, minWidth: 0 }}>
         <h1 style={{ margin: 0, fontSize: 22, fontWeight: 700, letterSpacing: "-0.01em" }}>
           Calls
@@ -565,7 +568,6 @@ function RecentCalls({
   onFilter: (f: RecentsFilter) => void;
 }): React.JSX.Element {
   const filters: { key: RecentsFilter; label: string }[] = [
-    { key: "all", label: "All" },
     { key: "missed", label: "Missed" },
     { key: "incoming", label: "Incoming" },
     { key: "outgoing", label: "Outgoing" },
@@ -575,42 +577,11 @@ function RecentCalls({
   return (
     <section data-nex-calls-recent>
       <SectionHeader title="Recent calls" linkLabel="View all" linkHref="#" />
-      <div
-        role="tablist"
-        aria-label="Recent-calls filter"
-        style={{
-          display: "flex",
-          gap: 8,
-          overflowX: "auto",
-          padding: "4px 0 12px",
-        }}
-      >
-        {filters.map((f) => {
-          const active = filter === f.key;
-          return (
-            <button
-              key={f.key}
-              type="button"
-              role="tab"
-              aria-selected={active}
-              onClick={() => onFilter(f.key)}
-              style={{
-                flex: "0 0 auto",
-                padding: "7px 14px",
-                borderRadius: 999,
-                fontSize: 12.5,
-                fontWeight: 600,
-                background: active ? PAL.orange : "transparent",
-                color: active ? "#0a0608" : PAL.textDim,
-                border: `1px solid ${active ? PAL.orange : PAL.cardBorderStrong}`,
-                letterSpacing: "0.01em",
-              }}
-            >
-              {f.label}
-            </button>
-          );
-        })}
-      </div>
+      <RecentsFilterDropdown
+        value={filter}
+        options={filters}
+        onChange={onFilter}
+      />
       <div
         style={{
           padding: "28px 20px",
@@ -661,6 +632,132 @@ function RecentCalls({
         </p>
       </div>
     </section>
+  );
+}
+
+/* ─── Recent-calls filter dropdown ──────────────────────────────── */
+
+function RecentsFilterDropdown({
+  value,
+  options,
+  onChange,
+}: {
+  value: RecentsFilter;
+  options: { key: RecentsFilter; label: string }[];
+  onChange: (f: RecentsFilter) => void;
+}): React.JSX.Element {
+  const [open, setOpen] = React.useState(false);
+  const current = options.find((o) => o.key === value) ?? options[0]!;
+
+  React.useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+
+  return (
+    <div
+      data-nex-calls-filter-dropdown
+      style={{ position: "relative", margin: "4px 0 12px" }}
+    >
+      <button
+        type="button"
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        onClick={() => setOpen((v) => !v)}
+        style={{
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: 10,
+          padding: "11px 14px",
+          borderRadius: 14,
+          background: PAL.card,
+          border: `1px solid ${PAL.cardBorderStrong}`,
+          color: PAL.text,
+          fontSize: 13.5,
+          fontWeight: 600,
+          letterSpacing: "0.01em",
+        }}
+      >
+        <span>{current.label}</span>
+        <ChevronIcon flipped={open} />
+      </button>
+      {open && (
+        <>
+          <div
+            aria-hidden
+            onClick={() => setOpen(false)}
+            style={{
+              position: "fixed",
+              inset: 0,
+              background: "transparent",
+              zIndex: 40,
+            }}
+          />
+          <ul
+            role="listbox"
+            aria-label="Filter recent calls"
+            style={{
+              position: "absolute",
+              top: "calc(100% + 6px)",
+              left: 0,
+              right: 0,
+              padding: 6,
+              borderRadius: 14,
+              background: PAL.card,
+              border: `1px solid ${PAL.cardBorderStrong}`,
+              boxShadow: "0 20px 44px rgba(0,0,0,0.55)",
+              zIndex: 50,
+              listStyle: "none",
+              margin: 0,
+              animation:
+                "nex-calls-dropdown-in 160ms cubic-bezier(.2,.7,.2,1) both",
+              overflow: "hidden",
+            }}
+          >
+            {options.map((o) => {
+              const active = o.key === value;
+              return (
+                <li key={o.key}>
+                  <button
+                    type="button"
+                    role="option"
+                    aria-selected={active}
+                    onClick={() => {
+                      onChange(o.key);
+                      setOpen(false);
+                    }}
+                    style={{
+                      width: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      gap: 10,
+                      padding: "10px 12px",
+                      borderRadius: 10,
+                      background: active ? PAL.orangeSoft : "transparent",
+                      border: "none",
+                      color: active ? PAL.orange : PAL.text,
+                      fontSize: 13.5,
+                      fontWeight: active ? 700 : 500,
+                      textAlign: "left",
+                    }}
+                  >
+                    <span>{o.label}</span>
+                    {active && <CheckIcon />}
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </>
+      )}
+    </div>
   );
 }
 
@@ -999,6 +1096,42 @@ function LinkIcon(): React.JSX.Element {
         d="M10 14a5 5 0 0 1 0-7l3-3a5 5 0 0 1 7 7l-1.5 1.5M14 10a5 5 0 0 1 0 7l-3 3a5 5 0 0 1-7-7l1.5-1.5"
         stroke="currentColor"
         strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+function ChevronIcon({ flipped }: { flipped: boolean }): React.JSX.Element {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden
+      style={{
+        transform: flipped ? "rotate(180deg)" : "rotate(0deg)",
+        transition: "transform 160ms ease",
+      }}
+    >
+      <path
+        d="M6 9l6 6 6-6"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+function CheckIcon(): React.JSX.Element {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path
+        d="M5 12l4.5 4.5L19 7"
+        stroke="currentColor"
+        strokeWidth="2.2"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
