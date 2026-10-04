@@ -1826,7 +1826,23 @@ function initialsFromName(name: string): string {
   return (parts[0]![0]! + parts[parts.length - 1]![0]!).toUpperCase();
 }
 
-/* ─── Contact picker modal (voice / video) ──────────────────────── */
+/* ─── Contact picker modal (voice / video) ──────────────────────── *
+ * Glass-first design matching the call-page button language:         *
+ *   · Modal shell: frosted glass panel with 2px orange→cyan rim      *
+ *   · Each contact: individual glass card with the same rim          *
+ *   · NEX brand palette only · deep orange #FF7200, cyan #00AFFF     *
+ *   · Shows all 4 info lines the founder specified: name, profession *
+ *     (or role · tag combo), city, nex-handle.                       *
+ * ────────────────────────────────────────────────────────────────── */
+
+// NEX brand tokens · copied from Create Account for picker continuity.
+const NEX_BRAND = {
+  orange: "#FF7200",
+  cyan: "#00AFFF",
+  textDim: "#7D9BC0",
+  darkRed: "#991B1B",
+};
+const RIM_GRADIENT = `linear-gradient(135deg, ${NEX_BRAND.orange} 0%, ${NEX_BRAND.cyan} 100%)`;
 
 function ContactPickerModal({
   kind,
@@ -1851,6 +1867,8 @@ function ContactPickerModal({
     return () => window.removeEventListener("keydown", onKey);
   }, [onClose]);
 
+  const kindTint = kind === "voice" ? NEX_BRAND.orange : NEX_BRAND.cyan;
+
   return (
     <div
       role="dialog"
@@ -1860,9 +1878,10 @@ function ContactPickerModal({
       style={{
         position: "fixed",
         inset: 0,
-        background: "rgba(2, 5, 15, 0.72)",
-        backdropFilter: "blur(10px)",
-        WebkitBackdropFilter: "blur(10px)",
+        background:
+          "radial-gradient(60% 40% at 50% 0%, rgba(0,175,255,0.09), transparent 70%), rgba(2,9,20,0.78)",
+        backdropFilter: "blur(14px)",
+        WebkitBackdropFilter: "blur(14px)",
         zIndex: 100,
         display: "flex",
         alignItems: "flex-end",
@@ -1874,239 +1893,510 @@ function ContactPickerModal({
         onClick={(e) => e.stopPropagation()}
         style={{
           width: "100%",
-          maxWidth: 460,
-          background: PAL.card,
-          border: `1px solid ${PAL.cardBorderStrong}`,
-          borderRadius: 22,
-          padding: "20px 16px 18px",
-          maxHeight: "76dvh",
+          maxWidth: 480,
+          borderRadius: 24,
+          padding: 0,
+          border: "2px solid transparent",
+          background: `rgba(255,255,255,0.05) padding-box, ${RIM_GRADIENT} border-box`,
+          backdropFilter: "blur(22px) saturate(1.1)",
+          WebkitBackdropFilter: "blur(22px) saturate(1.1)",
+          maxHeight: "82dvh",
           display: "flex",
           flexDirection: "column",
-          boxShadow: "0 24px 60px rgba(0,0,0,0.6)",
+          boxShadow:
+            "inset 0 1px 0 rgba(255,255,255,0.14), 0 20px 50px rgba(0,0,0,0.6), 0 0 40px rgba(255,114,0,0.14), 0 0 50px rgba(0,175,255,0.14)",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
-          <span
-            aria-hidden
-            style={{
-              width: 34,
-              height: 34,
-              borderRadius: 999,
-              background: kind === "voice" ? PAL.greenSoft : PAL.blueSoft,
-              color: kind === "voice" ? PAL.green : PAL.blue,
-              display: "grid",
-              placeItems: "center",
-              border: `1px solid ${(kind === "voice" ? PAL.green : PAL.blue) + "44"}`,
-            }}
-          >
+        {/* Modal header · brand badge + title + close */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 12,
+            padding: "18px 18px 14px",
+          }}
+        >
+          <GlassChip tint={kindTint} size={38}>
             {kind === "voice" ? <PhoneIcon size={18} /> : <VideoIcon size={18} />}
-          </span>
+          </GlassChip>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ fontSize: 15, fontWeight: 700, color: PAL.text }}>{title}</div>
-            <div style={{ fontSize: 12, color: PAL.textDim }}>{subtitle}</div>
+            <div
+              style={{
+                fontSize: 15.5,
+                fontWeight: 700,
+                color: PAL.text,
+                letterSpacing: "-0.005em",
+              }}
+            >
+              {title}
+            </div>
+            <div style={{ fontSize: 12, color: NEX_BRAND.textDim }}>{subtitle}</div>
           </div>
           <button
             type="button"
             onClick={onClose}
             aria-label="Close picker"
             style={{
-              width: 32,
-              height: 32,
+              width: 34,
+              height: 34,
               borderRadius: 999,
-              background: "rgba(255,255,255,0.06)",
-              border: "none",
-              color: PAL.textDim,
+              background: "rgba(255,255,255,0.04)",
+              border: `1px solid ${NEX_BRAND.cyan}2A`,
+              color: NEX_BRAND.textDim,
               display: "grid",
               placeItems: "center",
+              cursor: "pointer",
+              backdropFilter: "blur(8px)",
+              WebkitBackdropFilter: "blur(8px)",
             }}
           >
             <CloseIcon />
           </button>
         </div>
+
+        {/* Hairline divider */}
+        <div
+          aria-hidden
+          style={{
+            height: 1,
+            margin: "0 18px 10px",
+            background:
+              "linear-gradient(90deg, transparent, rgba(0,175,255,0.22), transparent)",
+          }}
+        />
+
         {people.length === 0 ? (
-          <div
-            style={{
-              padding: "24px 10px",
-              textAlign: "center",
-              color: PAL.textDim,
-              fontSize: 13,
-              lineHeight: 1.5,
-            }}
-          >
-            You don&rsquo;t have any friends on NEX yet.
-            <br />
-            <Link href="/nex-native/friends" style={{ color: PAL.orange, fontWeight: 600 }}>
-              Open contacts →
-            </Link>
-          </div>
+          <EmptyPicker />
         ) : (
           <ul
             style={{
               listStyle: "none",
               margin: 0,
-              padding: "4px 0 0",
+              padding: "4px 18px 18px",
               overflowY: "auto",
               display: "flex",
               flexDirection: "column",
-              gap: 10,
+              gap: 12,
             }}
           >
-            {people.map((p) => {
-              const presence = presenceFor(p.id, presenceSets);
-              const busy = presence === "busy";
-              const kindTint = kind === "voice" ? PAL.green : PAL.blue;
-              const kindTintSoft = kind === "voice" ? PAL.greenSoft : PAL.blueSoft;
-              return (
-                <li key={p.id}>
-                  <button
-                    type="button"
-                    disabled={busy}
-                    aria-disabled={busy}
-                    title={busy ? `${p.displayName} is on a call` : undefined}
-                    onClick={() => {
-                      if (busy) return;
-                      router.push(
-                        `/nex-native/chat/peer/${p.id}?start_call=${kind}`,
-                      );
-                    }}
-                    style={{
-                      width: "100%",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 14,
-                      padding: "12px 14px",
-                      borderRadius: 16,
-                      background: "rgba(255,255,255,0.03)",
-                      border: `1px solid ${PAL.cardBorder}`,
-                      color: PAL.text,
-                      textAlign: "left",
-                      opacity: busy ? 0.55 : 1,
-                      cursor: busy ? "not-allowed" : "pointer",
-                      fontFamily: "inherit",
-                      transition: "background 160ms ease, border-color 160ms ease",
-                    }}
-                    onMouseEnter={(e) => {
-                      if (busy) return;
-                      e.currentTarget.style.background = "rgba(255,255,255,0.06)";
-                      e.currentTarget.style.borderColor = `${kindTint}44`;
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.background = "rgba(255,255,255,0.03)";
-                      e.currentTarget.style.borderColor = PAL.cardBorder;
-                    }}
-                  >
-                    <Avatar
-                      name={p.displayName}
-                      avatarUrl={p.avatarUrl}
-                      size={56}
-                      presence={presence}
-                    />
-                    <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 2 }}>
-                      <div
-                        style={{
-                          fontSize: 15,
-                          fontWeight: 700,
-                          letterSpacing: "-0.005em",
-                          whiteSpace: "nowrap",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                        }}
-                      >
-                        {p.displayName}
-                      </div>
-                      {p.profession && (
-                        <div
-                          style={{
-                            fontSize: 12.5,
-                            color: PAL.text,
-                            opacity: 0.86,
-                            whiteSpace: "nowrap",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                          }}
-                        >
-                          {p.profession}
-                        </div>
-                      )}
-                      {(p.headline || p.locationLabel) && (
-                        <div
-                          style={{
-                            fontSize: 11.5,
-                            color: PAL.textDim,
-                            whiteSpace: "nowrap",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                          }}
-                        >
-                          {p.headline && p.locationLabel
-                            ? `${p.headline} · ${p.locationLabel}`
-                            : (p.headline ?? p.locationLabel)}
-                        </div>
-                      )}
-                      <div
-                        style={{
-                          display: "inline-flex",
-                          alignItems: "center",
-                          gap: 6,
-                          marginTop: 2,
-                        }}
-                      >
-                        <span
-                          aria-hidden
-                          style={{
-                            width: 6,
-                            height: 6,
-                            borderRadius: 999,
-                            background: busy
-                              ? PAL.orange
-                              : presence === "online"
-                                ? PAL.green
-                                : PAL.textMuted,
-                          }}
-                        />
-                        <span
-                          style={{
-                            fontSize: 11,
-                            color: busy
-                              ? PAL.orange
-                              : presence === "online"
-                                ? PAL.green
-                                : PAL.textMuted,
-                            fontWeight: 600,
-                            letterSpacing: "0.01em",
-                          }}
-                        >
-                          {busy
-                            ? "On a call"
-                            : presence === "online"
-                              ? "Online"
-                              : (p.handle ?? "Offline")}
-                        </span>
-                      </div>
-                    </div>
-                    <span
-                      aria-hidden
-                      style={{
-                        width: 44,
-                        height: 44,
-                        borderRadius: 999,
-                        background: busy ? "transparent" : kindTintSoft,
-                        color: busy ? PAL.textMuted : kindTint,
-                        border: `1px solid ${busy ? PAL.cardBorder : kindTint + "44"}`,
-                        display: "grid",
-                        placeItems: "center",
-                        flex: "none",
-                      }}
-                    >
-                      {kind === "voice" ? <PhoneIcon size={18} /> : <VideoIcon size={18} />}
-                    </span>
-                  </button>
-                </li>
-              );
-            })}
+            {people.map((p) => (
+              <li key={p.id}>
+                <GlassContactCard
+                  person={p}
+                  kind={kind}
+                  presence={presenceFor(p.id, presenceSets)}
+                  onPick={() => {
+                    router.push(
+                      `/nex-native/chat/peer/${p.id}?start_call=${kind}`,
+                    );
+                  }}
+                />
+              </li>
+            ))}
           </ul>
         )}
       </div>
+    </div>
+  );
+}
+
+/* ─── Glass contact card · world-class landscape row ────────────── */
+
+function GlassContactCard({
+  person,
+  kind,
+  presence,
+  onPick,
+}: {
+  person: CallsPerson;
+  kind: CallKind;
+  presence: PresenceKind;
+  onPick: () => void;
+}): React.JSX.Element {
+  const busy = presence === "busy";
+  const online = presence === "online";
+  const kindTint = kind === "voice" ? NEX_BRAND.orange : NEX_BRAND.cyan;
+
+  // Sub-line prefers "{profession} · {location}" when both exist, otherwise
+  // whichever single value is available. Matches the founder's example
+  // where the profession and city read as a single compact tagline.
+  const subline =
+    person.profession && person.locationLabel
+      ? `${person.profession} · ${person.locationLabel}`
+      : (person.profession ?? person.locationLabel ?? person.headline ?? null);
+
+  return (
+    <button
+      type="button"
+      disabled={busy}
+      aria-disabled={busy}
+      title={busy ? `${person.displayName} is on a call` : undefined}
+      onClick={() => {
+        if (busy) return;
+        onPick();
+      }}
+      style={{
+        width: "100%",
+        display: "flex",
+        alignItems: "center",
+        gap: 14,
+        padding: "14px 14px",
+        borderRadius: 18,
+        border: "1.5px solid transparent",
+        background: busy
+          ? `rgba(153,27,27,0.08) padding-box, linear-gradient(135deg, ${NEX_BRAND.darkRed}, ${NEX_BRAND.darkRed}) border-box`
+          : `rgba(255,255,255,0.05) padding-box, ${RIM_GRADIENT} border-box`,
+        backdropFilter: "blur(14px)",
+        WebkitBackdropFilter: "blur(14px)",
+        color: PAL.text,
+        textAlign: "left",
+        opacity: busy ? 0.65 : 1,
+        cursor: busy ? "not-allowed" : "pointer",
+        fontFamily: "inherit",
+        transition: "transform 140ms ease, box-shadow 160ms ease",
+        boxShadow:
+          "inset 0 1px 0 rgba(255,255,255,0.08), 0 8px 20px rgba(0,0,0,0.4), 0 0 18px rgba(255,114,0,0.08), 0 0 22px rgba(0,175,255,0.08)",
+      }}
+      onMouseEnter={(e) => {
+        if (busy) return;
+        e.currentTarget.style.transform = "translateY(-1px)";
+        e.currentTarget.style.boxShadow =
+          "inset 0 1px 0 rgba(255,255,255,0.12), 0 14px 28px rgba(0,0,0,0.5), 0 0 24px rgba(255,114,0,0.16), 0 0 30px rgba(0,175,255,0.16)";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = "translateY(0)";
+        e.currentTarget.style.boxShadow =
+          "inset 0 1px 0 rgba(255,255,255,0.08), 0 8px 20px rgba(0,0,0,0.4), 0 0 18px rgba(255,114,0,0.08), 0 0 22px rgba(0,175,255,0.08)";
+      }}
+    >
+      <GlassAvatar
+        name={person.displayName}
+        avatarUrl={person.avatarUrl}
+        presence={presence}
+      />
+      <div
+        style={{
+          flex: 1,
+          minWidth: 0,
+          display: "flex",
+          flexDirection: "column",
+          gap: 2,
+        }}
+      >
+        <div
+          style={{
+            fontSize: 15.5,
+            fontWeight: 700,
+            letterSpacing: "-0.005em",
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+          }}
+        >
+          {person.displayName}
+        </div>
+        {person.profession && (
+          <div
+            style={{
+              fontSize: 12.5,
+              color: PAL.text,
+              opacity: 0.9,
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
+            {person.profession}
+          </div>
+        )}
+        {!person.profession && subline && (
+          <div
+            style={{
+              fontSize: 12.5,
+              color: PAL.text,
+              opacity: 0.9,
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
+            {subline}
+          </div>
+        )}
+        {person.locationLabel && (
+          <div
+            style={{
+              fontSize: 11.5,
+              color: NEX_BRAND.textDim,
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
+            {person.locationLabel}
+          </div>
+        )}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            marginTop: 3,
+          }}
+        >
+          <span
+            style={{
+              fontSize: 10.5,
+              fontFamily:
+                "ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace",
+              color: NEX_BRAND.cyan,
+              letterSpacing: "0.01em",
+              opacity: 0.9,
+            }}
+          >
+            {person.handle ?? "—"}
+          </span>
+          {(online || busy) && (
+            <>
+              <span
+                aria-hidden
+                style={{
+                  width: 3,
+                  height: 3,
+                  borderRadius: 999,
+                  background: NEX_BRAND.textDim,
+                  opacity: 0.5,
+                }}
+              />
+              <span
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 5,
+                  fontSize: 10.5,
+                  fontWeight: 600,
+                  color: busy ? NEX_BRAND.darkRed : NEX_BRAND.cyan,
+                  letterSpacing: "0.01em",
+                }}
+              >
+                <span
+                  aria-hidden
+                  style={{
+                    width: 6,
+                    height: 6,
+                    borderRadius: 999,
+                    background: busy ? NEX_BRAND.darkRed : "#22C55E",
+                    boxShadow: busy
+                      ? `0 0 6px ${NEX_BRAND.darkRed}`
+                      : "0 0 6px #22C55E99",
+                  }}
+                />
+                {busy ? "On a call" : "Online"}
+              </span>
+            </>
+          )}
+        </div>
+      </div>
+      <GlassActionChip tint={kindTint} disabled={busy}>
+        {kind === "voice" ? <PhoneIcon size={18} /> : <VideoIcon size={18} />}
+      </GlassActionChip>
+    </button>
+  );
+}
+
+/* ─── Glass primitives ──────────────────────────────────────────── */
+
+function GlassAvatar({
+  name,
+  avatarUrl,
+  presence,
+}: {
+  name: string;
+  avatarUrl: string | null;
+  presence: PresenceKind;
+}): React.JSX.Element {
+  const initials = name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((p) => p.charAt(0).toUpperCase())
+    .join("") || "·";
+  // Fallback fill alternates orange/cyan by first letter so the
+  // picker still feels branded when avatars are missing · no pastels.
+  const fallbackTint =
+    name.charCodeAt(0) % 2 === 0 ? NEX_BRAND.orange : NEX_BRAND.cyan;
+  const presenceDot =
+    presence === "busy"
+      ? NEX_BRAND.darkRed
+      : presence === "online"
+        ? "#22C55E"
+        : null;
+  return (
+    <span
+      style={{ position: "relative", flex: "none" }}
+      aria-hidden
+    >
+      <span
+        style={{
+          display: "grid",
+          placeItems: "center",
+          width: 56,
+          height: 56,
+          borderRadius: "50%",
+          background: avatarUrl
+            ? `url(${avatarUrl}) center/cover`
+            : `${fallbackTint}22`,
+          border: `1.5px solid transparent`,
+          backgroundImage: avatarUrl
+            ? `url(${avatarUrl})`
+            : `linear-gradient(${fallbackTint}22, ${fallbackTint}22), ${RIM_GRADIENT}`,
+          backgroundOrigin: "border-box",
+          backgroundClip: "padding-box, border-box",
+          color: fallbackTint,
+          fontSize: 18,
+          fontWeight: 700,
+          boxShadow:
+            "inset 0 1px 0 rgba(255,255,255,0.1), 0 0 14px rgba(0,175,255,0.1)",
+        }}
+      >
+        {avatarUrl ? "" : initials}
+      </span>
+      {presenceDot && (
+        <span
+          style={{
+            position: "absolute",
+            right: 0,
+            bottom: 0,
+            width: 12,
+            height: 12,
+            borderRadius: 999,
+            background: presenceDot,
+            border: `2px solid ${PAL.bg}`,
+            boxShadow: `0 0 8px ${presenceDot}`,
+          }}
+        />
+      )}
+    </span>
+  );
+}
+
+function GlassActionChip({
+  tint,
+  disabled,
+  children,
+}: {
+  tint: string;
+  disabled: boolean;
+  children: React.ReactNode;
+}): React.JSX.Element {
+  return (
+    <span
+      aria-hidden
+      style={{
+        width: 46,
+        height: 46,
+        borderRadius: 14,
+        border: "1.5px solid transparent",
+        background: disabled
+          ? `rgba(255,255,255,0.03) padding-box, linear-gradient(135deg, ${NEX_BRAND.textDim}44, ${NEX_BRAND.textDim}44) border-box`
+          : `${tint}1F padding-box, ${RIM_GRADIENT} border-box`,
+        backdropFilter: "blur(10px)",
+        WebkitBackdropFilter: "blur(10px)",
+        color: disabled ? NEX_BRAND.textDim : tint,
+        display: "grid",
+        placeItems: "center",
+        flex: "none",
+        boxShadow: disabled
+          ? "none"
+          : `inset 0 1px 0 rgba(255,255,255,0.14), 0 0 16px ${tint}33`,
+      }}
+    >
+      {children}
+    </span>
+  );
+}
+
+function GlassChip({
+  tint,
+  size = 34,
+  children,
+}: {
+  tint: string;
+  size?: number;
+  children: React.ReactNode;
+}): React.JSX.Element {
+  return (
+    <span
+      aria-hidden
+      style={{
+        width: size,
+        height: size,
+        borderRadius: 12,
+        border: "1.5px solid transparent",
+        background: `${tint}1F padding-box, ${RIM_GRADIENT} border-box`,
+        backdropFilter: "blur(10px)",
+        WebkitBackdropFilter: "blur(10px)",
+        color: tint,
+        display: "grid",
+        placeItems: "center",
+        boxShadow: `inset 0 1px 0 rgba(255,255,255,0.12), 0 0 14px ${tint}33`,
+      }}
+    >
+      {children}
+    </span>
+  );
+}
+
+function EmptyPicker(): React.JSX.Element {
+  return (
+    <div
+      style={{
+        padding: "28px 20px 32px",
+        textAlign: "center",
+        color: NEX_BRAND.textDim,
+        fontSize: 13,
+        lineHeight: 1.5,
+      }}
+    >
+      <div
+        aria-hidden
+        style={{
+          width: 56,
+          height: 56,
+          margin: "0 auto 12px",
+          borderRadius: 18,
+          border: "1.5px solid transparent",
+          background: `rgba(255,255,255,0.04) padding-box, ${RIM_GRADIENT} border-box`,
+          backdropFilter: "blur(10px)",
+          WebkitBackdropFilter: "blur(10px)",
+          color: NEX_BRAND.cyan,
+          display: "grid",
+          placeItems: "center",
+        }}
+      >
+        <PhoneIcon size={22} />
+      </div>
+      <div style={{ color: PAL.text, fontSize: 14, fontWeight: 600 }}>
+        No contacts yet
+      </div>
+      <div style={{ marginTop: 4 }}>Add friends on NEX to call them.</div>
+      <Link
+        href="/nex-native/friends"
+        style={{
+          display: "inline-block",
+          marginTop: 14,
+          padding: "9px 18px",
+          borderRadius: 999,
+          color: NEX_BRAND.orange,
+          fontWeight: 600,
+          fontSize: 13,
+          textDecoration: "none",
+          border: `1px solid ${NEX_BRAND.orange}66`,
+          background: "rgba(255,114,0,0.08)",
+        }}
+      >
+        Open contacts →
+      </Link>
     </div>
   );
 }
