@@ -219,7 +219,23 @@ export function PeerCallLauncher(props: PeerCallLauncherProps): React.JSX.Elemen
             });
           }
         },
-        onError: (msg) => setError(msg),
+        onError: (msg) => {
+          // Supabase Realtime surfaces transient WebSocket blips as
+          // "channel error" / "transport failure" / "TIMED_OUT". The
+          // SDK auto-reconnects, so showing them as a call-fatal
+          // error is noisy and often wrong. Log for debuggability
+          // but keep the UI calm · a real WebRTC-level failure
+          // ("call connection failed") still comes through here
+          // and is surfaced normally.
+          if (
+            typeof msg === "string" &&
+            /channel error|transport failure|TIMED_OUT|CHANNEL_ERROR/i.test(msg)
+          ) {
+            console.warn("[call] transient signalling blip:", msg);
+            return;
+          }
+          setError(msg);
+        },
       },
     });
     callRef.current = call;
@@ -682,9 +698,7 @@ function CallOverlay(p: OverlayProps): React.JSX.Element {
         position: "fixed",
         inset: 0,
         zIndex: 1000,
-        background: showFullBleedVideo
-          ? "#000"
-          : `radial-gradient(1200px 600px at 50% -10%, ${CALL_SURFACE.accentSoft} 0%, transparent 60%), linear-gradient(180deg, ${CALL_SURFACE.bg1} 0%, ${CALL_SURFACE.bg2} 100%)`,
+        background: `radial-gradient(1200px 600px at 50% -10%, ${CALL_SURFACE.accentSoft} 0%, transparent 60%), linear-gradient(180deg, ${CALL_SURFACE.bg1} 0%, ${CALL_SURFACE.bg2} 100%)`,
         color: CALL_SURFACE.text,
         display: "flex",
         flexDirection: "column",

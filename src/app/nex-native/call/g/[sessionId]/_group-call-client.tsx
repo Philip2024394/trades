@@ -105,7 +105,19 @@ export function GroupCallClient(props: GroupCallClientProps): React.JSX.Element 
           onLocalStream: (stream) => setLocalStream(stream),
           onRemoteStreams: (streams) => setRemoteStreams(streams),
           onPresenceChange: (m) => setMembers(m),
-          onError: (msg) => setErr(msg),
+          onError: (msg) => {
+            // Suppress transient Supabase Realtime blips · the SDK
+            // auto-reconnects, so these should not flip the room
+            // into the "Call unavailable" fatal state.
+            if (
+              typeof msg === "string" &&
+              /channel error|transport failure|TIMED_OUT|CHANNEL_ERROR|presence error/i.test(msg)
+            ) {
+              console.warn("[group-call] transient signalling blip:", msg);
+              return;
+            }
+            setErr(msg);
+          },
         },
       });
       engineRef.current = engine;
