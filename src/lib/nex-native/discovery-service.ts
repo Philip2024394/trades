@@ -237,6 +237,142 @@ export async function getPopularTags(limit: number = 10): Promise<PopularTag[]> 
     .slice(0, limit);
 }
 
+/**
+ * NEX Search Phase 1 (2026-10-04) · all businesses that currently
+ * have ≥1 `nex_product` row with `status = 'live'`.
+ *
+ * Respects the SAME visibility rule as `searchProducts()`: a shop
+ * is only counted when a buyer could actually discover a product on
+ * it through the existing product search. This prevents the Shops
+ * tab from surfacing businesses whose products are drafts, archived
+ * or otherwise invisible to the product-search path.
+ *
+ * Returns the full set of qualifying business ids so the Shops tab
+ * can apply the "has live products" relationship BEFORE pagination.
+ * Current corpus: ~120 live products across ≤120 distinct businesses
+ * · comfortably within an IN-clause. At much larger scale this
+ * should migrate to a materialised flag column on nex_business.
+ */
+export async function allBusinessIdsWithLiveProducts(): Promise<Set<string>> {
+  const { data, error } = await nexSupabaseAdmin
+    .from("nex_product")
+    .select("business_id")
+    .eq("status", "live")
+    .not("business_id", "is", null);
+  if (error) {
+    throw new Error(
+      `discovery-service.allBusinessIdsWithLiveProducts: ${error.message}`,
+    );
+  }
+  const out = new Set<string>();
+  for (const row of (data ?? []) as Array<{ business_id: string }>) {
+    if (row.business_id) out.add(row.business_id);
+  }
+  return out;
+}
+
+/**
+ * NEX Search Phase 1 · "Shops" tab search.
+ *
+ * Businesses that match the query AND have ≥1 live product. The
+ * live-product relationship is applied SERVER-SIDE BEFORE pagination
+ * so the per-page result set is the correct slice of the filtered
+ * universe · a matching shop can never be hidden simply because its
+ * row fell on a page where sibling businesses lack live products.
+ *
+ * Keeps the exact same text-search semantics as `searchBusinesses()`
+ * (display_name / description ILIKE, exact slug, keyword array
+ * contains) plus the optional business_category filter. Archived
+ * shops are always excluded.
+ *
+ * Shape mirrors searchBusinesses() so the search page can swap in
+ * this function on the Shops tab branch without reshaping the call
+ * site.
+ */
+export async function searchShops(
+  query: string,
+  optsOrLimit: number | PageOpts = 20,
+  filter: { category?: string | null } = {},
+): Promise<NexBusinessRow[]> {
+  const q = normaliseQuery(query);
+  const category = filter.category?.trim() || null;
+  if (!q && !category) return [];
+  const { limit, offset } = clampPage(optsOrLimit);
+
+  const shopIds = await allBusinessIdsWithLiveProducts();
+  if (shopIds.size === 0) return [];
+
+  let builder = nexSupabaseAdmin
+    .from("nex_business")
+    .select("*")
+    .is("archived_at", null)
+    .in("id", Array.from(shopIds));
+
+  if (q) {
+    const pattern = `%${q.replace(/[\\%,]/g, "\\$&")}%`;
+    const slugCandidate = q.toLowerCase();
+    const orFilter = [
+      `display_name.ilike.${pattern}`,
+      `description.ilike.${pattern}`,
+      `slug.eq.${slugCandidate}`,
+      `search_keywords.cs.{${slugCandidate}}`,
+    ].join(",");
+    builder = builder.or(orFilter);
+  }
+  if (category) {
+    builder = builder.eq("business_category", category);
+  }
+
+  const { data, error } = await builder
+    .order("created_at", { ascending: false })
+    .range(offset, offset + limit - 1);
+  if (error) {
+    throw new Error(`discovery-service.searchShops: ${error.message}`);
+  }
+  return (data as NexBusinessRow[]) ?? [];
+}
+
+/**
+ * NEX Search Phase 1 · accurate count for the Shops tab · drives
+ * pagination's hasNext calculation so page numbers reflect the
+ * filtered Shops universe (not the unfiltered business universe).
+ */
+export async function countShops(
+  query: string,
+  filter: { category?: string | null } = {},
+): Promise<number> {
+  const q = normaliseQuery(query);
+  const category = filter.category?.trim() || null;
+  if (!q && !category) return 0;
+
+  const shopIds = await allBusinessIdsWithLiveProducts();
+  if (shopIds.size === 0) return 0;
+
+  let builder = nexSupabaseAdmin
+    .from("nex_business")
+    .select("*", { count: "exact", head: true })
+    .is("archived_at", null)
+    .in("id", Array.from(shopIds));
+  if (q) {
+    const pattern = `%${q.replace(/[\\%,]/g, "\\$&")}%`;
+    const slugCandidate = q.toLowerCase();
+    builder = builder.or(
+      [
+        `display_name.ilike.${pattern}`,
+        `description.ilike.${pattern}`,
+        `slug.eq.${slugCandidate}`,
+        `search_keywords.cs.{${slugCandidate}}`,
+      ].join(","),
+    );
+  }
+  if (category) {
+    builder = builder.eq("business_category", category);
+  }
+  const { count, error } = await builder;
+  if (error) throw new Error(`discovery-service.countShops: ${error.message}`);
+  return count ?? 0;
+}
+
 export async function searchAll(
   query: string,
   productLimit: number = 20,
