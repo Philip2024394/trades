@@ -146,6 +146,37 @@ export function PeerCallLauncher(props: PeerCallLauncherProps): React.JSX.Elemen
     router.replace(pathname, { scroll: false });
   }, [acceptCallId, state, props.disabled, pathname, router]);
 
+  // NEX Calls hub · outgoing-call deep-link. The /nex-native/calls
+  // page sends the user here with `?start_call=voice|video` after
+  // they pick a peer. Fire the matching startVoice/startVideo once
+  // the component is idle and ready, then clear the marker so a
+  // back-navigation doesn't dial twice.
+  const startCallParam = searchParams.get("start_call");
+  React.useEffect(() => {
+    if (!startCallParam || props.disabled) return;
+    if (state !== "idle") return;
+    if (startCallParam === "voice") {
+      void (async () => {
+        setCurrentMedia("audio");
+        try {
+          await callRef.current?.startVoiceCall();
+        } catch (e) {
+          setError((e as Error).message);
+        }
+      })();
+    } else if (startCallParam === "video") {
+      void (async () => {
+        setCurrentMedia("video");
+        try {
+          await callRef.current?.startVideoCall();
+        } catch (e) {
+          setError((e as Error).message);
+        }
+      })();
+    }
+    router.replace(pathname, { scroll: false });
+  }, [startCallParam, state, props.disabled, pathname, router]);
+
   // Attach remote stream to the audio element (voice) or video element
   // (video call — video element also plays audio, so the hidden audio
   // sink is a no-op then).
