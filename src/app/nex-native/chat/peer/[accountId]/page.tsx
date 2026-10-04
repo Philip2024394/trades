@@ -364,6 +364,57 @@ export default async function PeerChatPage({
         .catch(() => [])
     : [];
 
+  // Phase 4A · premium theme intro-video resolution. Sealed with the
+  // founder 2026-10-04. Two signals flow to the shell:
+  //   · peerThemeIntro · present iff the peer's theme has a non-null
+  //     intro_video_url AND the viewer is NOT the theme's owner. If
+  //     NULL the shell renders immediately with zero gate.
+  //   · viewerHasSeenThemeIntro · true iff the viewer already saw
+  //     this specific theme's intro at any point in the past. The
+  //     shell uses this to skip the interstitial for returning
+  //     viewers.
+  //
+  // OWNER BYPASS (founder-sealed 2026-10-04):
+  //   The chat-entry interstitial is for OTHER participants discovering
+  //   the peer's theme for the first time. Theme owners (i.e., users
+  //   whose own nex_account.chat_theme matches this theme) never see
+  //   the intro at chat entry · they get fast entry from the first
+  //   open. Theme owners experience the intro via the theme gallery /
+  //   /settings/theme (separate surface · unchanged). The intro must
+  //   NEVER be an obstacle for the owner.
+  //
+  //   We do NOT fake a nex_theme_intro_seen row for the owner — we
+  //   simply null `peerThemeIntro` upstream so the shell has no gate
+  //   to apply. Keeps the seen-state table a clean record of actual
+  //   viewings · also keeps the gallery replay flow unaffected.
+  //
+  // Fails soft on both sides: if either lookup errors, the intro
+  // simply plays or doesn't · entry is never blocked.
+  const viewerIsThemeOwner =
+    !!peerThemeRow && session.account.chat_theme === peerThemeRow.id;
+  const peerThemeIntro =
+    peerThemeRow?.intro_video_url && !viewerIsThemeOwner
+      ? {
+          themeId: peerThemeRow.id,
+          themeName: peerThemeRow.name,
+          videoUrl: peerThemeRow.intro_video_url,
+          durationMs: peerThemeRow.intro_duration_ms,
+          posterUrl: peerThemeRow.intro_poster_url,
+        }
+      : null;
+  const viewerHasSeenThemeIntro = peerThemeIntro
+    ? await (async () => {
+        try {
+          const svc = await import("@/lib/nex-native/theme-intro-service");
+          return await svc.hasSeenThemeIntro(session.account.id, peerThemeIntro.themeId);
+        } catch {
+          // Safe default · let the intro play. We never falsely claim
+          // the user has seen something.
+          return false;
+        }
+      })()
+    : true;
+
   // Header contacts menu · list of accepted friends so the user can
   // hop between peer chats without leaving the chat surface. Best-
   // effort · if any lookup fails we return an empty list rather than
@@ -617,6 +668,8 @@ export default async function PeerChatPage({
       encryptedUploadEnabled={!isNexOfficialAccount(peer.id)}
       themeEmojis={peerThemeEmojis}
       themeStickers={peerThemeStickers}
+      themeIntro={peerThemeIntro}
+      viewerHasSeenThemeIntro={viewerHasSeenThemeIntro}
       sendStickerAction={bindSticker}
       shopBackgroundImageUrl={
         getThemeAssets(peerThemeRow?.id).shopBackgroundUrl

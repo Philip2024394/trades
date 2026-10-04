@@ -38,6 +38,7 @@ import {
 } from "./_shop-grid-modal";
 import { HeaderRightCluster } from "./_header-right-cluster";
 import { ImageQrProbe } from "./_qr-image-scanner";
+import { ThemeIntroInterstitial } from "./_theme-intro-interstitial";
 import { TradeAgreementCard } from "./_trade-agreement-card";
 
 const NEX = {
@@ -392,6 +393,28 @@ export interface PortraitBloomShellProps {
         aspectRatio: number;
       }[]
     | null;
+  /** Phase 4A · premium theme intro-video. Non-null iff the peer's
+   *  theme has an `intro_video_url` configured (migration 135). The
+   *  shell renders a full-viewport interstitial BEFORE the chat if
+   *  this is non-null AND `viewerHasSeenThemeIntro` is false. Owner,
+   *  returning viewer and themes-without-intros all skip the gate ·
+   *  the chat renders immediately. Sealed with the founder
+   *  2026-10-04. */
+  themeIntro?:
+    | {
+        themeId: string;
+        themeName: string;
+        videoUrl: string;
+        durationMs: number | null;
+        posterUrl: string | null;
+      }
+    | null;
+  /** Phase 4A · true iff the viewer has previously seen the peer's
+   *  theme intro. Resolved server-side from nex_theme_intro_seen.
+   *  When true the shell skips the interstitial · when false (and
+   *  `themeIntro` is non-null) the interstitial plays once · the
+   *  client fires a fire-and-forget mark-seen when the video ends. */
+  viewerHasSeenThemeIntro?: boolean;
   /** Server Action to send a sticker peer message. Only wired through
    *  when `themeStickers` is non-empty · otherwise the Stickers tab is
    *  hidden. */
@@ -562,6 +585,8 @@ export function PortraitBloomShell({
   themeEmojis,
   themeSendButtonUrl,
   themeStickers,
+  themeIntro,
+  viewerHasSeenThemeIntro,
   sendStickerAction,
   peerShop,
   sendCartOrderAction,
@@ -598,8 +623,38 @@ export function PortraitBloomShell({
     mountAtRef.current = Date.now();
   }, []);
 
+  // Phase 4A · premium theme intro-video gate.
+  //   - Mounts the full-viewport ThemeIntroInterstitial IFF the peer's
+  //     theme has an `intro_video_url` AND the viewer has not yet seen
+  //     this theme's intro.
+  //   - The interstitial fires `onComplete` on video end, user skip,
+  //     error, or the sealed 5s hard safety ceiling · whichever first.
+  //   - The chat tree still renders behind the interstitial so its
+  //     assets download in parallel (natural asset-warming window).
+  //     The interstitial sits at zIndex 2000 and covers the viewport.
+  //   - Returning viewers and themes without an intro skip entirely ·
+  //     zero behaviour change relative to pre-Phase-4A.
+  const shouldPlayIntro =
+    !!themeIntro && !viewerHasSeenThemeIntro;
+  const [introStillPlaying, setIntroStillPlaying] = React.useState<boolean>(
+    shouldPlayIntro,
+  );
+  const handleIntroComplete = React.useCallback(() => {
+    setIntroStillPlaying(false);
+  }, []);
+
   return (
     <>
+      {shouldPlayIntro && introStillPlaying && themeIntro ? (
+        <ThemeIntroInterstitial
+          themeId={themeIntro.themeId}
+          themeName={themeIntro.themeName}
+          videoUrl={themeIntro.videoUrl}
+          posterUrl={themeIntro.posterUrl}
+          durationMs={themeIntro.durationMs}
+          onComplete={handleIntroComplete}
+        />
+      ) : null}
       <style>{`
         html, body {
           background: ${NEX.bg} !important;

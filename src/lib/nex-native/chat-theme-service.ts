@@ -44,6 +44,21 @@ export interface NexChatThemeRow {
    *  When the DB row predates migration 085 or the value is missing
    *  in code, callers should treat it as 'bubbles'. */
   layout_style: NexChatThemeLayoutStyle;
+  /** Phase 4A · migration 135 · optional cinematic intro video asset
+   *  served before the themed chat shell renders. NULL = no intro ·
+   *  shell renders immediately with zero gate. Owner uploads via a
+   *  future admin flow · all 41 catalogue themes land here as NULL
+   *  by default so the feature stays dormant until seeded. */
+  intro_video_url: string | null;
+  /** Phase 4A · nominal video duration in milliseconds. Informational
+   *  only · the client never WAITS past this value · it listens for
+   *  the actual video `onended` event. The client enforces a 5000ms
+   *  hard safety ceiling regardless of this value. CHECK ensures
+   *  0 < intro_duration_ms <= 10000 when set. */
+  intro_duration_ms: number | null;
+  /** Phase 4A · optional still-frame rendered while the video
+   *  downloads · prevents blank frame flash. NULL = no poster. */
+  intro_poster_url: string | null;
   created_at: string;
   updated_at: string;
 }

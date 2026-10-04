@@ -5657,6 +5657,41 @@ export async function updateProfileAction(formData: FormData): Promise<never> {
 }
 
 // ---------------------------------------------------------------------------
+// Phase 4A · premium theme intro-video · mark-seen server action.
+// ---------------------------------------------------------------------------
+//
+// Called by the ThemeIntroInterstitial client component when the video
+// ends (or when the hard 5s safety ceiling fires). Fire-and-forget by
+// design: the chat has already opened when this fires. If the DB write
+// fails the user sees the intro once more next time · worst case · no
+// user-visible breakage.
+//
+// Takes a plain string so it can be invoked from both FormData-style
+// and useTransition-style client code without reshaping the signature.
+
+/** Phase 4A · fire-and-forget. The returned promise resolves to true
+ *  on success, false on validation error. Errors are never thrown.
+ *  Callers invoke this but do not block UI on its completion. */
+export async function markThemeIntroSeenAction(
+  themeId: string,
+): Promise<{ ok: true } | { ok: false; reason: string }> {
+  try {
+    const session = await resolveNexAppSessionFromContext();
+    if (!session) return { ok: false, reason: "unauthenticated" };
+    if (typeof themeId !== "string" || themeId.length === 0 || themeId.length > 120) {
+      return { ok: false, reason: "invalid theme_id" };
+    }
+    const { markThemeIntroSeen } = await import(
+      "@/lib/nex-native/theme-intro-service"
+    );
+    await markThemeIntroSeen(session.account.id, themeId);
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, reason: (e as Error).message };
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Admin tier management · migration 046 · package doctrine (sealed 2026-09-27)
 // ---------------------------------------------------------------------------
 
