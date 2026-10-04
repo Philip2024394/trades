@@ -103,6 +103,7 @@ function CallsClientInner({
     React.useState<RecentsFilter>("missed");
   const [linkModalOpen, setLinkModalOpen] = React.useState(false);
   const [groupPickerOpen, setGroupPickerOpen] = React.useState(false);
+  const [inviteOpen, setInviteOpen] = React.useState(false);
 
   return (
     <>
@@ -170,6 +171,7 @@ function CallsClientInner({
           <QuickActions
             onCreateLink={() => setLinkModalOpen(true)}
             onGroupCall={() => setGroupPickerOpen(true)}
+            onInvite={() => setInviteOpen(true)}
           />
           <PeopleRow people={people.slice(0, 10)} />
           <RecentCalls
@@ -194,6 +196,9 @@ function CallsClientInner({
             people={people}
             onClose={() => setGroupPickerOpen(false)}
           />
+        )}
+        {inviteOpen && (
+          <InviteModal onClose={() => setInviteOpen(false)} />
         )}
       </div>
     </>
@@ -410,9 +415,11 @@ function PrimaryCard({
 function QuickActions({
   onCreateLink,
   onGroupCall,
+  onInvite,
 }: {
   onCreateLink: () => void;
   onGroupCall: () => void;
+  onInvite: () => void;
 }): React.JSX.Element {
   return (
     <section
@@ -434,10 +441,10 @@ function QuickActions({
         label="Call link"
         onClick={onCreateLink}
       />
-      <QuickActionLink
+      <QuickActionButton
         icon={<InviteIcon />}
         label="Invite"
-        href="/nex-native/friends"
+        onClick={onInvite}
       />
     </section>
   );
@@ -1149,6 +1156,210 @@ function RecentsFilterDropdown({
   );
 }
 
+/* ─── Invite modal · build 2026-10-04 ──────────────────────────── *
+ * Three glass tile actions for growing the viewer's NEX circle:      *
+ *   1. Share invite link    (uses navigator.share → clipboard fback) *
+ *   2. Copy my NEX handle   (clipboard)                              *
+ *   3. Open contacts page   (deep-link into /friends)                *
+ * ────────────────────────────────────────────────────────────────── */
+
+function InviteModal({ onClose }: { onClose: () => void }): React.JSX.Element {
+  const router = useRouter();
+  const [toast, setToast] = React.useState<string | null>(null);
+
+  async function shareLink(): Promise<void> {
+    const url = `${window.location.origin}/nex-native/create-account`;
+    const navAny = navigator as Navigator & {
+      share?: (data: ShareData) => Promise<void>;
+    };
+    try {
+      if (navAny.share) {
+        await navAny.share({
+          title: "Join me on NEX",
+          text: "I'm on NEX · join me so we can chat and call.",
+          url,
+        });
+        setToast("Shared");
+      } else {
+        await navigator.clipboard.writeText(url);
+        setToast("Link copied");
+      }
+    } catch {
+      /* user cancelled share · no toast */
+    }
+    if (toast) setTimeout(() => setToast(null), 1600);
+  }
+
+  async function copyHandle(): Promise<void> {
+    // Placeholder · the hub does not yet pass the viewer's handle to
+    // the client. We copy the current URL as a profile reference until
+    // the handle plumb-through is wired. The InviteCard copy reflects
+    // that so the user never sees a misleading claim.
+    try {
+      await navigator.clipboard.writeText(window.location.origin + "/nex-native");
+      setToast("Link copied");
+      setTimeout(() => setToast(null), 1600);
+    } catch {
+      /* ignore */
+    }
+  }
+
+  return (
+    <GlassModalShell onClose={onClose} ariaLabel="Invite to NEX">
+      <GlassModalHeader
+        icon={<InviteIcon />}
+        tint={NEX_BRAND.orange}
+        title="Invite to NEX"
+        subtitle="Grow your call circle"
+        onClose={onClose}
+      />
+      <GlassHairline />
+      <div
+        style={{
+          padding: "14px 18px 18px",
+          display: "flex",
+          flexDirection: "column",
+          gap: 12,
+        }}
+      >
+        <InviteCard
+          icon={<ShareIcon />}
+          title="Share invite link"
+          subtitle="Send a signup link via your usual apps"
+          onClick={() => void shareLink()}
+        />
+        <InviteCard
+          icon={<LinkIcon />}
+          title="Copy NEX link"
+          subtitle="Paste it into any chat or email"
+          onClick={() => void copyHandle()}
+        />
+        <InviteCard
+          icon={<PeopleIcon />}
+          title="Open contacts"
+          subtitle="Browse friends already on NEX"
+          onClick={() => router.push("/nex-native/friends")}
+        />
+        {toast && (
+          <div
+            role="status"
+            style={{
+              textAlign: "center",
+              fontSize: 12.5,
+              color: NEX_BRAND.cyan,
+              fontWeight: 600,
+            }}
+          >
+            {toast}
+          </div>
+        )}
+        <p
+          style={{
+            margin: "4px 0 0",
+            textAlign: "center",
+            fontSize: 10.5,
+            color: NEX_BRAND.textDim,
+            letterSpacing: "0.08em",
+          }}
+        >
+          NEX IS FREE · ONE ACCOUNT · YOUR PRIVATE SPACE
+        </p>
+      </div>
+    </GlassModalShell>
+  );
+}
+
+function InviteCard({
+  icon,
+  title,
+  subtitle,
+  onClick,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  subtitle: string;
+  onClick: () => void;
+}): React.JSX.Element {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      style={{
+        width: "100%",
+        display: "flex",
+        alignItems: "center",
+        gap: 14,
+        padding: "14px 14px",
+        borderRadius: 16,
+        border: "1.5px solid transparent",
+        background: `rgba(255,255,255,0.04) padding-box, ${RIM_GRADIENT} border-box`,
+        backdropFilter: "blur(14px)",
+        WebkitBackdropFilter: "blur(14px)",
+        color: PAL.text,
+        textAlign: "left",
+        cursor: "pointer",
+        fontFamily: "inherit",
+        boxShadow:
+          "inset 0 1px 0 rgba(255,255,255,0.08), 0 8px 20px rgba(0,0,0,0.35), 0 0 16px rgba(255,114,0,0.08), 0 0 18px rgba(0,175,255,0.08)",
+      }}
+    >
+      <GlassChip tint={NEX_BRAND.orange} size={42}>
+        {icon}
+      </GlassChip>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ fontSize: 14.5, fontWeight: 700 }}>{title}</div>
+        <div style={{ fontSize: 12, color: NEX_BRAND.textDim, marginTop: 2 }}>
+          {subtitle}
+        </div>
+      </div>
+      <ChevronIcon flipped={false} />
+    </button>
+  );
+}
+
+function ShareIcon(): React.JSX.Element {
+  return (
+    <svg
+      width={18}
+      height={18}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.9}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <circle cx={18} cy={5} r={3} />
+      <circle cx={6} cy={12} r={3} />
+      <circle cx={18} cy={19} r={3} />
+      <line x1="8.6" y1="13.5" x2="15.4" y2="17.5" />
+      <line x1="15.4" y1="6.5" x2="8.6" y2="10.5" />
+    </svg>
+  );
+}
+
+function PeopleIcon(): React.JSX.Element {
+  return (
+    <svg
+      width={18}
+      height={18}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.9}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+      <circle cx={9} cy={7} r={4} />
+      <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+    </svg>
+  );
+}
+
 /* ─── Create-call-link modal ────────────────────────────────────── */
 
 function CreateCallLinkModal({
@@ -1167,14 +1378,6 @@ function CreateCallLinkModal({
     expiresAt: string | null;
   } | null>(null);
   const [copied, setCopied] = React.useState(false);
-
-  React.useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [onClose]);
 
   async function onCreate(): Promise<void> {
     setBusy(true);
@@ -1204,90 +1407,20 @@ function CreateCallLinkModal({
     }
   }
 
-  const tint = mediaType === "video" ? PAL.blue : PAL.green;
-  const tintSoft = mediaType === "video" ? PAL.blueSoft : PAL.greenSoft;
+  const tint = mediaType === "video" ? NEX_BRAND.cyan : NEX_BRAND.orange;
 
   return (
-    <div
-      role="dialog"
-      aria-modal="true"
-      aria-label="Create a call link"
-      onClick={onClose}
-      style={{
-        position: "fixed",
-        inset: 0,
-        background: "rgba(2, 5, 15, 0.72)",
-        backdropFilter: "blur(10px)",
-        WebkitBackdropFilter: "blur(10px)",
-        zIndex: 100,
-        display: "flex",
-        alignItems: "flex-end",
-        justifyContent: "center",
-        padding: 16,
-      }}
-    >
-      <div
-        onClick={(e) => e.stopPropagation()}
-        style={{
-          width: "100%",
-          maxWidth: 440,
-          background: PAL.card,
-          border: `1px solid ${PAL.cardBorderStrong}`,
-          borderRadius: 22,
-          padding: "20px 18px",
-          boxShadow: "0 24px 60px rgba(0,0,0,0.6)",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 10,
-            marginBottom: 14,
-          }}
-        >
-          <span
-            aria-hidden
-            style={{
-              width: 34,
-              height: 34,
-              borderRadius: 999,
-              background: PAL.orangeSoft,
-              color: PAL.orange,
-              display: "grid",
-              placeItems: "center",
-              border: `1px solid ${PAL.orange}44`,
-            }}
-          >
-            <LinkIcon />
-          </span>
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ fontSize: 15, fontWeight: 700, color: PAL.text }}>
-              Create a call link
-            </div>
-            <div style={{ fontSize: 12, color: PAL.textDim }}>
-              Shareable URL · 24h expiry · 1-3 joiners
-            </div>
-          </div>
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label="Close"
-            style={{
-              width: 32,
-              height: 32,
-              borderRadius: 999,
-              background: "rgba(255,255,255,0.06)",
-              border: "none",
-              color: PAL.textDim,
-              display: "grid",
-              placeItems: "center",
-            }}
-          >
-            <CloseIcon />
-          </button>
-        </div>
+    <GlassModalShell onClose={onClose} ariaLabel="Create a call link">
+      <GlassModalHeader
+        icon={<LinkIcon />}
+        tint={NEX_BRAND.orange}
+        title="Create a call link"
+        subtitle="Shareable URL · 24h expiry · 1-3 joiners"
+        onClose={onClose}
+      />
+      <GlassHairline />
 
+      <div style={{ padding: "14px 18px 18px" }}>
         {!result ? (
           <>
             <div
@@ -1300,16 +1433,14 @@ function CreateCallLinkModal({
             >
               <MediaKindOption
                 active={mediaType === "audio"}
-                tint={PAL.green}
-                tintSoft={PAL.greenSoft}
+                tint={NEX_BRAND.orange}
                 label="Voice"
                 icon={<PhoneIcon size={18} />}
                 onClick={() => setMediaType("audio")}
               />
               <MediaKindOption
                 active={mediaType === "video"}
-                tint={PAL.blue}
-                tintSoft={PAL.blueSoft}
+                tint={NEX_BRAND.cyan}
                 label="Video"
                 icon={<VideoIcon size={18} />}
                 onClick={() => setMediaType("video")}
@@ -1317,19 +1448,21 @@ function CreateCallLinkModal({
             </div>
             <div
               style={{
-                fontSize: 11,
-                color: PAL.textMuted,
-                marginBottom: 6,
+                fontSize: 10.5,
+                color: NEX_BRAND.textDim,
+                marginBottom: 8,
+                letterSpacing: "0.14em",
+                fontWeight: 600,
               }}
             >
-              Who can join
+              WHO CAN JOIN
             </div>
             <div
               style={{
                 display: "grid",
                 gridTemplateColumns: "repeat(3, 1fr)",
                 gap: 8,
-                marginBottom: 14,
+                marginBottom: 16,
               }}
             >
               <PartyOption
@@ -1362,26 +1495,12 @@ function CreateCallLinkModal({
                 {err}
               </p>
             )}
-            <button
-              type="button"
+            <GlassPrimaryButton
+              busy={busy}
               onClick={() => void onCreate()}
-              disabled={busy}
-              style={{
-                width: "100%",
-                padding: "12px 18px",
-                borderRadius: 999,
-                background: tintSoft,
-                border: `1px solid ${tint}`,
-                color: tint,
-                fontSize: 14,
-                fontWeight: 700,
-                cursor: busy ? "wait" : "pointer",
-                opacity: busy ? 0.7 : 1,
-                fontFamily: "inherit",
-              }}
             >
-              {busy ? "Creating…" : "Create link"}
-            </button>
+              {busy ? "Creating…" : "Create link →"}
+            </GlassPrimaryButton>
           </>
         ) : (
           <>
@@ -1389,9 +1508,12 @@ function CreateCallLinkModal({
               style={{
                 padding: "14px 14px",
                 borderRadius: 14,
-                background: tintSoft,
-                border: `1px solid ${tint}66`,
-                marginBottom: 12,
+                border: "1.5px solid transparent",
+                background: `${tint}14 padding-box, ${RIM_GRADIENT} border-box`,
+                backdropFilter: "blur(10px)",
+                WebkitBackdropFilter: "blur(10px)",
+                marginBottom: 14,
+                boxShadow: `inset 0 1px 0 rgba(255,255,255,0.08), 0 0 18px ${tint}22`,
               }}
             >
               <div
@@ -1401,7 +1523,7 @@ function CreateCallLinkModal({
                   letterSpacing: "0.14em",
                   textTransform: "uppercase",
                   fontWeight: 700,
-                  marginBottom: 6,
+                  marginBottom: 8,
                 }}
               >
                 {result.maxUses === 1
@@ -1409,15 +1531,15 @@ function CreateCallLinkModal({
                     ? "1:1 video call link"
                     : "1:1 voice call link"
                   : result.mediaType === "video"
-                    ? `Group video call link (up to ${result.maxUses + 1})`
-                    : `Group voice call link (up to ${result.maxUses + 1})`}
+                    ? `Group video call link · up to ${result.maxUses + 1}`
+                    : `Group voice call link · up to ${result.maxUses + 1}`}
               </div>
               <div
                 style={{
                   fontSize: 13,
                   color: PAL.text,
                   wordBreak: "break-all",
-                  fontFamily: "ui-monospace, monospace",
+                  fontFamily: "ui-monospace, 'JetBrains Mono', monospace",
                   lineHeight: 1.4,
                 }}
               >
@@ -1430,15 +1552,18 @@ function CreateCallLinkModal({
                 onClick={() => void onCopy()}
                 style={{
                   flex: 1,
-                  padding: "12px",
-                  borderRadius: 999,
-                  background: PAL.orange,
-                  color: "#0a0608",
-                  border: "none",
+                  padding: "13px",
+                  borderRadius: 14,
+                  border: "1.5px solid transparent",
+                  background: `${PAL.orange}26 padding-box, ${RIM_GRADIENT} border-box`,
+                  backdropFilter: "blur(10px)",
+                  WebkitBackdropFilter: "blur(10px)",
+                  color: PAL.text,
                   fontSize: 13.5,
                   fontWeight: 700,
                   fontFamily: "inherit",
                   cursor: "pointer",
+                  boxShadow: `inset 0 1px 0 rgba(255,255,255,0.12), 0 0 20px ${PAL.orange}33, 0 0 20px ${NEX_BRAND.cyan}22`,
                 }}
               >
                 {copied ? "Copied ✓" : "Copy link"}
@@ -1447,11 +1572,13 @@ function CreateCallLinkModal({
                 type="button"
                 onClick={onClose}
                 style={{
-                  padding: "12px 20px",
-                  borderRadius: 999,
-                  background: "transparent",
-                  border: `1px solid ${PAL.cardBorderStrong}`,
-                  color: PAL.textDim,
+                  padding: "13px 20px",
+                  borderRadius: 14,
+                  border: `1.5px solid ${NEX_BRAND.cyan}44`,
+                  background: "rgba(255,255,255,0.04)",
+                  backdropFilter: "blur(10px)",
+                  WebkitBackdropFilter: "blur(10px)",
+                  color: NEX_BRAND.cyan,
                   fontSize: 13.5,
                   fontWeight: 600,
                   fontFamily: "inherit",
@@ -1465,8 +1592,8 @@ function CreateCallLinkModal({
               <p
                 style={{
                   margin: "12px 0 0",
-                  fontSize: 11.5,
-                  color: PAL.textMuted,
+                  fontSize: 11,
+                  color: NEX_BRAND.textDim,
                   textAlign: "center",
                 }}
               >
@@ -1476,7 +1603,7 @@ function CreateCallLinkModal({
           </>
         )}
       </div>
-    </div>
+    </GlassModalShell>
   );
 }
 
@@ -1496,21 +1623,30 @@ function PartyOption({
       type="button"
       onClick={onClick}
       style={{
-        padding: "9px 8px",
+        padding: "10px 8px",
         borderRadius: 12,
-        background: active ? PAL.orangeSoft : "transparent",
-        border: `1px solid ${active ? PAL.orange + "66" : PAL.cardBorderStrong}`,
-        color: active ? PAL.orange : PAL.textDim,
+        border: "1.5px solid transparent",
+        background: active
+          ? `${PAL.orange}1F padding-box, ${RIM_GRADIENT} border-box`
+          : `rgba(255,255,255,0.03) padding-box, linear-gradient(135deg, ${NEX_BRAND.cyan}44, ${NEX_BRAND.cyan}22) border-box`,
+        backdropFilter: "blur(10px)",
+        WebkitBackdropFilter: "blur(10px)",
+        color: active ? PAL.text : NEX_BRAND.textDim,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         gap: 2,
         fontFamily: "inherit",
         cursor: "pointer",
+        boxShadow: active
+          ? `inset 0 1px 0 rgba(255,255,255,0.12), 0 0 14px ${PAL.orange}33`
+          : "inset 0 1px 0 rgba(255,255,255,0.04)",
       }}
     >
-      <span style={{ fontSize: 12, fontWeight: 700 }}>{label}</span>
-      <span style={{ fontSize: 10, opacity: 0.7 }}>{sub}</span>
+      <span style={{ fontSize: 12, fontWeight: 700, color: active ? PAL.orange : NEX_BRAND.textDim }}>
+        {label}
+      </span>
+      <span style={{ fontSize: 10, opacity: 0.75 }}>{sub}</span>
     </button>
   );
 }
@@ -1518,14 +1654,12 @@ function PartyOption({
 function MediaKindOption({
   active,
   tint,
-  tintSoft,
   label,
   icon,
   onClick,
 }: {
   active: boolean;
   tint: string;
-  tintSoft: string;
   label: string;
   icon: React.ReactNode;
   onClick: () => void;
@@ -1540,13 +1674,20 @@ function MediaKindOption({
         gap: 10,
         padding: "12px 14px",
         borderRadius: 14,
-        background: active ? tintSoft : "transparent",
-        border: `1px solid ${active ? tint : PAL.cardBorderStrong}`,
-        color: active ? tint : PAL.textDim,
+        border: "1.5px solid transparent",
+        background: active
+          ? `${tint}1F padding-box, ${RIM_GRADIENT} border-box`
+          : `rgba(255,255,255,0.03) padding-box, linear-gradient(135deg, ${NEX_BRAND.cyan}44, ${NEX_BRAND.cyan}22) border-box`,
+        backdropFilter: "blur(10px)",
+        WebkitBackdropFilter: "blur(10px)",
+        color: active ? tint : NEX_BRAND.textDim,
         fontSize: 13.5,
         fontWeight: 600,
         fontFamily: "inherit",
         cursor: "pointer",
+        boxShadow: active
+          ? `inset 0 1px 0 rgba(255,255,255,0.12), 0 0 14px ${tint}33`
+          : "inset 0 1px 0 rgba(255,255,255,0.04)",
       }}
     >
       {icon}
@@ -1570,14 +1711,6 @@ function GroupPickerModal({
   const [selected, setSelected] = React.useState<Set<string>>(new Set());
   const [busy, setBusy] = React.useState(false);
   const [err, setErr] = React.useState<string | null>(null);
-
-  React.useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [onClose]);
 
   function toggle(id: string): void {
     setSelected((prev) => {
@@ -1604,86 +1737,19 @@ function GroupPickerModal({
     router.push(`/nex-native/call/g/${r.sessionId}`);
   }
 
-  const tint = mediaType === "video" ? PAL.blue : PAL.green;
-  const tintSoft = mediaType === "video" ? PAL.blueSoft : PAL.greenSoft;
+  const tint = mediaType === "video" ? NEX_BRAND.cyan : NEX_BRAND.orange;
 
   return (
-    <div
-      role="dialog"
-      aria-modal="true"
-      aria-label="Start group call"
-      onClick={onClose}
-      style={{
-        position: "fixed",
-        inset: 0,
-        background: "rgba(2, 5, 15, 0.72)",
-        backdropFilter: "blur(10px)",
-        WebkitBackdropFilter: "blur(10px)",
-        zIndex: 100,
-        display: "flex",
-        alignItems: "flex-end",
-        justifyContent: "center",
-        padding: 16,
-      }}
-    >
-      <div
-        onClick={(e) => e.stopPropagation()}
-        style={{
-          width: "100%",
-          maxWidth: 460,
-          background: PAL.card,
-          border: `1px solid ${PAL.cardBorderStrong}`,
-          borderRadius: 22,
-          padding: "20px 16px 18px",
-          maxHeight: "80dvh",
-          display: "flex",
-          flexDirection: "column",
-          boxShadow: "0 24px 60px rgba(0,0,0,0.6)",
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
-          <span
-            aria-hidden
-            style={{
-              width: 34,
-              height: 34,
-              borderRadius: 999,
-              background: PAL.orangeSoft,
-              color: PAL.orange,
-              display: "grid",
-              placeItems: "center",
-              border: `1px solid ${PAL.orange}44`,
-            }}
-          >
-            <GroupIcon />
-          </span>
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ fontSize: 15, fontWeight: 700, color: PAL.text }}>
-              Start group call
-            </div>
-            <div style={{ fontSize: 12, color: PAL.textDim }}>
-              You + up to 3 others · mesh WebRTC
-            </div>
-          </div>
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label="Close"
-            style={{
-              width: 32,
-              height: 32,
-              borderRadius: 999,
-              background: "rgba(255,255,255,0.06)",
-              border: "none",
-              color: PAL.textDim,
-              display: "grid",
-              placeItems: "center",
-            }}
-          >
-            <CloseIcon />
-          </button>
-        </div>
-
+    <GlassModalShell onClose={onClose} ariaLabel="Start group call" maxWidth={460}>
+      <GlassModalHeader
+        icon={<GroupIcon />}
+        tint={NEX_BRAND.orange}
+        title="Start group call"
+        subtitle="You + up to 3 others · mesh WebRTC"
+        onClose={onClose}
+      />
+      <GlassHairline />
+      <div style={{ padding: "14px 18px 18px", display: "flex", flexDirection: "column" }}>
         <div
           style={{
             display: "grid",
@@ -1694,16 +1760,14 @@ function GroupPickerModal({
         >
           <MediaKindOption
             active={mediaType === "audio"}
-            tint={PAL.green}
-            tintSoft={PAL.greenSoft}
+            tint={NEX_BRAND.orange}
             label="Voice"
             icon={<PhoneIcon size={18} />}
             onClick={() => setMediaType("audio")}
           />
           <MediaKindOption
             active={mediaType === "video"}
-            tint={PAL.blue}
-            tintSoft={PAL.blueSoft}
+            tint={NEX_BRAND.cyan}
             label="Video"
             icon={<VideoIcon size={18} />}
             onClick={() => setMediaType("video")}
@@ -1712,24 +1776,33 @@ function GroupPickerModal({
 
         <div
           style={{
-            fontSize: 11,
-            color: PAL.textMuted,
-            marginBottom: 8,
+            fontSize: 10.5,
+            color: NEX_BRAND.textDim,
+            marginBottom: 10,
             display: "flex",
             justifyContent: "space-between",
+            letterSpacing: "0.1em",
+            fontWeight: 600,
           }}
         >
-          <span>Invite up to 3 people (optional)</span>
-          <span>{selected.size}/3 selected</span>
+          <span>INVITE UP TO 3</span>
+          <span style={{ color: tint, fontWeight: 700 }}>{selected.size}/3</span>
         </div>
 
         {people.length === 0 ? (
           <div
             style={{
-              padding: "16px 10px",
+              padding: "20px 14px",
               textAlign: "center",
-              color: PAL.textDim,
+              color: NEX_BRAND.textDim,
               fontSize: 13,
+              lineHeight: 1.5,
+              borderRadius: 14,
+              border: "1.5px solid transparent",
+              background: `rgba(255,255,255,0.03) padding-box, ${RIM_GRADIENT} border-box`,
+              backdropFilter: "blur(10px)",
+              WebkitBackdropFilter: "blur(10px)",
+              marginBottom: 14,
             }}
           >
             You can start the call solo and share the room link from inside.
@@ -1739,79 +1812,91 @@ function GroupPickerModal({
             style={{
               listStyle: "none",
               margin: 0,
-              padding: "4px 0",
+              padding: "2px 0 10px",
               overflowY: "auto",
-              maxHeight: 260,
+              maxHeight: 280,
               display: "flex",
               flexDirection: "column",
-              gap: 4,
+              gap: 8,
             }}
           >
             {people.map((p) => {
               const checked = selected.has(p.id);
               const busyPeer = presenceFor(p.id, presenceSets) === "busy";
+              const disabled = (!checked && selected.size >= 3) || busyPeer;
               return (
                 <li key={p.id}>
                   <button
                     type="button"
                     onClick={() => toggle(p.id)}
-                    disabled={!checked && selected.size >= 3}
+                    disabled={disabled}
                     style={{
                       width: "100%",
                       display: "flex",
                       alignItems: "center",
                       gap: 12,
                       padding: "10px 12px",
-                      borderRadius: 12,
-                      background: checked ? PAL.orangeSoft : "transparent",
-                      border: `1px solid ${checked ? PAL.orange + "66" : "transparent"}`,
+                      borderRadius: 14,
+                      border: "1.5px solid transparent",
+                      background: checked
+                        ? `${PAL.orange}1F padding-box, ${RIM_GRADIENT} border-box`
+                        : `rgba(255,255,255,0.03) padding-box, linear-gradient(135deg, ${NEX_BRAND.cyan}44, ${NEX_BRAND.cyan}22) border-box`,
+                      backdropFilter: "blur(10px)",
+                      WebkitBackdropFilter: "blur(10px)",
                       color: PAL.text,
                       textAlign: "left",
-                      cursor:
-                        !checked && selected.size >= 3 ? "not-allowed" : "pointer",
+                      cursor: disabled ? "not-allowed" : "pointer",
                       fontFamily: "inherit",
-                      opacity: !checked && selected.size >= 3 ? 0.4 : 1,
+                      opacity: disabled ? 0.45 : 1,
+                      boxShadow: checked
+                        ? `inset 0 1px 0 rgba(255,255,255,0.1), 0 0 14px ${PAL.orange}33`
+                        : "inset 0 1px 0 rgba(255,255,255,0.04)",
                     }}
                   >
-                    <span
-                      aria-hidden
-                      style={{
-                        width: 36,
-                        height: 36,
-                        borderRadius: 999,
-                        background: "rgba(255,255,255,0.06)",
-                        color: PAL.text,
-                        display: "grid",
-                        placeItems: "center",
-                        fontSize: 13,
-                        fontWeight: 700,
-                        flex: "none",
-                      }}
-                    >
-                      {initialsFromName(p.displayName)}
-                    </span>
+                    <GlassAvatar
+                      name={p.displayName}
+                      avatarUrl={p.avatarUrl}
+                      presence={busyPeer ? "busy" : "online"}
+                    />
                     <span style={{ flex: 1, minWidth: 0 }}>
-                      <span style={{ display: "block", fontSize: 14, fontWeight: 600 }}>
+                      <span
+                        style={{
+                          display: "block",
+                          fontSize: 14.5,
+                          fontWeight: 700,
+                          letterSpacing: "-0.005em",
+                        }}
+                      >
                         {p.displayName}
                       </span>
-                      <span style={{ fontSize: 11, color: PAL.textDim }}>
+                      <span
+                        style={{
+                          fontSize: 11.5,
+                          color: busyPeer ? NEX_BRAND.darkRed : NEX_BRAND.cyan,
+                          fontWeight: 600,
+                          letterSpacing: "0.01em",
+                        }}
+                      >
                         {busyPeer ? "On a call" : "Online"}
                       </span>
                     </span>
                     <span
                       aria-hidden
                       style={{
-                        width: 20,
-                        height: 20,
+                        width: 22,
+                        height: 22,
                         borderRadius: 999,
-                        border: `1.5px solid ${checked ? PAL.orange : "rgba(255,255,255,0.2)"}`,
+                        border: `1.5px solid ${checked ? PAL.orange : NEX_BRAND.cyan + "66"}`,
                         background: checked ? PAL.orange : "transparent",
                         display: "grid",
                         placeItems: "center",
                         color: "#0a0608",
-                        fontSize: 11,
+                        fontSize: 12,
                         fontWeight: 800,
                         flex: "none",
+                        boxShadow: checked
+                          ? `0 0 10px ${PAL.orange}66`
+                          : "none",
                       }}
                     >
                       {checked ? "✓" : ""}
@@ -1824,33 +1909,16 @@ function GroupPickerModal({
         )}
 
         {err && (
-          <p style={{ fontSize: 12.5, color: "#FFB199", margin: "10px 0 0" }}>
+          <p style={{ fontSize: 12.5, color: "#FFB199", margin: "4px 0 10px" }}>
             {err}
           </p>
         )}
 
-        <button
-          type="button"
-          onClick={() => void onStart()}
-          disabled={busy}
-          style={{
-            marginTop: 14,
-            padding: "13px 18px",
-            borderRadius: 999,
-            background: tintSoft,
-            border: `1px solid ${tint}`,
-            color: tint,
-            fontSize: 14.5,
-            fontWeight: 700,
-            cursor: busy ? "wait" : "pointer",
-            opacity: busy ? 0.7 : 1,
-            fontFamily: "inherit",
-          }}
-        >
-          {busy ? "Starting…" : "Start group call"}
-        </button>
+        <GlassPrimaryButton busy={busy} onClick={() => void onStart()}>
+          {busy ? "Starting…" : "Start group call →"}
+        </GlassPrimaryButton>
       </div>
-    </div>
+    </GlassModalShell>
   );
 }
 
@@ -2239,7 +2307,223 @@ function GlassContactCard({
   );
 }
 
-/* ─── Glass primitives ──────────────────────────────────────────── */
+/* ─── Glass primitives ──────────────────────────────────────────── *
+ * Shared across every modal + popover in the Calls hub so the whole  *
+ * section reads as one design language. If you touch these, you     *
+ * touch every modal · intentional. Shape:                            *
+ *   · GlassModalShell  — the outer fullscreen scrim + framed panel   *
+ *   · GlassModalHeader — the icon-chip + title + close row           *
+ *   · GlassHairline    — the cyan fade divider under the header      *
+ *   · GlassPrimaryButton — the primary CTA with full orange→cyan rim *
+ *   · GlassSecondaryButton — the cyan-only secondary action tile     *
+ * ────────────────────────────────────────────────────────────────── */
+
+function GlassModalShell({
+  children,
+  onClose,
+  ariaLabel,
+  maxWidth = 480,
+}: {
+  children: React.ReactNode;
+  onClose: () => void;
+  ariaLabel: string;
+  maxWidth?: number;
+}): React.JSX.Element {
+  React.useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label={ariaLabel}
+      onClick={onClose}
+      style={{
+        position: "fixed",
+        inset: 0,
+        background:
+          "radial-gradient(60% 40% at 50% 0%, rgba(0,175,255,0.09), transparent 70%), rgba(2,9,20,0.78)",
+        backdropFilter: "blur(14px)",
+        WebkitBackdropFilter: "blur(14px)",
+        zIndex: 100,
+        display: "flex",
+        alignItems: "flex-end",
+        justifyContent: "center",
+        padding: 16,
+      }}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          width: "100%",
+          maxWidth,
+          borderRadius: 24,
+          padding: 0,
+          border: "2px solid transparent",
+          background: `rgba(255,255,255,0.05) padding-box, ${RIM_GRADIENT} border-box`,
+          backdropFilter: "blur(22px) saturate(1.1)",
+          WebkitBackdropFilter: "blur(22px) saturate(1.1)",
+          maxHeight: "82dvh",
+          display: "flex",
+          flexDirection: "column",
+          boxShadow:
+            "inset 0 1px 0 rgba(255,255,255,0.14), 0 20px 50px rgba(0,0,0,0.6), 0 0 40px rgba(255,114,0,0.14), 0 0 50px rgba(0,175,255,0.14)",
+        }}
+      >
+        {children}
+      </div>
+    </div>
+  );
+}
+
+function GlassModalHeader({
+  icon,
+  tint,
+  title,
+  subtitle,
+  onClose,
+}: {
+  icon: React.ReactNode;
+  tint: string;
+  title: string;
+  subtitle: string;
+  onClose: () => void;
+}): React.JSX.Element {
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 12,
+        padding: "18px 18px 14px",
+      }}
+    >
+      <GlassChip tint={tint} size={38}>
+        {icon}
+      </GlassChip>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div
+          style={{
+            fontSize: 15.5,
+            fontWeight: 700,
+            color: PAL.text,
+            letterSpacing: "-0.005em",
+          }}
+        >
+          {title}
+        </div>
+        <div style={{ fontSize: 12, color: NEX_BRAND.textDim }}>{subtitle}</div>
+      </div>
+      <button
+        type="button"
+        onClick={onClose}
+        aria-label="Close"
+        style={{
+          width: 34,
+          height: 34,
+          borderRadius: 999,
+          background: "rgba(255,255,255,0.04)",
+          border: `1px solid ${NEX_BRAND.cyan}2A`,
+          color: NEX_BRAND.textDim,
+          display: "grid",
+          placeItems: "center",
+          cursor: "pointer",
+          backdropFilter: "blur(8px)",
+          WebkitBackdropFilter: "blur(8px)",
+        }}
+      >
+        <CloseIcon />
+      </button>
+    </div>
+  );
+}
+
+function GlassHairline(): React.JSX.Element {
+  return (
+    <div
+      aria-hidden
+      style={{
+        height: 1,
+        margin: "0 18px 2px",
+        background:
+          "linear-gradient(90deg, transparent, rgba(0,175,255,0.22), transparent)",
+      }}
+    />
+  );
+}
+
+function GlassPrimaryButton({
+  children,
+  onClick,
+  busy,
+}: {
+  children: React.ReactNode;
+  onClick: () => void;
+  busy?: boolean;
+}): React.JSX.Element {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={busy}
+      style={{
+        width: "100%",
+        padding: "14px 18px",
+        borderRadius: 14,
+        border: "2px solid transparent",
+        background: `rgba(255,114,0,0.20) padding-box, ${RIM_GRADIENT} border-box`,
+        backdropFilter: "blur(14px)",
+        WebkitBackdropFilter: "blur(14px)",
+        color: PAL.text,
+        fontSize: 14.5,
+        fontWeight: 700,
+        letterSpacing: "0.01em",
+        cursor: busy ? "wait" : "pointer",
+        opacity: busy ? 0.7 : 1,
+        fontFamily: "inherit",
+        boxShadow:
+          "inset 0 1px 0 rgba(255,255,255,0.16), 0 10px 24px rgba(0,0,0,0.4), 0 0 22px rgba(255,114,0,0.28), 0 0 24px rgba(0,175,255,0.22)",
+      }}
+    >
+      {children}
+    </button>
+  );
+}
+
+function GlassSecondaryButton({
+  children,
+  onClick,
+}: {
+  children: React.ReactNode;
+  onClick: () => void;
+}): React.JSX.Element {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      style={{
+        width: "100%",
+        padding: "12px 18px",
+        borderRadius: 14,
+        border: `1.5px solid ${NEX_BRAND.cyan}44`,
+        background: "rgba(255,255,255,0.04)",
+        backdropFilter: "blur(10px)",
+        WebkitBackdropFilter: "blur(10px)",
+        color: NEX_BRAND.cyan,
+        fontSize: 13.5,
+        fontWeight: 600,
+        cursor: "pointer",
+        fontFamily: "inherit",
+      }}
+    >
+      {children}
+    </button>
+  );
+}
 
 function GlassAvatar({
   name,
