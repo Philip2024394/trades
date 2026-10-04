@@ -25,6 +25,7 @@ import {
 import { createRingtone, type Ringtone } from "@/lib/nex-native/calls/ringtone";
 import { logCallAction } from "@/app/nex-native/calls/_log-call-action";
 import type { CallLogOutcome } from "@/lib/nex-native/call-log-service";
+import { trackPresenceInCall } from "@/lib/nex-native/realtime/people-presence";
 
 export interface PeerCallLauncherProps {
   conversationId: string;
@@ -88,6 +89,15 @@ export function PeerCallLauncher(props: PeerCallLauncherProps): React.JSX.Elemen
   React.useEffect(() => {
     currentMediaRef.current = currentMedia;
   }, [currentMedia]);
+
+  // Track on the global in-call presence channel for as long as the
+  // PeerCall is in the connected state. Powers the orange "busy on
+  // call" rim on friends' avatars across the app.
+  React.useEffect(() => {
+    if (state !== "connected" || props.disabled) return;
+    const release = trackPresenceInCall(props.selfAccountId);
+    return release;
+  }, [state, props.disabled, props.selfAccountId]);
 
   // Instantiate PeerCall once per conversation.
   React.useEffect(() => {

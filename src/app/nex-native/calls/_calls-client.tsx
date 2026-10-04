@@ -14,6 +14,12 @@
 import * as React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import {
+  PresenceProvider,
+  usePresence,
+  presenceFor,
+  type PresenceKind,
+} from "./_presence-client";
 
 export interface CallsPerson {
   id: string;
@@ -65,9 +71,24 @@ type CallKind = "voice" | "video";
 type RecentsFilter = "missed" | "incoming" | "outgoing" | "voice" | "video";
 
 export function CallsClient({
+  viewerId,
   people,
   recentCalls,
 }: CallsClientProps): React.JSX.Element {
+  return (
+    <PresenceProvider viewerId={viewerId}>
+      <CallsClientInner people={people} recentCalls={recentCalls} />
+    </PresenceProvider>
+  );
+}
+
+function CallsClientInner({
+  people,
+  recentCalls,
+}: {
+  people: CallsPerson[];
+  recentCalls: RecentCallRow[];
+}): React.JSX.Element {
   const [pickerFor, setPickerFor] = React.useState<CallKind | null>(null);
   const [recentsFilter, setRecentsFilter] =
     React.useState<RecentsFilter>("missed");
@@ -88,6 +109,13 @@ export function CallsClient({
         @keyframes nex-calls-dropdown-in {
           from { opacity: 0; transform: translateY(-6px); }
           to   { opacity: 1; transform: translateY(0); }
+        }
+        /* Presence ping · an outward pulse behind the green rim so
+           online friends feel "live" on the People row. */
+        @keyframes nex-presence-ping {
+          0%   { transform: scale(1);    opacity: 0.75; }
+          80%  { transform: scale(1.9);  opacity: 0; }
+          100% { transform: scale(1.9);  opacity: 0; }
         }
       `}</style>
       <div
@@ -429,6 +457,7 @@ function QuickActionLink({
 /* ─── People (friends · reference calls it Favourites) ──────────── */
 
 function PeopleRow({ people }: { people: CallsPerson[] }): React.JSX.Element {
+  const presenceSets = usePresence();
   if (people.length === 0) {
     return (
       <section data-nex-calls-people-empty style={{ marginBottom: 22 }}>
@@ -467,37 +496,46 @@ function PeopleRow({ people }: { people: CallsPerson[] }): React.JSX.Element {
           scrollSnapType: "x mandatory",
         }}
       >
-        {people.map((p) => (
-          <Link
-            key={p.id}
-            href={`/nex-native/chat/peer/${p.id}`}
-            role="listitem"
-            style={{
-              flex: "0 0 auto",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: 6,
-              width: 64,
-              scrollSnapAlign: "start",
-            }}
-          >
-            <Avatar name={p.displayName} avatarUrl={p.avatarUrl} size={56} />
-            <span
+        {people.map((p) => {
+          const presence = presenceFor(p.id, presenceSets);
+          return (
+            <Link
+              key={p.id}
+              href={`/nex-native/chat/peer/${p.id}`}
+              role="listitem"
+              aria-label={`${p.displayName}${presence === "online" ? " · online" : presence === "busy" ? " · on a call" : ""}`}
               style={{
-                fontSize: 11.5,
-                color: PAL.text,
-                textAlign: "center",
-                whiteSpace: "nowrap",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                width: "100%",
+                flex: "0 0 auto",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: 6,
+                width: 64,
+                scrollSnapAlign: "start",
               }}
             >
-              {firstName(p.displayName)}
-            </span>
-          </Link>
-        ))}
+              <Avatar
+                name={p.displayName}
+                avatarUrl={p.avatarUrl}
+                size={56}
+                presence={presence}
+              />
+              <span
+                style={{
+                  fontSize: 11.5,
+                  color: PAL.text,
+                  textAlign: "center",
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  width: "100%",
+                }}
+              >
+                {firstName(p.displayName)}
+              </span>
+            </Link>
+          );
+        })}
       </div>
     </section>
   );
@@ -1137,15 +1175,22 @@ function Avatar({
   name,
   avatarUrl,
   size,
+  presence,
 }: {
   name: string;
   avatarUrl: string | null;
   size: number;
+  presence?: PresenceKind;
 }): React.JSX.Element {
   const initials = initialsOf(name);
-  return (
+  const rimColor =
+    presence === "online"
+      ? PAL.green
+      : presence === "busy"
+        ? PAL.orange
+        : null;
+  const inner = (
     <div
-      aria-hidden
       style={{
         width: size,
         height: size,
@@ -1171,6 +1216,53 @@ function Avatar({
       ) : (
         initials
       )}
+    </div>
+  );
+
+  if (!rimColor) {
+    // No presence data for this contact · plain avatar, no rim.
+    return <div aria-hidden>{inner}</div>;
+  }
+
+  // Presence-aware avatar · rim ring + (online only) outward ping.
+  // Ring sits at inset -3 (3px outside the avatar); ping starts at
+  // the ring's size and expands via nex-presence-ping.
+  const showPing = presence === "online";
+  return (
+    <div
+      aria-hidden
+      style={{
+        position: "relative",
+        width: size,
+        height: size,
+        flexShrink: 0,
+      }}
+    >
+      <span
+        aria-hidden
+        style={{
+          position: "absolute",
+          inset: -3,
+          borderRadius: 999,
+          border: `2px solid ${rimColor}`,
+          boxShadow: `0 0 10px ${rimColor}88, inset 0 0 6px ${rimColor}55`,
+          pointerEvents: "none",
+        }}
+      />
+      {showPing && (
+        <span
+          aria-hidden
+          style={{
+            position: "absolute",
+            inset: -3,
+            borderRadius: 999,
+            border: `2px solid ${rimColor}`,
+            animation: "nex-presence-ping 1.9s ease-out infinite",
+            pointerEvents: "none",
+          }}
+        />
+      )}
+      {inner}
     </div>
   );
 }
