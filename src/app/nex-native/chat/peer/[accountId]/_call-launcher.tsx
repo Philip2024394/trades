@@ -708,6 +708,7 @@ function CallOverlay(p: OverlayProps): React.JSX.Element {
           "Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
       }}
     >
+      <PulseKeyframes />
       {/* Video elements · in the mock the "hero" is the inset frame
           below the top header, not the full window. We render into a
           clipped stage so the header above and controls below remain
@@ -843,7 +844,15 @@ function CallOverlay(p: OverlayProps): React.JSX.Element {
             width: "100%",
           }}
         >
-          <PeerAvatarOrange name={p.peerName} url={p.peerAvatarUrl} />
+          <PeerAvatarOrange
+            name={p.peerName}
+            url={p.peerAvatarUrl}
+            ringing={
+              p.state === "dialing" ||
+              p.state === "incoming" ||
+              p.state === "connecting"
+            }
+          />
           <div
             style={{
               fontSize: 24,
@@ -1058,6 +1067,7 @@ function CallButtonGrid(props: {
       <CallSurfaceButton
         label={props.recording ? "Recording" : "Record"}
         active={props.recording}
+        pulse={props.recording}
         onClick={props.onToggleRecord}
       >
         <RecordIcon active={props.recording} />
@@ -1073,12 +1083,16 @@ function CallSurfaceButton({
   label,
   active,
   tone,
+  pulse,
   onClick,
   children,
 }: {
   label: string;
   active?: boolean;
   tone?: "danger";
+  /** Play the heartbeat animation around the button · used by Record
+   *  while recording, so the viewer sees the capture is live. */
+  pulse?: boolean;
   onClick: () => void;
   children: React.ReactNode;
 }): React.JSX.Element {
@@ -1126,7 +1140,10 @@ function CallSurfaceButton({
           boxShadow: isDanger
             ? "0 10px 24px rgba(239,68,68,0.35)"
             : "0 4px 12px rgba(0,0,0,0.35)",
-        }}
+          animation: pulse ? "nex-call-heartbeat 1.4s ease-out infinite" : undefined,
+          ["--nex-pulse" as string]: "rgba(239,68,68,0.55)",
+          ["--nex-pulse-fade" as string]: "rgba(239,68,68,0)",
+        } as React.CSSProperties}
       >
         {children}
       </span>
@@ -1356,13 +1373,34 @@ function subStatusLabel(
   }
 }
 
-/* Avatar · orange glow ring per mock design. */
+/* Shared pulse keyframe · heartbeat-like double-beat for ringing +
+ * recording affordances. Injected once per overlay mount. */
+function PulseKeyframes(): React.JSX.Element {
+  return (
+    <style>{`
+      @keyframes nex-call-heartbeat {
+        0%   { transform: scale(1);     box-shadow: 0 0 0 0 var(--nex-pulse, rgba(255,138,42,0.55)); }
+        14%  { transform: scale(1.06);  box-shadow: 0 0 0 10px var(--nex-pulse-fade, rgba(255,138,42,0)); }
+        28%  { transform: scale(1);     box-shadow: 0 0 0 0 var(--nex-pulse, rgba(255,138,42,0.0)); }
+        42%  { transform: scale(1.04);  box-shadow: 0 0 0 14px var(--nex-pulse-fade, rgba(255,138,42,0)); }
+        70%  { transform: scale(1);     box-shadow: 0 0 0 0 rgba(255,138,42,0); }
+        100% { transform: scale(1);     box-shadow: 0 0 0 0 rgba(255,138,42,0); }
+      }
+    `}</style>
+  );
+}
+
+/* Avatar · orange glow ring per mock design.
+ * When `ringing` is true, the ring plays a double-beat heartbeat so
+ * the viewer sees "we're calling" without needing to read the label. */
 function PeerAvatarOrange({
   name,
   url,
+  ringing,
 }: {
   name: string;
   url: string | null;
+  ringing?: boolean;
 }): React.JSX.Element {
   const initials = name
     .split(/\s+/)
@@ -1388,7 +1426,10 @@ function PeerAvatarOrange({
         fontSize: 40,
         fontWeight: 700,
         letterSpacing: "-0.02em",
-      }}
+        animation: ringing ? "nex-call-heartbeat 1.4s ease-out infinite" : undefined,
+        ["--nex-pulse" as string]: `${CALL_SURFACE.accent}99`,
+        ["--nex-pulse-fade" as string]: "rgba(255,138,42,0)",
+      } as React.CSSProperties}
     >
       {url ? "" : initials || "?"}
     </div>

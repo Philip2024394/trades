@@ -28,6 +28,9 @@ export interface CallsPerson {
   displayName: string;
   handle: string | null;
   avatarUrl: string | null;
+  profession: string | null;
+  headline: string | null;
+  locationLabel: string | null;
 }
 
 export interface RecentCallRow {
@@ -1689,13 +1692,13 @@ function GroupPickerModal({
             }}
           >
             {people.map((p) => {
-              const checked = selected.has(p.accountId);
-              const busyPeer = presenceFor(p.accountId, presenceSets) === "busy";
+              const checked = selected.has(p.id);
+              const busyPeer = presenceFor(p.id, presenceSets) === "busy";
               return (
-                <li key={p.accountId}>
+                <li key={p.id}>
                   <button
                     type="button"
-                    onClick={() => toggle(p.accountId)}
+                    onClick={() => toggle(p.id)}
                     disabled={!checked && selected.size >= 3}
                     style={{
                       width: "100%",
@@ -1920,16 +1923,18 @@ function ContactPickerModal({
             style={{
               listStyle: "none",
               margin: 0,
-              padding: "6px 0 0",
+              padding: "4px 0 0",
               overflowY: "auto",
               display: "flex",
               flexDirection: "column",
-              gap: 4,
+              gap: 10,
             }}
           >
             {people.map((p) => {
               const presence = presenceFor(p.id, presenceSets);
               const busy = presence === "busy";
+              const kindTint = kind === "voice" ? PAL.green : PAL.blue;
+              const kindTintSoft = kind === "voice" ? PAL.greenSoft : PAL.blueSoft;
               return (
                 <li key={p.id}>
                   <button
@@ -1947,53 +1952,129 @@ function ContactPickerModal({
                       width: "100%",
                       display: "flex",
                       alignItems: "center",
-                      gap: 12,
-                      padding: "10px 10px",
-                      borderRadius: 14,
-                      background: "transparent",
-                      border: "none",
+                      gap: 14,
+                      padding: "12px 14px",
+                      borderRadius: 16,
+                      background: "rgba(255,255,255,0.03)",
+                      border: `1px solid ${PAL.cardBorder}`,
                       color: PAL.text,
                       textAlign: "left",
                       opacity: busy ? 0.55 : 1,
                       cursor: busy ? "not-allowed" : "pointer",
+                      fontFamily: "inherit",
+                      transition: "background 160ms ease, border-color 160ms ease",
+                    }}
+                    onMouseEnter={(e) => {
+                      if (busy) return;
+                      e.currentTarget.style.background = "rgba(255,255,255,0.06)";
+                      e.currentTarget.style.borderColor = `${kindTint}44`;
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = "rgba(255,255,255,0.03)";
+                      e.currentTarget.style.borderColor = PAL.cardBorder;
                     }}
                   >
                     <Avatar
                       name={p.displayName}
                       avatarUrl={p.avatarUrl}
-                      size={40}
+                      size={56}
                       presence={presence}
                     />
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontSize: 14, fontWeight: 600 }}>
-                        {p.displayName}
-                      </div>
+                    <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 2 }}>
                       <div
                         style={{
-                          fontSize: 11.5,
-                          color: busy
-                            ? PAL.orange
-                            : presence === "online"
-                              ? PAL.green
-                              : PAL.textDim,
+                          fontSize: 15,
+                          fontWeight: 700,
+                          letterSpacing: "-0.005em",
+                          whiteSpace: "nowrap",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
                         }}
                       >
-                        {busy
-                          ? "On a call"
-                          : presence === "online"
-                            ? "Online"
-                            : (p.handle ?? "")}
+                        {p.displayName}
+                      </div>
+                      {p.profession && (
+                        <div
+                          style={{
+                            fontSize: 12.5,
+                            color: PAL.text,
+                            opacity: 0.86,
+                            whiteSpace: "nowrap",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                          }}
+                        >
+                          {p.profession}
+                        </div>
+                      )}
+                      {(p.headline || p.locationLabel) && (
+                        <div
+                          style={{
+                            fontSize: 11.5,
+                            color: PAL.textDim,
+                            whiteSpace: "nowrap",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                          }}
+                        >
+                          {p.headline && p.locationLabel
+                            ? `${p.headline} · ${p.locationLabel}`
+                            : (p.headline ?? p.locationLabel)}
+                        </div>
+                      )}
+                      <div
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: 6,
+                          marginTop: 2,
+                        }}
+                      >
+                        <span
+                          aria-hidden
+                          style={{
+                            width: 6,
+                            height: 6,
+                            borderRadius: 999,
+                            background: busy
+                              ? PAL.orange
+                              : presence === "online"
+                                ? PAL.green
+                                : PAL.textMuted,
+                          }}
+                        />
+                        <span
+                          style={{
+                            fontSize: 11,
+                            color: busy
+                              ? PAL.orange
+                              : presence === "online"
+                                ? PAL.green
+                                : PAL.textMuted,
+                            fontWeight: 600,
+                            letterSpacing: "0.01em",
+                          }}
+                        >
+                          {busy
+                            ? "On a call"
+                            : presence === "online"
+                              ? "Online"
+                              : (p.handle ?? "Offline")}
+                        </span>
                       </div>
                     </div>
                     <span
                       aria-hidden
                       style={{
-                        color: busy
-                          ? PAL.textMuted
-                          : kind === "voice"
-                            ? PAL.green
-                            : PAL.blue,
-                        padding: 6,
+                        width: 44,
+                        height: 44,
+                        borderRadius: 999,
+                        background: busy ? "transparent" : kindTintSoft,
+                        color: busy ? PAL.textMuted : kindTint,
+                        border: `1px solid ${busy ? PAL.cardBorder : kindTint + "44"}`,
+                        display: "grid",
+                        placeItems: "center",
+                        flex: "none",
                       }}
                     >
                       {kind === "voice" ? <PhoneIcon size={18} /> : <VideoIcon size={18} />}

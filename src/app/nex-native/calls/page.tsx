@@ -71,6 +71,9 @@ export default async function CallsPage(): Promise<React.JSX.Element> {
         displayName: acc?.display_name ?? "Unknown",
         handle: acc?.nex_handle ?? null,
         avatarUrl: profile?.avatar_url ?? null,
+        profession: profile?.profession ?? null,
+        headline: profile?.headline ?? null,
+        locationLabel: profile?.location_label ?? null,
       };
     }),
   );
@@ -99,6 +102,9 @@ export default async function CallsPage(): Promise<React.JSX.Element> {
         displayName: acc?.display_name ?? "Unknown contact",
         handle: acc?.nex_handle ?? null,
         avatarUrl: profile?.avatar_url ?? null,
+        profession: profile?.profession ?? null,
+        headline: profile?.headline ?? null,
+        locationLabel: profile?.location_label ?? null,
       });
     }),
   );
