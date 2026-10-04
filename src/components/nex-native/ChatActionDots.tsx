@@ -201,8 +201,10 @@ export function ChatActionDots({
         </div>
       )}
 
-      {/* 3-dots floating trigger · same bottom-right slot the Joker +
-          Haunted Hotel panels used, now theme-neutral + for actions. */}
+      {/* 3-dots floating trigger · bare icon · no round chip.
+          Founder direction 2026-10-04: drop the glass container
+          around the dots so the trigger reads as just the dots on
+          the atmosphere, not as a button chip stacked on top of it. */}
       <button
         type="button"
         aria-label={open ? "Close chat actions" : "Open chat actions"}
@@ -213,22 +215,16 @@ export function ChatActionDots({
           position: "fixed",
           right: 16,
           bottom: 96,
-          width: 40,
-          height: 40,
-          borderRadius: 999,
+          width: 32,
+          height: 32,
           padding: 0,
           display: "grid",
           placeItems: "center",
-          background: open
-            ? withAlpha(accent, 0.22)
-            : "rgba(10, 6, 4, 0.72)",
-          border: `1px solid ${withAlpha(accent, 0.5)}`,
-          backdropFilter: "blur(14px) saturate(140%)",
-          WebkitBackdropFilter: "blur(14px) saturate(140%)",
+          background: "transparent",
+          border: "none",
           color: accent,
           cursor: "pointer",
-          boxShadow:
-            "0 8px 22px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.08)",
+          filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.75))",
           zIndex: 9997,
         }}
       >
