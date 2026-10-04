@@ -32,6 +32,7 @@ import { isThemeKillSwitchedSafe } from "@/lib/nex-native/theme-kill-switch";
 import { HauntedHotelAtmosphere } from "@/components/nex-native/HauntedHotelAtmosphere";
 import { HauntedHotelController } from "@/components/nex-native/HauntedHotelController";
 import { ChatActionDots } from "@/components/nex-native/ChatActionDots";
+import { PeerCallLauncher } from "../../peer/[accountId]/_call-launcher";
 import { HeaderRightCluster } from "../../_header-right-cluster";
 
 const SURFACE_ID = "depth-cards";
@@ -256,6 +257,19 @@ export default async function DepthCardsLivePage(props: DepthCardsPageProps) {
           handlers default to window-event dispatch for later wiring
           to real call + capture flows. */}
       <ChatActionDots accent="#d8a856" />
+      {/* PeerCallLauncher · listens for nex-chat-action-call and
+          nex-chat-action-video dispatched by ChatActionDots and
+          starts the real WebRTC voice/video call. Also renders its
+          own top-left phone/video buttons so the call can be
+          triggered from either entry point. */}
+      <PeerCallLauncher
+        conversationId={conversation.id}
+        selfAccountId={session.account.id}
+        selfDisplayName={session.account.display_name}
+        peerAccountId={peer.id}
+        peerDisplayName={peer.display_name}
+        peerAvatarUrl={null}
+      />
       <main
         style={{
           position: "relative",

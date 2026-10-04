@@ -223,6 +223,27 @@ export function PeerCallLauncher(props: PeerCallLauncherProps): React.JSX.Elemen
       setError((e as Error).message);
     }
   };
+
+  // Universal ChatActionDots entry point · the 3-dots slider on this
+  // surface dispatches these events; we trigger the real call via
+  // the same code paths the top-left call buttons use. Only arm the
+  // listeners while idle so a tapping an action during an active
+  // call doesn't try to start a second one.
+  React.useEffect(() => {
+    if (state !== "idle" || props.disabled) return;
+    const onCall = () => { void startVoice(); };
+    const onVideo = () => { void startVideo(); };
+    window.addEventListener("nex-chat-action-call", onCall);
+    window.addEventListener("nex-chat-action-video", onVideo);
+    return () => {
+      window.removeEventListener("nex-chat-action-call", onCall);
+      window.removeEventListener("nex-chat-action-video", onVideo);
+    };
+    // startVoice/startVideo close over setState/setError which are
+    // stable; we only need to re-arm when state transitions in/out
+    // of "idle".
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state, props.disabled]);
   const accept  = () => { void callRef.current?.acceptIncoming(); };
   const decline = () => { void callRef.current?.declineIncoming(); };
   const hangup  = () => { void callRef.current?.hangup(); };
