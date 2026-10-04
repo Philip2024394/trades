@@ -484,7 +484,7 @@ function PeopleRow({ people }: { people: CallsPerson[] }): React.JSX.Element {
   }
   return (
     <section data-nex-calls-people style={{ marginBottom: 22 }}>
-      <SectionHeader title="People" linkLabel="See all" linkHref="/nex-native/friends" />
+      <SectionHeader title="People" linkLabel={null} />
       <div
         role="list"
         aria-label="Your people"
@@ -562,7 +562,7 @@ function RecentCalls({
   const filtered = React.useMemo(() => applyFilter(calls, filter), [calls, filter]);
   return (
     <section data-nex-calls-recent>
-      <SectionHeader title="Recent calls" linkLabel="View all" linkHref="#" />
+      <SectionHeader title="Recent calls" linkLabel={null} />
       <RecentsFilterDropdown
         value={filter}
         options={filters}
