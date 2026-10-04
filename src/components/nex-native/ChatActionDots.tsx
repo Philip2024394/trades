@@ -24,6 +24,7 @@ interface ChatActionDotsProps {
   onVideo?: () => void;
   onMic?: () => void;
   onCamera?: () => void;
+  onRecord?: () => void;
   /** Accent hex · paints the dots + action-button icons. Defaults to
    *  the NEX cyan brand accent. Haunted Hotel passes "#d8a856". */
   accent?: string;
@@ -40,6 +41,7 @@ export function ChatActionDots({
   onVideo,
   onMic,
   onCamera,
+  onRecord,
   accent = DEFAULT_ACCENT,
   hideWhileOverlayOpen = true,
 }: ChatActionDotsProps): React.JSX.Element | null {
@@ -79,15 +81,23 @@ export function ChatActionDots({
   // component without providing client-side closures. Theme + chat
   // surfaces listen for the event they care about and wire the real
   // behaviour on their own tier.
-  const defaultDispatch = (key: "call" | "video" | "mic" | "camera") => {
+  const defaultDispatch = (key: "call" | "video" | "mic" | "camera" | "record") => {
     window.dispatchEvent(new CustomEvent(`nex-chat-action-${key}`));
   };
   const actions: {
-    key: "call" | "video" | "mic" | "camera";
+    key: "call" | "video" | "mic" | "camera" | "record";
     label: string;
     icon: React.ReactNode;
     handler: () => void;
+    primary?: boolean;
   }[] = [
+    {
+      key: "record",
+      label: "Record call",
+      icon: <RecordIcon />,
+      handler: onRecord ?? (() => defaultDispatch("record")),
+      primary: true,
+    },
     {
       key: "call",
       label: "Call",
@@ -135,21 +145,25 @@ export function ChatActionDots({
 
       <style>{`
         @keyframes nex-chat-action-pill-in {
-          from { opacity: 0; transform: translateX(16px); }
-          to   { opacity: 1; transform: translateX(0); }
+          from { opacity: 0; transform: translateY(-10px); }
+          to   { opacity: 1; transform: translateY(0); }
         }
         @keyframes nex-chat-action-dot-pulse {
           0%, 100% { transform: scale(1);   opacity: 0.72; }
           50%      { transform: scale(1.35); opacity: 1; }
         }
+        @keyframes nex-chat-action-record-pulse {
+          0%, 100% { box-shadow: 0 0 0 0 rgba(255, 60, 60, 0.6); }
+          50%      { box-shadow: 0 0 0 6px rgba(255, 60, 60, 0); }
+        }
       `}</style>
 
-      {/* Horizontal action pill · slides to the LEFT when open. Lives
-          to the LEFT of the 3-dots button so tapping an action is a
-          natural leftward swipe. Pill uses the same accent-glass
-          recipe as the AnimationCard · translucent accent tint with
-          an accent rim · so it reads as part of the theme palette
-          and not a black bar. */}
+      {/* Vertical action column · drops DOWN from the 3-dots trigger
+          when open (founder direction 2026-10-04). Column uses the
+          same accent-glass recipe as the AnimationCard so it reads
+          as part of the theme palette. First item is the Record
+          button, which gets a persistent red pulse so it reads as
+          the primary "record this call" action. */}
       {open && (
         <div
           data-nex-chat-action-pill
@@ -157,12 +171,17 @@ export function ChatActionDots({
           aria-label="Chat actions"
           style={{
             position: "fixed",
-            right: 56,
-            bottom: 100,
+            right: 14,
+            // Column drops BELOW the trigger: trigger lives at
+            // bottom: 108 with height 44, so its top edge is at
+            // bottom: 152. The column anchors its top just under
+            // that so each action button descends toward the composer.
+            top: `calc(100dvh - 152px - 8px)`,
             display: "flex",
+            flexDirection: "column",
             alignItems: "center",
             gap: 6,
-            padding: "6px 10px",
+            padding: "10px 6px",
             borderRadius: 999,
             background: `linear-gradient(180deg, ${withAlpha(accent, 0.18)} 0%, ${withAlpha(accent, 0.08)} 100%)`,
             border: `1px solid ${withAlpha(accent, 0.5)}`,
@@ -170,8 +189,12 @@ export function ChatActionDots({
             WebkitBackdropFilter: "blur(14px) saturate(140%)",
             boxShadow:
               "0 10px 28px rgba(0,0,0,0.52), inset 0 1px 0 rgba(255,255,255,0.08)",
+            // Hard-force a new compositing layer so the column always
+            // paints above the deck's 3D perspective context.
+            transform: "translateZ(0)",
             zIndex: 2147483646,
-            animation: "nex-chat-action-pill-in 180ms cubic-bezier(.2,.7,.2,1) both",
+            animation:
+              "nex-chat-action-pill-in 180ms cubic-bezier(.2,.7,.2,1) both",
           }}
         >
           {actions.map((a) => (
@@ -192,10 +215,17 @@ export function ChatActionDots({
                 padding: 0,
                 display: "grid",
                 placeItems: "center",
-                background: withAlpha(accent, 0.14),
-                border: `1px solid ${withAlpha(accent, 0.5)}`,
-                color: accent,
+                background: a.primary
+                  ? "rgba(255, 50, 50, 0.18)"
+                  : withAlpha(accent, 0.14),
+                border: `1px solid ${
+                  a.primary ? "rgba(255, 60, 60, 0.7)" : withAlpha(accent, 0.5)
+                }`,
+                color: a.primary ? "#ff5c5c" : accent,
                 cursor: "pointer",
+                animation: a.primary
+                  ? "nex-chat-action-record-pulse 1.4s ease-in-out infinite"
+                  : undefined,
               }}
             >
               {a.icon}
@@ -329,6 +359,14 @@ function MicIcon() {
         strokeWidth="1.6"
         strokeLinecap="round"
       />
+    </svg>
+  );
+}
+
+function RecordIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+      <circle cx="12" cy="12" r="7" />
     </svg>
   );
 }
