@@ -50,10 +50,13 @@ const NEX = {
 
 export default async function Page({
   params,
+  searchParams,
 }: {
   params: Promise<{ handle: string }>;
+  searchParams: Promise<{ preview?: string }>;
 }) {
   const { handle: rawHandle } = await params;
+  const sp = await searchParams;
   const handle = decodeURIComponent(rawHandle).trim().toLowerCase();
   // Allow /u/36474 as a shortcut for /u/nex-36474
   const normalised = handle.startsWith("nex-") ? handle : `nex-${handle}`;
@@ -78,6 +81,14 @@ export default async function Page({
   if (!isDiscoverable && !isSelf) {
     notFound();
   }
+
+  // Phase 3A Adoption-Ready UX · owner-only visitor preview mode.
+  // When the owner appends ?preview=public, render the page exactly
+  // as a visitor would see it (hide the owner-preview banner, show a
+  // small "visitor preview" badge). Non-owners are UNAFFECTED · the
+  // guard above has already rejected them when !isDiscoverable, so
+  // ?preview=public can never widen access. RLS is unchanged.
+  const previewAsVisitor = isSelf && sp.preview === "public";
 
   const businesses = await businessService.listBusinessesByOwner(account.id);
 
@@ -115,12 +126,24 @@ export default async function Page({
         <div style={{ position: "relative", zIndex: 1, maxWidth: 720, margin: "0 auto" }}>
           <NexPageHeader dataScope="public-profile" />
 
-          {/* Owner-preview banner · only shown when the viewer is the
-              owner AND discoverability is OFF · surfaces the private
-              state honestly so the owner can't mistake what others
-              see. */}
-          {isSelf && !isDiscoverable && (
+          {/* Owner-preview banner · shown when the viewer is the owner
+              AND discoverability is OFF · surfaces the private state
+              so the owner can't mistake what others see. Suppressed
+              when the owner has opted into the ?preview=public dress
+              rehearsal · in that case we render the visitor-preview
+              indicator instead (below). */}
+          {isSelf && !isDiscoverable && !previewAsVisitor && (
             <OwnerPreviewBanner />
+          )}
+
+          {/* Visitor-preview indicator · owner-only · active when the
+              owner appended ?preview=public. Explicitly labels the
+              surface as a preview and offers a way back to Settings.
+              Does NOT change what's rendered below · the public
+              presentation uses the SAME code path visitors would
+              see. */}
+          {isSelf && previewAsVisitor && (
+            <VisitorPreviewBanner handle={account.nex_handle} isDiscoverable={isDiscoverable} />
           )}
 
           <ProfileHero
@@ -179,6 +202,64 @@ function OwnerPreviewBanner(): React.JSX.Element {
         Discoverable on NEX
       </Link>{" "}
       to let others find you.
+    </section>
+  );
+}
+
+/* Phase 3A Adoption-Ready UX · owner-only visitor-preview banner.
+   Rendered when the owner appended ?preview=public to their own
+   /u/{handle} URL. Clearly flags the page as a dress rehearsal so
+   the owner can't confuse what they're seeing with real public
+   state · includes the discoverability status to prevent any
+   ambiguity (preview ≠ live). Does NOT change rendering of the
+   profile content below. */
+function VisitorPreviewBanner({
+  handle,
+  isDiscoverable,
+}: {
+  handle: string | null;
+  isDiscoverable: boolean;
+}): React.JSX.Element {
+  return (
+    <section
+      role="status"
+      aria-label="Visitor preview"
+      style={{
+        margin: "14px 0 6px",
+        padding: "12px 16px",
+        borderRadius: 14,
+        border: `1px solid ${NEX.cyan}44`,
+        background: NEX.cyanSoft,
+        color: NEX.text,
+        fontSize: 13,
+        lineHeight: 1.5,
+      }}
+    >
+      <strong style={{ color: NEX.cyan, letterSpacing: "0.04em" }}>
+        VISITOR PREVIEW ·
+      </strong>{" "}
+      You&rsquo;re seeing this as a visitor would.{" "}
+      {isDiscoverable
+        ? "Your profile is live · anyone with the link below can open this page."
+        : "Your profile is still private · visitors would currently see a 'not found' page. This preview is for you only."}
+      {handle && (
+        <>
+          {" "}
+          <Link
+            href={`/nex-native/u/${handle}`}
+            style={{ color: NEX.orange, fontWeight: 600 }}
+          >
+            Exit preview →
+          </Link>
+          {" · "}
+          <Link
+            href="/nex-native/settings/profile?tab=personal"
+            style={{ color: NEX.cyan, fontWeight: 600 }}
+          >
+            Back to Settings
+          </Link>
+        </>
+      )}
     </section>
   );
 }

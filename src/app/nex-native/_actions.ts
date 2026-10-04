@@ -5599,6 +5599,20 @@ export async function updateProfileAction(formData: FormData): Promise<never> {
     kind = kindRaw as NexAccountKind;
   }
 
+  // Phase 3A Adoption-Ready UX · capture previous discoverability
+  // BEFORE the save so we can detect whether the toggle flipped and
+  // emit a specific banner code. Fetch is best-effort · missing data
+  // just degrades to the generic "profile_saved" banner.
+  let previousDiscoverable: boolean | null = null;
+  try {
+    const current = await accountProfileService.getProfileByAccountId(
+      session.account.id,
+    );
+    previousDiscoverable = current?.is_discoverable ?? false;
+  } catch {
+    previousDiscoverable = null;
+  }
+
   try {
     await accountProfileService.upsertProfile(session.account.id, {
       kind,
@@ -5621,6 +5635,24 @@ export async function updateProfileAction(formData: FormData): Promise<never> {
     redirectToProfileWithBanner("profile_save_failed", msg);
   }
   revalidatePath("/nex-native/settings/profile");
+  // Phase 3A Adoption-Ready UX · tailor the banner based on whether
+  // the discoverability toggle actually changed state. Three paths:
+  //   · changed OFF → ON  · "profile_saved_discoverable_on"
+  //   · changed ON → OFF  · "profile_saved_discoverable_off"
+  //   · unchanged         · generic "profile_saved"
+  if (previousDiscoverable !== null && previousDiscoverable !== isDiscoverable) {
+    if (isDiscoverable) {
+      redirectToProfileWithBanner(
+        "profile_saved_discoverable_on",
+        "Your profile is now discoverable on NEX.",
+      );
+    } else {
+      redirectToProfileWithBanner(
+        "profile_saved_discoverable_off",
+        "Your profile is no longer discoverable.",
+      );
+    }
+  }
   redirectToProfileWithBanner("profile_saved", "Profile saved.");
 }
 

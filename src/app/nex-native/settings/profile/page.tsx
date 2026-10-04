@@ -40,6 +40,7 @@ import { NexFaceCameraUploader } from "./_face-camera-uploader";
 import { DailyActivitySection } from "./_daily-activity-section";
 import { DisplayNameEditor } from "./_display-name-editor";
 import { NexIdShare } from "./_nex-id-share";
+import { CopyHandleButton } from "./_copy-handle-button";
 import {
   NEX_ACCOUNT_KINDS,
   NEX_ACCOUNT_KIND_LABEL,
@@ -77,7 +78,15 @@ interface PageProps {
   searchParams: Promise<{ e?: string; m?: string; tab?: string }>;
 }
 
-const SUCCESS_CODES = new Set(["profile_saved"]);
+const SUCCESS_CODES = new Set([
+  "profile_saved",
+  // Phase 3A Adoption-Ready UX · banner codes raised when the
+  // discoverability toggle flips. The server action emits exactly
+  // one of these on save when the flag actually changed · the
+  // generic "profile_saved" still fires when it did not change.
+  "profile_saved_discoverable_on",
+  "profile_saved_discoverable_off",
+]);
 
 const NEX_BUSINESS_CATEGORY_LABEL: Record<string, string> = {
   bakery: "Bakery",
@@ -424,70 +433,13 @@ function PersonalTab(props: {
             `is_discoverable` directly · it does NOT reinterpret
             `is_public` which stays sealed as a separate (dormant) flag
             per founder instruction 2026-10-04. */}
-        <div
-          data-nex-discoverability-toggle
-          style={{
-            display: "flex",
-            gap: 12,
-            alignItems: "flex-start",
-            padding: 14,
-            margin: "4px 0 18px",
-            background: "rgba(0,175,255,0.04)",
-            border: `1px solid ${NEX.cyanSoft}`,
-            borderRadius: 12,
-          }}
-        >
-          <input
-            id="profile-is-discoverable"
-            type="checkbox"
-            name="is_discoverable"
-            defaultChecked={profile?.is_discoverable === true}
-            style={{
-              width: 20,
-              height: 20,
-              marginTop: 2,
-              accentColor: NEX.orange,
-              cursor: "pointer",
-              flex: "none",
-            }}
-          />
-          <label
-            htmlFor="profile-is-discoverable"
-            style={{ cursor: "pointer", minWidth: 0 }}
-          >
-            <div
-              style={{
-                fontSize: 13.5,
-                fontWeight: 700,
-                color: NEX.textPrimary,
-                letterSpacing: "0.01em",
-              }}
-            >
-              Discoverable on NEX
-            </div>
-            <p
-              style={{
-                margin: "4px 0 0",
-                fontSize: 12,
-                color: NEX.textSecondary,
-                lineHeight: 1.5,
-              }}
-            >
-              Let people find your professional profile on NEX. When on,
-              anyone with your NEX handle can view your public profile at{" "}
-              <code
-                style={{
-                  fontFamily: "ui-monospace, 'JetBrains Mono', monospace",
-                  color: NEX.cyan,
-                  fontSize: 11.5,
-                }}
-              >
-                /nex-native/u/{account.nex_handle ?? "{handle}"}
-              </code>
-              . When off, your profile stays private · only you can see it.
-            </p>
-          </label>
-        </div>
+        <DiscoverabilityCard
+          isDiscoverable={profile?.is_discoverable === true}
+          handle={account.nex_handle}
+          verifiedPersonal={
+            !!profile?.avatar_face_verified && !!profile?.daily_activity
+          }
+        />
 
         <button
           type="submit"
@@ -513,6 +465,244 @@ function PersonalTab(props: {
         </button>
       </form>
     </>
+  );
+}
+
+// ---------------------------------------------------------------------
+// Phase 3A Adoption-Ready UX · Discoverability card
+// ---------------------------------------------------------------------
+//
+// Wraps the opt-in toggle + the "what visitors see" information:
+//   · the "Discoverable on NEX" checkbox (writes is_discoverable)
+//   · a live-URL preview showing the exact public profile address
+//   · a copy-handle button (client component · clipboard fallback)
+//   · a "Preview as visitor" link into /u/{handle}?preview=public
+//   · verified-personal badge mirrored from the public profile when
+//     the owner has met the criteria (avatar_face_verified + a
+//     completed daily_activity · same rule as /u/{handle})
+//
+// Does NOT change RLS · does NOT change `is_public` · does NOT emit
+// the preview URL as a public one when discoverability is OFF.
+
+function DiscoverabilityCard({
+  isDiscoverable,
+  handle,
+  verifiedPersonal,
+}: {
+  isDiscoverable: boolean;
+  handle: string | null;
+  verifiedPersonal: boolean;
+}): React.ReactNode {
+  const publicPath = handle
+    ? `/nex-native/u/${handle}`
+    : "/nex-native/u/{handle}";
+  const previewHref = handle
+    ? `/nex-native/u/${handle}?preview=public`
+    : null;
+  return (
+    <div
+      data-nex-discoverability-card
+      data-is-discoverable={isDiscoverable ? "true" : "false"}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 14,
+        padding: 16,
+        margin: "4px 0 18px",
+        background: "rgba(0,175,255,0.04)",
+        border: `1px solid ${NEX.cyanSoft}`,
+        borderRadius: 12,
+      }}
+    >
+      {/* Row 1 · the opt-in checkbox + verified-personal badge */}
+      <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+        <input
+          id="profile-is-discoverable"
+          type="checkbox"
+          name="is_discoverable"
+          defaultChecked={isDiscoverable}
+          style={{
+            width: 20,
+            height: 20,
+            marginTop: 2,
+            accentColor: NEX.orange,
+            cursor: "pointer",
+            flex: "none",
+          }}
+        />
+        <label
+          htmlFor="profile-is-discoverable"
+          style={{ cursor: "pointer", minWidth: 0, flex: 1 }}
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 10,
+              flexWrap: "wrap",
+            }}
+          >
+            <span
+              style={{
+                fontSize: 13.5,
+                fontWeight: 700,
+                color: NEX.textPrimary,
+                letterSpacing: "0.01em",
+              }}
+            >
+              Discoverable on NEX
+            </span>
+            {verifiedPersonal && (
+              <span
+                aria-label="Verified personal"
+                title="Verified personal · appears on your public profile"
+                style={{
+                  fontSize: 9.5,
+                  color: NEX.cyan,
+                  padding: "2px 7px",
+                  borderRadius: 999,
+                  border: `1px solid ${NEX.cyan}44`,
+                  background: NEX.cyanFaint,
+                  fontWeight: 700,
+                  letterSpacing: "0.06em",
+                  textTransform: "uppercase",
+                }}
+              >
+                ✓ Verified
+              </span>
+            )}
+          </div>
+          <p
+            style={{
+              margin: "4px 0 0",
+              fontSize: 12,
+              color: NEX.textSecondary,
+              lineHeight: 1.5,
+            }}
+          >
+            Let people find your professional profile on NEX. When on,
+            anyone with your NEX handle can view your public profile.
+            When off, your profile stays private · only you can see it.
+            This does NOT guarantee or activate People Search · that
+            arrives separately when enough NEX members have joined.
+          </p>
+        </label>
+      </div>
+
+      {/* Row 2 · live URL + status chip */}
+      <div
+        data-nex-public-url
+        style={{
+          padding: "10px 12px",
+          borderRadius: 10,
+          background: "rgba(0,0,0,0.25)",
+          border: `1px solid ${
+            isDiscoverable ? "rgba(0,175,255,0.3)" : "rgba(255,255,255,0.08)"
+          }`,
+          display: "flex",
+          flexDirection: "column",
+          gap: 8,
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+            flexWrap: "wrap",
+          }}
+        >
+          <span
+            style={{
+              fontSize: 10.5,
+              color: NEX.textSecondary,
+              letterSpacing: "0.14em",
+              fontWeight: 700,
+              textTransform: "uppercase",
+            }}
+          >
+            Your public profile URL
+          </span>
+          <span
+            data-nex-discoverable-chip
+            style={{
+              fontSize: 9.5,
+              padding: "2px 8px",
+              borderRadius: 999,
+              background: isDiscoverable
+                ? "rgba(0,175,255,0.14)"
+                : "rgba(125,155,192,0.14)",
+              border: `1px solid ${
+                isDiscoverable ? NEX.cyan + "66" : "rgba(125,155,192,0.4)"
+              }`,
+              color: isDiscoverable ? NEX.cyan : NEX.textSecondary,
+              fontWeight: 700,
+              letterSpacing: "0.06em",
+              textTransform: "uppercase",
+            }}
+          >
+            {isDiscoverable ? "● Discoverable" : "● Private"}
+          </span>
+        </div>
+        <code
+          style={{
+            display: "block",
+            fontFamily: "ui-monospace, 'JetBrains Mono', 'SF Mono', monospace",
+            color: handle ? NEX.cyan : NEX.textSecondary,
+            fontSize: 12.5,
+            wordBreak: "break-all",
+            lineHeight: 1.4,
+          }}
+        >
+          {publicPath}
+        </code>
+        <div
+          style={{
+            display: "flex",
+            gap: 8,
+            flexWrap: "wrap",
+            alignItems: "center",
+          }}
+        >
+          {handle && <CopyHandleButton handle={handle} />}
+          {previewHref && (
+            <Link
+              href={previewHref}
+              target="_blank"
+              rel="noopener"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 6,
+                padding: "6px 12px",
+                borderRadius: 999,
+                background: "transparent",
+                border: `1px solid ${NEX.orange}66`,
+                color: NEX.orange,
+                fontSize: 12,
+                fontWeight: 700,
+                textDecoration: "none",
+                letterSpacing: "0.02em",
+              }}
+            >
+              Preview as visitor →
+            </Link>
+          )}
+        </div>
+        <p
+          style={{
+            margin: "2px 0 0",
+            fontSize: 11,
+            color: NEX.textSecondary,
+            lineHeight: 1.5,
+          }}
+        >
+          {isDiscoverable
+            ? "Anyone with the link above can open this page right now."
+            : "The URL already exists · the page is private until you turn Discoverable on. Only you can preview it."}
+        </p>
+      </div>
+    </div>
   );
 }
 
