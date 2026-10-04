@@ -29,6 +29,7 @@ import {
   trackPresenceInCall,
   isPeerInCall,
 } from "@/lib/nex-native/realtime/people-presence";
+import { AddToCallModal } from "./_add-to-call-modal";
 
 export interface PeerCallLauncherProps {
   conversationId: string;
@@ -105,6 +106,7 @@ export function PeerCallLauncher(props: PeerCallLauncherProps): React.JSX.Elemen
   const [recording, setRecording] = React.useState(false);
   const [addToast, setAddToast] = React.useState<string | null>(null);
   const [layoutSwapped, setLayoutSwapped] = React.useState(false);
+  const [addPickerOpen, setAddPickerOpen] = React.useState(false);
   const recorderRef = React.useRef<MediaRecorder | null>(null);
   const recorderChunksRef = React.useRef<Blob[]>([]);
 
@@ -476,31 +478,26 @@ export function PeerCallLauncher(props: PeerCallLauncherProps): React.JSX.Elemen
       /* best-effort · WebRTC may not expose DTMF */
     }
   };
-  /** Add participant · creates a shareable URL back to this chat and
-   *  invokes the OS share sheet if available, otherwise copies to
-   *  clipboard with a brief toast. This is honest: it shares a path
-   *  into the chat, not a mid-call participant injection (which
-   *  would require tearing down 1:1 and re-establishing group mesh). */
-  const inviteAdd = async () => {
-    const url = `${window.location.origin}/nex-native/chat/peer/${props.peerAccountId}`;
-    const navAny = navigator as Navigator & {
-      share?: (data: ShareData) => Promise<void>;
-    };
-    try {
-      if (navAny.share) {
-        await navAny.share({
-          title: `Chat with ${props.peerDisplayName} on NEX`,
-          url,
-        });
-        setAddToast("Shared");
-      } else {
-        await navigator.clipboard.writeText(url);
-        setAddToast("Link copied");
-      }
-    } catch {
-      setAddToast("Copy failed");
-    }
-    setTimeout(() => setAddToast(null), 1600);
+  /** Add participant · opens a picker of the viewer's friends. On
+   *  tap, the picker creates a group-call session seeded with the
+   *  current peer + the new invitee, drops the chat invites into
+   *  both of their 1:1 conversations, hangs up the current 1:1, and
+   *  navigates the viewer into the group room. Honest about the
+   *  signalling-layer handoff: the 1:1 ends, everyone converges in
+   *  the group mesh. */
+  const inviteAdd = () => {
+    if (state !== "connected" && state !== "dialing") return;
+    setAddPickerOpen(true);
+  };
+  const onInvited = (sessionId: string, inviteeName: string) => {
+    setAddPickerOpen(false);
+    setAddToast(`Inviting ${inviteeName}…`);
+    // Hang up the current 1:1 then route into the group room. Give
+    // the hangup a tick to flush the bye signal to the peer.
+    void callRef.current?.hangup();
+    setTimeout(() => {
+      router.push(`/nex-native/call/g/${sessionId}`);
+    }, 220);
   };
   /** Record toggle · captures the LOCAL mic to a .webm file. Honest
    *  about the limitation: it does NOT record the remote side's
@@ -596,6 +593,17 @@ export function PeerCallLauncher(props: PeerCallLauncherProps): React.JSX.Elemen
         </div>
       )}
 
+      {/* Add-to-call picker modal · opens above the call overlay. */}
+      {addPickerOpen && (
+        <AddToCallModal
+          currentPeerAccountId={props.peerAccountId}
+          currentPeerDisplayName={props.peerDisplayName}
+          mediaType={currentMedia}
+          onInvited={onInvited}
+          onClose={() => setAddPickerOpen(false)}
+        />
+      )}
+
       {/* Full-screen call overlay */}
       {showOverlay && (
         <CallOverlay
@@ -625,7 +633,7 @@ export function PeerCallLauncher(props: PeerCallLauncherProps): React.JSX.Elemen
           dtmfBuffer={dtmfBuffer}
           onToggleKeypad={toggleKeypad}
           onPressDtmf={pressDtmf}
-          onInviteAdd={() => { void inviteAdd(); }}
+          onInviteAdd={inviteAdd}
           addToast={addToast}
           recording={recording}
           onToggleRecord={toggleRecord}
