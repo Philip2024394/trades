@@ -4343,20 +4343,44 @@ export async function updateChatThemeAction(formData: FormData): Promise<never> 
   // via nex_chat_theme + active passes. Fall back to static list only
   // if the DB lookup fails so we never leak stack traces on transient
   // connection blips.
+  //
+  // 2026-10-03 · Phase 1 premium-gate (founder-approved) · additionally
+  // enforces tier entitlement SERVER-SIDE so a gratis user cannot bypass
+  // the picker UI by POSTing a premium theme id directly. The /settings/
+  // theme UI already hides premium options for gratis viewers; this is
+  // the authoritative check. An active 7-day trial counts as `bisnis`
+  // via effectiveTier() so trial users retain the intended access.
   if (theme !== null) {
-    let allowed = false;
+    let row: Awaited<ReturnType<typeof chatThemeService.getThemeById>> = null;
     try {
-      const row = await chatThemeService.getThemeById(theme);
-      if (row && row.is_active) allowed = true;
+      row = await chatThemeService.getThemeById(theme);
     } catch {
-      // fall through
+      // DB blip · row stays null · validation falls through to the
+      // static-list check below.
     }
-    if (!allowed && !(NEX_CHAT_THEMES as readonly string[]).includes(theme)) {
+    const allowedByCatalogue = Boolean(row && row.is_active);
+    if (!allowedByCatalogue && !(NEX_CHAT_THEMES as readonly string[]).includes(theme)) {
       const qs = new URLSearchParams({
         e: "invalid_theme",
         m: `unknown theme '${raw}'`,
       });
       redirect(`/nex-native/settings/theme?${qs.toString()}`);
+    }
+    // Phase 1 premium gate · only runs when the catalogue returned a
+    // row (which means we also know its tier). Static-list fallback
+    // themes are all `gratis` by construction so they skip this check.
+    if (row && row.tier === "bisnis") {
+      // Re-read the viewer's latest tier state (session may be stale
+      // if a trial was just activated in another tab).
+      const viewer = await accountService.getAccountById(session.account.id);
+      const viewerTier = viewer ? accountService.effectiveTier(viewer) : "gratis";
+      if (viewerTier !== "bisnis" && viewerTier !== "pro") {
+        const qs = new URLSearchParams({
+          e: "premium_required",
+          m: `${row.name} is a premium theme · start a 7-day trial or subscribe to apply it`,
+        });
+        redirect(`/nex-native/settings/theme?${qs.toString()}`);
+      }
     }
   }
   try {
@@ -5543,6 +5567,15 @@ export async function updateProfileAction(formData: FormData): Promise<never> {
   const isPublicRaw = String(formData.get("is_public") ?? "");
   const isPublic = isPublicRaw === "on" || isPublicRaw === "true";
 
+  // Phase 3A · migration 134 · explicit opt-in. The Settings UI posts
+  // an unchecked checkbox as missing (empty string), checked as "on".
+  // Default to FALSE on every save unless the owner explicitly ticked
+  // the discoverability toggle in the Personal tab. `is_public` is
+  // never repurposed for this · the two columns are independent.
+  const isDiscoverableRaw = String(formData.get("is_discoverable") ?? "");
+  const isDiscoverable =
+    isDiscoverableRaw === "on" || isDiscoverableRaw === "true";
+
   // Bridge 39 · structured day-to-day activity + cascading follow-ups.
   const dailyActivityRaw = String(formData.get("daily_activity") ?? "").trim();
   const dailyActivityDetail = {
@@ -5576,6 +5609,7 @@ export async function updateProfileAction(formData: FormData): Promise<never> {
       skills: parseCsvList(skillsRaw),
       looking_for: parseCsvList(lookingForRaw),
       is_public: isPublic,
+      is_discoverable: isDiscoverable,
       // Service layer runs assertDailyActivity (empty / "unset" → null)
       // and sanitiseDailyActivityDetail (drops empty values). Passing
       // the raw form strings through is safe.

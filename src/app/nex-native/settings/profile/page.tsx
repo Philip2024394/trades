@@ -419,6 +419,76 @@ function PersonalTab(props: {
           placeholder="work, clients, collaborators"
         />
 
+        {/* Phase 3A · explicit public-discovery opt-in · migration 134.
+            Default FALSE on both server + client. The toggle writes
+            `is_discoverable` directly · it does NOT reinterpret
+            `is_public` which stays sealed as a separate (dormant) flag
+            per founder instruction 2026-10-04. */}
+        <div
+          data-nex-discoverability-toggle
+          style={{
+            display: "flex",
+            gap: 12,
+            alignItems: "flex-start",
+            padding: 14,
+            margin: "4px 0 18px",
+            background: "rgba(0,175,255,0.04)",
+            border: `1px solid ${NEX.cyanSoft}`,
+            borderRadius: 12,
+          }}
+        >
+          <input
+            id="profile-is-discoverable"
+            type="checkbox"
+            name="is_discoverable"
+            defaultChecked={profile?.is_discoverable === true}
+            style={{
+              width: 20,
+              height: 20,
+              marginTop: 2,
+              accentColor: NEX.orange,
+              cursor: "pointer",
+              flex: "none",
+            }}
+          />
+          <label
+            htmlFor="profile-is-discoverable"
+            style={{ cursor: "pointer", minWidth: 0 }}
+          >
+            <div
+              style={{
+                fontSize: 13.5,
+                fontWeight: 700,
+                color: NEX.textPrimary,
+                letterSpacing: "0.01em",
+              }}
+            >
+              Discoverable on NEX
+            </div>
+            <p
+              style={{
+                margin: "4px 0 0",
+                fontSize: 12,
+                color: NEX.textSecondary,
+                lineHeight: 1.5,
+              }}
+            >
+              Let people find your professional profile on NEX. When on,
+              anyone with your NEX handle can view your public profile at{" "}
+              <code
+                style={{
+                  fontFamily: "ui-monospace, 'JetBrains Mono', monospace",
+                  color: NEX.cyan,
+                  fontSize: 11.5,
+                }}
+              >
+                /nex-native/u/{account.nex_handle ?? "{handle}"}
+              </code>
+              . When off, your profile stays private · only you can see it.
+            </p>
+          </label>
+        </div>
+
         <button
           type="submit"
           style={{

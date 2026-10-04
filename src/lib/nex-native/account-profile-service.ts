@@ -183,6 +183,10 @@ export async function insertProfile(
     location_label: normaliseText(input.location_label, NEX_PROFILE_LOCATION_LABEL_MAX, "location_label"),
     looking_for: normaliseArray(input.looking_for, NEX_PROFILE_LOOKING_FOR_MAX, "looking_for"),
     is_public: input.is_public ?? true,
+    // Phase 3A · migration 134 · public-discovery opt-in. Default
+    // false at both the DB and the service layer · owner must set
+    // true explicitly through Settings.
+    is_discoverable: input.is_discoverable ?? false,
     avatar_url: normaliseText(input.avatar_url, NEX_AVATAR_MAX_URL_LENGTH, "avatar_url"),
     daily_activity: assertDailyActivity(input.daily_activity ?? null),
     daily_activity_detail: sanitiseDailyActivityDetail(input.daily_activity_detail ?? {}),
@@ -216,6 +220,8 @@ export async function updateProfile(
   if ("location_label" in patch) update.location_label = normaliseText(patch.location_label, NEX_PROFILE_LOCATION_LABEL_MAX, "location_label");
   if ("looking_for" in patch) update.looking_for = normaliseArray(patch.looking_for, NEX_PROFILE_LOOKING_FOR_MAX, "looking_for");
   if ("is_public" in patch) update.is_public = patch.is_public;
+  // Phase 3A · migration 134 · explicit opt-in · never derived.
+  if ("is_discoverable" in patch) update.is_discoverable = !!patch.is_discoverable;
   if ("avatar_url" in patch) update.avatar_url = normaliseText(patch.avatar_url, NEX_AVATAR_MAX_URL_LENGTH, "avatar_url");
   if ("daily_activity" in patch) update.daily_activity = assertDailyActivity(patch.daily_activity ?? null);
   if ("daily_activity_detail" in patch) update.daily_activity_detail = sanitiseDailyActivityDetail(patch.daily_activity_detail ?? {});

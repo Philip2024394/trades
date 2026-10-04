@@ -137,6 +137,10 @@ export interface NexAccountInsert {
   display_name: string;
   phone_country_code?: string | null;
   phone_national_number?: string | null;
+  /** Optional theme override at creation. Omit to receive the current
+   *  default (see account-service.createAccount). Added 2026-10-03 to
+   *  match the field createAccount has always read from input. */
+  chat_theme?: string | null;
 }
 
 // ---------------------------------------------------------------------------
@@ -232,6 +236,14 @@ export interface NexAccountProfileRow {
   location_label: string | null;
   looking_for: string[];
   is_public: boolean;
+  /** Phase 3A · migration 134 · explicit public-discovery opt-in
+   *  gate. TRUE = profile may be rendered publicly at
+   *  /nex-native/u/{handle} and surfaced by future People discovery.
+   *  Default FALSE. Must be set explicitly by the owner · never
+   *  derived. Separate from `is_public` which keeps its original
+   *  (sealed) meaning. The nex_account_profile_public_read RLS
+   *  policy gates on this column, so no app surface can bypass it. */
+  is_discoverable: boolean;
   /** Public URL of the account's profile image · uploaded to the
    *  nex-avatars Supabase Storage bucket · nullable · UI falls back
    *  to initials when null. Migration 045. */
@@ -263,6 +275,8 @@ export interface NexAccountProfileInsert {
   location_label?: string | null;
   looking_for?: string[];
   is_public?: boolean;
+  /** Phase 3A opt-in (migration 134) · defaults false at the DB level. */
+  is_discoverable?: boolean;
   avatar_url?: string | null;
   daily_activity?: NexDailyActivity | null;
   daily_activity_detail?: NexDailyActivityDetail;
@@ -280,6 +294,8 @@ export interface NexAccountProfilePatch {
   location_label?: string | null;
   looking_for?: string[];
   is_public?: boolean;
+  /** Phase 3A opt-in (migration 134) · owner toggles via Settings. */
+  is_discoverable?: boolean;
   avatar_url?: string | null;
   daily_activity?: NexDailyActivity | null;
   daily_activity_detail?: NexDailyActivityDetail;
