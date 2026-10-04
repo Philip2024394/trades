@@ -354,10 +354,10 @@ function PrimaryCard({
         aria-hidden
         style={{
           position: "absolute",
-          left: 14,
-          bottom: 12,
-          width: 20,
-          height: 20,
+          top: 12,
+          right: 12,
+          width: 22,
+          height: 22,
           borderRadius: 999,
           background: PAL.orange,
           color: "#0a0608",
@@ -1690,7 +1690,7 @@ function GroupPickerModal({
           >
             {people.map((p) => {
               const checked = selected.has(p.accountId);
-              const busyPeer = presenceFor(presenceSets, p.accountId) === "busy";
+              const busyPeer = presenceFor(p.accountId, presenceSets) === "busy";
               return (
                 <li key={p.accountId}>
                   <button
