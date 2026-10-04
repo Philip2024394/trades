@@ -216,10 +216,10 @@ export function ChatActionDots({
         data-nex-chat-action-trigger
         style={{
           position: "fixed",
-          right: 16,
-          bottom: 96,
-          width: 32,
-          height: 32,
+          right: 14,
+          bottom: 108,
+          width: 44,
+          height: 44,
           padding: 0,
           display: "grid",
           placeItems: "center",
@@ -227,12 +227,18 @@ export function ChatActionDots({
           border: "none",
           color: accent,
           cursor: "pointer",
-          filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.75))",
+          // Multi-layer drop-shadow: a dark halo for contrast against
+          // any busy atmosphere, plus a tight shadow for depth. Keeps
+          // the "no chip" look while making the dots legible.
+          filter:
+            "drop-shadow(0 0 10px rgba(0,0,0,0.9)) drop-shadow(0 2px 4px rgba(0,0,0,0.85))",
+          // translateZ(0) forces a new compositing layer so the
+          // trigger paints independently of any 3D-perspective
+          // stacking context on an ancestor (the depth deck uses
+          // perspective + translateZ on its cards).
+          transform: "translateZ(0)",
           // Max 32-bit int so the trigger always paints above every
-          // chat-surface stacking context (the deck's perspective
-          // container + its z-index: 3 wrapper + the deck cards'
-          // zIndex up to 100 inside their own stacking context were
-          // enough to hide a 9997 trigger on some mobile browsers).
+          // chat-surface stacking context.
           zIndex: 2147483647,
         }}
       >
@@ -261,10 +267,10 @@ function withAlpha(hex: string, alpha: number): string {
 
 function DotsVerticalIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-      <circle cx="12" cy="5"  r="1.9" />
-      <circle cx="12" cy="12" r="1.9" />
-      <circle cx="12" cy="19" r="1.9" />
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+      <circle cx="12" cy="5"  r="2.3" />
+      <circle cx="12" cy="12" r="2.3" />
+      <circle cx="12" cy="19" r="2.3" />
     </svg>
   );
 }

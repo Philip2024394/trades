@@ -15,7 +15,10 @@ import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
 import * as accountService from "@/lib/nex-native/account-service";
 import * as peerConversationService from "@/lib/nex-native/peer-conversation-service";
 import * as peerMessageService from "@/lib/nex-native/peer-message-service";
-import { sendPeerMessageAction } from "../../../_actions";
+import {
+  sendPeerMessageAction,
+  uploadPeerAttachmentAction,
+} from "../../../_actions";
 import { listThemeEmojis } from "@/lib/nex-native/theme-emoji-service";
 import { PeerComposer } from "../../peer/[accountId]/_composer";
 import { DepthDeck, type DeckMessage } from "@/components/nex-native/HauntedHotelDeck";
@@ -82,6 +85,7 @@ export default async function DepthCardsLivePage(props: DepthCardsPageProps) {
   ]);
 
   const bind = sendPeerMessageAction.bind(null, peer.id);
+  const bindUpload = uploadPeerAttachmentAction.bind(null, peer.id);
 
   // Load the Haunted Hotel emoji set so the composer picker exposes
   // the 27 labelled bellboy mascots (see nex_theme_emoji rows at
@@ -447,6 +451,7 @@ export default async function DepthCardsLivePage(props: DepthCardsPageProps) {
               composerBg="rgba(10, 6, 4, 0.72)"
               themeEmojis={hauntedHotelEmojis}
               showAnimationsOption
+              uploadAction={bindUpload}
             />
           </div>
         </ChatCoreBoundary>

@@ -145,6 +145,11 @@ export function PeerComposer({
   const formRef = React.useRef<HTMLFormElement>(null);
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
   const mediaCaptureRef = React.useRef<MediaCaptureHandle | null>(null);
+  // Attachment-file input · a plain hidden <input type="file"> that
+  // the paperclip button on the left of the input bar triggers. Any
+  // mime type is accepted; the file is posted through the same
+  // uploadAction the camera/video/voice flows use.
+  const attachInputRef = React.useRef<HTMLInputElement | null>(null);
   const [text, setText] = React.useState("");
   const [modalOpen, setModalOpen] = React.useState(false);
   const [emojiOpen, setEmojiOpen] = React.useState(false);
@@ -199,6 +204,24 @@ export function PeerComposer({
     },
     [preferRecorder],
   );
+
+  // Universal ChatActionDots (bottom-right 3-dots) dispatches these
+  // events when the user taps Mic or Camera in the sliding action
+  // pill. Route them into the same capture flow the + button's
+  // MediaModal uses · one capture pipeline, two entry points.
+  React.useEffect(() => {
+    const onMic = () => handleCapturePick("voice");
+    const onCamera = () => handleCapturePick("camera");
+    const onVideo = () => handleCapturePick("video");
+    window.addEventListener("nex-chat-action-mic", onMic);
+    window.addEventListener("nex-chat-action-camera", onCamera);
+    window.addEventListener("nex-chat-action-video", onVideo);
+    return () => {
+      window.removeEventListener("nex-chat-action-mic", onMic);
+      window.removeEventListener("nex-chat-action-camera", onCamera);
+      window.removeEventListener("nex-chat-action-video", onVideo);
+    };
+  }, [handleCapturePick]);
 
   /** Send a File that came out of the recorder · we POST it via
    *  the same upload Server Action by building a FormData and
@@ -612,6 +635,34 @@ export function PeerComposer({
           }}
         >
             <PlusButton onClick={() => setModalOpen(true)} />
+            {/* Attachment-file button · founder direction 2026-10-04.
+                Left-side paperclip opens a generic file picker that
+                accepts any mime, then posts the file via uploadAction
+                (same path camera / video / voice capture use). Only
+                rendered when an uploadAction is wired. */}
+            {uploadAction && (
+              <>
+                <input
+                  ref={attachInputRef}
+                  type="file"
+                  accept="*/*"
+                  style={{ display: "none" }}
+                  onChange={(e) => {
+                    const f = e.currentTarget.files?.[0];
+                    if (!f) return;
+                    const fd = new FormData();
+                    fd.append("attachment_file", f);
+                    uploadAction(fd);
+                    // Reset so the same file can be re-picked.
+                    e.currentTarget.value = "";
+                  }}
+                />
+                <AttachButton
+                  onClick={() => attachInputRef.current?.click()}
+                  accent={themeAccent ?? NEX.cyan}
+                />
+              </>
+            )}
             {/* Bridge ThemeEmoji-C · pinned theme-emoji chips render
              *  inline before the textarea so the picked emoji reads as
              *  if it is inside the input bar. Each chip is tappable ·
@@ -1752,6 +1803,42 @@ const strokeProps = {
   strokeLinecap: "round" as const,
   strokeLinejoin: "round" as const,
 };
+
+// Attachment-file button · paperclip icon, matches PlusButton size.
+function AttachButton({ onClick, accent }: { onClick: () => void; accent: string }) {
+  return (
+    <button
+      type="button"
+      aria-label="Attach file"
+      title="Attach file"
+      onClick={onClick}
+      style={{
+        width: 36,
+        height: 36,
+        padding: 0,
+        marginRight: 4,
+        borderRadius: 999,
+        display: "grid",
+        placeItems: "center",
+        background: "transparent",
+        border: `1px solid ${accent}66`,
+        color: accent,
+        cursor: "pointer",
+        flexShrink: 0,
+      }}
+    >
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
+        <path
+          d="M20.5 11.5l-7.3 7.3a5 5 0 1 1-7-7l7.3-7.3a3.5 3.5 0 0 1 5 5L11.3 16.8a2 2 0 1 1-2.8-2.8l6.5-6.5"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </button>
+  );
+}
 
 function PlusIcon() {
   return (
