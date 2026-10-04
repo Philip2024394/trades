@@ -28,6 +28,7 @@ import { resolveFaultInjection } from "./_test-bridge";
 import { isThemeKillSwitchedSafe } from "@/lib/nex-native/theme-kill-switch";
 import { HauntedHotelAtmosphere } from "@/components/nex-native/HauntedHotelAtmosphere";
 import { HauntedHotelController } from "@/components/nex-native/HauntedHotelController";
+import { ChatActionDots } from "@/components/nex-native/ChatActionDots";
 import { HeaderRightCluster } from "../../_header-right-cluster";
 
 const SURFACE_ID = "depth-cards";
@@ -238,10 +239,19 @@ export default async function DepthCardsLivePage(props: DepthCardsPageProps) {
           pulsing light haloes, and welding sparks cascading from each
           light. */}
       <HauntedHotelAtmosphere />
-      {/* Haunted Hotel · animation controller · 3-dots trigger +
-          full-screen toggle panel (Joker-pattern). Each enabled card
-          renders a self-contained CSS overlay in the viewport. */}
+      {/* Haunted Hotel · animation controller. Floating 3-dots trigger
+          was removed 2026-10-04 · the panel now opens from the
+          composer + button's "Animations" option, which dispatches
+          "nex-haunted-hotel-open-animations" that the controller
+          listens for. */}
       <HauntedHotelController />
+      {/* Universal chat-actions dots · founder direction 2026-10-04.
+          Lives in the same bottom-right slot the HH controller used,
+          now carrying Call / Video / Mic / Camera (sliding pill left
+          on tap). Mount tinted to the Haunted Hotel amber accent;
+          handlers default to window-event dispatch for later wiring
+          to real call + capture flows. */}
+      <ChatActionDots accent="#d8a856" />
       <main
         style={{
           position: "relative",
