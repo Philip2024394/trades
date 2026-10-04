@@ -973,6 +973,7 @@ function ContactPickerModal({
   onClose: () => void;
 }): React.JSX.Element {
   const router = useRouter();
+  const presenceSets = usePresence();
   const title = kind === "voice" ? "Voice call" : "Video call";
   const subtitle =
     kind === "voice" ? "Pick someone to call" : "Pick someone to video-call";
@@ -1085,49 +1086,81 @@ function ContactPickerModal({
               gap: 4,
             }}
           >
-            {people.map((p) => (
-              <li key={p.id}>
-                <button
-                  type="button"
-                  onClick={() => {
-                    router.push(
-                      `/nex-native/chat/peer/${p.id}?start_call=${kind}`,
-                    );
-                  }}
-                  style={{
-                    width: "100%",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 12,
-                    padding: "10px 10px",
-                    borderRadius: 14,
-                    background: "transparent",
-                    border: "none",
-                    color: PAL.text,
-                    textAlign: "left",
-                  }}
-                >
-                  <Avatar name={p.displayName} avatarUrl={p.avatarUrl} size={40} />
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontSize: 14, fontWeight: 600 }}>{p.displayName}</div>
-                    {p.handle && (
-                      <div style={{ fontSize: 11.5, color: PAL.textDim }}>
-                        {p.handle}
-                      </div>
-                    )}
-                  </div>
-                  <span
-                    aria-hidden
+            {people.map((p) => {
+              const presence = presenceFor(p.id, presenceSets);
+              const busy = presence === "busy";
+              return (
+                <li key={p.id}>
+                  <button
+                    type="button"
+                    disabled={busy}
+                    aria-disabled={busy}
+                    title={busy ? `${p.displayName} is on a call` : undefined}
+                    onClick={() => {
+                      if (busy) return;
+                      router.push(
+                        `/nex-native/chat/peer/${p.id}?start_call=${kind}`,
+                      );
+                    }}
                     style={{
-                      color: kind === "voice" ? PAL.green : PAL.blue,
-                      padding: 6,
+                      width: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 12,
+                      padding: "10px 10px",
+                      borderRadius: 14,
+                      background: "transparent",
+                      border: "none",
+                      color: PAL.text,
+                      textAlign: "left",
+                      opacity: busy ? 0.55 : 1,
+                      cursor: busy ? "not-allowed" : "pointer",
                     }}
                   >
-                    {kind === "voice" ? <PhoneIcon size={18} /> : <VideoIcon size={18} />}
-                  </span>
-                </button>
-              </li>
-            ))}
+                    <Avatar
+                      name={p.displayName}
+                      avatarUrl={p.avatarUrl}
+                      size={40}
+                      presence={presence}
+                    />
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontSize: 14, fontWeight: 600 }}>
+                        {p.displayName}
+                      </div>
+                      <div
+                        style={{
+                          fontSize: 11.5,
+                          color: busy
+                            ? PAL.orange
+                            : presence === "online"
+                              ? PAL.green
+                              : PAL.textDim,
+                        }}
+                      >
+                        {busy
+                          ? "On a call"
+                          : presence === "online"
+                            ? "Online"
+                            : (p.handle ?? "")}
+                      </div>
+                    </div>
+                    <span
+                      aria-hidden
+                      style={{
+                        color: busy
+                          ? PAL.textMuted
+                          : kind === "voice"
+                            ? PAL.green
+                            : PAL.blue,
+                        padding: 6,
+                      }}
+                    >
+                      {kind === "voice" ? <PhoneIcon size={18} /> : <VideoIcon size={18} />}
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
           </ul>
         )}
       </div>

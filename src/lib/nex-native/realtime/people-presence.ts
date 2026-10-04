@@ -76,6 +76,41 @@ export function joinPeoplePresence(opts: JoinOptions): () => void {
   };
 }
 
+/** One-shot read of the in-call presence channel · resolves true
+ *  when the peer is currently tracked as busy. Used by the call
+ *  launcher's start handlers so an outgoing call never dials a
+ *  user who is already on another call. */
+export async function isPeerInCall(peerAccountId: string): Promise<boolean> {
+  const sb = getNexBrowserSupabase();
+  const ch = sb.channel(PRESENCE_IN_CALL_CHANNEL);
+  try {
+    return await new Promise<boolean>((resolve) => {
+      let decided = false;
+      const decide = (v: boolean) => {
+        if (decided) return;
+        decided = true;
+        void ch.unsubscribe();
+        resolve(v);
+      };
+      void ch.subscribe((status) => {
+        if (status !== "SUBSCRIBED") return;
+        // Supabase broadcasts a presence sync shortly after SUBSCRIBED;
+        // read state once a short tick later so we see every tracked key.
+        setTimeout(() => {
+          const state = ch.presenceState();
+          decide(peerAccountId in state);
+        }, 150);
+      });
+      // Hard cap · if the channel never syncs within 2s, treat as
+      // "not known to be busy" and let the dial proceed. The callee
+      // will reject if they're actually in another call.
+      setTimeout(() => decide(false), 2000);
+    });
+  } catch {
+    return false;
+  }
+}
+
 /** Opt the current session into the "in-call" presence set for as
  *  long as the returned un-track function hasn't been called. Used
  *  by _call-launcher.tsx when PeerCall reaches `connected`. */

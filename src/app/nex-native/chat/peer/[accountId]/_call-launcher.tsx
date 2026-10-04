@@ -25,7 +25,10 @@ import {
 import { createRingtone, type Ringtone } from "@/lib/nex-native/calls/ringtone";
 import { logCallAction } from "@/app/nex-native/calls/_log-call-action";
 import type { CallLogOutcome } from "@/lib/nex-native/call-log-service";
-import { trackPresenceInCall } from "@/lib/nex-native/realtime/people-presence";
+import {
+  trackPresenceInCall,
+  isPeerInCall,
+} from "@/lib/nex-native/realtime/people-presence";
 
 export interface PeerCallLauncherProps {
   conversationId: string;
@@ -315,6 +318,12 @@ export function PeerCallLauncher(props: PeerCallLauncherProps): React.JSX.Elemen
 
   const startVoice = async () => {
     setError(null);
+    // Guard · if the peer is already tracked on the in-call presence
+    // channel, don't dial. One active 1:1 call per peer at a time.
+    if (await isPeerInCall(props.peerAccountId)) {
+      setError(`${props.peerDisplayName} is on a call`);
+      return;
+    }
     setCurrentMedia("audio");
     try {
       await callRef.current?.startVoiceCall();
@@ -324,6 +333,10 @@ export function PeerCallLauncher(props: PeerCallLauncherProps): React.JSX.Elemen
   };
   const startVideo = async () => {
     setError(null);
+    if (await isPeerInCall(props.peerAccountId)) {
+      setError(`${props.peerDisplayName} is on a call`);
+      return;
+    }
     setCurrentMedia("video");
     try {
       await callRef.current?.startVideoCall();
