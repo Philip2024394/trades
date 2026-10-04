@@ -336,6 +336,36 @@ export class PeerCall {
     return this.currentMedia;
   }
 
+  /** Flip the front/back camera on a video call. No-op during voice
+   *  calls or before media is captured. Returns the new facingMode
+   *  (or null if the swap failed). */
+  async switchVideoFacingMode(): Promise<"user" | "environment" | null> {
+    if (this.currentMedia !== "video" || !this.pc || !this.localStream) return null;
+    const videoTrack = this.localStream.getVideoTracks()[0];
+    if (!videoTrack) return null;
+    const current = videoTrack.getSettings().facingMode;
+    const next: "user" | "environment" = current === "environment" ? "user" : "environment";
+    try {
+      const fresh = await navigator.mediaDevices.getUserMedia({
+        audio: false,
+        video: { facingMode: { ideal: next } },
+      });
+      const newVideoTrack = fresh.getVideoTracks()[0];
+      if (!newVideoTrack) return null;
+      const sender = this.pc.getSenders().find((s) => s.track?.kind === "video");
+      await sender?.replaceTrack(newVideoTrack);
+      // Swap into our local stream + stop the old track so the camera light goes out.
+      this.localStream.removeTrack(videoTrack);
+      videoTrack.stop();
+      this.localStream.addTrack(newVideoTrack);
+      // Fire a fresh onLocalStream so the UI re-attaches the PIP element.
+      this.opts.handlers.onLocalStream?.(this.localStream);
+      return next;
+    } catch {
+      return null;
+    }
+  }
+
   // ── Signalling handlers ────────────────────────────────────────────
 
   private handleRing(s: RingSignal): void {

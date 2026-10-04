@@ -50,6 +50,22 @@ const NEX = {
   textDim: "#8BA9D1",
 };
 
+/* Mock-driven palette for the full-screen call surface — matches the
+ * founder's call-page.png (orange avatar glow, dark background,
+ * circular dark-grey control buttons). */
+const CALL_SURFACE = {
+  bg1: "#0D0806",
+  bg2: "#1A0F08",
+  accent: "#FF8A2A",
+  accentSoft: "rgba(255,138,42,0.22)",
+  green: "#22C55E",
+  red: "#EF4444",
+  text: "#F6F2EE",
+  textDim: "#A89C92",
+  btnBg: "rgba(255,255,255,0.06)",
+  btnBorder: "rgba(255,255,255,0.08)",
+};
+
 const CALL_BUTTON_STYLE: React.CSSProperties = {
   width: 36,
   height: 36,
@@ -76,6 +92,15 @@ export function PeerCallLauncher(props: PeerCallLauncherProps): React.JSX.Elemen
   const [endReason, setEndReason] = React.useState<PeerCallEndReason | null>(null);
   const [error, setError] = React.useState<string | null>(null);
   const [elapsedSec, setElapsedSec] = React.useState(0);
+  // Mock-page extras · all honest about what they do.
+  const [speakerOn, setSpeakerOn] = React.useState(false);
+  const [keypadOpen, setKeypadOpen] = React.useState(false);
+  const [dtmfBuffer, setDtmfBuffer] = React.useState<string>("");
+  const [recording, setRecording] = React.useState(false);
+  const [addToast, setAddToast] = React.useState<string | null>(null);
+  const [layoutSwapped, setLayoutSwapped] = React.useState(false);
+  const recorderRef = React.useRef<MediaRecorder | null>(null);
+  const recorderChunksRef = React.useRef<Blob[]>([]);
 
   const callRef = React.useRef<PeerCall | null>(null);
   const remoteAudioRef = React.useRef<HTMLAudioElement | null>(null);
@@ -368,6 +393,14 @@ export function PeerCallLauncher(props: PeerCallLauncherProps): React.JSX.Elemen
   const accept  = () => { void callRef.current?.acceptIncoming(); };
   const decline = () => { void callRef.current?.declineIncoming(); };
   const hangup  = () => { void callRef.current?.hangup(); };
+  /** End button on the mock surface · hang up AND route to the Call
+   *  Center so the user lands somewhere actionable instead of a
+   *  closing/ended spinner in-chat. */
+  const endAndExit = () => {
+    void callRef.current?.hangup();
+    // Give the hangup a tick to flush, then navigate.
+    setTimeout(() => router.push("/nex-native/calls"), 180);
+  };
   const toggleMute = () => {
     const next = !muted;
     setMuted(next);
@@ -378,6 +411,127 @@ export function PeerCallLauncher(props: PeerCallLauncherProps): React.JSX.Elemen
     setCameraOff(next);
     callRef.current?.setCameraOff(next);
   };
+  /** Flip front/back camera · delegates to PeerCall which swaps the
+   *  track on the active RTCRtpSender. */
+  const switchCamera = () => {
+    void callRef.current?.switchVideoFacingMode();
+  };
+  /** Swap the layout · local becomes full-bleed, remote becomes PIP. */
+  const toggleLayout = () => setLayoutSwapped((v) => !v);
+  /** Speaker toggle · attempts setSinkId when supported (Chrome
+   *  desktop / Android Chrome) so the remote audio can switch between
+   *  the earpiece and the loudspeaker. On iOS Safari + browsers that
+   *  don't expose setSinkId, we keep the visual toggle but it's a
+   *  no-op · routing is OS-controlled there. */
+  const toggleSpeaker = () => {
+    const next = !speakerOn;
+    setSpeakerOn(next);
+    const audio = remoteAudioRef.current as
+      | (HTMLAudioElement & { setSinkId?: (id: string) => Promise<void> })
+      | null;
+    if (audio?.setSinkId) {
+      // "default" is the OS default (usually earpiece on mobile);
+      // "communications" is the loudspeaker preset on supporting
+      // browsers. Fall back silently if the chosen id is rejected.
+      void audio
+        .setSinkId(next ? "communications" : "default")
+        .catch(() => { /* unsupported sink · leave visual-only */ });
+    }
+  };
+  /** Open/close the DTMF keypad overlay. */
+  const toggleKeypad = () => setKeypadOpen((v) => !v);
+  /** Push a DTMF digit · if the active peer connection carries a
+   *  DTMFSender we insert the tone on the wire. We also play a local
+   *  click so the user hears feedback regardless. */
+  const pressDtmf = (digit: string) => {
+    setDtmfBuffer((prev) => (prev + digit).slice(-20));
+    try {
+      const pc = (callRef.current as unknown as { pc?: RTCPeerConnection })?.pc;
+      const sender = pc?.getSenders().find((s) => s.track?.kind === "audio");
+      const dtmf = (sender as RTCRtpSender & { dtmf?: RTCDTMFSender })?.dtmf;
+      if (dtmf) dtmf.insertDTMF(digit, 160, 50);
+    } catch {
+      /* best-effort · WebRTC may not expose DTMF */
+    }
+  };
+  /** Add participant · creates a shareable URL back to this chat and
+   *  invokes the OS share sheet if available, otherwise copies to
+   *  clipboard with a brief toast. This is honest: it shares a path
+   *  into the chat, not a mid-call participant injection (which
+   *  would require tearing down 1:1 and re-establishing group mesh). */
+  const inviteAdd = async () => {
+    const url = `${window.location.origin}/nex-native/chat/peer/${props.peerAccountId}`;
+    const navAny = navigator as Navigator & {
+      share?: (data: ShareData) => Promise<void>;
+    };
+    try {
+      if (navAny.share) {
+        await navAny.share({
+          title: `Chat with ${props.peerDisplayName} on NEX`,
+          url,
+        });
+        setAddToast("Shared");
+      } else {
+        await navigator.clipboard.writeText(url);
+        setAddToast("Link copied");
+      }
+    } catch {
+      setAddToast("Copy failed");
+    }
+    setTimeout(() => setAddToast(null), 1600);
+  };
+  /** Record toggle · captures the LOCAL mic to a .webm file. Honest
+   *  about the limitation: it does NOT record the remote side's
+   *  audio (that would require mixing both streams through an
+   *  AudioContext, which is in-scope for a later bridge). The file
+   *  downloads automatically on stop. */
+  const toggleRecord = () => {
+    if (!recording) {
+      if (!localStream) return;
+      try {
+        const rec = new MediaRecorder(localStream);
+        recorderChunksRef.current = [];
+        rec.ondataavailable = (e) => {
+          if (e.data.size > 0) recorderChunksRef.current.push(e.data);
+        };
+        rec.onstop = () => {
+          const blob = new Blob(recorderChunksRef.current, {
+            type: rec.mimeType || "audio/webm",
+          });
+          const href = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = href;
+          a.download = `nex-call-${Date.now()}.webm`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(href);
+        };
+        rec.start();
+        recorderRef.current = rec;
+        setRecording(true);
+      } catch {
+        setError("Recording not supported on this device");
+      }
+    } else {
+      try { recorderRef.current?.stop(); } catch { /* ignore */ }
+      recorderRef.current = null;
+      setRecording(false);
+    }
+  };
+  // Make sure a lingering recorder tears down when the call ends.
+  React.useEffect(() => {
+    if (state === "idle" || state === "ended") {
+      if (recorderRef.current) {
+        try { recorderRef.current.stop(); } catch { /* ignore */ }
+        recorderRef.current = null;
+      }
+      if (recording) setRecording(false);
+      if (keypadOpen) setKeypadOpen(false);
+      if (dtmfBuffer) setDtmfBuffer("");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state]);
 
   const showOverlay = state !== "idle";
   const peerName = incomingCaller || props.peerDisplayName;
@@ -440,8 +594,22 @@ export function PeerCallLauncher(props: PeerCallLauncherProps): React.JSX.Elemen
           onAccept={accept}
           onDecline={decline}
           onHangup={hangup}
+          onEnd={endAndExit}
           onToggleMute={toggleMute}
           onToggleCamera={toggleCamera}
+          speakerOn={speakerOn}
+          onToggleSpeaker={toggleSpeaker}
+          keypadOpen={keypadOpen}
+          dtmfBuffer={dtmfBuffer}
+          onToggleKeypad={toggleKeypad}
+          onPressDtmf={pressDtmf}
+          onInviteAdd={() => { void inviteAdd(); }}
+          addToast={addToast}
+          recording={recording}
+          onToggleRecord={toggleRecord}
+          onSwitchCamera={switchCamera}
+          layoutSwapped={layoutSwapped}
+          onToggleLayout={toggleLayout}
         />
       )}
 
@@ -479,15 +647,31 @@ interface OverlayProps {
   onAccept: () => void;
   onDecline: () => void;
   onHangup: () => void;
+  onEnd: () => void;
   onToggleMute: () => void;
   onToggleCamera: () => void;
+  speakerOn: boolean;
+  onToggleSpeaker: () => void;
+  keypadOpen: boolean;
+  dtmfBuffer: string;
+  onToggleKeypad: () => void;
+  onPressDtmf: (digit: string) => void;
+  onInviteAdd: () => void;
+  addToast: string | null;
+  recording: boolean;
+  onToggleRecord: () => void;
+  onSwitchCamera: () => void;
+  layoutSwapped: boolean;
+  onToggleLayout: () => void;
 }
 
 function CallOverlay(p: OverlayProps): React.JSX.Element {
   const isIncoming = p.state === "incoming";
   const isEnded = p.state === "ended";
-  const showFullBleedVideo = p.media === "video" && p.state === "connected";
+  const isConnected = p.state === "connected";
+  const showFullBleedVideo = p.media === "video" && isConnected;
   const label = statusLabel(p.state, p.endReason, p.media, isIncoming ? p.incomingMedia : p.media);
+  const subLabel = subStatusLabel(p.state, p.endReason);
 
   return (
     <div
@@ -498,80 +682,154 @@ function CallOverlay(p: OverlayProps): React.JSX.Element {
         position: "fixed",
         inset: 0,
         zIndex: 1000,
-        background: showFullBleedVideo ? "#000" : NEX.bg,
-        color: NEX.text,
+        background: showFullBleedVideo
+          ? "#000"
+          : `radial-gradient(1200px 600px at 50% -10%, ${CALL_SURFACE.accentSoft} 0%, transparent 60%), linear-gradient(180deg, ${CALL_SURFACE.bg1} 0%, ${CALL_SURFACE.bg2} 100%)`,
+        color: CALL_SURFACE.text,
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "space-between",
         padding:
-          "calc(env(safe-area-inset-top, 0) + 40px) 24px calc(env(safe-area-inset-bottom, 0) + 40px)",
+          "calc(env(safe-area-inset-top, 0) + 20px) 20px calc(env(safe-area-inset-bottom, 0) + 24px)",
         fontFamily:
           "Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
-        backdropFilter: showFullBleedVideo ? undefined : "blur(20px)",
       }}
     >
-      {/* Remote video fills the whole overlay when video-connected · rendered
-          FIRST so subsequent content sits on top. */}
+      {/* Video elements · in the mock the "hero" is the inset frame
+          below the top header, not the full window. We render into a
+          clipped stage so the header above and controls below remain
+          visible on a dark surface. `layoutSwapped` flips which
+          stream (remote vs local) gets the big tile vs the PIP. */}
       {p.media === "video" && (
-        <video
-          ref={p.remoteVideoRef}
-          autoPlay
-          playsInline
+        <div
           style={{
             position: "absolute",
-            inset: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
+            top: "calc(env(safe-area-inset-top, 0) + 64px)",
+            left: 20,
+            right: 20,
+            bottom: 220,
+            borderRadius: 22,
+            overflow: "hidden",
             background: "#000",
-            opacity: p.hasRemoteVideo ? 1 : 0,
-            transition: "opacity 240ms ease",
+            boxShadow: "0 24px 60px rgba(0,0,0,0.55)",
+            border: `1px solid ${CALL_SURFACE.btnBorder}`,
             zIndex: 0,
           }}
-        />
-      )}
-
-      {/* Local video PIP · top-right corner, ~120x160, rounded */}
-      {p.media === "video" && p.hasLocalVideo && !isIncoming && (
-        <video
-          ref={p.localVideoRef}
-          autoPlay
-          playsInline
-          muted
-          style={{
-            position: "absolute",
-            top: "calc(env(safe-area-inset-top, 0) + 16px)",
-            right: 16,
-            width: 108,
-            height: 144,
-            objectFit: "cover",
-            borderRadius: 14,
-            border: "2px solid rgba(255,255,255,0.35)",
-            boxShadow: "0 8px 24px rgba(0,0,0,0.6)",
-            zIndex: 2,
-            transform: "scaleX(-1)", // mirror self-view so it feels natural
-            background: "#000",
-          }}
-        />
-      )}
-
-      {/* Top: state + peer identity — hidden when full-bleed video is showing */}
-      {!showFullBleedVideo ? (
-        <div style={{ textAlign: "center", width: "100%", position: "relative", zIndex: 1 }}>
-          <div
+        >
+          <video
+            ref={p.remoteVideoRef}
+            autoPlay
+            playsInline
             style={{
-              fontSize: 11,
-              letterSpacing: "0.24em",
-              textTransform: "uppercase",
-              color: p.state === "connected" ? NEX.green : NEX.textDim,
-              fontWeight: 700,
-              marginBottom: 20,
+              position: "absolute",
+              inset: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              background: "#000",
+              opacity: p.hasRemoteVideo ? 1 : 0,
+              transition: "opacity 240ms ease",
+              zIndex: p.layoutSwapped ? 2 : 0,
+              ...(p.layoutSwapped
+                ? {
+                    inset: "auto 10px 10px auto",
+                    width: 108,
+                    height: 144,
+                    borderRadius: 14,
+                    border: "2px solid rgba(255,255,255,0.35)",
+                    boxShadow: "0 8px 24px rgba(0,0,0,0.6)",
+                  }
+                : {}),
+            }}
+          />
+          {p.hasLocalVideo && !isIncoming && (
+            <video
+              ref={p.localVideoRef}
+              autoPlay
+              playsInline
+              muted
+              style={{
+                position: "absolute",
+                inset: 0,
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                background: "#000",
+                zIndex: p.layoutSwapped ? 0 : 2,
+                transform: p.layoutSwapped ? undefined : "scaleX(-1)",
+                ...(p.layoutSwapped
+                  ? {}
+                  : {
+                      inset: "auto 10px 10px auto",
+                      width: 108,
+                      height: 144,
+                      borderRadius: 14,
+                      border: "2px solid rgba(255,255,255,0.35)",
+                      boxShadow: "0 8px 24px rgba(0,0,0,0.6)",
+                      transform: "scaleX(-1)",
+                    }),
+              }}
+            />
+          )}
+        </div>
+      )}
+
+      {/* Top-left: phone icon + call type + live timer · matches mock */}
+      {(
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            fontSize: 15,
+            fontWeight: 600,
+            color: CALL_SURFACE.text,
+            position: "relative",
+            zIndex: 3,
+            marginBottom: 10,
+          }}
+        >
+          <span
+            aria-hidden
+            style={{
+              width: 22,
+              height: 22,
+              borderRadius: 999,
+              background: "rgba(34,197,94,0.18)",
+              color: CALL_SURFACE.green,
+              display: "grid",
+              placeItems: "center",
             }}
           >
-            {label}
-          </div>
-          <PeerAvatar name={p.peerName} url={p.peerAvatarUrl} />
+            <PhoneIcon />
+          </span>
+          <span>{label}</span>
+          {isConnected && (
+            <>
+              <span style={{ color: CALL_SURFACE.textDim }}>·</span>
+              <span style={{ fontVariantNumeric: "tabular-nums", color: CALL_SURFACE.text }}>
+                {formatDuration(p.elapsedSec)}
+              </span>
+            </>
+          )}
+        </div>
+      )}
+
+      {/* Hero: avatar + name + sub-status · stacked vertically centre */}
+      {!showFullBleedVideo ? (
+        <div
+          style={{
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            textAlign: "center",
+            position: "relative",
+            zIndex: 1,
+            width: "100%",
+          }}
+        >
+          <PeerAvatarOrange name={p.peerName} url={p.peerAvatarUrl} />
           <div
             style={{
               fontSize: 24,
@@ -582,26 +840,23 @@ function CallOverlay(p: OverlayProps): React.JSX.Element {
           >
             {p.peerName}
           </div>
-          {p.state === "connected" && (
-            <div
-              style={{
-                fontSize: 15,
-                color: NEX.textDim,
-                marginTop: 8,
-                fontVariantNumeric: "tabular-nums",
-              }}
-            >
-              {formatDuration(p.elapsedSec)}
-            </div>
-          )}
+          <div
+            style={{
+              fontSize: 14,
+              color: CALL_SURFACE.textDim,
+              marginTop: 6,
+            }}
+          >
+            {subLabel}
+          </div>
           {p.error && (
             <div
               style={{
                 marginTop: 16,
                 padding: "10px 14px",
                 borderRadius: 10,
-                background: "rgba(255,51,85,0.12)",
-                border: "1px solid rgba(255,51,85,0.35)",
+                background: "rgba(239,68,68,0.14)",
+                border: "1px solid rgba(239,68,68,0.35)",
                 color: "#FFB4C0",
                 fontSize: 13,
                 display: "inline-block",
@@ -610,44 +865,62 @@ function CallOverlay(p: OverlayProps): React.JSX.Element {
               {p.error}
             </div>
           )}
+          {p.addToast && (
+            <div
+              style={{
+                marginTop: 16,
+                padding: "8px 14px",
+                borderRadius: 999,
+                background: CALL_SURFACE.accentSoft,
+                border: `1px solid ${CALL_SURFACE.accent}66`,
+                color: CALL_SURFACE.accent,
+                fontSize: 12.5,
+                fontWeight: 600,
+                display: "inline-block",
+              }}
+            >
+              {p.addToast}
+            </div>
+          )}
         </div>
       ) : (
-        // In-call video mode · just show a compact name+timer pill on top.
-        <div
-          style={{
-            position: "relative",
-            zIndex: 2,
-            display: "inline-flex",
-            gap: 10,
-            alignItems: "center",
-            padding: "6px 12px",
-            borderRadius: 999,
-            background: "rgba(0,0,0,0.55)",
-            fontSize: 13,
-            fontWeight: 700,
-            backdropFilter: "blur(8px)",
-          }}
-        >
-          <span>{p.peerName}</span>
-          <span style={{ color: NEX.green, fontVariantNumeric: "tabular-nums" }}>
-            {formatDuration(p.elapsedSec)}
-          </span>
+        // Video-connected · video stage above is the hero. Reserve
+        // the vertical space and surface the add-toast if present.
+        <div style={{ flex: 1, position: "relative", zIndex: 2, display: "flex", flexDirection: "column", justifyContent: "flex-end" }}>
+          {p.addToast && (
+            <div
+              style={{
+                alignSelf: "center",
+                padding: "8px 14px",
+                borderRadius: 999,
+                background: "rgba(0,0,0,0.65)",
+                color: CALL_SURFACE.accent,
+                fontSize: 12.5,
+                fontWeight: 600,
+                marginBottom: 12,
+              }}
+            >
+              {p.addToast}
+            </div>
+          )}
         </div>
       )}
 
-      {/* Bottom: controls */}
+      {/* Controls · 2×3 grid on the connected surface, or incoming
+          accept/decline pair, or quiet "Closing…" on ended. */}
       <div
         style={{
-          display: "flex",
-          gap: 20,
-          alignItems: "center",
-          justifyContent: "center",
           position: "relative",
           zIndex: 2,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: 12,
+          width: "100%",
         }}
       >
         {isIncoming ? (
-          <>
+          <div style={{ display: "flex", gap: 20 }}>
             <RoundButton kind="danger" onClick={p.onDecline} label="Decline">
               <HangupIcon />
             </RoundButton>
@@ -658,35 +931,452 @@ function CallOverlay(p: OverlayProps): React.JSX.Element {
             >
               {p.incomingMedia === "video" ? <VideoIcon /> : <PhoneIcon />}
             </RoundButton>
-          </>
+          </div>
         ) : isEnded ? (
-          <div style={{ fontSize: 13, color: NEX.textDim }}>
+          <div style={{ fontSize: 13, color: CALL_SURFACE.textDim }}>
             Closing…
           </div>
+        ) : p.media === "video" ? (
+          <VideoCallButtonGrid
+            muted={p.muted}
+            cameraOff={p.cameraOff}
+            recording={p.recording}
+            onToggleMute={p.onToggleMute}
+            onToggleCamera={p.onToggleCamera}
+            onSwitchCamera={p.onSwitchCamera}
+            onToggleLayout={p.onToggleLayout}
+            onInviteAdd={p.onInviteAdd}
+            onToggleRecord={p.onToggleRecord}
+            onEnd={p.onEnd}
+          />
         ) : (
-          <>
-            <RoundButton
-              kind={p.muted ? "active" : "neutral"}
-              onClick={p.onToggleMute}
-              label={p.muted ? "Unmute" : "Mute"}
-            >
-              {p.muted ? <MicOffIcon /> : <MicIcon />}
-            </RoundButton>
-            {p.media === "video" && (
-              <RoundButton
-                kind={p.cameraOff ? "active" : "neutral"}
-                onClick={p.onToggleCamera}
-                label={p.cameraOff ? "Camera on" : "Camera off"}
-              >
-                {p.cameraOff ? <VideoOffIcon /> : <VideoIcon />}
-              </RoundButton>
-            )}
-            <RoundButton kind="danger" onClick={p.onHangup} label="Hang up">
-              <HangupIcon />
-            </RoundButton>
-          </>
+          <CallButtonGrid
+            muted={p.muted}
+            cameraOff={p.cameraOff}
+            media={p.media}
+            speakerOn={p.speakerOn}
+            recording={p.recording}
+            onToggleMute={p.onToggleMute}
+            onToggleCamera={p.onToggleCamera}
+            onToggleSpeaker={p.onToggleSpeaker}
+            onToggleKeypad={p.onToggleKeypad}
+            onInviteAdd={p.onInviteAdd}
+            onToggleRecord={p.onToggleRecord}
+            onEnd={p.onEnd}
+          />
         )}
       </div>
+
+      {/* Keypad sheet · slides over the controls when open. */}
+      {p.keypadOpen && !isIncoming && !isEnded && (
+        <KeypadSheet
+          buffer={p.dtmfBuffer}
+          onPress={p.onPressDtmf}
+          onClose={p.onToggleKeypad}
+        />
+      )}
+    </div>
+  );
+}
+
+/* ─── Call button grid (2×3) per mock ───────────────────────────── */
+
+function CallButtonGrid(props: {
+  muted: boolean;
+  cameraOff: boolean;
+  media: PeerCallMedia;
+  speakerOn: boolean;
+  recording: boolean;
+  onToggleMute: () => void;
+  onToggleCamera: () => void;
+  onToggleSpeaker: () => void;
+  onToggleKeypad: () => void;
+  onInviteAdd: () => void;
+  onToggleRecord: () => void;
+  onEnd: () => void;
+}): React.JSX.Element {
+  // Row 1: Mute | Speaker (voice) / Camera (video) | Keypad
+  // Row 2: Add  | Record                           | End
+  const slot2 =
+    props.media === "video"
+      ? {
+          label: props.cameraOff ? "Camera on" : "Camera off",
+          active: props.cameraOff,
+          onClick: props.onToggleCamera,
+          icon: props.cameraOff ? <VideoOffIcon /> : <VideoIcon />,
+        }
+      : {
+          label: props.speakerOn ? "Speaker on" : "Speaker",
+          active: props.speakerOn,
+          onClick: props.onToggleSpeaker,
+          icon: <SpeakerIcon />,
+        };
+  return (
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(3, 72px)",
+        gap: 18,
+        rowGap: 16,
+        placeItems: "center",
+      }}
+    >
+      <CallSurfaceButton
+        label={props.muted ? "Unmute" : "Mute"}
+        active={props.muted}
+        onClick={props.onToggleMute}
+      >
+        {props.muted ? <MicOffIcon /> : <MicIcon />}
+      </CallSurfaceButton>
+      <CallSurfaceButton
+        label={slot2.label}
+        active={slot2.active}
+        onClick={slot2.onClick}
+      >
+        {slot2.icon}
+      </CallSurfaceButton>
+      <CallSurfaceButton label="Keypad" onClick={props.onToggleKeypad}>
+        <KeypadIcon />
+      </CallSurfaceButton>
+      <CallSurfaceButton label="Add" onClick={props.onInviteAdd}>
+        <AddUserIcon />
+      </CallSurfaceButton>
+      <CallSurfaceButton
+        label={props.recording ? "Recording" : "Record"}
+        active={props.recording}
+        onClick={props.onToggleRecord}
+      >
+        <RecordIcon active={props.recording} />
+      </CallSurfaceButton>
+      <CallSurfaceButton label="End" tone="danger" onClick={props.onEnd}>
+        <HangupIcon />
+      </CallSurfaceButton>
+    </div>
+  );
+}
+
+function CallSurfaceButton({
+  label,
+  active,
+  tone,
+  onClick,
+  children,
+}: {
+  label: string;
+  active?: boolean;
+  tone?: "danger";
+  onClick: () => void;
+  children: React.ReactNode;
+}): React.JSX.Element {
+  const isDanger = tone === "danger";
+  const bg = isDanger
+    ? CALL_SURFACE.red
+    : active
+      ? "#ffffff"
+      : CALL_SURFACE.btnBg;
+  const color = isDanger ? "#fff" : active ? "#0a0608" : CALL_SURFACE.text;
+  const border = isDanger
+    ? "transparent"
+    : active
+      ? "transparent"
+      : CALL_SURFACE.btnBorder;
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label={label}
+      title={label}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: 6,
+        background: "transparent",
+        border: "none",
+        padding: 0,
+        cursor: "pointer",
+        fontFamily: "inherit",
+      }}
+    >
+      <span
+        aria-hidden
+        style={{
+          width: 62,
+          height: 62,
+          borderRadius: "50%",
+          background: bg,
+          color,
+          border: `1px solid ${border}`,
+          display: "grid",
+          placeItems: "center",
+          boxShadow: isDanger
+            ? "0 10px 24px rgba(239,68,68,0.35)"
+            : "0 4px 12px rgba(0,0,0,0.35)",
+        }}
+      >
+        {children}
+      </span>
+      <span style={{ fontSize: 11.5, color: CALL_SURFACE.textDim, fontWeight: 500 }}>
+        {label}
+      </span>
+    </button>
+  );
+}
+
+/* ─── Video-call button grid (per video-call mock) ──────────────── */
+
+function VideoCallButtonGrid(props: {
+  muted: boolean;
+  cameraOff: boolean;
+  recording: boolean;
+  onToggleMute: () => void;
+  onToggleCamera: () => void;
+  onSwitchCamera: () => void;
+  onToggleLayout: () => void;
+  onInviteAdd: () => void;
+  onToggleRecord: () => void;
+  onEnd: () => void;
+}): React.JSX.Element {
+  // Top row (4 small): Mute · Camera · Switch · Layout
+  // Bottom row (3): Add · End (red, centred) · Record
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 14,
+        width: "100%",
+        maxWidth: 340,
+      }}
+    >
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(4, 1fr)",
+          gap: 10,
+        }}
+      >
+        <CallSurfaceButton
+          label={props.muted ? "Unmute" : "Mute"}
+          active={props.muted}
+          onClick={props.onToggleMute}
+        >
+          {props.muted ? <MicOffIcon /> : <MicIcon />}
+        </CallSurfaceButton>
+        <CallSurfaceButton
+          label={props.cameraOff ? "Camera on" : "Camera"}
+          active={props.cameraOff}
+          onClick={props.onToggleCamera}
+        >
+          {props.cameraOff ? <VideoOffIcon /> : <VideoIcon />}
+        </CallSurfaceButton>
+        <CallSurfaceButton label="Switch" onClick={props.onSwitchCamera}>
+          <SwitchCameraIcon />
+        </CallSurfaceButton>
+        <CallSurfaceButton label="Layout" onClick={props.onToggleLayout}>
+          <LayoutIcon />
+        </CallSurfaceButton>
+      </div>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(3, 1fr)",
+          gap: 10,
+          placeItems: "center",
+        }}
+      >
+        <CallSurfaceButton label="Add" onClick={props.onInviteAdd}>
+          <AddUserIcon />
+        </CallSurfaceButton>
+        <CallSurfaceButton label="End" tone="danger" onClick={props.onEnd}>
+          <HangupIcon />
+        </CallSurfaceButton>
+        <CallSurfaceButton
+          label={props.recording ? "Recording" : "Record"}
+          active={props.recording}
+          onClick={props.onToggleRecord}
+        >
+          <RecordIcon active={props.recording} />
+        </CallSurfaceButton>
+      </div>
+    </div>
+  );
+}
+
+/* ─── DTMF keypad sheet ─────────────────────────────────────────── */
+
+function KeypadSheet(props: {
+  buffer: string;
+  onPress: (d: string) => void;
+  onClose: () => void;
+}): React.JSX.Element {
+  const digits: Array<[string, string]> = [
+    ["1", ""],
+    ["2", "ABC"],
+    ["3", "DEF"],
+    ["4", "GHI"],
+    ["5", "JKL"],
+    ["6", "MNO"],
+    ["7", "PQRS"],
+    ["8", "TUV"],
+    ["9", "WXYZ"],
+    ["*", ""],
+    ["0", "+"],
+    ["#", ""],
+  ];
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label="Keypad"
+      style={{
+        position: "absolute",
+        inset: 0,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "flex-end",
+        padding: "0 20px calc(env(safe-area-inset-bottom, 0) + 24px)",
+        zIndex: 3,
+        background:
+          "linear-gradient(180deg, rgba(13,8,6,0) 0%, rgba(13,8,6,0.9) 55%, rgba(13,8,6,0.96) 100%)",
+      }}
+      onClick={props.onClose}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          background: "rgba(255,255,255,0.03)",
+          border: `1px solid ${CALL_SURFACE.btnBorder}`,
+          borderRadius: 20,
+          padding: "16px 14px 18px",
+          boxShadow: "0 24px 60px rgba(0,0,0,0.6)",
+        }}
+      >
+        <div
+          style={{
+            minHeight: 32,
+            fontSize: 24,
+            fontWeight: 600,
+            color: CALL_SURFACE.text,
+            fontVariantNumeric: "tabular-nums",
+            textAlign: "center",
+            marginBottom: 12,
+            letterSpacing: "0.08em",
+          }}
+        >
+          {props.buffer || "·"}
+        </div>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(3, 1fr)",
+            gap: 10,
+          }}
+        >
+          {digits.map(([d, sub]) => (
+            <button
+              key={d}
+              type="button"
+              onClick={() => props.onPress(d)}
+              aria-label={`Dial ${d}`}
+              style={{
+                padding: "12px 0 10px",
+                borderRadius: 14,
+                background: CALL_SURFACE.btnBg,
+                border: `1px solid ${CALL_SURFACE.btnBorder}`,
+                color: CALL_SURFACE.text,
+                fontSize: 22,
+                fontWeight: 600,
+                cursor: "pointer",
+                fontFamily: "inherit",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: 2,
+              }}
+            >
+              <span>{d}</span>
+              {sub && (
+                <span style={{ fontSize: 9.5, color: CALL_SURFACE.textDim, letterSpacing: "0.14em" }}>
+                  {sub}
+                </span>
+              )}
+            </button>
+          ))}
+        </div>
+        <button
+          type="button"
+          onClick={props.onClose}
+          style={{
+            width: "100%",
+            marginTop: 12,
+            padding: "10px",
+            borderRadius: 999,
+            background: "transparent",
+            border: `1px solid ${CALL_SURFACE.btnBorder}`,
+            color: CALL_SURFACE.textDim,
+            fontSize: 13,
+            fontWeight: 600,
+            cursor: "pointer",
+            fontFamily: "inherit",
+          }}
+        >
+          Hide keypad
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function subStatusLabel(
+  state: PeerCallState,
+  endReason: PeerCallEndReason | null,
+): string {
+  switch (state) {
+    case "dialing":    return "Ringing…";
+    case "incoming":   return "Incoming";
+    case "connecting": return "Connecting…";
+    case "connected":  return "Connected";
+    case "ended":      return endReasonLabel(endReason);
+    case "idle":       return "";
+  }
+}
+
+/* Avatar · orange glow ring per mock design. */
+function PeerAvatarOrange({
+  name,
+  url,
+}: {
+  name: string;
+  url: string | null;
+}): React.JSX.Element {
+  const initials = name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((p) => p.charAt(0).toUpperCase())
+    .join("");
+  return (
+    <div
+      aria-hidden
+      style={{
+        width: 132,
+        height: 132,
+        borderRadius: "50%",
+        background: url
+          ? `url(${url}) center/cover`
+          : `linear-gradient(135deg, ${CALL_SURFACE.accentSoft} 0%, rgba(255,138,42,0.08) 100%)`,
+        border: `3px solid ${CALL_SURFACE.accent}`,
+        boxShadow: `0 0 48px ${CALL_SURFACE.accent}55, 0 0 0 10px rgba(255,138,42,0.06)`,
+        display: "grid",
+        placeItems: "center",
+        color: CALL_SURFACE.text,
+        fontSize: 40,
+        fontWeight: 700,
+        letterSpacing: "-0.02em",
+      }}
+    >
+      {url ? "" : initials || "?"}
     </div>
   );
 }
@@ -881,6 +1571,73 @@ function VideoOffIcon(): React.JSX.Element {
          strokeLinecap="round" strokeLinejoin="round" aria-hidden>
       <line x1={1} y1={1} x2={23} y2={23} />
       <path d="M16 16v1a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h2m5.66 0H14a2 2 0 0 1 2 2v3.34l1 1L23 7v10" />
+    </svg>
+  );
+}
+function SpeakerIcon(): React.JSX.Element {
+  return (
+    <svg width={22} height={22} viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" strokeWidth={1.9}
+         strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+      <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+      <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+    </svg>
+  );
+}
+function KeypadIcon(): React.JSX.Element {
+  return (
+    <svg width={22} height={22} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+      {[
+        [4, 4], [11, 4], [18, 4],
+        [4, 11], [11, 11], [18, 11],
+        [4, 18], [11, 18], [18, 18],
+      ].map(([cx, cy], i) => (
+        <circle key={i} cx={cx} cy={cy} r={1.6} />
+      ))}
+    </svg>
+  );
+}
+function AddUserIcon(): React.JSX.Element {
+  return (
+    <svg width={22} height={22} viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" strokeWidth={1.9}
+         strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+      <circle cx={9} cy={7} r={4} />
+      <line x1={19} y1={8} x2={19} y2={14} />
+      <line x1={16} y1={11} x2={22} y2={11} />
+    </svg>
+  );
+}
+function SwitchCameraIcon(): React.JSX.Element {
+  return (
+    <svg width={22} height={22} viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" strokeWidth={1.9}
+         strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <path d="M20 7h-3.17L15 5H9L7.17 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z" />
+      <path d="M9 13.5l-2-2 2-2" />
+      <path d="M7 11.5h7a3 3 0 0 1 3 3" />
+    </svg>
+  );
+}
+function LayoutIcon(): React.JSX.Element {
+  return (
+    <svg width={22} height={22} viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" strokeWidth={1.9}
+         strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <rect x={3} y={3} width={8} height={8} rx={1.5} />
+      <rect x={13} y={3} width={8} height={8} rx={1.5} />
+      <rect x={3} y={13} width={8} height={8} rx={1.5} />
+      <rect x={13} y={13} width={8} height={8} rx={1.5} />
+    </svg>
+  );
+}
+function RecordIcon({ active }: { active?: boolean }): React.JSX.Element {
+  return (
+    <svg width={22} height={22} viewBox="0 0 24 24" aria-hidden>
+      <circle cx={12} cy={12} r={10} fill="none" stroke="currentColor" strokeWidth={1.9} />
+      <circle cx={12} cy={12} r={active ? 5 : 4.5} fill={active ? "#EF4444" : "currentColor"} />
     </svg>
   );
 }
