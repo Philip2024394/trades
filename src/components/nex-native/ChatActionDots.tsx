@@ -128,7 +128,7 @@ export function ChatActionDots({
             position: "fixed",
             inset: 0,
             background: "transparent",
-            zIndex: 9994,
+            zIndex: 2147483645,
           }}
         />
       )}
@@ -146,7 +146,10 @@ export function ChatActionDots({
 
       {/* Horizontal action pill · slides to the LEFT when open. Lives
           to the LEFT of the 3-dots button so tapping an action is a
-          natural leftward swipe. */}
+          natural leftward swipe. Pill uses the same accent-glass
+          recipe as the AnimationCard · translucent accent tint with
+          an accent rim · so it reads as part of the theme palette
+          and not a black bar. */}
       {open && (
         <div
           data-nex-chat-action-pill
@@ -154,20 +157,20 @@ export function ChatActionDots({
           aria-label="Chat actions"
           style={{
             position: "fixed",
-            right: 60,
-            bottom: 96,
+            right: 56,
+            bottom: 100,
             display: "flex",
             alignItems: "center",
             gap: 6,
             padding: "6px 10px",
             borderRadius: 999,
-            background: "rgba(10, 6, 4, 0.72)",
+            background: `linear-gradient(180deg, ${withAlpha(accent, 0.18)} 0%, ${withAlpha(accent, 0.08)} 100%)`,
             border: `1px solid ${withAlpha(accent, 0.5)}`,
             backdropFilter: "blur(14px) saturate(140%)",
             WebkitBackdropFilter: "blur(14px) saturate(140%)",
             boxShadow:
               "0 10px 28px rgba(0,0,0,0.52), inset 0 1px 0 rgba(255,255,255,0.08)",
-            zIndex: 9996,
+            zIndex: 2147483646,
             animation: "nex-chat-action-pill-in 180ms cubic-bezier(.2,.7,.2,1) both",
           }}
         >
@@ -189,8 +192,8 @@ export function ChatActionDots({
                 padding: 0,
                 display: "grid",
                 placeItems: "center",
-                background: "rgba(0,0,0,0.45)",
-                border: `1px solid ${withAlpha(accent, 0.55)}`,
+                background: withAlpha(accent, 0.14),
+                border: `1px solid ${withAlpha(accent, 0.5)}`,
                 color: accent,
                 cursor: "pointer",
               }}
@@ -225,7 +228,12 @@ export function ChatActionDots({
           color: accent,
           cursor: "pointer",
           filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.75))",
-          zIndex: 9997,
+          // Max 32-bit int so the trigger always paints above every
+          // chat-surface stacking context (the deck's perspective
+          // container + its z-index: 3 wrapper + the deck cards'
+          // zIndex up to 100 inside their own stacking context were
+          // enough to hide a 9997 trigger on some mobile browsers).
+          zIndex: 2147483647,
         }}
       >
         <DotsVerticalIcon />
