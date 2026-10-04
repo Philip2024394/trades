@@ -436,6 +436,7 @@ export default async function DepthCardsLivePage(props: DepthCardsPageProps) {
               themeAccent="#d8a856"
               composerBg="rgba(10, 6, 4, 0.72)"
               themeEmojis={hauntedHotelEmojis}
+              showAnimationsOption
             />
           </div>
         </ChatCoreBoundary>

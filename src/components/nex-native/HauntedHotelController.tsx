@@ -96,6 +96,16 @@ export function HauntedHotelController(): React.JSX.Element {
       window.removeEventListener("nex-shop-slider-visible", onEvt as EventListener);
   }, []);
 
+  // Entry-point from the composer's + button · Media modal fires this
+  // event when the user taps the Animations option. Replaces the
+  // floating 3-dots trigger that used to open the panel.
+  React.useEffect(() => {
+    const onOpen = () => setOpen(true);
+    window.addEventListener("nex-haunted-hotel-open-animations", onOpen);
+    return () =>
+      window.removeEventListener("nex-haunted-hotel-open-animations", onOpen);
+  }, []);
+
   const setToggle = React.useCallback((variant: FxVariant, next: boolean) => {
     setToggles((prev) => {
       const merged = { ...prev, [variant]: next };
@@ -228,33 +238,12 @@ export function HauntedHotelController(): React.JSX.Element {
       {toggles.candelabra && <CandelabraFx />}
       {toggles.blowout && <BlowoutFx />}
 
-      {/* ── 3-dots floating trigger · amber for Haunted Hotel palette ── */}
-      {!open && !shopSliderOpen && (
-        <button
-          type="button"
-          aria-label="Haunted Hotel animations"
-          onClick={() => setOpen(true)}
-          style={{
-            position: "fixed",
-            right: 4,
-            bottom: 96,
-            width: 32,
-            height: 32,
-            padding: 0,
-            borderRadius: 0,
-            background: "transparent",
-            border: "none",
-            color: "#f0c87a",
-            cursor: "pointer",
-            display: "grid",
-            placeItems: "center",
-            zIndex: 9995,
-            filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.75))",
-          }}
-        >
-          <DancingDots />
-        </button>
-      )}
+      {/* 3-dots floating trigger removed 2026-10-04 per founder
+          direction. The Haunted Hotel Animations panel is now entered
+          from the composer's + button (Animations option in the
+          MediaModal), which dispatches the custom window event
+          "nex-haunted-hotel-open-animations" that we listen for below.
+          The floating trigger used to live here. */}
 
       {/* ── Full-screen panel ── */}
       {open && (

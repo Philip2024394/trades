@@ -50,6 +50,13 @@ interface PeerComposerProps {
    *  (rgba(10,6,4,0.72)) so the composer reads as part of the hotel
    *  palette rather than cyan-themed. Pass any valid CSS color. */
   composerBg?: string;
+  /** When true, the Add-media modal (opened from the + button) shows
+   *  an "Animations" option. Tapping it dispatches the custom window
+   *  event "nex-haunted-hotel-open-animations" which the
+   *  HauntedHotelController listens for to open its FX panel. Used by
+   *  the Haunted Hotel theme surface so the Animations entry point
+   *  lives in the + button instead of a separate floating 3-dots. */
+  showAnimationsOption?: boolean;
   /** Bridge 5 · when set, the composer shows a "replying to X"
    *  header + sends the message with a reply_to_id. Reply state
    *  lives in the URL (?reply=<id>) so it survives refresh. */
@@ -125,6 +132,7 @@ export function PeerComposer({
   placeholder,
   themeAccent,
   composerBg,
+  showAnimationsOption,
   replyTarget,
   uploadAction,
   pendingAttachment,
@@ -337,6 +345,7 @@ export function PeerComposer({
           onClose={() => setModalOpen(false)}
           onPickCapture={handleCapturePick}
           captureEnabled={!!uploadAction}
+          showAnimationsOption={!!showAnimationsOption}
         />
       )}
       {uploadAction && (
@@ -902,12 +911,17 @@ function MediaModal({
   onClose,
   onPickCapture,
   captureEnabled,
+  showAnimationsOption,
 }: {
   onClose: () => void;
   onPickCapture?: (kind: CaptureKind) => void;
   /** When true, Camera / Video / Voice trigger real capture flows;
    *  when false, they fall back to the "coming soon" no-op stubs. */
   captureEnabled?: boolean;
+  /** When true, the modal shows an extra "Animations" option that
+   *  dispatches the "nex-haunted-hotel-open-animations" window event.
+   *  Only passed by the Haunted Hotel theme surface. */
+  showAnimationsOption?: boolean;
 }) {
   // Close on Escape
   React.useEffect(() => {
@@ -1016,6 +1030,22 @@ function MediaModal({
             onClose={onClose}
             href="/nex-native/settings/theme"
           />
+          {showAnimationsOption && (
+            <ModalOption
+              icon={<AnimationsIcon size={26} />}
+              label="Animations"
+              onClose={onClose}
+              onActivate={() => {
+                // Replaces the Haunted Hotel's floating 3-dots entry
+                // point · HauntedHotelController listens for this
+                // event and opens its FX panel.
+                window.dispatchEvent(
+                  new CustomEvent("nex-haunted-hotel-open-animations"),
+                );
+                onClose();
+              }}
+            />
+          )}
         </div>
       </div>
     </>
@@ -1804,6 +1834,26 @@ function VideoIcon({ size = 20 }: { size?: number }) {
   );
 }
 
+function AnimationsIcon({ size = 20 }: { size?: number }) {
+  // Little sparkle · same spirit as the floating 3-dots the Haunted
+  // Hotel used before this entry point moved to the + button.
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path
+        d="M12 3l1.6 5 5 1.6-5 1.6L12 16.2 10.4 11.2 5.4 9.6l5-1.6L12 3z"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M19 14l.8 2.4 2.4.8-2.4.8L19 20.4 18.2 18l-2.4-.8 2.4-.8L19 14z"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
 function PaletteIcon({ size = 20 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden {...strokeProps}>
