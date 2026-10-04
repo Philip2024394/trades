@@ -145,8 +145,8 @@ export function ChatActionDots({
 
       <style>{`
         @keyframes nex-chat-action-pill-in {
-          from { opacity: 0; transform: translateY(-10px); }
-          to   { opacity: 1; transform: translateY(0); }
+          from { opacity: 0; transform: translateX(16px); }
+          to   { opacity: 1; transform: translateX(0); }
         }
         @keyframes nex-chat-action-dot-pulse {
           0%, 100% { transform: scale(1);   opacity: 0.72; }
@@ -158,12 +158,13 @@ export function ChatActionDots({
         }
       `}</style>
 
-      {/* Vertical action column · drops DOWN from the 3-dots trigger
-          when open (founder direction 2026-10-04). Column uses the
-          same accent-glass recipe as the AnimationCard so it reads
-          as part of the theme palette. First item is the Record
-          button, which gets a persistent red pulse so it reads as
-          the primary "record this call" action. */}
+      {/* Horizontal action pill · slides to the LEFT when open
+          (founder direction 2026-10-04 · revert of the vertical
+          drop-down). Pill uses the same accent-glass recipe as the
+          AnimationCard so it reads as part of the theme palette.
+          First item (leftmost in the row) is the Record button,
+          which gets a persistent red pulse so it reads as the
+          primary "record this call" action. */}
       {open && (
         <div
           data-nex-chat-action-pill
@@ -171,17 +172,17 @@ export function ChatActionDots({
           aria-label="Chat actions"
           style={{
             position: "fixed",
-            right: 14,
-            // Column drops BELOW the trigger: trigger lives at
-            // bottom: 108 with height 44, so its top edge is at
-            // bottom: 152. The column anchors its top just under
-            // that so each action button descends toward the composer.
-            top: `calc(100dvh - 152px - 8px)`,
+            // Pill anchors to the RIGHT edge just left of the trigger
+            // (trigger sits at right: 14, width 44, so its left edge
+            // is at right: 58 · pill offsets a touch further for a
+            // clean gap).
+            right: 62,
+            bottom: 112,
             display: "flex",
-            flexDirection: "column",
+            flexDirection: "row",
             alignItems: "center",
             gap: 6,
-            padding: "10px 6px",
+            padding: "6px 10px",
             borderRadius: 999,
             background: `linear-gradient(180deg, ${withAlpha(accent, 0.18)} 0%, ${withAlpha(accent, 0.08)} 100%)`,
             border: `1px solid ${withAlpha(accent, 0.5)}`,
