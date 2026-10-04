@@ -298,16 +298,16 @@ function PrimaryCards({
       }}
     >
       <PrimaryCard
-        tint={PAL.green}
-        tintSoft={PAL.greenSoft}
+        tint={PAL.orange}
+        tintSoft={PAL.orangeSoft}
         icon={<PhoneIcon size={24} />}
         title="Voice call"
         subtitle="Talk with someone"
         onClick={() => onPick("voice")}
       />
       <PrimaryCard
-        tint={PAL.blue}
-        tintSoft={PAL.blueSoft}
+        tint="#00AFFF"
+        tintSoft="rgba(0,175,255,0.14)"
         icon={<VideoIcon size={24} />}
         title="Video call"
         subtitle="See someone face to face"
@@ -345,12 +345,16 @@ function PrimaryCard({
         gap: 10,
         padding: "16px 14px 14px",
         borderRadius: 20,
-        background: PAL.card,
-        border: `1px solid ${PAL.cardBorder}`,
+        border: "2px solid transparent",
+        background: `rgba(255,255,255,0.05) padding-box, ${RIM_GRADIENT} border-box`,
+        backdropFilter: "blur(14px)",
+        WebkitBackdropFilter: "blur(14px)",
         color: PAL.text,
         textAlign: "left",
         boxShadow:
-          "0 1px 2px rgba(0,0,0,0.3), 0 10px 24px rgba(0,0,0,0.3)",
+          "inset 0 1px 0 rgba(255,255,255,0.14), 0 10px 24px rgba(0,0,0,0.4), 0 0 20px rgba(255,114,0,0.1), 0 0 24px rgba(0,175,255,0.1)",
+        cursor: "pointer",
+        fontFamily: "inherit",
       }}
     >
       <span
@@ -358,19 +362,22 @@ function PrimaryCard({
         style={{
           width: 46,
           height: 46,
-          borderRadius: 999,
-          background: tintSoft,
+          borderRadius: 14,
+          border: "1.5px solid transparent",
+          background: `${tint}1F padding-box, ${RIM_GRADIENT} border-box`,
+          backdropFilter: "blur(8px)",
+          WebkitBackdropFilter: "blur(8px)",
           color: tint,
           display: "grid",
           placeItems: "center",
-          border: `1px solid ${tint}44`,
+          boxShadow: `inset 0 1px 0 rgba(255,255,255,0.14), 0 0 16px ${tint}33`,
         }}
       >
         {icon}
       </span>
       <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
         <span style={{ fontSize: 15.5, fontWeight: 700 }}>{title}</span>
-        <span style={{ fontSize: 11.5, color: PAL.textDim, lineHeight: 1.3 }}>
+        <span style={{ fontSize: 11.5, color: NEX_BRAND.textDim, lineHeight: 1.3 }}>
           {subtitle}
         </span>
       </div>
@@ -389,6 +396,7 @@ function PrimaryCard({
           placeItems: "center",
           fontSize: 12,
           fontWeight: 700,
+          boxShadow: `0 0 10px ${PAL.orange}66`,
         }}
       >
         <PlusIcon size={12} />
@@ -449,17 +457,7 @@ function QuickActionButton({
       type="button"
       onClick={onClick}
       aria-label={label}
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: 6,
-        padding: "14px 8px",
-        borderRadius: 16,
-        background: PAL.card,
-        border: `1px solid ${PAL.cardBorder}`,
-        color: PAL.text,
-      }}
+      style={quickActionTile(false)}
     >
       <span aria-hidden style={{ color: PAL.orange }}>{icon}</span>
       <span style={{ fontSize: 12, fontWeight: 500 }}>{label}</span>
@@ -483,20 +481,13 @@ function QuickAction({
       aria-label={`${label} · ${disabledReason}`}
       title={disabledReason}
       style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: 6,
-        padding: "14px 8px",
-        borderRadius: 16,
-        background: PAL.card,
-        border: `1px solid ${PAL.cardBorder}`,
+        ...quickActionTile(true),
         color: PAL.textMuted,
         opacity: 0.55,
         cursor: "not-allowed",
       }}
     >
-      <span aria-hidden style={{ color: PAL.textDim }}>{icon}</span>
+      <span aria-hidden style={{ color: NEX_BRAND.textDim }}>{icon}</span>
       <span style={{ fontSize: 12, fontWeight: 500 }}>{label}</span>
     </button>
   );
@@ -512,24 +503,37 @@ function QuickActionLink({
   href: string;
 }): React.JSX.Element {
   return (
-    <Link
-      href={href}
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: 6,
-        padding: "14px 8px",
-        borderRadius: 16,
-        background: PAL.card,
-        border: `1px solid ${PAL.cardBorder}`,
-        color: PAL.text,
-      }}
-    >
-      <span aria-hidden style={{ color: PAL.orange }}>{icon}</span>
+    <Link href={href} style={quickActionTile(false)}>
+      <span aria-hidden style={{ color: NEX_BRAND.cyan }}>{icon}</span>
       <span style={{ fontSize: 12, fontWeight: 500 }}>{label}</span>
     </Link>
   );
+}
+
+/** Shared glass tile recipe for the three quick-action slots so they
+ *  render as a cohesive strip under the primary cards. */
+function quickActionTile(muted: boolean): React.CSSProperties {
+  return {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: 6,
+    padding: "14px 8px",
+    borderRadius: 16,
+    border: "1.5px solid transparent",
+    background: muted
+      ? `rgba(255,255,255,0.03) padding-box, linear-gradient(135deg, ${NEX_BRAND.textDim}33, ${NEX_BRAND.textDim}33) border-box`
+      : `rgba(255,255,255,0.05) padding-box, ${RIM_GRADIENT} border-box`,
+    backdropFilter: "blur(12px)",
+    WebkitBackdropFilter: "blur(12px)",
+    color: PAL.text,
+    textDecoration: "none",
+    cursor: muted ? "not-allowed" : "pointer",
+    fontFamily: "inherit",
+    boxShadow: muted
+      ? "none"
+      : "inset 0 1px 0 rgba(255,255,255,0.1), 0 6px 16px rgba(0,0,0,0.35), 0 0 14px rgba(255,114,0,0.08), 0 0 18px rgba(0,175,255,0.08)",
+  };
 }
 
 /* ─── People (friends · reference calls it Favourites) ──────────── */
@@ -544,13 +548,17 @@ function PeopleRow({ people }: { people: CallsPerson[] }): React.JSX.Element {
         <div
           style={{
             padding: "18px 16px",
-            borderRadius: 16,
-            background: PAL.card,
-            border: `1px solid ${PAL.cardBorder}`,
-            color: PAL.textDim,
+            borderRadius: 18,
+            border: "1.5px solid transparent",
+            background: `rgba(255,255,255,0.04) padding-box, ${RIM_GRADIENT} border-box`,
+            backdropFilter: "blur(14px)",
+            WebkitBackdropFilter: "blur(14px)",
+            color: NEX_BRAND.textDim,
             fontSize: 13,
             lineHeight: 1.45,
             textAlign: "center",
+            boxShadow:
+              "inset 0 1px 0 rgba(255,255,255,0.1), 0 8px 20px rgba(0,0,0,0.3), 0 0 16px rgba(255,114,0,0.06), 0 0 18px rgba(0,175,255,0.06)",
           }}
         >
           Add friends on NEX to call them from here.{" "}
@@ -660,8 +668,7 @@ function PeopleActionButton({
   peerName: string;
   onActivate: () => void;
 }): React.JSX.Element {
-  const color = kind === "voice" ? PAL.green : PAL.blue;
-  const soft = kind === "voice" ? PAL.greenSoft : PAL.blueSoft;
+  const color = kind === "voice" ? NEX_BRAND.orange : NEX_BRAND.cyan;
   const label =
     kind === "voice" ? `Call ${peerName}` : `Video call ${peerName}`;
   const disabledLabel = `${peerName} is on a call`;
@@ -676,17 +683,22 @@ function PeopleActionButton({
         onActivate();
       }}
       style={{
-        width: 26,
-        height: 26,
+        width: 28,
+        height: 28,
         padding: 0,
         borderRadius: 999,
         display: "grid",
         placeItems: "center",
-        background: busy ? "rgba(255,255,255,0.04)" : soft,
-        border: `1px solid ${busy ? PAL.cardBorder : color + "66"}`,
+        border: "1.5px solid transparent",
+        background: busy
+          ? `rgba(255,255,255,0.04) padding-box, linear-gradient(135deg, ${NEX_BRAND.textDim}44, ${NEX_BRAND.textDim}44) border-box`
+          : `${color}1F padding-box, ${RIM_GRADIENT} border-box`,
+        backdropFilter: "blur(8px)",
+        WebkitBackdropFilter: "blur(8px)",
         color: busy ? PAL.textMuted : color,
         cursor: busy ? "not-allowed" : "pointer",
         opacity: busy ? 0.55 : 1,
+        boxShadow: busy ? "none" : `0 0 10px ${color}33`,
       }}
     >
       {kind === "voice" ? <PhoneIcon size={12} /> : <VideoIcon size={12} />}
@@ -732,7 +744,7 @@ function RecentCalls({
             padding: 0,
             display: "flex",
             flexDirection: "column",
-            gap: 4,
+            gap: 10,
           }}
         >
           {filtered.map((c) => (
@@ -788,23 +800,29 @@ function RecentCallsEmpty({
     <div
       style={{
         padding: "28px 20px",
-        borderRadius: 16,
-        background: PAL.card,
-        border: `1px solid ${PAL.cardBorder}`,
+        borderRadius: 18,
+        border: "1.5px solid transparent",
+        background: `rgba(255,255,255,0.04) padding-box, ${RIM_GRADIENT} border-box`,
+        backdropFilter: "blur(14px)",
+        WebkitBackdropFilter: "blur(14px)",
         textAlign: "center",
+        boxShadow:
+          "inset 0 1px 0 rgba(255,255,255,0.1), 0 10px 24px rgba(0,0,0,0.35), 0 0 18px rgba(255,114,0,0.08), 0 0 22px rgba(0,175,255,0.08)",
       }}
     >
       <div
         aria-hidden
         style={{
           margin: "0 auto 10px",
-          width: 44,
-          height: 44,
-          borderRadius: 999,
-          background: PAL.orangeSoft,
+          width: 48,
+          height: 48,
+          borderRadius: 14,
+          border: "1.5px solid transparent",
+          background: `${PAL.orange}1F padding-box, ${RIM_GRADIENT} border-box`,
           color: PAL.orange,
           display: "grid",
           placeItems: "center",
+          boxShadow: `inset 0 1px 0 rgba(255,255,255,0.12), 0 0 14px ${PAL.orange}33`,
         }}
       >
         <PhoneIcon size={20} />
@@ -816,7 +834,7 @@ function RecentCallsEmpty({
         style={{
           margin: "6px auto 0",
           fontSize: 12,
-          color: PAL.textDim,
+          color: NEX_BRAND.textDim,
           lineHeight: 1.5,
           maxWidth: 300,
         }}
@@ -840,9 +858,17 @@ function RecentCallRowView({ row }: { row: RecentCallRow }): React.JSX.Element {
         display: "flex",
         alignItems: "center",
         gap: 12,
-        padding: "10px 10px",
-        borderRadius: 12,
-        background: "transparent",
+        padding: "12px 14px",
+        borderRadius: 14,
+        border: "1.5px solid transparent",
+        background: missed
+          ? `rgba(153,27,27,0.08) padding-box, linear-gradient(135deg, ${NEX_BRAND.darkRed}, ${NEX_BRAND.darkRed}) border-box`
+          : `rgba(255,255,255,0.04) padding-box, ${RIM_GRADIENT} border-box`,
+        backdropFilter: "blur(12px)",
+        WebkitBackdropFilter: "blur(12px)",
+        textDecoration: "none",
+        boxShadow:
+          "inset 0 1px 0 rgba(255,255,255,0.08), 0 6px 14px rgba(0,0,0,0.3), 0 0 14px rgba(255,114,0,0.06), 0 0 16px rgba(0,175,255,0.06)",
       }}
     >
       <Avatar name={row.peerName} avatarUrl={row.peerAvatarUrl} size={44} />
@@ -1029,12 +1055,18 @@ function RecentsFilterDropdown({
           gap: 10,
           padding: "11px 14px",
           borderRadius: 14,
-          background: PAL.card,
-          border: `1px solid ${PAL.cardBorderStrong}`,
+          border: "1.5px solid transparent",
+          background: `rgba(255,255,255,0.04) padding-box, ${RIM_GRADIENT} border-box`,
+          backdropFilter: "blur(12px)",
+          WebkitBackdropFilter: "blur(12px)",
           color: PAL.text,
           fontSize: 13.5,
           fontWeight: 600,
           letterSpacing: "0.01em",
+          cursor: "pointer",
+          fontFamily: "inherit",
+          boxShadow:
+            "inset 0 1px 0 rgba(255,255,255,0.08), 0 6px 14px rgba(0,0,0,0.3)",
         }}
       >
         <span>{current.label}</span>
@@ -1062,9 +1094,12 @@ function RecentsFilterDropdown({
               right: 0,
               padding: 6,
               borderRadius: 14,
-              background: PAL.card,
-              border: `1px solid ${PAL.cardBorderStrong}`,
-              boxShadow: "0 20px 44px rgba(0,0,0,0.55)",
+              border: "1.5px solid transparent",
+              background: `rgba(10,15,35,0.86) padding-box, ${RIM_GRADIENT} border-box`,
+              backdropFilter: "blur(18px)",
+              WebkitBackdropFilter: "blur(18px)",
+              boxShadow:
+                "inset 0 1px 0 rgba(255,255,255,0.08), 0 20px 44px rgba(0,0,0,0.6), 0 0 20px rgba(255,114,0,0.12), 0 0 24px rgba(0,175,255,0.12)",
               zIndex: 50,
               listStyle: "none",
               margin: 0,
@@ -2449,27 +2484,34 @@ function Avatar({
   presence?: PresenceKind;
 }): React.JSX.Element {
   const initials = initialsOf(name);
+  // Presence colours flow with the brand: cyan for online (matches the
+  // call-page ping rings), dark red for busy. No green on the hub so
+  // the rim colour reads as part of the NEX call language.
   const rimColor =
     presence === "online"
-      ? PAL.green
+      ? NEX_BRAND.cyan
       : presence === "busy"
-        ? PAL.orange
+        ? NEX_BRAND.darkRed
         : null;
+  // Fallback fill alternates orange / cyan by first letter · brand
+  // discipline, no pastel gradients.
+  const fallbackTint =
+    name.charCodeAt(0) % 2 === 0 ? NEX_BRAND.orange : NEX_BRAND.cyan;
   const inner = (
     <div
       style={{
         width: size,
         height: size,
         borderRadius: 999,
-        background: avatarUrl ? "#000" : `linear-gradient(145deg, ${PAL.orange}44, ${PAL.blue}44)`,
-        color: PAL.text,
+        background: avatarUrl ? "#000" : `${fallbackTint}22`,
+        color: avatarUrl ? PAL.text : fallbackTint,
         display: "grid",
         placeItems: "center",
         fontSize: size < 44 ? 14 : 18,
         fontWeight: 700,
         overflow: "hidden",
         flexShrink: 0,
-        border: `1px solid ${PAL.cardBorderStrong}`,
+        border: `1px solid ${fallbackTint}44`,
       }}
     >
       {avatarUrl ? (

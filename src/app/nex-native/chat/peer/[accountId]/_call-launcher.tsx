@@ -61,26 +61,25 @@ const NEX = {
  * If you touch the hub palette (PAL in _calls-client.tsx), update
  * these values in the same change so the two don't drift. */
 const CALL_SURFACE = {
-  // Matches the Create Account page canvas (#020914) + the same
-  // single faint cyan radial glow from the top centre. The Call
-  // Center hub (PAL in _calls-client.tsx) uses the identical
-  // treatment. If you touch any of these three surfaces, update
-  // the other two in the same change.
+  // One palette for the Call Center hub + the voice/video call page.
+  // Mirrors Create Account + Sign In · NEX brand tokens only.
+  // If you touch any of these three surfaces, update the other two
+  // in the same change (PAL + NEX_BRAND in _calls-client.tsx).
   bg1: "#020914",
   bg2: "#020914",
   bgGlow: "rgba(0,175,255,0.09)",
-  accent: "#FF9933",
-  accentSoft: "rgba(255,153,51,0.16)",
-  ping: "#4C8DF2",
-  green: "#22C55E",
+  accent: "#FF7200",                   // deep NEX orange
+  accentSoft: "rgba(255,114,0,0.16)",
+  ping: "#00AFFF",                     // electric NEX cyan
+  green: "#22C55E",                    // kept only for the live-chip dot
   red: "#991B1B",
-  text: "#F2F5FA",
-  textDim: "#A6ADC2",
-  textMuted: "#6B7490",
-  btnBg: "#162544",
-  btnBorder: "rgba(76,141,242,0.22)",
-  wordmarkA: "#F2F5FA",
-  wordmarkB: "#FF9933",
+  text: "#F2F5F8",
+  textDim: "#7D9BC0",                  // NEX cool blue-grey
+  textMuted: "#4B6683",
+  btnBg: "rgba(255,255,255,0.05)",     // frosted glass fill for buttons
+  btnBorder: "rgba(0,175,255,0.22)",
+  wordmarkA: "#F2F5F8",
+  wordmarkB: "#FF7200",
 };
 
 const CALL_BUTTON_STYLE: React.CSSProperties = {
@@ -1155,18 +1154,24 @@ function CallSurfaceButton({
   children: React.ReactNode;
 }): React.JSX.Element {
   const isDanger = tone === "danger";
-  // Mock-aligned: solid orange NEX accent for every non-destructive
-  // control, white icon on top. Active state (muted / camera-off /
-  // speaker-on) flips to white bg + orange icon so the viewer sees
-  // the toggle without needing to read the label. End stays solid
-  // red regardless.
-  const bg = isDanger
-    ? CALL_SURFACE.red
+  // Glass style per prototype 03 · frosted interior with a 2px
+  // gradient rim running orange → cyan. End tile loses the gradient
+  // and stays solid dark red so the destructive action is
+  // unambiguous. Active state (muted/camera-off/speaker-on) inverts
+  // to a bright glass fill with an orange icon.
+  const rimGradient = isDanger
+    ? `linear-gradient(135deg, ${CALL_SURFACE.red} 0%, ${CALL_SURFACE.red} 100%)`
+    : `linear-gradient(135deg, ${CALL_SURFACE.accent} 0%, #00AFFF 100%)`;
+  const glassFill = isDanger
+    ? "rgba(153,27,27,0.82)"
     : active
-      ? "#ffffff"
-      : CALL_SURFACE.accent;
-  const color = isDanger ? "#fff" : active ? CALL_SURFACE.accent : "#ffffff";
-  const border = "transparent";
+      ? "rgba(255,255,255,0.22)"
+      : "rgba(255,255,255,0.08)";
+  const iconColor = isDanger
+    ? "#fff"
+    : active
+      ? CALL_SURFACE.accent
+      : "#fff";
   return (
     <button
       type="button"
@@ -1188,17 +1193,19 @@ function CallSurfaceButton({
       <span
         aria-hidden
         style={{
-          width: 62,
-          height: 62,
-          borderRadius: "50%",
-          background: bg,
-          color,
-          border: `1px solid ${border}`,
+          width: 64,
+          height: 64,
+          borderRadius: 20,
+          border: "2px solid transparent",
+          background: `${glassFill} padding-box, ${rimGradient} border-box`,
+          backdropFilter: "blur(14px)",
+          WebkitBackdropFilter: "blur(14px)",
+          color: iconColor,
           display: "grid",
           placeItems: "center",
           boxShadow: isDanger
             ? "0 10px 24px rgba(153,27,27,0.45)"
-            : "0 6px 16px rgba(255,153,51,0.28)",
+            : "inset 0 1px 0 rgba(255,255,255,0.2), 0 8px 20px rgba(0,0,0,0.5), 0 0 18px rgba(255,153,51,0.22), 0 0 24px rgba(0,175,255,0.22)",
           animation: pulse ? "nex-call-heartbeat 1.4s ease-out infinite" : undefined,
           ["--nex-pulse" as string]: "rgba(230,57,70,0.55)",
           ["--nex-pulse-fade" as string]: "rgba(230,57,70,0)",
