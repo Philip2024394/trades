@@ -48,6 +48,22 @@ export function UniversalComposerFooter({
 
   return (
     <>
+      {/* SEALED RULE 2026-10-05 · "one default footer for every live
+          theme, no exceptions" · UniversalComposerFooter is the single
+          source of truth for the composer on every legacy theme. Each
+          legacy shell has its own native composer underneath; we hide
+          them via CSS so only the universal pill is visible. The
+          sealed shells are NOT edited · just display:none'd via their
+          known selectors. */}
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+            /* ThemeViewerClient / PortraitBloomShell · covers Joker
+               (theme-0), motorbike, vitamins, cakes, Haunted Hotel */
+            [data-nex-peer-composer] { display: none !important; }
+          `,
+        }}
+      />
       {/* Bottom composer bar · fixed to the viewport, full width.
           OUTER CONTAINER BACKGROUND REMOVED (sealed 2026-10-05
           refinement) · just a transparent wrapper hosting the pill

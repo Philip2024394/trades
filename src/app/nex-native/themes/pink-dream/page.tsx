@@ -590,7 +590,10 @@ export default function PinkDreamPreviewPage() {
         onCancel={() => setReplyTarget(null)}
         accentFallback="#FF4FA3"
       />
-      <PinkDreamComposer />
+      {/* Composer retired 2026-10-05 · UniversalComposerFooter below
+          is the sealed "one default footer across every live theme"
+          · PinkDreamComposer no longer rendered. */}
+      {/* <PinkDreamComposer /> */}
 
       <ReactionPicker
         anchor={pickerFor ? pickerAnchor : null}

@@ -367,8 +367,10 @@ export default function Theme1PreviewPage() {
         onCancel={() => setReplyTarget(null)}
         accentFallback="#009FEF"
       />
-      {/* Composer · same shape as Pink Dream · blue palette */}
-      <Theme1Composer />
+      {/* Composer retired 2026-10-05 · UniversalComposerFooter below
+          is the sealed "one default footer across every live theme"
+          · Theme1Composer no longer rendered. */}
+      {/* <Theme1Composer /> */}
 
       <ReactionPicker
         anchor={pickerFor ? pickerAnchor : null}

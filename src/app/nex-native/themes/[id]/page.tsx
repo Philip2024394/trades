@@ -157,16 +157,10 @@ export default async function ThemeViewerPage({
         <UniversalChromeOverlay accent={theme.accent_hex} />
       )}
       {/* UNIVERSAL COMPOSER FOOTER OVERLAY · sealed R3 revision 2 ·
-          Prototype 5 pattern (pill with inline divider) drops on top
-          of every legacy theme's native composer so the footer looks
-          identical across every live theme.
-          EXCEPT · Joker (theme-0) · same reasoning as the chrome
-          overlay above: Joker's native shell has its own composer
-          with its own signature chrome; mounting the universal
-          overlay alongside produced a visible duplicate footer. */}
-      {theme.id !== "theme-0" && (
-        <UniversalComposerFooter accent={theme.accent_hex} />
-      )}
+          Prototype 5 pattern is the ONE default footer across every
+          live theme · no exceptions. UniversalComposerFooter itself
+          injects the CSS that hides native composers underneath. */}
+      <UniversalComposerFooter accent={theme.accent_hex} />
     </>
   );
 }
