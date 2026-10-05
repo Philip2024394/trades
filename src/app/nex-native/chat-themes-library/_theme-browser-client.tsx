@@ -7,6 +7,8 @@
 
 import * as React from "react";
 import { createPortal } from "react-dom";
+import type { WallpaperConfig } from "@/lib/nex-native/chat-render/theme-world";
+import { PhoneGrid } from "./_phone-tile";
 
 const NEX = {
   bg: "#020914",
@@ -45,6 +47,12 @@ export interface BrowserThemeRow {
   /** Phase 4A · poster frame rendered while the video loads · also
    *  shown as a still after end if the user hasn't tapped Replay. */
   intro_poster_url: string | null;
+  /** Phase 1 · optional wallpaper_config threaded from the theme row so
+   *  the Phone Gallery tile can render overlays + bubble preset via
+   *  <ThemeWorld>. Nullable because gratis themes without a Bridge-97
+   *  config don't paint overlays. Not consumed by the legacy
+   *  ThemeGridCard code path · it stays flat regardless. */
+  wallpaper_config: WallpaperConfig | null;
 }
 
 type FilterMode = "all" | "gratis" | "bisnis";
@@ -58,6 +66,13 @@ interface Props {
    *  built-in hero_image_url paint the preview with this. When null,
    *  the preview prompts them to upload a photo. */
   viewerAvatarUrl: string | null;
+  /** Phase 1 feature flag · when TRUE the grid renders the new Phone
+   *  Gallery (mini-phones). When FALSE the legacy ThemeGridCard flat
+   *  tiles render exactly as before. Server reads NEX_THEMES_PHONE_TILES
+   *  and threads the boolean through so client bundles stay env-agnostic.
+   *  Preview modal is identical in both branches · tap opens the same
+   *  modal. */
+  usePhoneTiles: boolean;
 }
 
 export function ThemeBrowserClient({
@@ -66,6 +81,7 @@ export function ThemeBrowserClient({
   canUsePremium,
   activateAction,
   viewerAvatarUrl,
+  usePhoneTiles,
 }: Props) {
   const [query, setQuery] = React.useState("");
   const [filter, setFilter] = React.useState<FilterMode>("all");
@@ -293,9 +309,19 @@ export function ThemeBrowserClient({
         )}
       </div>
 
-      {/* Grid */}
+      {/* Grid · Phase 1 flag branch · the two renderers are mutually
+         exclusive. Legacy ThemeGridCard path kept intact for flag-off
+         rollback. Both branches wire tap → setPreviewId so the preview
+         modal is identical in both states. */}
       {filtered.length === 0 ? (
         <EmptyResult />
+      ) : usePhoneTiles ? (
+        <PhoneGrid
+          themes={filtered}
+          currentThemeId={currentThemeId}
+          canUsePremium={canUsePremium}
+          onOpen={(id) => setPreviewId(id)}
+        />
       ) : (
         <div
           style={{

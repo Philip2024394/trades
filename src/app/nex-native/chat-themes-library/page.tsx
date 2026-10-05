@@ -100,7 +100,16 @@ export default async function ThemePickerPage({
     // Phase 4A · gallery-always-plays intro.
     intro_video_url: t.intro_video_url,
     intro_poster_url: t.intro_poster_url,
+    // Phase 1 · thread the overlay/bubble config to the client so the
+    // Phone Gallery tile can render the theme accurately via <ThemeWorld>.
+    // Legacy ThemeGridCard ignores this field; only the flag-ON path reads it.
+    wallpaper_config: t.wallpaper_config,
   }));
+
+  // Phase 1 feature flag · read server-side so the client bundle stays
+  // env-agnostic. NODE_ENV=production + NEX_THEMES_PHONE_TILES=1 opens
+  // the new gallery; without the flag the legacy flat tiles render.
+  const usePhoneTiles = process.env.NEX_THEMES_PHONE_TILES === "1";
 
   const sp = await searchParams;
   const banner = sp.e && sp.m ? { code: sp.e, message: sp.m } : null;
@@ -322,6 +331,7 @@ export default async function ThemePickerPage({
             canUsePremium={canUsePremium}
             activateAction={updateChatThemeAction}
             viewerAvatarUrl={viewerAvatarUrl}
+            usePhoneTiles={usePhoneTiles}
           />
         </div>
       </main>
