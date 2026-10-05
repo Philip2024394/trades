@@ -77,6 +77,15 @@ function AmbientFamily({
       return <SteamRising {...family} />;
     case "warm-glow-pulse":
       return <WarmGlowPulse {...family} />;
+    // Extension Batch 001 renderers (2026-10-05)
+    case "sun-dapple":
+      return <SunDapple {...family} />;
+    case "pollen-float":
+      return <PollenFloat {...family} />;
+    case "neon-flicker":
+      return <NeonFlicker {...family} />;
+    case "rain-streak":
+      return <RainStreak {...family} />;
     default:
       return null;
   }
@@ -495,6 +504,181 @@ function WarmGlowPulse({
           }}
         />
       ))}
+    </>
+  );
+}
+
+// ─── Extension Batch 001 · Sun-dapple ───────────────────────────────
+// Slow-moving semi-transparent light patches drifting across the stage ·
+// evokes sunlight through swaying leaves. Universal · usable by any
+// theme opting into sun-dapple ambient family.
+
+function SunDapple({
+  color,
+  density,
+  speedSeconds,
+  size,
+}: AmbientTreatment["families"][number]): React.JSX.Element {
+  const patches = React.useMemo(
+    () => seededRandomArray(272727, density),
+    [density],
+  );
+  return (
+    <>
+      {patches.map(([l, t, sz, d], i) => {
+        const dim = size * (0.75 + sz * 0.8);
+        const dur = speedSeconds + d * 10;
+        return (
+          <span
+            key={i}
+            style={
+              {
+                position: "absolute",
+                left: `${l * 100}%`,
+                top: `${t * 100}%`,
+                width: dim,
+                height: dim * 0.8,
+                borderRadius: "50%",
+                background: `radial-gradient(ellipse at 50% 50%, ${color} 0%, transparent 65%)`,
+                filter: "blur(20px)",
+                mixBlendMode: "screen",
+                animation: `nex-se-sun-dapple-drift ${dur}s ease-in-out infinite`,
+                animationDelay: `-${d * dur}s`,
+                ["--nex-se-dx" as unknown as string]: `${(l - 0.5) * 60}px`,
+                ["--nex-se-dy" as unknown as string]: `${(t - 0.5) * 36}px`,
+              } as React.CSSProperties
+            }
+          />
+        );
+      })}
+    </>
+  );
+}
+
+// ─── Extension Batch 001 · Pollen-float ─────────────────────────────
+// Soft tinted particles with slow lateral drift and gentle rise ·
+// warmer and gentler than bubbles-rising. Universal.
+
+function PollenFloat({
+  color,
+  density,
+  speedSeconds,
+  size,
+}: AmbientTreatment["families"][number]): React.JSX.Element {
+  const particles = React.useMemo(
+    () => seededRandomArray(383838, density),
+    [density],
+  );
+  return (
+    <>
+      {particles.map(([l, d, sz, x], i) => {
+        const dim = size * (0.7 + sz * 1.1);
+        return (
+          <span
+            key={i}
+            style={
+              {
+                position: "absolute",
+                left: `${l * 100}%`,
+                bottom: -dim,
+                width: dim,
+                height: dim,
+                borderRadius: "50%",
+                background: `radial-gradient(circle at 35% 35%, ${color} 0%, transparent 70%)`,
+                boxShadow: `0 0 ${dim * 2}px ${color}`,
+                filter: "blur(0.4px)",
+                opacity: 0.8,
+                animation: `nex-se-pollen-float ${speedSeconds}s linear infinite`,
+                animationDelay: `-${d * speedSeconds}s`,
+                ["--nex-se-x" as unknown as string]: `${(x - 0.5) * 40}px`,
+              } as React.CSSProperties
+            }
+          />
+        );
+      })}
+    </>
+  );
+}
+
+// ─── Extension Batch 001 · Neon-flicker ─────────────────────────────
+// Scattered sharp pulses with intermittent flicker · neon-tube signage
+// against darkness. Points are placed deterministically; the keyframe
+// is irregular so the overall field never settles into a predictable
+// rhythm. Universal.
+
+function NeonFlicker({
+  color,
+  density,
+  speedSeconds,
+  size,
+}: AmbientTreatment["families"][number]): React.JSX.Element {
+  const points = React.useMemo(
+    () => seededRandomArray(464646, density),
+    [density],
+  );
+  return (
+    <>
+      {points.map(([l, t, sz, d], i) => (
+        <span
+          key={i}
+          style={{
+            position: "absolute",
+            left: `${l * 100}%`,
+            top: `${t * 100}%`,
+            width: size * (0.8 + sz * 0.8),
+            height: size * (0.8 + sz * 0.8),
+            borderRadius: "50%",
+            background: color,
+            boxShadow: `0 0 ${size * 2}px ${color}, 0 0 ${size * 5}px ${color}`,
+            mixBlendMode: "screen",
+            animation: `nex-se-neon-flicker ${speedSeconds + d * 2}s ease-in-out infinite`,
+            animationDelay: `-${d * speedSeconds * 2}s`,
+          }}
+        />
+      ))}
+    </>
+  );
+}
+
+// ─── Extension Batch 001 · Rain-streak ──────────────────────────────
+// Thin vertical rain streaks · reads as noir / cinematic / monsoon.
+// Density is high and lifetimes are short so the field looks like a
+// steady curtain of rain. Universal.
+
+function RainStreak({
+  color,
+  density,
+  speedSeconds,
+  size,
+}: AmbientTreatment["families"][number]): React.JSX.Element {
+  const streaks = React.useMemo(
+    () => seededRandomArray(585858, density),
+    [density],
+  );
+  return (
+    <>
+      {streaks.map(([l, d, sz, _rot], i) => {
+        const h = 30 + sz * 60;
+        const dur = speedSeconds * (0.7 + sz * 0.8);
+        return (
+          <span
+            key={i}
+            style={{
+              position: "absolute",
+              left: `${l * 100}%`,
+              top: -h,
+              width: size,
+              height: h,
+              background: `linear-gradient(180deg, transparent 0%, ${color} 20%, ${color} 80%, transparent 100%)`,
+              filter: `blur(${size * 0.3}px)`,
+              transform: "rotate(8deg)",
+              transformOrigin: "top center",
+              animation: `nex-se-rain-streak ${dur}s linear infinite`,
+              animationDelay: `-${d * dur}s`,
+            }}
+          />
+        );
+      })}
     </>
   );
 }

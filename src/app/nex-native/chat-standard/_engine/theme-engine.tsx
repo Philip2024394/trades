@@ -98,7 +98,15 @@ export function createEngine(pkg: ThemePackage): ResolvedEngine {
   const motionRow = MOTION_TABLE[personality];
 
   // CSS custom properties scoped under [data-nex-standard-experience]
-  // so every surface can lean on them.
+  // so every surface can lean on them. Typography vars are optional ·
+  // when the package omits typography the vars fall back to `inherit`
+  // (which inherits the NEX default font) so Ocean and Coffee remain
+  // byte-equivalent to pre-Extension-Batch-001 output.
+  const typography = pkg.typography ?? {};
+  const fontFamily = typography.fontFamily ?? "inherit";
+  const headingWeight = typography.headingWeight ?? 700;
+  const bodyWeight = typography.bodyWeight ?? 500;
+  const letterSpacing = typography.letterSpacing ?? "normal";
   const cssVars = `
     [data-nex-standard-experience] {
       --nex-se-primary:   ${colours.primary};
@@ -110,6 +118,12 @@ export function createEngine(pkg: ThemePackage): ResolvedEngine {
       --nex-se-primary-45: ${hexToRgba(colours.primary, 0.45)};
       --nex-se-primary-75: ${hexToRgba(colours.primary, 0.75)};
       --nex-se-focus: ${hexToRgba(colours.primary, 0.35)};
+      --nex-se-font-family: ${fontFamily};
+      --nex-se-heading-weight: ${headingWeight};
+      --nex-se-body-weight: ${bodyWeight};
+      --nex-se-letter-spacing: ${letterSpacing};
+      font-family: var(--nex-se-font-family);
+      letter-spacing: var(--nex-se-letter-spacing);
     }`;
 
   const stylesheet = `${cssVars}\n${keyframesFor(personality)}`;
@@ -372,11 +386,16 @@ export function createEngine(pkg: ThemePackage): ResolvedEngine {
       cardStyle === "driftwood-board" || cardStyle === "shell";
     const wantsWarmSheen =
       cardStyle === "wood-plank" || cardStyle === "ceramic-tile";
+    // Marble-top gets a cooler polished-stone sheen with a hint of
+    // gold-leaf tint drifting across. Reusable premium surface.
+    const wantsMarbleSheen = cardStyle === "marble-top";
     const sheenBg = wantsWaterLight
       ? `linear-gradient(100deg, transparent 10%, ${hexToRgba(colours.highlight, 0.22)} 40%, ${hexToRgba(colours.highlight, 0.32)} 50%, ${hexToRgba(colours.highlight, 0.22)} 60%, transparent 90%)`
       : wantsWarmSheen
         ? `linear-gradient(100deg, transparent 20%, ${hexToRgba(colours.glow, 0.3)} 48%, ${hexToRgba(colours.glow, 0.42)} 52%, transparent 80%)`
-        : null;
+        : wantsMarbleSheen
+          ? `linear-gradient(110deg, transparent 15%, ${hexToRgba(colours.highlight, 0.3)} 45%, ${hexToRgba(colours.glow, 0.45)} 50%, ${hexToRgba(colours.highlight, 0.3)} 55%, transparent 85%)`
+          : null;
     const cardBg =
       cardStyle === "driftwood-board"
         ? `linear-gradient(135deg, ${hexToRgba(colours.secondary, 0.4)}, ${hexToRgba(colours.deep, 0.65)})`
@@ -396,7 +415,12 @@ export function createEngine(pkg: ThemePackage): ResolvedEngine {
                     radial-gradient(ellipse at 50% 15%, ${hexToRgba(colours.highlight, 0.35)}, transparent 55%),
                     linear-gradient(180deg, ${hexToRgba(colours.secondary, 0.6)} 0%, ${hexToRgba(colours.primary, 0.72)} 100%)
                   `
-                  : base;
+                  : cardStyle === "marble-top"
+                    ? `
+                      radial-gradient(ellipse at 30% 10%, ${hexToRgba(colours.highlight, 0.65)} 0%, transparent 55%),
+                      linear-gradient(140deg, ${hexToRgba(colours.highlight, 0.95)} 0%, ${hexToRgba(colours.secondary, 0.85)} 60%, ${hexToRgba(colours.highlight, 0.9)} 100%)
+                    `
+                    : base;
     const cardBorder = resolveBubbleBorder("glass", colours, false);
     const scrollSnap =
       scrollFeel === "snap"
@@ -423,7 +447,9 @@ export function createEngine(pkg: ThemePackage): ResolvedEngine {
               ? "999px"
               : productFraming === "mug"
                 ? "18px 18px 10px 10px"
-                : 14,
+                : productFraming === "saucer-under-glass"
+                  ? "999px"
+                  : 14,
         background: cardBg,
         border: cardBorder,
         color: colours.highlight,
@@ -599,6 +625,20 @@ function resolveBubbleBackground(
           radial-gradient(ellipse 85% 30% at 50% 8%, ${hexToRgba(c.highlight, 0.45)} 0%, transparent 65%),
           linear-gradient(180deg, ${hexToRgba(c.highlight, 0.42)} 0%, ${hexToRgba(c.secondary, 0.72)} 25%, ${hexToRgba(c.deep, 0.9)} 100%)
         `;
+    case "neon-glass":
+      // Dark glass body with a brightly saturated interior rim. The
+      // body stays almost black; the saturated primary tint reads as
+      // the content of a neon tube catching the viewer. mine vs peer
+      // differ only in which colour fills the tube.
+      return mine
+        ? `
+          radial-gradient(ellipse 70% 55% at 50% 55%, ${hexToRgba(c.primary, 0.5)} 0%, transparent 72%),
+          linear-gradient(180deg, ${hexToRgba(c.deep, 0.95)} 0%, ${hexToRgba(c.deep, 0.9)} 100%)
+        `
+        : `
+          radial-gradient(ellipse 70% 55% at 50% 55%, ${hexToRgba(c.secondary, 0.42)} 0%, transparent 72%),
+          linear-gradient(180deg, ${hexToRgba(c.deep, 0.95)} 0%, ${hexToRgba(c.deep, 0.9)} 100%)
+        `;
     case "glass":
     default:
       return mine ? hexToRgba(c.primary, 0.26) : hexToRgba(c.deep, 0.72);
@@ -626,6 +666,14 @@ function resolveBubbleBorder(
     return mine
       ? `1px solid ${hexToRgba(c.highlight, 0.42)}`
       : `1px solid ${hexToRgba(c.secondary, 0.5)}`;
+  }
+  if (material === "neon-glass") {
+    // Thick saturated rim that reads as the neon tube itself. mine
+    // uses primary; peer uses secondary so inbound/outbound are
+    // paired-but-distinct tubes.
+    return mine
+      ? `2px solid ${hexToRgba(c.primary, 0.95)}`
+      : `2px solid ${hexToRgba(c.secondary, 0.9)}`;
   }
   return mine
     ? `1px solid ${hexToRgba(c.primary, 0.85)}`
@@ -665,6 +713,20 @@ function resolveBubbleShadow(
         0 10px 28px rgba(0,0,0,0.6)
       `;
   }
+  if (material === "neon-glass") {
+    // Outer glow bloom + inner tube highlight. Reads as a neon tube
+    // bending around the bubble's border. Hot primary bloom for mine,
+    // secondary bloom for peer.
+    const bloom = mine ? c.primary : c.secondary;
+    return `
+      inset 0 1px 2px ${hexToRgba(c.highlight, 0.35)},
+      inset 0 0 10px ${hexToRgba(bloom, 0.4)},
+      0 0 10px ${hexToRgba(bloom, 0.9)},
+      0 0 26px ${hexToRgba(bloom, 0.6)},
+      0 0 48px ${hexToRgba(bloom, 0.3)},
+      0 10px 24px rgba(0,0,0,0.65)
+    `;
+  }
   if (material === "water") {
     // Inset highlight along the top gives the bubble a glossy
     // water-droplet feel. Deeper outer glow in primary suggests the
@@ -702,6 +764,10 @@ function resolveBackdropFilter(material: string): string | undefined {
       // Lighter blur so the warm colour reads strongly, but still has
       // some presence to feel like a hot drink and not a flat tile.
       return "blur(4px) saturate(1.2)";
+    case "neon-glass":
+      // Mild blur + saturation boost so the tube's colour reads vivid
+      // without washing out what's behind.
+      return "blur(2px) saturate(1.3)";
     default:
       return undefined;
   }
@@ -732,6 +798,15 @@ function resolveAmbientColour(kind: string, c: Required<ColourSystem>): string {
       // + screen blend. The visibility floor has to be high enough that
       // warm lighting reads as actual lamps/candles, not faint smudges.
       return hexToRgba(c.glow, 0.95);
+    // Extension Batch 001 ambient families · engine-general.
+    case "sun-dapple":
+      return hexToRgba(c.highlight, 0.75);
+    case "pollen-float":
+      return hexToRgba(c.glow, 0.78);
+    case "neon-flicker":
+      return hexToRgba(c.primary, 0.95);
+    case "rain-streak":
+      return hexToRgba(c.highlight, 0.5);
     case "leaves-falling":
       return hexToRgba(c.secondary, 0.6);
     case "stars":
@@ -763,6 +838,14 @@ function resolveAmbientBaseCount(kind: string): number {
       return 32; // three layers of ~10-11 each
     case "warm-glow-pulse":
       return 7;
+    case "sun-dapple":
+      return 7; // soft wide patches · too many reads as spotlights
+    case "pollen-float":
+      return 24;
+    case "neon-flicker":
+      return 14;
+    case "rain-streak":
+      return 28;
     case "heat-shimmer":
       return 1;
     case "leaves-falling":
@@ -794,6 +877,14 @@ function resolveAmbientSpeed(kind: string): number {
       return 8.5; // faster so more lifecycle registers during normal use
     case "warm-glow-pulse":
       return 4.5;
+    case "sun-dapple":
+      return 24; // very slow drift · sunlight through trees
+    case "pollen-float":
+      return 16;
+    case "neon-flicker":
+      return 3.2; // the flicker keyframe is irregular; this is the loop length
+    case "rain-streak":
+      return 1.8; // each streak falls fast · stagger yields a steady rain
     case "heat-shimmer":
       return 5;
     case "leaves-falling":
@@ -825,6 +916,14 @@ function resolveAmbientSize(kind: string): number {
       return 55;
     case "warm-glow-pulse":
       return 120;
+    case "sun-dapple":
+      return 140; // large wide patches of light
+    case "pollen-float":
+      return 5; // soft small particles
+    case "neon-flicker":
+      return 10; // dot points along signage
+    case "rain-streak":
+      return 1; // thin lines
     case "heat-shimmer":
       return 200;
     case "leaves-falling":

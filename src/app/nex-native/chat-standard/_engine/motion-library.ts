@@ -41,6 +41,11 @@ export interface PersonalityMotion {
     // any package picks them.
     | "steam-rising"
     | "warm-glow-pulse"
+    // NEW general families · Extension Batch 001 (2026-10-05)
+    | "sun-dapple"
+    | "pollen-float"
+    | "neon-flicker"
+    | "rain-streak"
   >;
   composerFocusKeyframes: string | null;
 }
@@ -280,6 +285,97 @@ const SURFACE_CAUSTIC_KF = `
   60%      { opacity: 0.5;  transform: scale(1.1); }
 }`;
 
+// Extension Batch 001 · founder-authorised 2026-10-05 · the six new
+// keyframes below back the general ambient families and the neon
+// personality. All are theme-neutral · any package may opt in.
+
+// Sun-dapple drift · slow horizontal + vertical drift of a light
+// patch with gentle breath. The patch itself is rendered as a radial
+// gradient in the ambient surface renderer; this keyframe just moves
+// it so it reads as sunlight through swaying leaves.
+const SUN_DAPPLE_DRIFT_KF = `
+@keyframes nex-se-sun-dapple-drift {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.22;
+  }
+  50% {
+    transform: translate3d(var(--nex-se-dx, 12px), var(--nex-se-dy, 6px), 0) scale(1.08);
+    opacity: 0.38;
+  }
+}`;
+
+// Pollen float · soft tinted particles with slow lateral drift and
+// gentle vertical rise. Warmer and gentler than bubbles-rising ·
+// pollen catches afternoon light rather than racing to the surface.
+const POLLEN_FLOAT_KF = `
+@keyframes nex-se-pollen-float {
+  0%   { transform: translate3d(0, 20px, 0); opacity: 0; }
+  18%  { opacity: 1; }
+  85%  { opacity: 0.5; }
+  100% {
+    transform: translate3d(var(--nex-se-x, 0px), -75vh, 0) scale(0.85);
+    opacity: 0;
+  }
+}`;
+
+// Neon flicker · sharp pulse with brief hold-off intervals, like a
+// neon tube buzzing in and out. The irregular keyframe stops means
+// the pulse never settles into a predictable rhythm.
+const NEON_FLICKER_KF = `
+@keyframes nex-se-neon-flicker {
+  0%, 100% { opacity: 1; filter: brightness(1); }
+  3%       { opacity: 0.35; }
+  6%       { opacity: 1; }
+  8%       { opacity: 0.6; filter: brightness(0.8); }
+  11%      { opacity: 1; filter: brightness(1.1); }
+  50%      { opacity: 1; filter: brightness(1); }
+  53%      { opacity: 0.3; }
+  56%      { opacity: 1; filter: brightness(1.15); }
+}`;
+
+// Rain streak · vertical fall from top to bottom · brief streak
+// flash when catching light (around 50% of lifecycle).
+const RAIN_STREAK_KF = `
+@keyframes nex-se-rain-streak {
+  0%   { transform: translateY(-10vh); opacity: 0; }
+  15%  { opacity: 0.6; }
+  50%  { opacity: 0.85; }
+  100% { transform: translateY(110vh); opacity: 0; }
+}`;
+
+// Neon personality · bubble entrance with a strobed-settle pattern.
+// Sharp brightness swings during the first half, settling into a
+// clean final state.
+const NEON_FLICKER_IN_KF = `
+@keyframes nex-se-neon-flicker-in {
+  0%   { opacity: 0; filter: brightness(1.8) saturate(1.4); }
+  10%  { opacity: 1; }
+  14%  { opacity: 0.3; }
+  18%  { opacity: 1; filter: brightness(1.5) saturate(1.3); }
+  25%  { opacity: 0.6; }
+  30%  { opacity: 1; filter: brightness(1.2) saturate(1.15); }
+  100% { opacity: 1; filter: brightness(1) saturate(1); }
+}`;
+
+// Neon pulse · slow saturated breath on bubbles that are using the
+// neon-glass material. More assertive than the warm-pulse breath.
+const NEON_PULSE_KF = `
+@keyframes nex-se-neon-pulse {
+  0%, 100% { filter: brightness(1) saturate(1); }
+  50%      { filter: brightness(1.15) saturate(1.3); }
+}`;
+
+// Electric strike reaction · sharp brightness spike + hue shift on
+// reaction, settling quickly.
+const ELECTRIC_STRIKE_KF = `
+@keyframes nex-se-electric-strike {
+  0%   { box-shadow: 0 0 0 0 var(--nex-se-glow, rgba(255,80,220,0.7)); filter: brightness(1); }
+  18%  { box-shadow: 0 0 0 14px rgba(255,80,220,0); filter: brightness(1.5) saturate(1.6); }
+  40%  { filter: brightness(1.1); }
+  100% { box-shadow: 0 0 0 0 rgba(255,80,220,0); filter: brightness(1); }
+}`;
+
 // Enhanced send-trail · rising bubble cluster that lingers briefly
 // above the sender. Universal · the _bubble surface uses this when
 // bubbleTrailOnSend is on in the package.
@@ -393,6 +489,20 @@ export const MOTION_TABLE: Record<AnimationPersonality, PersonalityMotion> = {
     ambientFamily: ["steam-rising", "warm-glow-pulse", "sparkles"],
     composerFocusKeyframes: FOCUS_PULSE_KF,
   },
+  neon: {
+    bubbleEntrance: "nex-se-neon-flicker-in",
+    bubbleEntranceKeyframes: NEON_FLICKER_IN_KF,
+    bubbleIdle: "nex-se-neon-pulse",
+    bubbleIdleKeyframes: NEON_PULSE_KF,
+    bubbleReaction: "nex-se-electric-strike",
+    bubbleReactionKeyframes: ELECTRIC_STRIKE_KF,
+    // Neon tube flickers + rain streaks + sparkle highlights = late-
+    // night neon atmosphere by default. Any theme using personality
+    // "neon" picks these up; a package may override with its own
+    // ambient.families list.
+    ambientFamily: ["neon-flicker", "rain-streak", "sparkles"],
+    composerFocusKeyframes: FOCUS_PULSE_KF,
+  },
 };
 
 export function keyframesFor(personality: AnimationPersonality): string {
@@ -410,6 +520,11 @@ export function keyframesFor(personality: AnimationPersonality): string {
     WARM_LIQUID_SURFACE_KF,     // engine-universal · warm-liquid inner surface drift
     STEAM_RISING_KF,            // engine-universal · ambient steam-rising family
     WARM_GLOW_PULSE_KF,         // engine-universal · ambient warm-glow-pulse family
+    // Extension Batch 001 keyframes · all engine-universal.
+    SUN_DAPPLE_DRIFT_KF,
+    POLLEN_FLOAT_KF,
+    NEON_FLICKER_KF,
+    RAIN_STREAK_KF,
     BUBBLE_TRAIL_KF,            // engine-universal · active when bubbleTrailOnSend
     FADE_IN_KF,                 // always available as fallback
   ]

@@ -36,7 +36,14 @@ export type AnimationPersonality =
   // bakery, candle, fireplace, laundry, apothecary — any theme where
   // the vibe is gentle warmth rising. Rising-steam ambient + warm
   // breath idle + warm-glow reaction.
-  | "warm";
+  | "warm"
+  // NEW general personality (Extension Batch 001 · founder-authorised
+  // 2026-10-05) · electric / sharp-pulse / intermittent-glow. Suits
+  // nightclub, arcade, cyberpunk, bar, racing, gaming, night-market,
+  // jazz-club, noir — any world where the vibe is lit by neon tube
+  // signage against darkness. Pairs by default with the
+  // neon-flicker + rain-streak + sparkles ambient families.
+  | "neon";
 
 // ─── Colour system ──────────────────────────────────────────────────
 
@@ -83,7 +90,12 @@ export type BubbleMaterial =
   // (strong amber core → dark edges) with a surface steam shimmer.
   // Both work for any warm/craft/cafe theme, not just coffee.
   | "ceramic"
-  | "warm-liquid";
+  | "warm-liquid"
+  // NEW general material (Extension Batch 001 · founder-authorised
+  // 2026-10-05) · dark glass body + saturated hot rim-glow reads as
+  // a neon tube bending around text. Reusable by nightclub, arcade,
+  // cyberpunk, bar, racing, gaming. Pairs well with personality:neon.
+  | "neon-glass";
 
 export type MotionToken =
   | "fade-in"
@@ -158,7 +170,12 @@ export interface ShopTreatment {
     | "shell"
     // NEW general card styles for warm themes
     | "wood-plank" // wooden café shelf / timber workshop
-    | "ceramic-tile"; // glazed tile / cosy backdrop
+    | "ceramic-tile" // glazed tile / cosy backdrop
+    // NEW general card style · Extension Batch 001 (founder-authorised
+    // 2026-10-05) · polished stone card with hairline gold border and
+    // soft top specular. Suits luxury, jewellery, patisserie, high-end
+    // restaurant, spa, bridal · any "refined / premium" surface.
+    | "marble-top";
   scrollFeel?: "snap" | "momentum" | "current";
   productFraming?:
     | "card"
@@ -166,7 +183,11 @@ export interface ShopTreatment {
     | "buoy"
     // NEW · "coaster" (round warm disc) and "mug" (rounded top vessel)
     | "coaster"
-    | "mug";
+    | "mug"
+    // NEW general framing · Extension Batch 001 · round framing with
+    // top specular highlight and fine rim (museum-case feel). Suits
+    // patisserie, jewellery, luxury, chocolate, perfume themes.
+    | "saucer-under-glass";
 }
 
 export interface AmbientLayer {
@@ -186,6 +207,28 @@ export interface AmbientLayer {
     | "leaves-falling"
     | "stars"
     | "snow"
+    // NEW general ambient families · Extension Batch 001 (founder-
+    // authorised 2026-10-05). Each is a reusable visual effect any
+    // package may opt into.
+    //
+    // sun-dapple: slow-moving semi-transparent light patches drifting
+    //   across the stage · suits garden, florist, greenhouse, tropical,
+    //   outdoor restaurant, spa, meadow, wedding worlds.
+    //
+    // pollen-float: soft tinted particles with lateral drift (warmer
+    //   and gentler than bubbles-rising) · suits garden, meadow,
+    //   florist, wedding, outdoor-event worlds.
+    //
+    // neon-flicker: scattered sharp pulses with intermittent flicker
+    //   suggesting neon tube signage · suits nightclub, arcade,
+    //   cyberpunk, bar, racing, gaming, jazz-club worlds.
+    //
+    // rain-streak: thin vertical streaks of rain · suits noir, melan-
+    //   choly, cinematic, monsoon, rooftop-at-night, jazz-club worlds.
+    | "sun-dapple"
+    | "pollen-float"
+    | "neon-flicker"
+    | "rain-streak"
   >;
 }
 
@@ -235,11 +278,34 @@ export interface ThemeIdentity {
   conceptOneLine: string; // e.g. "Ocean / underwater / peaceful / premium"
 }
 
+/** 05 Typography · Extension Batch 001 (founder-authorised 2026-10-05).
+ *  Optional typography overrides so themes with refined-text identity
+ *  (Luxury, Jewellery, Patisserie, Fine Dining, Boutique Hotel, Wedding,
+ *  Premium Restaurant) can request a serif or an elegant sans without
+ *  the engine knowing which theme asked. Every field is optional ·
+ *  backwards-compatible with existing Ocean and Coffee packages which
+ *  continue to inherit the NEX default font. */
+export interface TypographyPackage {
+  /** CSS font-family stack · e.g. `"'Playfair Display', Georgia, serif"`.
+   *  Package-authored string · the engine renders it through CSS vars,
+   *  never parses it. */
+  fontFamily?: string;
+  /** Weight for headings / strong text · defaults to 700. */
+  headingWeight?: number;
+  /** Weight for body text · defaults to 500. */
+  bodyWeight?: number;
+  /** CSS letter-spacing · defaults to `"normal"`. */
+  letterSpacing?: string;
+}
+
 export interface ThemePackage {
   identity: ThemeIdentity;
   colours: ColourSystem;
   /** Required · drives motion resolution for every surface. */
   personality: AnimationPersonality;
+
+  // 05 Typography · optional refined-text override
+  typography?: TypographyPackage;
 
   // 02 Intro
   intro?: StandardIntro;

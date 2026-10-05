@@ -13,6 +13,10 @@ import * as React from "react";
 import { createEngine } from "../../chat-standard/_engine/theme-engine";
 import { OCEAN_PACKAGE } from "../../chat-standard/packages/ocean.package";
 import { COFFEE_PACKAGE } from "../../chat-standard/packages/coffee.package";
+// Extension Batch 001 · test fixtures (NOT production worlds).
+import { BUNDLE_A_FIXTURE } from "../../chat-standard/packages/_test-fixtures/bundle-a-fixture.package";
+import { BUNDLE_B_FIXTURE } from "../../chat-standard/packages/_test-fixtures/bundle-b-fixture.package";
+import { BUNDLE_C_FIXTURE } from "../../chat-standard/packages/_test-fixtures/bundle-c-fixture.package";
 import type { ThemePackage } from "../../chat-standard/_engine/types";
 import {
   StandardExperience,
@@ -22,6 +26,11 @@ import {
 const THEME_PACKAGES: Record<string, ThemePackage> = {
   ocean: OCEAN_PACKAGE,
   coffee: COFFEE_PACKAGE,
+  // Extension Batch 001 · dev-only capability test fixtures. Visible
+  // only via explicit ?theme=_test-bundle-a|b|c on the dev route.
+  "_test-bundle-a": BUNDLE_A_FIXTURE,
+  "_test-bundle-b": BUNDLE_B_FIXTURE,
+  "_test-bundle-c": BUNDLE_C_FIXTURE,
 };
 
 const PEER = {

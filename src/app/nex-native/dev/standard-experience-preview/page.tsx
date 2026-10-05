@@ -33,7 +33,16 @@ export default async function StandardExperiencePreviewPage({
   const sp = await searchParams;
   const wallpaperFallback =
     sp.wallpaper === "off" ? ("none" as const) : ("theme-gradient" as const);
-  const themeId = sp.theme === "coffee" ? "coffee" : "ocean";
+  const themeId =
+    sp.theme === "coffee"
+      ? "coffee"
+      : sp.theme === "_test-bundle-a"
+        ? "_test-bundle-a"
+        : sp.theme === "_test-bundle-b"
+          ? "_test-bundle-b"
+          : sp.theme === "_test-bundle-c"
+            ? "_test-bundle-c"
+            : "ocean";
 
   return (
     <>

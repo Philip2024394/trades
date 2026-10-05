@@ -342,6 +342,398 @@ const espressoCup: Renderer = (size, c) => {
   );
 };
 
+// ─── Extension Batch 001 · Botanical / plant / tea primitives ───────
+
+const fern: Renderer = (size, c) => {
+  const dark = tone(c, "primary", "#2E6B3A");
+  const mid = tone(c, "secondary", "#8DBF6F");
+  const light = tone(c, "highlight", "#D9EFC4");
+  return SVG(
+    size,
+    <>
+      <defs>
+        <linearGradient id="fern-g" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={light} />
+          <stop offset="100%" stopColor={dark} />
+        </linearGradient>
+      </defs>
+      {/* main stem */}
+      <path d="M50 92 Q48 60 50 10" stroke={dark} strokeWidth="2" fill="none" />
+      {/* leaflets · pairs along the stem */}
+      {[18, 30, 42, 54, 66, 78].map((y, i) => {
+        const w = 32 - i * 3;
+        return (
+          <g key={i}>
+            <path
+              d={`M50 ${y} Q${50 - w / 2} ${y + 4} ${50 - w} ${y + 10}`}
+              stroke={dark}
+              strokeWidth="1.2"
+              fill="url(#fern-g)"
+              opacity={0.88}
+            />
+            <path
+              d={`M50 ${y} Q${50 + w / 2} ${y + 4} ${50 + w} ${y + 10}`}
+              stroke={dark}
+              strokeWidth="1.2"
+              fill="url(#fern-g)"
+              opacity={0.88}
+            />
+          </g>
+        );
+      })}
+      <circle cx="50" cy="12" r="3" fill={mid} />
+    </>,
+  );
+};
+
+const plantPot: Renderer = (size, c) => {
+  const pot = tone(c, "secondary", "#B86E3C");
+  const potDark = tone(c, "deep", "#6B3C1E");
+  const leaf = tone(c, "primary", "#3F8A4F");
+  const leafLight = tone(c, "highlight", "#B6E090");
+  return SVG(
+    size,
+    <>
+      {/* pot */}
+      <path d="M22 58 L78 58 L72 92 Q50 97 28 92 Z" fill={pot} stroke={potDark} strokeWidth="1.5" />
+      <rect x="18" y="54" width="64" height="8" rx="2" fill={pot} stroke={potDark} strokeWidth="1.5" />
+      {/* soil */}
+      <ellipse cx="50" cy="58" rx="30" ry="3" fill={potDark} />
+      {/* plant · three stems */}
+      <path d="M50 58 Q46 36 42 18" stroke={leaf} strokeWidth="2.5" fill="none" strokeLinecap="round" />
+      <path d="M50 58 Q50 34 50 10" stroke={leaf} strokeWidth="2.5" fill="none" strokeLinecap="round" />
+      <path d="M50 58 Q54 36 58 18" stroke={leaf} strokeWidth="2.5" fill="none" strokeLinecap="round" />
+      {/* leaves */}
+      <ellipse cx="42" cy="18" rx="8" ry="4" fill={leafLight} transform="rotate(-30 42 18)" />
+      <ellipse cx="50" cy="10" rx="8" ry="4" fill={leafLight} />
+      <ellipse cx="58" cy="18" rx="8" ry="4" fill={leafLight} transform="rotate(30 58 18)" />
+    </>,
+  );
+};
+
+const teacup: Renderer = (size, c) => {
+  const porcelain = tone(c, "highlight", "#F4F4F4");
+  const trim = tone(c, "primary", "#3A6E5B");
+  const tea = tone(c, "secondary", "#C8A058");
+  const dark = tone(c, "deep", "#2A2A2A");
+  return SVG(
+    size,
+    <>
+      {/* saucer */}
+      <ellipse cx="50" cy="82" rx="38" ry="6" fill={porcelain} stroke={dark} strokeWidth="1.2" />
+      <ellipse cx="50" cy="79" rx="30" ry="3.6" fill={porcelain} />
+      {/* cup */}
+      <path d="M28 42 L72 42 Q70 72 50 76 Q30 72 28 42 Z" fill={porcelain} stroke={dark} strokeWidth="1.5" />
+      <path d="M28 42 Q50 48 72 42" stroke={dark} strokeWidth="0.8" fill="none" opacity="0.4" />
+      <ellipse cx="50" cy="44" rx="20" ry="3" fill={tea} />
+      {/* handle */}
+      <path d="M72 50 Q86 50 86 62 Q86 74 72 72" stroke={trim} strokeWidth="4" fill="none" strokeLinecap="round" />
+      {/* trim band */}
+      <path d="M28 46 Q50 50 72 46" stroke={trim} strokeWidth="1.6" fill="none" />
+      {/* steam */}
+      <path d="M40 36 Q36 26 42 20" stroke={porcelain} strokeWidth="2" fill="none" opacity="0.7" strokeLinecap="round" />
+      <path d="M56 36 Q52 26 58 20" stroke={porcelain} strokeWidth="2" fill="none" opacity="0.7" strokeLinecap="round" />
+    </>,
+  );
+};
+
+const honeyJar: Renderer = (size, c) => {
+  const honey = tone(c, "primary", "#D99830");
+  const honeyLight = tone(c, "highlight", "#F7D27A");
+  const lid = tone(c, "secondary", "#8B5A2B");
+  const dark = tone(c, "deep", "#4A2E12");
+  return SVG(
+    size,
+    <>
+      <defs>
+        <linearGradient id="jar-g" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={honeyLight} />
+          <stop offset="100%" stopColor={honey} />
+        </linearGradient>
+      </defs>
+      {/* jar body */}
+      <rect x="26" y="36" width="48" height="52" rx="6" fill="url(#jar-g)" stroke={dark} strokeWidth="1.6" />
+      {/* lid */}
+      <rect x="24" y="22" width="52" height="16" rx="3" fill={lid} stroke={dark} strokeWidth="1.6" />
+      <rect x="30" y="18" width="40" height="6" rx="2" fill={lid} stroke={dark} strokeWidth="1.4" />
+      {/* label */}
+      <rect x="32" y="52" width="36" height="18" fill={honeyLight} stroke={dark} strokeWidth="0.8" opacity="0.8" />
+      <circle cx="40" cy="61" r="2" fill={honey} />
+      <path d="M46 59 Q50 58 54 61 Q58 64 62 61" stroke={honey} strokeWidth="1.4" fill="none" />
+      <path d="M46 65 Q50 64 54 66 Q58 68 62 66" stroke={honey} strokeWidth="1.4" fill="none" />
+      {/* highlight shine */}
+      <ellipse cx="34" cy="48" rx="3" ry="12" fill={honeyLight} opacity="0.5" />
+    </>,
+  );
+};
+
+const leaf: Renderer = (size, c) => {
+  const dark = tone(c, "primary", "#2E6B3A");
+  const light = tone(c, "highlight", "#D9EFC4");
+  return SVG(
+    size,
+    <>
+      <defs>
+        <linearGradient id="leaf-g" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor={light} />
+          <stop offset="100%" stopColor={dark} />
+        </linearGradient>
+      </defs>
+      <path d="M20 70 Q10 40 40 20 Q70 10 85 30 Q78 60 55 80 Q35 90 20 70 Z" fill="url(#leaf-g)" stroke={dark} strokeWidth="1.4" />
+      <path d="M80 25 Q50 50 25 70" stroke={dark} strokeWidth="1.6" fill="none" />
+      <path d="M68 32 Q58 38 50 44" stroke={dark} strokeWidth="0.8" fill="none" opacity="0.6" />
+      <path d="M55 42 Q46 50 40 56" stroke={dark} strokeWidth="0.8" fill="none" opacity="0.6" />
+      <path d="M42 54 Q35 60 32 66" stroke={dark} strokeWidth="0.8" fill="none" opacity="0.6" />
+    </>,
+  );
+};
+
+// ─── Extension Batch 001 · Midnight / night / jazz primitives ───────
+
+const vinylRecord: Renderer = (size, c) => {
+  const disc = tone(c, "deep", "#141216");
+  const label = tone(c, "primary", "#D8578A");
+  const labelDark = tone(c, "secondary", "#8E2B55");
+  const groove = tone(c, "highlight", "#3A3236");
+  return SVG(
+    size,
+    <>
+      {/* disc */}
+      <circle cx="50" cy="50" r="44" fill={disc} />
+      {/* grooves */}
+      {[42, 38, 34, 30, 26, 22].map((r, i) => (
+        <circle key={i} cx="50" cy="50" r={r} fill="none" stroke={groove} strokeWidth="0.8" opacity={0.65} />
+      ))}
+      {/* label */}
+      <circle cx="50" cy="50" r="14" fill={label} />
+      <circle cx="50" cy="50" r="10" fill={labelDark} opacity="0.4" />
+      {/* centre hole */}
+      <circle cx="50" cy="50" r="2.2" fill={disc} />
+      {/* highlight sheen */}
+      <path d="M30 24 Q60 10 76 36" stroke="#fff" strokeWidth="1" fill="none" opacity="0.3" />
+    </>,
+  );
+};
+
+const moon: Renderer = (size, c) => {
+  const moonBody = tone(c, "highlight", "#F4EACB");
+  const shadow = tone(c, "deep", "#0E0E1A");
+  const glow = tone(c, "glow", "rgba(244,234,203,0.6)");
+  return SVG(
+    size,
+    <>
+      <defs>
+        <radialGradient id="moon-g" cx="40%" cy="40%" r="60%">
+          <stop offset="0%" stopColor="#fff" />
+          <stop offset="100%" stopColor={moonBody} />
+        </radialGradient>
+      </defs>
+      {/* soft glow */}
+      <circle cx="50" cy="50" r="46" fill={glow} opacity="0.3" />
+      {/* main crescent */}
+      <circle cx="50" cy="50" r="38" fill="url(#moon-g)" />
+      {/* bite */}
+      <circle cx="62" cy="42" r="30" fill={shadow} />
+      {/* crater hints */}
+      <circle cx="40" cy="58" r="2.4" fill={shadow} opacity="0.2" />
+      <circle cx="36" cy="48" r="1.5" fill={shadow} opacity="0.2" />
+      <circle cx="44" cy="70" r="2" fill={shadow} opacity="0.2" />
+    </>,
+  );
+};
+
+const neonHeart: Renderer = (size, c) => {
+  const neon = tone(c, "primary", "#FF4CB4");
+  const neonLight = tone(c, "highlight", "#FFC8E8");
+  const dark = tone(c, "deep", "#1A0A20");
+  return SVG(
+    size,
+    <>
+      <defs>
+        <filter id="neon-h-g" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="2.5" result="b" />
+          <feMerge>
+            <feMergeNode in="b" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
+      {/* dark halo */}
+      <path d="M50 86 L18 54 Q10 44 18 32 Q28 20 42 28 L50 36 L58 28 Q72 20 82 32 Q90 44 82 54 Z" fill={dark} opacity="0.4" filter="url(#neon-h-g)" />
+      {/* outer bloom */}
+      <path d="M50 84 L22 56 Q14 46 22 34 Q30 24 42 30 L50 38 L58 30 Q70 24 78 34 Q86 46 78 56 Z" stroke={neon} strokeWidth="4" fill="none" opacity="0.85" filter="url(#neon-h-g)" />
+      {/* inner tube */}
+      <path d="M50 82 L26 58 Q18 48 26 36 Q32 28 42 32 L50 40 L58 32 Q68 28 74 36 Q82 48 74 58 Z" stroke={neonLight} strokeWidth="2" fill="none" opacity="0.95" />
+    </>,
+  );
+};
+
+const jazzNote: Renderer = (size, c) => {
+  const note = tone(c, "primary", "#E8D8A0");
+  const noteDark = tone(c, "deep", "#2A1C0A");
+  return SVG(
+    size,
+    <>
+      {/* flag */}
+      <path d="M66 20 Q84 28 76 48 Q80 36 70 36 L70 22 Z" fill={note} stroke={noteDark} strokeWidth="1.5" />
+      {/* stem */}
+      <rect x="66" y="20" width="4" height="56" fill={note} stroke={noteDark} strokeWidth="1.2" />
+      {/* bowl */}
+      <ellipse cx="52" cy="76" rx="16" ry="11" fill={note} stroke={noteDark} strokeWidth="1.5" transform="rotate(-20 52 76)" />
+      <ellipse cx="52" cy="76" rx="10" ry="6" fill={noteDark} opacity="0.6" transform="rotate(-20 52 76)" />
+    </>,
+  );
+};
+
+// ─── Extension Batch 001 · French / Parisian primitives ─────────────
+
+const baguette: Renderer = (size, c) => {
+  const crust = tone(c, "primary", "#C68B5F");
+  const crustLight = tone(c, "highlight", "#F7E7CA");
+  const dark = tone(c, "deep", "#5A3620");
+  return SVG(
+    size,
+    <>
+      <defs>
+        <linearGradient id="baguette-g" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={crustLight} />
+          <stop offset="100%" stopColor={crust} />
+        </linearGradient>
+      </defs>
+      {/* long body */}
+      <path d="M10 50 Q10 32 30 32 L72 32 Q92 32 92 50 Q92 68 72 68 L30 68 Q10 68 10 50 Z" fill="url(#baguette-g)" stroke={dark} strokeWidth="1.6" transform="rotate(-15 50 50)" />
+      {/* scoring */}
+      {[26, 42, 58, 74].map((x, i) => (
+        <path
+          key={i}
+          d={`M${x} 40 Q${x + 4} 50 ${x - 4} 60`}
+          stroke={dark}
+          strokeWidth="1.5"
+          fill="none"
+          opacity="0.75"
+          transform="rotate(-15 50 50)"
+        />
+      ))}
+    </>,
+  );
+};
+
+const macaron: Renderer = (size, c) => {
+  const shell = tone(c, "secondary", "#F5B8C5");
+  const shellLight = tone(c, "highlight", "#FBE4EA");
+  const filling = tone(c, "primary", "#E07891");
+  const dark = tone(c, "deep", "#8E2B4A");
+  return SVG(
+    size,
+    <>
+      <defs>
+        <radialGradient id="mac-top-g" cx="50%" cy="25%" r="70%">
+          <stop offset="0%" stopColor={shellLight} />
+          <stop offset="100%" stopColor={shell} />
+        </radialGradient>
+      </defs>
+      {/* bottom shell */}
+      <ellipse cx="50" cy="68" rx="34" ry="12" fill={shell} stroke={dark} strokeWidth="1.4" />
+      {/* ruffled foot · textured dots */}
+      {[22, 32, 42, 52, 62, 72, 78].map((x, i) => (
+        <circle key={i} cx={x} cy={68} r="1.6" fill={dark} opacity="0.4" />
+      ))}
+      {/* filling */}
+      <rect x="18" y="52" width="64" height="12" rx="2" fill={filling} stroke={dark} strokeWidth="0.8" />
+      {/* top shell */}
+      <ellipse cx="50" cy="42" rx="34" ry="14" fill="url(#mac-top-g)" stroke={dark} strokeWidth="1.4" />
+      {/* ruffled foot top */}
+      {[22, 32, 42, 52, 62, 72, 78].map((x, i) => (
+        <circle key={i} cx={x} cy={50} r="1.6" fill={dark} opacity="0.4" />
+      ))}
+      {/* top highlight */}
+      <ellipse cx="42" cy="32" rx="12" ry="4" fill={shellLight} opacity="0.75" />
+    </>,
+  );
+};
+
+const wineGlass: Renderer = (size, c) => {
+  const glass = tone(c, "highlight", "#E8E4DD");
+  const wine = tone(c, "primary", "#7A1F3A");
+  const wineLight = tone(c, "secondary", "#A84563");
+  const stem = tone(c, "secondary", "#C0BCB4");
+  const dark = tone(c, "deep", "#2A1218");
+  return SVG(
+    size,
+    <>
+      {/* bowl outline */}
+      <path d="M30 10 L70 10 Q66 42 50 56 Q34 42 30 10 Z" fill={glass} stroke={dark} strokeWidth="1.4" opacity="0.5" />
+      {/* wine fill */}
+      <path d="M34 22 L66 22 Q62 42 50 54 Q38 42 34 22 Z" fill={wine} />
+      <path d="M34 22 L66 22 Q62 28 50 32 Q38 28 34 22 Z" fill={wineLight} opacity="0.6" />
+      {/* bowl highlight */}
+      <path d="M36 14 Q36 30 42 44" stroke={glass} strokeWidth="2" fill="none" opacity="0.8" />
+      {/* stem */}
+      <rect x="48.5" y="56" width="3" height="24" fill={stem} />
+      {/* base */}
+      <ellipse cx="50" cy="86" rx="18" ry="4" fill={stem} stroke={dark} strokeWidth="1.2" />
+    </>,
+  );
+};
+
+const beret: Renderer = (size, c) => {
+  const body = tone(c, "primary", "#2A2A5A");
+  const bodyLight = tone(c, "highlight", "#4A4A8A");
+  const stem = tone(c, "secondary", "#5A5A9A");
+  const dark = tone(c, "deep", "#0E0E2A");
+  return SVG(
+    size,
+    <>
+      <defs>
+        <radialGradient id="beret-g" cx="40%" cy="35%" r="70%">
+          <stop offset="0%" stopColor={bodyLight} />
+          <stop offset="100%" stopColor={body} />
+        </radialGradient>
+      </defs>
+      {/* main dome · wider than tall */}
+      <ellipse cx="50" cy="52" rx="40" ry="24" fill="url(#beret-g)" stroke={dark} strokeWidth="1.6" />
+      {/* band underneath */}
+      <rect x="22" y="70" width="56" height="10" rx="3" fill={body} stroke={dark} strokeWidth="1.4" />
+      <path d="M22 72 Q50 76 78 72" stroke={bodyLight} strokeWidth="1" fill="none" opacity="0.6" />
+      {/* tip · small stem on top */}
+      <circle cx="50" cy="28" r="4" fill={stem} stroke={dark} strokeWidth="1" />
+      {/* top sheen */}
+      <ellipse cx="42" cy="40" rx="12" ry="3" fill={bodyLight} opacity="0.5" />
+    </>,
+  );
+};
+
+const eiffelTower: Renderer = (size, c) => {
+  const dark = tone(c, "primary", "#4A4036");
+  const light = tone(c, "highlight", "#D4C8B8");
+  const sky = tone(c, "secondary", "#C6A878");
+  return SVG(
+    size,
+    <>
+      <defs>
+        <linearGradient id="eiffel-g" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={light} />
+          <stop offset="100%" stopColor={dark} />
+        </linearGradient>
+      </defs>
+      {/* legs arch */}
+      <path d="M26 90 Q40 60 46 36 L54 36 Q60 60 74 90" stroke="url(#eiffel-g)" strokeWidth="3.5" fill="none" strokeLinecap="round" />
+      {/* ground arch between legs */}
+      <path d="M30 76 Q50 68 70 76" stroke={dark} strokeWidth="2" fill="none" />
+      {/* mid platform */}
+      <rect x="38" y="48" width="24" height="4" fill={dark} />
+      {/* upper tapered section */}
+      <path d="M46 36 L54 36 L52 20 L48 20 Z" fill={dark} />
+      {/* antenna */}
+      <rect x="49" y="8" width="2" height="12" fill={dark} />
+      <circle cx="50" cy="7" r="2" fill={sky} />
+      {/* lattice hints */}
+      <path d="M34 70 Q50 76 66 70" stroke={light} strokeWidth="0.6" fill="none" opacity="0.5" />
+      <path d="M38 56 L62 56" stroke={light} strokeWidth="0.6" fill="none" opacity="0.5" />
+    </>,
+  );
+};
+
 // ─── Fallback (universal) ───────────────────────────────────────────
 
 const genericBurst: Renderer = (size, c) => {
@@ -380,6 +772,34 @@ export const KEYWORD_RENDERERS: Record<string, Renderer> = {
   "latte-art": latteArt,
   steam: steamIcon,
   espresso: espressoCup,
+  // Extension Batch 001 · Botanical / plant / tea
+  fern,
+  "plant-pot": plantPot,
+  plant: plantPot,
+  teacup,
+  tea: teacup,
+  "honey-jar": honeyJar,
+  honey: honeyJar,
+  leaf,
+  // Extension Batch 001 · Midnight / night / jazz
+  "vinyl-record": vinylRecord,
+  vinyl: vinylRecord,
+  record: vinylRecord,
+  moon,
+  "neon-heart": neonHeart,
+  heart: neonHeart,
+  "jazz-note": jazzNote,
+  note: jazzNote,
+  music: jazzNote,
+  // Extension Batch 001 · French / Parisian
+  baguette,
+  bread: baguette,
+  macaron,
+  "wine-glass": wineGlass,
+  wine: wineGlass,
+  beret,
+  "eiffel-tower": eiffelTower,
+  eiffel: eiffelTower,
   // Fallback
   burst: genericBurst,
   generic: genericBurst,
