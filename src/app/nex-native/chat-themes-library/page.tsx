@@ -26,6 +26,7 @@ import { nexSupabaseAdmin } from "@/lib/nex-native/supabase-admin";
 import { updateChatThemeAction } from "../_actions";
 import type { NexAccountRow } from "@/lib/nex-native/types";
 import { ThemeBrowserClient, type BrowserThemeRow } from "./_theme-browser-client";
+import { TrialCountdownBanner } from "./_trial-countdown-banner";
 import { NexPageHeader } from "../_page-header";
 
 export const runtime = "nodejs";
@@ -70,12 +71,6 @@ export default async function ThemePickerPage({
   const trialActive = isThemesTrialActive(account);
   const trialUsed = hasUsedThemesTrial(account);
   const trialExpiresIso = themesTrialExpiresAt(account);
-  const trialDaysLeft = (() => {
-    if (!trialActive || !trialExpiresIso) return null;
-    const ms = new Date(trialExpiresIso).getTime() - Date.now();
-    if (ms <= 0) return null;
-    return Math.max(1, Math.ceil(ms / (24 * 60 * 60 * 1000)));
-  })();
 
   // Viewer's own profile photo · used by themes that don't ship
   // their own hero_image_url (Rose · Origin · etc.) to preview the
@@ -196,68 +191,8 @@ export default async function ThemePickerPage({
                · active   → green "N days left" chip
                · unused   → orange "Try 7 days free" inline CTA form
                · used     → dim "Trial used · subscribe to keep premium" */}
-          {trialActive && trialDaysLeft ? (
-            <div
-              style={{
-                marginBottom: 18,
-                padding: "12px 16px",
-                borderRadius: 12,
-                background:
-                  "linear-gradient(135deg, rgba(22,214,107,0.14) 0%, rgba(0,175,255,0.10) 100%)",
-                border: "1px solid rgba(22,214,107,0.45)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                gap: 12,
-                flexWrap: "wrap",
-              }}
-            >
-              <div style={{ minWidth: 0 }}>
-                <div
-                  style={{
-                    fontSize: 10,
-                    letterSpacing: "0.22em",
-                    textTransform: "uppercase",
-                    color: NEX.green,
-                    fontWeight: 800,
-                    marginBottom: 4,
-                  }}
-                >
-                  🎁 Trial active
-                </div>
-                <div
-                  style={{
-                    fontSize: 14,
-                    color: NEX.text,
-                    fontWeight: 700,
-                  }}
-                >
-                  Every premium theme unlocked ·{" "}
-                  <span style={{ color: NEX.green }}>
-                    {trialDaysLeft} day{trialDaysLeft === 1 ? "" : "s"} left
-                  </span>
-                </div>
-              </div>
-              <Link
-                href="/nex-native/settings/tier"
-                style={{
-                  padding: "9px 14px",
-                  borderRadius: 10,
-                  background:
-                    "linear-gradient(180deg, #FF9033 0%, #FF7200 100%)",
-                  color: "#0B0F1A",
-                  fontSize: 11,
-                  fontWeight: 800,
-                  letterSpacing: "0.06em",
-                  textTransform: "uppercase",
-                  textDecoration: "none",
-                  whiteSpace: "nowrap",
-                  boxShadow: "0 6px 14px rgba(255,120,0,0.35)",
-                }}
-              >
-                Keep after trial
-              </Link>
-            </div>
+          {trialActive && trialExpiresIso ? (
+            <TrialCountdownBanner expiresIso={trialExpiresIso} />
           ) : !trialUsed && currentTier === "gratis" ? (
             <form
               action={startThemesTrialAction}

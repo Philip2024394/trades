@@ -992,19 +992,35 @@ function GalleryPreviewArea({
   const [introVisible, setIntroVisible] = React.useState<boolean>(
     !!theme.intro_video_url,
   );
+  // Opacity gate: hide the <video> element until onPlaying fires so the
+  // user never sees a cached last-frame paint on remount. Browsers can
+  // display the previously-decoded end frame for a few hundred ms before
+  // autoplay restarts from 0 · bare #020914 background shows during the gap.
+  const [videoReady, setVideoReady] = React.useState(false);
 
-  // Theme switches via prev/next change `theme.id` · re-arm the intro.
+  // Theme switches via prev/next change `theme.id` · re-arm the intro
+  // and reset the opacity gate so the new theme's video starts hidden.
   React.useEffect(() => {
     setIntroVisible(!!theme.intro_video_url);
+    setVideoReady(false);
   }, [theme.id, theme.intro_video_url]);
 
   // Kick off playback on mount / theme change. Browser autoplay policies
   // require muted (we are) · if play() still rejects (power-save, etc.)
   // we fall straight through to the revealed preview rather than hang.
+  // currentTime = 0 before play() guards against cached-end-frame flash
+  // when the same src remounts (same theme replay, or cycling back to a
+  // previously-played theme in the same session).
   React.useEffect(() => {
     if (!introVisible) return;
     const el = videoRef.current;
     if (!el) return;
+    try {
+      el.currentTime = 0;
+    } catch {
+      // Pre-metadata seek can throw on some engines · onLoadedMetadata
+      // handler below is the authoritative seek, this is belt-and-braces.
+    }
     const p = el.play();
     if (p && typeof p.catch === "function") {
       p.catch(() => setIntroVisible(false));
@@ -1012,6 +1028,7 @@ function GalleryPreviewArea({
   }, [introVisible, theme.id]);
 
   const replay = React.useCallback(() => {
+    setVideoReady(false);
     setIntroVisible(true);
     // The video element remounts via introVisible toggling · its own
     // autoplay + the effect above pick it up from currentTime=0.
@@ -1082,6 +1099,17 @@ function GalleryPreviewArea({
             muted
             playsInline
             preload="auto"
+            onLoadedMetadata={(e) => {
+              // Authoritative seek to frame 0 as soon as metadata is
+              // available · defeats the cached-last-frame flash on
+              // remount of a same-src video element.
+              try {
+                e.currentTarget.currentTime = 0;
+              } catch {
+                // ignore
+              }
+            }}
+            onPlaying={() => setVideoReady(true)}
             onEnded={() => setIntroVisible(false)}
             onError={() => setIntroVisible(false)}
             aria-label={`${theme.name} theme intro`}
@@ -1092,6 +1120,8 @@ function GalleryPreviewArea({
               objectPosition: "center center",
               background: "#020914",
               display: "block",
+              opacity: videoReady ? 1 : 0,
+              transition: "opacity 120ms linear",
             }}
           />
         </div>
