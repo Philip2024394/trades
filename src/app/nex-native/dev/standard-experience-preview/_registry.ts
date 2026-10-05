@@ -18,23 +18,19 @@
 //     fixture client.
 
 import type { ThemePackage } from "../../chat-standard/_engine/types";
-import { OCEAN_PACKAGE } from "../../chat-standard/packages/ocean.package";
-import { COFFEE_PACKAGE } from "../../chat-standard/packages/coffee.package";
-import { BOTANICAL_CAFE_PACKAGE } from "../../chat-standard/packages/botanical-cafe.package";
-import { MIDNIGHT_CAFE_PACKAGE } from "../../chat-standard/packages/midnight-cafe.package";
-import { FRENCH_CAFE_PACKAGE } from "../../chat-standard/packages/french-cafe.package";
+import {
+  LIVE_WORLD_IDS,
+  LIVE_WORLD_PACKAGES,
+  type LiveWorldId,
+} from "../../chat-standard/_live-worlds";
 import { BUNDLE_A_FIXTURE } from "../../chat-standard/packages/_test-fixtures/bundle-a-fixture.package";
 import { BUNDLE_B_FIXTURE } from "../../chat-standard/packages/_test-fixtures/bundle-b-fixture.package";
 import { BUNDLE_C_FIXTURE } from "../../chat-standard/packages/_test-fixtures/bundle-c-fixture.package";
 
-/** Themes shown in the chip-row at the top of the dev preview. */
-export const PRODUCTION_WORLD_IDS = [
-  "ocean",
-  "coffee",
-  "botanical-cafe",
-  "midnight-cafe",
-  "french-cafe",
-] as const;
+/** Themes shown in the chip-row at the top of the dev preview.
+ *  Mirrors the production live-worlds registry. */
+export const PRODUCTION_WORLD_IDS = LIVE_WORLD_IDS;
+export type ProductionWorldId = LiveWorldId;
 
 /** Developer-only capability verification worlds. Not shown in the
  *  chip-row · reachable only via explicit `?theme=_test-bundle-*`. */
@@ -52,14 +48,10 @@ export const ALL_THEME_IDS = [
 
 export type ThemeId = (typeof ALL_THEME_IDS)[number];
 
-/** Resolved registry · one entry per allowed id. The map is exhaustive
- *  so `isAllowedThemeId(id)` + `THEME_PACKAGES[id]` is always safe. */
+/** Resolved registry · production worlds come from LIVE_WORLD_PACKAGES
+ *  (single source of truth) · test fixtures are dev-only. */
 export const THEME_PACKAGES: Record<ThemeId, ThemePackage> = {
-  ocean: OCEAN_PACKAGE,
-  coffee: COFFEE_PACKAGE,
-  "botanical-cafe": BOTANICAL_CAFE_PACKAGE,
-  "midnight-cafe": MIDNIGHT_CAFE_PACKAGE,
-  "french-cafe": FRENCH_CAFE_PACKAGE,
+  ...LIVE_WORLD_PACKAGES,
   "_test-bundle-a": BUNDLE_A_FIXTURE,
   "_test-bundle-b": BUNDLE_B_FIXTURE,
   "_test-bundle-c": BUNDLE_C_FIXTURE,

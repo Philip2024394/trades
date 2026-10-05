@@ -207,39 +207,55 @@ export function StandardExperience({
           })}
         </div>
 
-        {/* Shop slider · UNIVERSAL RULE across every theme ·
-            - Absolute overlay (does NOT push chat bubbles up).
-            - Floats above the composer with rounded edges on left +
-              right (and top + bottom) so it reads as a floating card.
-            - Hidden by default · Shop icon in header slides it up from
-              below with an ease-out transition.
-            Theming (background + border) inherits from engine colours
-            so each world gets its own tinted overlay with no world-
-            specific branches. */}
+        {/* Shop sheet · UNIVERSAL RULE across every theme ·
+            - CONNECTED to the bottom of the phone screen (flush with
+              the bottom edge · no gap · not a floating panel).
+            - Slides UP from the bottom of the screen when the Shop
+              icon in the header is tapped.
+            - Rounded corners ONLY on the top (left + right at top);
+              bottom corners are square because the sheet is flush with
+              the screen edge.
+            - Full width (left: 0 · right: 0) · does NOT push chat
+              bubbles up (bubbles stay anchored, sheet covers them
+              from the bottom).
+            Theming (background + border + shadow) inherits from engine
+            colours so each world gets its own tinted sheet with zero
+            world-specific branches. */}
         <div
           aria-hidden={!shopOpen}
           data-nex-se-shop-sheet={shopOpen ? "open" : "closed"}
           style={{
             position: "absolute",
-            left: 10,
-            right: 10,
-            bottom: "calc(env(safe-area-inset-bottom, 0) + 68px)",
+            left: 0,
+            right: 0,
+            bottom: 0,
             zIndex: 7,
-            padding: "10px 12px",
-            borderRadius: 24,
-            background: `linear-gradient(180deg, ${colours.deep}cc, ${colours.deep}ee)`,
-            border: `1px solid ${colours.primary}66`,
-            boxShadow: `0 12px 32px rgba(0,0,0,0.5), 0 2px 6px ${colours.primary}33`,
+            padding: "14px 12px calc(env(safe-area-inset-bottom, 0) + 14px)",
+            borderRadius: "24px 24px 0 0",
+            background: `linear-gradient(180deg, ${colours.deep}f0, ${colours.deep})`,
+            borderTop: `1px solid ${colours.primary}66`,
+            boxShadow: `0 -12px 32px rgba(0,0,0,0.55), 0 -2px 6px ${colours.primary}33`,
             backdropFilter: "blur(10px) saturate(1.1)",
             WebkitBackdropFilter: "blur(10px) saturate(1.1)",
             overflow: "hidden",
-            opacity: shopOpen ? 1 : 0,
-            transform: `translateY(${shopOpen ? 0 : 24}px)`,
+            transform: `translateY(${shopOpen ? "0%" : "100%"})`,
             transition:
-              "opacity 220ms ease-out, transform 300ms cubic-bezier(0.2, 0.9, 0.3, 1.1)",
+              "transform 320ms cubic-bezier(0.2, 0.9, 0.3, 1.1)",
             pointerEvents: shopOpen ? "auto" : "none",
           }}
         >
+          {/* Grab-handle · a thin top bar universal to every theme so
+              the sheet reads as a draggable bottom sheet. */}
+          <div
+            aria-hidden
+            style={{
+              width: 44,
+              height: 4,
+              borderRadius: 999,
+              background: `${colours.highlight}55`,
+              margin: "0 auto 10px",
+            }}
+          />
           <StandardShopSlider engine={engine} products={products} />
         </div>
 
@@ -378,7 +394,11 @@ function StandardComposerRightActions({
         data-nex-se-plus-toggle={plusOpen ? "open" : "closed"}
         style={
           plusOpen
-            ? { ...btn, background: `${c.primary}aa`, borderColor: c.primary }
+            ? {
+                ...btn,
+                background: `${c.primary}aa`,
+                border: `1px solid ${c.primary}`,
+              }
             : btn
         }
       >
@@ -536,7 +556,7 @@ function StandardHeaderActions({
   const shopActiveBtn: React.CSSProperties = {
     ...baseBtn,
     background: `${c.primary}aa`,
-    borderColor: c.primary,
+    border: `1px solid ${c.primary}`,
   };
   return (
     <div
@@ -993,8 +1013,10 @@ function FloatingCallActions({
           background: open
             ? `linear-gradient(180deg, ${c.primary}cc, ${c.primary}f0)`
             : circle.background,
-          borderColor: open ? c.primary : `${c.primary}99`,
-          transition: "background 180ms ease-out, border-color 180ms ease-out",
+          border: open
+            ? `1px solid ${c.primary}`
+            : `1px solid ${c.primary}99`,
+          transition: "background 180ms ease-out, border 180ms ease-out",
         }}
       >
         <DotsVerticalIcon />

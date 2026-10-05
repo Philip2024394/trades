@@ -26,6 +26,11 @@ import { listThemeStickers } from "@/lib/nex-native/theme-sticker-service";
 import ThemeViewerClient from "./_viewer";
 import { parseJokerMotion } from "./_joker-motion-data";
 import { HauntedHotelChrome } from "@/components/nex-native/HauntedHotelChrome";
+import {
+  isLiveWorldId,
+  LIVE_WORLD_PACKAGES,
+} from "../../chat-standard/_live-worlds";
+import { StandardExperienceLiveClient } from "./_standard-experience-live-client";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -43,6 +48,16 @@ export default async function ThemeViewerPage({
 }) {
   const { id } = await params;
   const sp = (await searchParams) ?? {};
+
+  // Standard-Experience-backed worlds short-circuit the DB-driven
+  // viewer path · they are code-registered in `_live-worlds.ts` and
+  // render the full Standard Experience (header icons + bubbles +
+  // composer + shop sheet + call actions + + menu) as the live chat.
+  // Rule sealed 2026-10-05 · scope: ocean · coffee · botanical-cafe ·
+  // midnight-cafe · french-cafe.
+  if (isLiveWorldId(id)) {
+    return <StandardExperienceLiveClient pkg={LIVE_WORLD_PACKAGES[id]} />;
+  }
 
   // The Haunted Hotel preview IS the depth-cards experience that the
   // founder spent 6 hours building: card carousel + atmosphere +
