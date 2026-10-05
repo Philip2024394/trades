@@ -22,6 +22,7 @@ import {
 } from "../_shared/gestures";
 import { UniversalChromeOverlay } from "../../chat-standard/_universal-chrome-overlay";
 import { UniversalComposerFooter } from "../../chat-standard/_universal-composer-footer";
+import { UniversalHeaderIconsOverlay } from "../../chat-standard/_universal-header-icons-overlay";
 
 const P = {
   accent: "#7EB6FF",      // Theme 1 accent (light sky blue)
@@ -272,8 +273,14 @@ export default function Theme1PreviewPage() {
         {/* Bridge 53 · standard chat header right-cluster · order
            refined to [Home] [Cart] [Shop/Menu] · nested flex row
            with a tighter gap so the profession subtitle has more
-           room without changing the outer header spacing. */}
+           room without changing the outer header spacing.
+           R11b (sealed 2026-10-05) · tagged `data-nex-native-r1-cluster`
+           so the UniversalHeaderIconsOverlay suppresses this native
+           cluster · the overlay is the universal R1 source of truth.
+           Audit confirmed this cluster is 100% R1 (Home + Cart + Shop
+           only) so suppression is surgical. */}
         <div
+          data-nex-native-r1-cluster
           style={{
             display: "flex",
             alignItems: "center",
@@ -376,6 +383,16 @@ export default function Theme1PreviewPage() {
         anchor={pickerFor ? pickerAnchor : null}
         onPick={addReaction}
         onClose={closePicker}
+      />
+      {/* R11b · shopHref preserves theme-1's pre-overlay Shop
+          destination (Maria's shop) so universalisation does not
+          silently change existing behaviour. The native cluster's
+          <a href="/nex-native/maria"> is suppressed via
+          data-nex-native-r1-cluster · the overlay's Shop link
+          carries the same destination. */}
+      <UniversalHeaderIconsOverlay
+        accent={P.accentDeep}
+        shopHref="/nex-native/maria"
       />
       <UniversalChromeOverlay accent={P.accentDeep} deep={P.midnight} />
       <UniversalComposerFooter accent={P.accentDeep} deep={P.midnight} themeId="theme-1" />

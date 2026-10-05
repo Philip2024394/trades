@@ -25,6 +25,7 @@ import {
 } from "../_shared/gestures";
 import { UniversalChromeOverlay } from "../../chat-standard/_universal-chrome-overlay";
 import { UniversalComposerFooter } from "../../chat-standard/_universal-composer-footer";
+import { UniversalHeaderIconsOverlay } from "../../chat-standard/_universal-header-icons-overlay";
 
 // -- Palette -----------------------------------------------------
 const P = {
@@ -423,8 +424,14 @@ export default function PinkDreamPreviewPage() {
         {/* Bridge 53 · standard chat header right-cluster · order
            refined to [Home] [Cart] [Shop/Menu] · nested flex row
            with a tighter gap so the profession subtitle has more
-           room without changing the outer header spacing. */}
+           room without changing the outer header spacing.
+           R11b (sealed 2026-10-05) · tagged `data-nex-native-r1-cluster`
+           so the UniversalHeaderIconsOverlay suppresses this native
+           cluster · the overlay owns R1. Pink-dream's theme-specific
+           shop-slider open behaviour is preserved by passing
+           onShopClick to the overlay below. */}
         <div
+          data-nex-native-r1-cluster
           style={{
             display: "flex",
             alignItems: "center",
@@ -599,6 +606,11 @@ export default function PinkDreamPreviewPage() {
         anchor={pickerFor ? pickerAnchor : null}
         onPick={addReaction}
         onClose={closePicker}
+      />
+      <UniversalHeaderIconsOverlay
+        accent={P.hotPink}
+        onShopClick={() => setShopSliderOpen((v) => !v)}
+        shopOpen={shopSliderOpen}
       />
       <UniversalChromeOverlay accent={P.hotPink} deep={P.primaryDark} />
       <UniversalComposerFooter accent={P.hotPink} deep={P.primaryDark} themeId="pink-dream" />

@@ -179,8 +179,17 @@ export function HeaderRightCluster({
           color: var(--nex-header-accent, #00AFFF) !important;
         }
       `}</style>
+      {/* R11b (sealed 2026-10-05) · tagged `data-nex-native-r1-cluster`
+         so UniversalHeaderIconsOverlay can suppress this native R1
+         cluster via CSS when it mounts. Suppression fires ONLY on
+         routes that mount the overlay (currently themes/[id] legacy
+         branch · peer chat / conversation routes do NOT mount the
+         overlay, so this cluster remains visible there). Audit
+         confirmed this cluster is 100% R1 (Home + conditional Cart +
+         conditional Shop) so blanket cluster hiding is surgical. */}
       <div
         data-nex-header-cluster
+        data-nex-native-r1-cluster
         style={{
           position: "absolute",
           top: "calc(env(safe-area-inset-top, 0) + 14px)",
@@ -214,17 +223,17 @@ export function HeaderRightCluster({
           {hydrated && cartCount > 0 && (() => {
             // Sealed 2026-10-01 · the cart-count badge adopts a
             // theme-specific colour where it makes sense. On Joker
-            // the pink reads as fighting the acid-green palette ·
-            // red (classic playing-card suit red) ties into the
-            // Joker / cards doctrine and still screams "look here"
-            // without introducing a third accent colour. Non-Joker
+            // and Haunted Hotel the dark-red reads as "look here"
+            // against each theme's accent (acid-green · brass)
+            // without introducing a third accent colour. Other
             // themes keep the original pink.
-            const isJoker = themeAccent === "#8FFF6E";
-            const bg = isJoker
-              ? "linear-gradient(180deg, #FF4D4D, #D40000)"
+            const useDarkRed =
+              themeAccent === "#8FFF6E" || themeAccent === "#d8a856";
+            const bg = useDarkRed
+              ? "linear-gradient(180deg, #CC1818, #7A0000)"
               : "linear-gradient(180deg, #FF77BC, #FF3F9F)";
-            const glow = isJoker
-              ? "rgba(212,0,0,0.6)"
+            const glow = useDarkRed
+              ? "rgba(122,0,0,0.65)"
               : NEX.pinkGlow;
             return (
               <span
@@ -238,7 +247,7 @@ export function HeaderRightCluster({
                   padding: "0 5px",
                   borderRadius: 999,
                   background: bg,
-                  color: isJoker ? "#FFFFFF" : "#0B0F1A",
+                  color: useDarkRed ? "#FFFFFF" : "#0B0F1A",
                   fontSize: 10,
                   fontWeight: 800,
                   lineHeight: 1,

@@ -33,6 +33,7 @@ import {
 import { StandardExperienceLiveClient } from "./_standard-experience-live-client";
 import { UniversalChromeOverlay } from "../../chat-standard/_universal-chrome-overlay";
 import { UniversalComposerFooter } from "../../chat-standard/_universal-composer-footer";
+import { UniversalHeaderIconsOverlay } from "../../chat-standard/_universal-header-icons-overlay";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -147,6 +148,12 @@ export default async function ThemeViewerPage({
           itself is a client component). Chrome's 10 FX toggles ship
           OFF by default · discoverable via the floating 3-dots. */}
       {theme.id === "haunted-hotel" && <HauntedHotelChrome />}
+      {/* UNIVERSAL HEADER ICONS OVERLAY · sealed R11b 2026-10-05 ·
+          R1 parity · Home/Cart/Shop. PortraitBloomShell's native
+          HeaderRightCluster is tagged `data-nex-native-r1-cluster`
+          and gets suppressed by this overlay's CSS so there is
+          exactly one R1 implementation on every legacy theme route. */}
+      <UniversalHeaderIconsOverlay accent={theme.accent_hex} />
       {/* UNIVERSAL CHROME OVERLAY · sealed 2026-10-05 · every live
           theme including Joker · Joker's native dancing-dots is
           hidden by the UniversalComposerFooter CSS block so the

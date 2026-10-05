@@ -25,6 +25,7 @@
 import * as React from "react";
 import { UniversalChromeOverlay } from "../../chat-standard/_universal-chrome-overlay";
 import { UniversalComposerFooter } from "../../chat-standard/_universal-composer-footer";
+import { UniversalHeaderIconsOverlay } from "../../chat-standard/_universal-header-icons-overlay";
 
 const PALETTE = {
   bg: "#050b09",            // near-black with a green undertone
@@ -247,8 +248,13 @@ export default function CyberGridPreviewPage(): React.JSX.Element {
           </div>
           {/* Standard right-cluster · Home · Cart · Shop · tinted to
               the emerald accent so the icons read as green outlines
-              consistent with the terminal palette. */}
+              consistent with the terminal palette.
+              R11b (sealed 2026-10-05) · tagged `data-nex-native-r1-cluster`
+              so the UniversalHeaderIconsOverlay suppresses this native
+              cluster · the overlay owns R1. Cyber-grid's shop-open
+              behaviour is preserved via onShopClick on the overlay. */}
           <div
+            data-nex-native-r1-cluster
             style={{
               display: "flex",
               alignItems: "center",
@@ -488,6 +494,11 @@ export default function CyberGridPreviewPage(): React.JSX.Element {
           <ShopModal items={SHOP_ITEMS} onClose={() => setShopOpen(false)} />
         )}
       </main>
+      <UniversalHeaderIconsOverlay
+        accent={PALETTE.mariaName}
+        onShopClick={() => setShopOpen((v) => !v)}
+        shopOpen={shopOpen}
+      />
       <UniversalChromeOverlay accent={PALETTE.mariaName} deep={PALETTE.bg} />
       <UniversalComposerFooter accent={PALETTE.mariaName} deep={PALETTE.bg} themeId="cyber-grid" />
     </>
