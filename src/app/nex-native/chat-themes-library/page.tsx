@@ -110,6 +110,11 @@ export default async function ThemePickerPage({
   // env-agnostic. NODE_ENV=production + NEX_THEMES_PHONE_TILES=1 opens
   // the new gallery; without the flag the legacy flat tiles render.
   const usePhoneTiles = process.env.NEX_THEMES_PHONE_TILES === "1";
+  // Phase 2 feature flag · opens the ImmersivePreviewShell (fullscreen
+  // mobile + phone-plus-rail desktop + URL state + local test chat).
+  // Legacy PreviewModal continues to render when the flag is OFF.
+  const useImmersivePreview =
+    process.env.NEX_THEMES_IMMERSIVE_PREVIEW === "1";
 
   const sp = await searchParams;
   const banner = sp.e && sp.m ? { code: sp.e, message: sp.m } : null;
@@ -332,6 +337,7 @@ export default async function ThemePickerPage({
             activateAction={updateChatThemeAction}
             viewerAvatarUrl={viewerAvatarUrl}
             usePhoneTiles={usePhoneTiles}
+            useImmersivePreview={useImmersivePreview}
           />
         </div>
       </main>

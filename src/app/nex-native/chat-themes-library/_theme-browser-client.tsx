@@ -9,6 +9,10 @@ import * as React from "react";
 import { createPortal } from "react-dom";
 import type { WallpaperConfig } from "@/lib/nex-native/chat-render/theme-world";
 import { PhoneGrid } from "./_phone-tile";
+import {
+  ImmersivePreviewShell,
+  useInitialPreviewFromUrl,
+} from "./_preview-shell";
 
 const NEX = {
   bg: "#020914",
@@ -73,6 +77,12 @@ interface Props {
    *  Preview modal is identical in both branches · tap opens the same
    *  modal. */
   usePhoneTiles: boolean;
+  /** Phase 2 feature flag · when TRUE the enlarge-preview opens the new
+   *  ImmersivePreviewShell (fullscreen mobile + phone-plus-rail desktop,
+   *  with URL state + local test conversation + swipe). When FALSE the
+   *  legacy PreviewModal continues to render unchanged. Server reads
+   *  NEX_THEMES_IMMERSIVE_PREVIEW and threads the boolean through. */
+  useImmersivePreview: boolean;
 }
 
 export function ThemeBrowserClient({
@@ -82,6 +92,7 @@ export function ThemeBrowserClient({
   activateAction,
   viewerAvatarUrl,
   usePhoneTiles,
+  useImmersivePreview,
 }: Props) {
   const [query, setQuery] = React.useState("");
   const [filter, setFilter] = React.useState<FilterMode>("all");
@@ -90,6 +101,13 @@ export function ThemeBrowserClient({
   const [mounted, setMounted] = React.useState(false);
 
   React.useEffect(() => setMounted(true), []);
+
+  // Phase 2 · honour ?preview=<id> deep links on first paint when the
+  // immersive flag is on. The shell itself owns pushState/popstate once
+  // mounted; the browser client only needs to pick up the initial id.
+  useInitialPreviewFromUrl((id) => {
+    if (useImmersivePreview && id) setPreviewId(id);
+  });
 
   const filtered = React.useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -342,9 +360,10 @@ export function ThemeBrowserClient({
         </div>
       )}
 
-      {/* Enlarge preview modal · portaled to body to escape any parent
-          stacking context. Navigation (prev/next) walks the currently
-          filtered list so chevrons respect search + tier filters. */}
+      {/* Enlarge preview · Phase 2 flag branches at the portal site.
+          Both renderers walk `filtered` for prev/next so search + tier
+          filters are respected either way. The ImmersivePreviewShell
+          additionally syncs ?preview=<id> and the browser back button. */}
       {preview && mounted &&
         (() => {
           const previewIndex = filtered.findIndex((t) => t.id === preview.id);
@@ -354,6 +373,25 @@ export function ThemeBrowserClient({
             previewIndex >= 0 && previewIndex < filtered.length - 1
               ? filtered[previewIndex + 1]
               : null;
+          const openFullScreenHref = THEME_PREVIEW_HREF[preview.id] ?? null;
+          if (useImmersivePreview) {
+            return createPortal(
+              <ImmersivePreviewShell
+                theme={preview}
+                active={preview.id === currentThemeId}
+                locked={preview.tier === "bisnis" && !canUsePremium}
+                canUsePremium={canUsePremium}
+                activateAction={activateAction}
+                onClose={() => setPreviewId(null)}
+                onPrev={prevTheme ? () => setPreviewId(prevTheme.id) : null}
+                onNext={nextTheme ? () => setPreviewId(nextTheme.id) : null}
+                prevLabel={prevTheme?.name ?? null}
+                nextLabel={nextTheme?.name ?? null}
+                openFullScreenHref={openFullScreenHref}
+              />,
+              document.body,
+            );
+          }
           return createPortal(
             <PreviewModal
               theme={preview}
