@@ -373,7 +373,7 @@ export function ThemeBrowserClient({
             previewIndex >= 0 && previewIndex < filtered.length - 1
               ? filtered[previewIndex + 1]
               : null;
-          const openFullScreenHref = THEME_PREVIEW_HREF[preview.id] ?? null;
+          const openFullScreenHref = themePreviewHref(preview.id);
           if (useImmersivePreview) {
             return createPortal(
               <ImmersivePreviewShell
@@ -869,53 +869,36 @@ function PreviewModal({
           }}
         >
           {active ? (
-            THEME_PREVIEW_HREF[theme.id] ? (
-              <a
-                href={THEME_PREVIEW_HREF[theme.id]}
+            <a
+              href={themePreviewHref(theme.id)}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gap: 10,
+                textDecoration: "none",
+                padding: "12px 14px",
+                borderRadius: 10,
+                background: `${theme.accent_hex}22`,
+                border: `1px solid ${theme.accent_hex}`,
+                color: theme.accent_hex,
+                fontSize: 13,
+                fontWeight: 600,
+                cursor: "pointer",
+              }}
+            >
+              <span>✓ Currently active · Open full screen</span>
+              <span
                 style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  gap: 10,
-                  textDecoration: "none",
-                  padding: "12px 14px",
-                  borderRadius: 10,
-                  background: `${theme.accent_hex}22`,
-                  border: `1px solid ${theme.accent_hex}`,
-                  color: theme.accent_hex,
-                  fontSize: 13,
-                  fontWeight: 600,
-                  cursor: "pointer",
+                  fontSize: 11,
+                  letterSpacing: "0.18em",
+                  textTransform: "uppercase",
+                  fontWeight: 700,
                 }}
               >
-                <span>✓ Currently active · Open full screen</span>
-                <span
-                  style={{
-                    fontSize: 11,
-                    letterSpacing: "0.18em",
-                    textTransform: "uppercase",
-                    fontWeight: 700,
-                  }}
-                >
-                  Open →
-                </span>
-              </a>
-            ) : (
-              <div
-                style={{
-                  textAlign: "center",
-                  fontSize: 13,
-                  fontWeight: 600,
-                  padding: "12px",
-                  borderRadius: 10,
-                  background: `${theme.accent_hex}22`,
-                  border: `1px solid ${theme.accent_hex}`,
-                  color: theme.accent_hex,
-                }}
-              >
-                ✓ Currently active on your NEX
-              </div>
-            )
+                Open →
+              </span>
+            </a>
           ) : locked ? (
             <a
               href="/nex-native/settings/tier"
@@ -936,36 +919,32 @@ function PreviewModal({
             </a>
           ) : (
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              {THEME_PREVIEW_HREF[theme.id] && (
-                <a
-                  href={THEME_PREVIEW_HREF[theme.id]}
-                  style={{
-                    display: "block",
-                    textAlign: "center",
-                    padding: "11px",
-                    borderRadius: 10,
-                    background: "transparent",
-                    border: `1px solid ${theme.accent_hex}`,
-                    color: theme.accent_hex,
-                    textDecoration: "none",
-                    fontSize: 12,
-                    fontWeight: 700,
-                    letterSpacing: "0.14em",
-                    textTransform: "uppercase",
-                  }}
-                >
-                  Open full screen →
-                </a>
-              )}
+              <a
+                href={themePreviewHref(theme.id)}
+                style={{
+                  display: "block",
+                  textAlign: "center",
+                  padding: "11px",
+                  borderRadius: 10,
+                  background: "transparent",
+                  border: `1px solid ${theme.accent_hex}`,
+                  color: theme.accent_hex,
+                  textDecoration: "none",
+                  fontSize: 12,
+                  fontWeight: 700,
+                  letterSpacing: "0.14em",
+                  textTransform: "uppercase",
+                }}
+              >
+                Open full screen →
+              </a>
               <form action={activateAction}>
                 <input type="hidden" name="chat_theme" value={theme.id} />
-                {THEME_PREVIEW_HREF[theme.id] && (
-                  <input
-                    type="hidden"
-                    name="next"
-                    value={THEME_PREVIEW_HREF[theme.id]}
-                  />
-                )}
+                <input
+                  type="hidden"
+                  name="next"
+                  value={themePreviewHref(theme.id)}
+                />
                 <button
                   type="submit"
                   style={{
@@ -1110,32 +1089,18 @@ function GalleryPreviewArea({
         overflow: "hidden",
       }}
     >
-      {/* ─── CHAT PREVIEW · always mounted · warms behind the intro ─── */}
-      {THEME_PREVIEW_HREF[theme.id] ? (
-        <PhoneFramePreview
-          src={THEME_PREVIEW_HREF[theme.id]}
-          accentHex={accentHex}
-          themeName={theme.name}
-        />
-      ) : (
-        <div
-          style={{
-            width: "100%",
-            height: "100%",
-            overflow: "auto",
-            padding: "0 10px",
-          }}
-        >
-          <ThemeMockHero
-            theme={theme}
-            viewerAvatarUrl={viewerAvatarUrl}
-            outgoingRim={outgoingRim}
-            incomingRim={incomingRim}
-            composerRimStyle={composerRimStyle}
-            composerGlow={composerGlow}
-          />
-        </div>
-      )}
+      {/* ─── CHAT PREVIEW · always mounted · warms behind the intro ───
+         Universal handoff (sealed 2026-10-06) · every active theme has
+         a reachable preview surface at themePreviewHref(theme.id) via
+         the dynamic viewer at src/app/nex-native/themes/[id]/page.tsx ·
+         the previous allowlist-gated branch (iframe for 4 themes · mock
+         for everything else) was replaced to prevent future-theme
+         exceptions from reappearing. */}
+      <PhoneFramePreview
+        src={themePreviewHref(theme.id)}
+        accentHex={accentHex}
+        themeName={theme.name}
+      />
 
       {/* ─── INTRO OVERLAY · sits on top until video ends ─── */}
       {introVisible && theme.intro_video_url ? (
@@ -1695,15 +1660,39 @@ function ThemeMockHero({
   );
 }
 
-// Themes with a sealed full-preview surface. Opening these shows the
-// theme's real chrome (bubbles · stickers · emojis · composer · 3-dots
-// panel for Joker · etc.) rather than the picker's generic mock.
-const THEME_PREVIEW_HREF: Record<string, string> = {
-  "theme-0": "/nex-native/themes/theme-0",
-  "theme-1": "/nex-native/themes/theme-1",
-  "pink-dream": "/nex-native/themes/pink-dream",
-  "cyber-grid": "/nex-native/themes/cyber-grid",
-};
+/**
+ * Universal theme-preview destination · sealed 2026-10-06 pre-Stage-2.
+ *
+ * Every active theme in the Theme Library has a reachable preview
+ * surface at `/nex-native/themes/<id>`. The dynamic viewer at
+ * `src/app/nex-native/themes/[id]/page.tsx` handles every DB-active
+ * theme id uniformly:
+ *
+ *   · `isLiveWorldId(id)` short-circuits to `StandardExperienceLiveClient`
+ *     for the 5 code-registered Standard Experience worlds.
+ *   · `id === "haunted-hotel"` redirects to the prototype surface.
+ *   · all other ids resolve via `chatThemeService.getThemeById` +
+ *     render through `ThemeViewerClient` → `PortraitBloomShell`.
+ *
+ * Next.js static routing takes precedence · so the four themes with
+ * hand-coded static pages (`theme-1`, `pink-dream`, `cyber-grid`, …)
+ * continue to render their sealed hand-coded surfaces unchanged.
+ *
+ * This helper replaces the previous four-entry `THEME_PREVIEW_HREF`
+ * allowlist (removed 2026-10-06). Adding a new theme is now a one-row
+ * DB insert · the Theme Library needs no code change to send users to
+ * the new theme's preview surface. The universal rule is:
+ *
+ *   theme.id → `/nex-native/themes/${theme.id}`
+ *
+ * There must be no theme-ID branches, no per-theme allowlist, and no
+ * special fallback per theme. Regression test lives next to this file
+ * at `_theme-browser-client.test.ts`.
+ */
+function themePreviewHref(themeId: string): string {
+  return `/nex-native/themes/${themeId}`;
+}
+export { themePreviewHref as _themePreviewHrefForTest };
 
 function MockBubble({
   mine,
