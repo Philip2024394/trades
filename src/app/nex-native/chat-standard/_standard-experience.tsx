@@ -229,6 +229,12 @@ export function StandardExperience({
             left: 0,
             right: 0,
             bottom: 0,
+            // UNIVERSAL RULE sealed 2026-10-05 · the shop sheet opens
+            // to EXACTLY 70% of the stage height on every theme ·
+            // never more, never less · gives the chat column
+            // breathing room above and keeps the sheet reachable with
+            // the thumb.
+            height: "70%",
             zIndex: 7,
             padding: "14px 12px calc(env(safe-area-inset-bottom, 0) + 14px)",
             borderRadius: "24px 24px 0 0",
@@ -238,6 +244,8 @@ export function StandardExperience({
             backdropFilter: "blur(10px) saturate(1.1)",
             WebkitBackdropFilter: "blur(10px) saturate(1.1)",
             overflow: "hidden",
+            display: "flex",
+            flexDirection: "column",
             transform: `translateY(${shopOpen ? "0%" : "100%"})`,
             transition:
               "transform 320ms cubic-bezier(0.2, 0.9, 0.3, 1.1)",
@@ -254,9 +262,14 @@ export function StandardExperience({
               borderRadius: 999,
               background: `${colours.highlight}55`,
               margin: "0 auto 10px",
+              flexShrink: 0,
             }}
           />
-          <StandardShopSlider engine={engine} products={products} />
+          {/* Shop slider · fills the remaining sheet height (70% stage
+              minus the grab handle) and scrolls vertically within. */}
+          <div style={{ flex: 1, minHeight: 0, overflowY: "auto" }}>
+            <StandardShopSlider engine={engine} products={products} />
+          </div>
         </div>
 
         {/* Emoji + Sticker picker (overlay above composer when open) */}
