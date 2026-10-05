@@ -38,33 +38,12 @@ export function MotionGalleryClient({
 
   return (
     <>
-      {/* Toggle grid · landscape AnimationCard pattern · same shape
-          as the JokerController's cards for continuity. */}
+      {/* Status strip · sealed 2026-10-05 at the TOP of the gallery
+          so the founder sees the current state before scanning the
+          toggle list. Moves below the title, above the toggle grid. */}
       <div
         style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-          gap: 12,
-          marginBottom: 32,
-        }}
-      >
-        {JOKER_MOTION_INDEX.map((row, i) => (
-          <AnimationCard
-            key={row.variant}
-            number={i + 1}
-            variant={row.variant}
-            label={row.label}
-            description={row.description}
-            enabled={!!toggles[row.variant]}
-            onToggle={(next) => setToggle(row.variant, next)}
-          />
-        ))}
-      </div>
-
-      {/* Status strip · how many are running right now */}
-      <div
-        style={{
-          marginBottom: 32,
+          marginBottom: 20,
           padding: "10px 14px",
           borderRadius: 10,
           background:
@@ -113,6 +92,29 @@ export function MotionGalleryClient({
             Turn all off
           </button>
         )}
+      </div>
+
+      {/* Toggle grid · landscape AnimationCard pattern · same shape
+          as the JokerController's cards for continuity. */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+          gap: 12,
+          marginBottom: 32,
+        }}
+      >
+        {JOKER_MOTION_INDEX.map((row, i) => (
+          <AnimationCard
+            key={row.variant}
+            number={i + 1}
+            variant={row.variant}
+            label={row.label}
+            description={row.description}
+            enabled={!!toggles[row.variant]}
+            onToggle={(next) => setToggle(row.variant, next)}
+          />
+        ))}
       </div>
 
       {/* Back to chat · same pattern as the sealed older page */}
