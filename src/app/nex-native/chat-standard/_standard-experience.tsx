@@ -276,7 +276,14 @@ export function StandardExperience({
           </div>
         )}
 
-        {/* Composer + picker toggle */}
+        {/* Composer footer · UNIVERSAL RULE R3 revision 2 sealed
+            2026-10-05 (Prototype 5 pattern) ·
+            INSIDE the input pill (left → right):
+              😊 emoji · │ divider · 📷 camera · 📎 attach · text input
+            OUTSIDE the input, right side:
+              ▶ round send button · + round plus button
+            3-dots stays alone on the floating lower-right (see
+            FloatingCallActions below). */}
         <div
           style={{
             position: "relative",
@@ -288,56 +295,48 @@ export function StandardExperience({
             alignItems: "center",
           }}
         >
-          <button
-            type="button"
-            aria-label={pickerOpen ? "Close picker" : "Open emoji + sticker picker"}
-            onClick={() => setPickerOpen((v) => !v)}
-            data-nex-se-picker-toggle={pickerOpen ? "open" : "closed"}
-            style={{
-              width: 36,
-              height: 36,
-              borderRadius: 999,
-              background: pickerOpen
-                ? `${colours.primary}aa`
-                : `${colours.primary}22`,
-              border: `1px solid ${colours.primary}66`,
-              color: colours.highlight,
-              cursor: "pointer",
-              fontSize: 16,
-            }}
-          >
-            {pickerOpen ? "×" : "😊"}
-          </button>
-          <div style={{ flex: 1 }}>
+          <div style={{ flex: 1, minWidth: 0 }}>
             <StandardComposer
               engine={engine}
               value={composerText}
               onChange={setComposerText}
               onSend={handleSend}
               placeholder={`Say something in ${engine.package.identity.name}…`}
+              onEmojiToggle={() => setPickerOpen((v) => !v)}
+              emojiToggleActive={pickerOpen}
+              onCameraTap={() => {
+                /* preview no-op · wired later */
+              }}
+              onAttachTap={() => {
+                /* preview no-op · wired later */
+              }}
             />
           </div>
-          <StandardComposerRightActions
+          <ComposerSendButton
+            engine={engine}
+            disabled={composerText.trim().length === 0}
+            onSend={handleSend}
+          />
+          <ComposerPlusButton
             engine={engine}
             plusOpen={plusMenuOpen}
             onTogglePlus={() => setPlusMenuOpen((v) => !v)}
           />
         </div>
 
-        {/* UNIVERSAL RULE · floating 3-dots at the lower-right of the
-            stage · tap to reveal Call / Video Call / Mic icons that
-            slide in from the right. Theming inherits from the engine.
-            Lives at zIndex 9 so it floats above the shop sheet. */}
+        {/* UNIVERSAL RULE sealed 2026-10-05 · floating 3-dots on the
+            lower-right of the stage · tap to reveal Call / Video /
+            Mic icons sliding in to the left. */}
         <FloatingCallActions
           engine={engine}
           open={callActionsOpen}
           onToggle={() => setCallActionsOpen((v) => !v)}
         />
 
-        {/* UNIVERSAL RULE · + button in composer footer opens a
-            centered floating menu with Contacts / Add Product /
-            Animations. Backdrop click dismisses. zIndex 10 so it
-            floats above every other overlay. */}
+        {/* UNIVERSAL RULE · + button opens a centered floating menu
+            with Contacts / Product / Animation / Settings. Backdrop
+            click dismisses. zIndex 10 so it floats above every other
+            overlay. The trigger lives in FloatingCallActions above. */}
         <FloatingPlusMenu
           engine={engine}
           open={plusMenuOpen}
@@ -348,84 +347,56 @@ export function StandardExperience({
   );
 }
 
-// Composer footer right-side cluster · universal rule across every
-// theme: round "+" button, then a thin vertical divider, then an
-// attachment file icon. Theming (border, background, icon stroke)
-// inherits from the engine's colours — no world-specific branches.
-function StandardComposerRightActions({
+// Round send button · UNIVERSAL RULE R3 revision 2 (2026-10-05) ·
+// sits OUTSIDE the input pill, to the right of the composer and to
+// the left of the + button. Theming inherits from engine.colours ·
+// primary gradient fill when enabled, dimmed when the input is empty.
+function ComposerSendButton({
   engine,
-  plusOpen,
-  onTogglePlus,
+  disabled,
+  onSend,
 }: {
   engine: ResolvedEngine;
-  plusOpen: boolean;
-  onTogglePlus: () => void;
+  disabled: boolean;
+  onSend: () => void;
 }): React.JSX.Element {
   const c = engine.colours;
-  const btn: React.CSSProperties = {
-    width: 32,
-    height: 32,
-    borderRadius: 999,
-    border: `1px solid ${c.primary}99`,
-    background: `${c.primary}22`,
-    color: c.highlight,
-    display: "grid",
-    placeItems: "center",
-    cursor: "pointer",
-    flexShrink: 0,
-    padding: 0,
-    transition: "background 160ms ease-out, border-color 160ms ease-out",
-  };
+  const t = engine.composerTreatment();
   return (
-    <div
+    <button
+      type="button"
+      aria-label="Send message"
+      data-nex-se-composer-send
+      onClick={() => {
+        if (!disabled) onSend();
+      }}
+      disabled={disabled}
       style={{
-        display: "flex",
-        alignItems: "center",
-        gap: 8,
+        width: 40,
+        height: 40,
+        borderRadius: 999,
+        display: "grid",
+        placeItems: "center",
+        cursor: disabled ? "default" : "pointer",
         flexShrink: 0,
+        padding: 0,
+        background: disabled
+          ? `${c.primary}44`
+          : `linear-gradient(180deg, ${c.primary}, ${c.primary}dd)`,
+        border: `1px solid ${c.primary}`,
+        color: c.deep,
+        fontSize: 16,
+        fontWeight: 800,
+        opacity: disabled ? 0.55 : 1,
+        boxShadow: disabled
+          ? "none"
+          : `0 4px 12px ${c.primary}55, inset 0 1px 1px rgba(255,255,255,0.3)`,
+        transition:
+          "background 160ms ease-out, opacity 160ms ease-out, box-shadow 160ms ease-out",
       }}
     >
-      <button
-        type="button"
-        aria-label={plusOpen ? "Close menu" : "Open menu"}
-        aria-pressed={plusOpen}
-        onClick={onTogglePlus}
-        data-nex-se-composer-action="plus"
-        data-nex-se-plus-toggle={plusOpen ? "open" : "closed"}
-        style={
-          plusOpen
-            ? {
-                ...btn,
-                background: `${c.primary}aa`,
-                border: `1px solid ${c.primary}`,
-              }
-            : btn
-        }
-      >
-        <PlusIcon />
-      </button>
-      <div
-        aria-hidden
-        style={{
-          width: 1,
-          height: 18,
-          background: `${c.highlight}55`,
-          flexShrink: 0,
-        }}
-      />
-      <button
-        type="button"
-        aria-label="Attach file"
-        data-nex-se-composer-action="attach"
-        style={{
-          ...btn,
-          background: "transparent",
-          border: "none",
-        }}
-      >
-        <AttachIcon />
-      </button>
-    </div>
+      {t.sendGlyph}
+    </button>
   );
 }
 
@@ -462,6 +433,25 @@ function AttachIcon(): React.JSX.Element {
       aria-hidden
     >
       <path d="M21.5 11.5 12 21a5 5 0 0 1-7-7l9.5-9.5a3.5 3.5 0 0 1 5 5L10.5 18a2 2 0 0 1-3-3L16 7" />
+    </svg>
+  );
+}
+
+function CameraIcon(): React.JSX.Element {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <path d="M3 8h3l2-2.5h8L18 8h3v12H3V8z" />
+      <circle cx="12" cy="13" r="4" />
     </svg>
   );
 }
@@ -922,9 +912,10 @@ function SettingsIcon(): React.JSX.Element {
   );
 }
 
-// Floating lower-right 3-dots menu · UNIVERSAL RULE · tap to reveal
-// Call / Video Call / Mic icons that slide in from the right side.
-// Theming inherits from engine colours · zero world-specific branches.
+// Floating lower-right 3-dots · UNIVERSAL RULE sealed 2026-10-05 ·
+// tap to reveal Call / Video Call / Mic icons sliding in from the
+// right. The + button now lives at the right of the composer footer
+// (see ComposerPlusButton below) · it is NOT stacked here.
 function FloatingCallActions({
   engine,
   open,
@@ -951,7 +942,7 @@ function FloatingCallActions({
     WebkitBackdropFilter: "blur(6px)",
   };
   // Three action buttons slide in from the right (toward the left of
-  // the 3-dots trigger). Stagger via per-button transition-delay.
+  // the 3-dots trigger).
   const actionWrap: React.CSSProperties = {
     display: "flex",
     gap: 8,
@@ -1022,6 +1013,56 @@ function FloatingCallActions({
         <DotsVerticalIcon />
       </button>
     </div>
+  );
+}
+
+// Composer-footer + button · sealed 2026-10-05 revision · sits on the
+// right side of the footer, outside the input, next to the send glyph.
+// Opens the centered + menu with the four sealed actions.
+function ComposerPlusButton({
+  engine,
+  plusOpen,
+  onTogglePlus,
+}: {
+  engine: ResolvedEngine;
+  plusOpen: boolean;
+  onTogglePlus: () => void;
+}): React.JSX.Element {
+  const c = engine.colours;
+  const btn: React.CSSProperties = {
+    width: 32,
+    height: 32,
+    borderRadius: 999,
+    border: `1px solid ${c.primary}99`,
+    background: `${c.primary}22`,
+    color: c.highlight,
+    display: "grid",
+    placeItems: "center",
+    cursor: "pointer",
+    flexShrink: 0,
+    padding: 0,
+    transition: "background 160ms ease-out, border 160ms ease-out",
+  };
+  return (
+    <button
+      type="button"
+      aria-label={plusOpen ? "Close menu" : "Add to this chat"}
+      aria-pressed={plusOpen}
+      onClick={onTogglePlus}
+      data-nex-se-composer-action="plus"
+      data-nex-se-plus-toggle={plusOpen ? "open" : "closed"}
+      style={
+        plusOpen
+          ? {
+              ...btn,
+              background: `${c.primary}aa`,
+              border: `1px solid ${c.primary}`,
+            }
+          : btn
+      }
+    >
+      <PlusIcon />
+    </button>
   );
 }
 
