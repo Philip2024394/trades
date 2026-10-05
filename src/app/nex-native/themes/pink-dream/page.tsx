@@ -24,6 +24,7 @@ import {
   type ReplyTarget,
 } from "../_shared/gestures";
 import { UniversalChromeOverlay } from "../../chat-standard/_universal-chrome-overlay";
+import { UniversalComposerFooter } from "../../chat-standard/_universal-composer-footer";
 
 // -- Palette -----------------------------------------------------
 const P = {
@@ -597,6 +598,7 @@ export default function PinkDreamPreviewPage() {
         onClose={closePicker}
       />
       <UniversalChromeOverlay accent={P.hotPink} deep={P.primaryDark} />
+      <UniversalComposerFooter accent={P.hotPink} deep={P.primaryDark} />
     </div>
   );
 }

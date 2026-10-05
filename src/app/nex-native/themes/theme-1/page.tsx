@@ -21,6 +21,7 @@ import {
   type ReplyTarget,
 } from "../_shared/gestures";
 import { UniversalChromeOverlay } from "../../chat-standard/_universal-chrome-overlay";
+import { UniversalComposerFooter } from "../../chat-standard/_universal-composer-footer";
 
 const P = {
   accent: "#7EB6FF",      // Theme 1 accent (light sky blue)
@@ -375,6 +376,7 @@ export default function Theme1PreviewPage() {
         onClose={closePicker}
       />
       <UniversalChromeOverlay accent={P.accentDeep} deep={P.midnight} />
+      <UniversalComposerFooter accent={P.accentDeep} deep={P.midnight} />
     </div>
   );
 }

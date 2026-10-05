@@ -32,6 +32,7 @@ import {
 } from "../../chat-standard/_live-worlds";
 import { StandardExperienceLiveClient } from "./_standard-experience-live-client";
 import { UniversalChromeOverlay } from "../../chat-standard/_universal-chrome-overlay";
+import { UniversalComposerFooter } from "../../chat-standard/_universal-composer-footer";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -154,6 +155,11 @@ export default async function ThemeViewerPage({
         accent={theme.accent_hex}
         avoidLowerRight={theme.id === "theme-0"}
       />
+      {/* UNIVERSAL COMPOSER FOOTER OVERLAY · sealed R3 revision 2 ·
+          Prototype 5 pattern (pill with inline divider) drops on top
+          of every legacy theme's native composer so the footer looks
+          identical across every live theme. */}
+      <UniversalComposerFooter accent={theme.accent_hex} />
     </>
   );
 }
