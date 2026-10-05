@@ -48,9 +48,11 @@ export function UniversalComposerFooter({
 
   return (
     <>
-      {/* Bottom composer bar · fixed to the viewport, full width,
-          high z-index so it sits above any legacy native composer.
-          Solid gradient background covers whatever is behind it. */}
+      {/* Bottom composer bar · fixed to the viewport, full width.
+          OUTER CONTAINER BACKGROUND REMOVED (sealed 2026-10-05
+          refinement) · just a transparent wrapper hosting the pill
+          + round send + round plus. Chat / theme content shows
+          through everywhere except on the actual button fills. */}
       <div
         data-nex-universal-composer-footer
         style={{
@@ -60,17 +62,14 @@ export function UniversalComposerFooter({
           bottom: 0,
           zIndex: 55,
           padding: "10px 10px calc(env(safe-area-inset-bottom, 0) + 10px)",
-          background: `linear-gradient(180deg, ${deep}e8, ${deep}f8)`,
-          borderTop: `1px solid ${accent}44`,
-          backdropFilter: "blur(16px) saturate(1.1)",
-          WebkitBackdropFilter: "blur(16px) saturate(1.1)",
+          background: "transparent",
           display: "flex",
           alignItems: "center",
           gap: 8,
-          boxShadow: `0 -8px 24px rgba(0,0,0,0.5)`,
+          pointerEvents: "none",
         }}
       >
-        <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ flex: 1, minWidth: 0, pointerEvents: "auto" }}>
           <ComposerPill
             accent={accent}
             value={value}
@@ -248,6 +247,7 @@ function SendButton({
         cursor: disabled ? "default" : "pointer",
         flexShrink: 0,
         padding: 0,
+        pointerEvents: "auto",
         background: disabled
           ? `${accent}44`
           : `linear-gradient(180deg, ${accent}, ${accent}dd)`,
@@ -296,6 +296,7 @@ function PlusButton({
         cursor: "pointer",
         flexShrink: 0,
         padding: 0,
+        pointerEvents: "auto",
         background: open ? `${accent}aa` : `${accent}22`,
         border: open ? `1px solid ${accent}` : `1px solid ${accent}99`,
         color: NEX_HIGHLIGHT,
