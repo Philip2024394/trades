@@ -72,6 +72,15 @@ export function StandardBubble({
         fontWeight: t.typography.fontWeight,
         fontSize: 14,
         animation: animations.join(", "),
+        // UNIVERSAL RULE · sealed 2026-10-05 · chat text MUST fit
+        // inside its bubble on every theme. Long unbroken strings
+        // (URLs, product names) wrap at any point rather than
+        // extending the bubble past its max-width. preserve-newlines
+        // via pre-wrap so paragraph intent is kept.
+        wordBreak: "break-word",
+        overflowWrap: "anywhere",
+        whiteSpace: "pre-wrap",
+        minWidth: 0,
       }}
     >
       {t.innerLightOverlay && (

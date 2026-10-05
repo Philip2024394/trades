@@ -199,6 +199,16 @@ export function createEngine(pkg: ThemePackage): ResolvedEngine {
             }
           : undefined;
 
+    // Materials whose resolved bubble background is light (pale cream
+    // / porcelain) · text must be dark against them or messages become
+    // unreadable. Universal fix · any theme that opts into these
+    // materials picks it up. Parchment peer bubbles are cream paper;
+    // parchment mine bubbles are primary-dominant (rose-wood for
+    // French / etc.) so mine stays with highlight text while peer
+    // flips to deep text — this preserves the universal two-colour
+    // rule across sides.
+    const hasLightBubbleBg = bubbleMaterial === "parchment" && !mine;
+
     return {
       geometry: {
         borderRadius,
@@ -218,9 +228,11 @@ export function createEngine(pkg: ThemePackage): ResolvedEngine {
       },
       effects,
       typography: {
-        color: colours.highlight,
-        textShadow: "0 1px 4px rgba(0,0,0,0.55)",
-        fontWeight: 500,
+        color: hasLightBubbleBg ? colours.deep : colours.highlight,
+        textShadow: hasLightBubbleBg
+          ? "0 1px 2px rgba(255,255,255,0.45)"
+          : "0 1px 4px rgba(0,0,0,0.55)",
+        fontWeight: hasLightBubbleBg ? 600 : 500,
       },
       innerLightOverlay,
     };
@@ -276,7 +288,10 @@ export function createEngine(pkg: ThemePackage): ResolvedEngine {
         background: "transparent",
         border: "none",
         outline: "none",
-        color: colours.highlight,
+        // Composer input text contrast · parchment (light paper) needs
+        // dark text to stay readable. Same universal fix applied to
+        // bubble text above.
+        color: material === "parchment" ? colours.deep : colours.highlight,
         fontSize: 13,
         fontFamily: "inherit",
       },
@@ -430,15 +445,22 @@ export function createEngine(pkg: ThemePackage): ResolvedEngine {
           : "none";
     return {
       containerStyle: {
-        display: "flex",
+        // UNIVERSAL RULE · sealed 2026-10-05 · no side-scrolling on
+        // any theme. The shop slider is a fixed 2-column grid; if
+        // there are more products than fit on screen they stack
+        // vertically within the overlay (which may scroll in Y) ·
+        // horizontal overflow is explicitly disallowed.
+        display: "grid",
+        gridTemplateColumns: "repeat(2, 1fr)",
         gap: 10,
-        overflowX: "auto",
-        scrollSnapType: scrollSnap === "mandatory" ? "x mandatory" : scrollSnap === "proximity" ? "x proximity" : "none",
-        padding: "8px 2px",
+        overflowX: "hidden",
+        overflowY: "auto",
+        padding: "6px 2px",
       },
       cardStyle: {
-        flex: "0 0 auto",
-        width: 160,
+        // Grid cell · auto-width so the card fills its column cleanly
+        // without needing scroll-snap or hidden overflow at the row.
+        width: "100%",
         padding: 10,
         borderRadius:
           productFraming === "buoy"
@@ -453,7 +475,6 @@ export function createEngine(pkg: ThemePackage): ResolvedEngine {
         background: cardBg,
         border: cardBorder,
         color: colours.highlight,
-        scrollSnapAlign: scrollSnap !== "none" ? "start" : undefined,
         boxShadow: `0 6px 18px ${hexToRgba(colours.deep, 0.45)}, inset 0 1px 1px ${hexToRgba(colours.highlight, 0.18)}`,
         position: "relative" as const,
         overflow: "hidden" as const,
@@ -570,9 +591,20 @@ function resolveBubbleBackground(
         ? `radial-gradient(circle at 30% 30%, ${hexToRgba(c.primary, 0.75)}, ${hexToRgba(c.primary, 0.25)})`
         : `radial-gradient(circle at 30% 30%, ${hexToRgba(c.secondary, 0.45)}, ${hexToRgba(c.deep, 0.6)})`;
     case "parchment":
+      // UNIVERSAL RULE sealed 2026-10-05 · every theme needs TWO
+      // visually distinct bubble colours. Mine bubbles carry the
+      // theme primary dominantly (handwritten note on wax/wood);
+      // peer bubbles stay cream paper. Together they read as paired
+      // but clearly distinguishable at a glance.
       return mine
-        ? `linear-gradient(180deg, ${hexToRgba(c.secondary, 0.9)}, ${hexToRgba(c.highlight, 0.75)})`
-        : `linear-gradient(180deg, ${hexToRgba(c.highlight, 0.9)}, ${hexToRgba(c.secondary, 0.7)})`;
+        ? `
+          radial-gradient(ellipse 72% 40% at 50% 10%, ${hexToRgba(c.highlight, 0.3)} 0%, transparent 60%),
+          linear-gradient(180deg, ${hexToRgba(c.primary, 0.82)} 0%, ${hexToRgba(c.primary, 0.92)} 100%)
+        `
+        : `
+          radial-gradient(ellipse 72% 40% at 50% 10%, ${hexToRgba(c.highlight, 0.4)} 0%, transparent 60%),
+          linear-gradient(180deg, ${hexToRgba(c.highlight, 0.95)} 0%, ${hexToRgba(c.secondary, 0.85)} 100%)
+        `;
     case "frosting":
       return mine
         ? `linear-gradient(145deg, ${hexToRgba(c.primary, 0.65)}, ${hexToRgba(c.highlight, 0.35)})`

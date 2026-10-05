@@ -159,7 +159,7 @@ export default async function ThemePickerPage({
               letterSpacing: "-0.01em",
             }}
           >
-            NEX Themes
+            NEX Space
           </h1>
           <p
             style={{
@@ -175,7 +175,7 @@ export default async function ThemePickerPage({
               href="/nex-native/settings/tier"
               style={{ color: NEX.orange, textDecoration: "underline" }}
             >
-              NEX Bisnis
+              NEX Business
             </Link>
             .
           </p>
@@ -210,7 +210,10 @@ export default async function ThemePickerPage({
                · unused   → orange "Try 7 days free" inline CTA form
                · used     → dim "Trial used · subscribe to keep premium" */}
           {trialActive && trialExpiresIso ? (
-            <TrialCountdownBanner expiresIso={trialExpiresIso} />
+            <TrialCountdownBanner
+              expiresIso={trialExpiresIso}
+              nowIso={new Date().toISOString()}
+            />
           ) : !trialUsed && currentTier === "gratis" ? (
             <form
               action={startThemesTrialAction}

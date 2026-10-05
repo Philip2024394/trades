@@ -33,6 +33,10 @@ export interface StandardExperienceFixturePeer {
   displayName: string;
   tagline: string;
   avatarUrl?: string | null;
+  /** Universal rule · peer avatar always carries a green rim. When
+   *  `isOnline` is true an outer pulsing ring (ping) animates around
+   *  it. Fixture defaults to true in the preview. */
+  isOnline?: boolean;
 }
 
 export interface StandardExperienceSeedMessage {
@@ -67,6 +71,17 @@ export function StandardExperience({
 }: StandardExperienceProps): React.JSX.Element {
   const [composerText, setComposerText] = React.useState("");
   const [pickerOpen, setPickerOpen] = React.useState(false);
+  // Shop slider is hidden by default on every theme · tapping the Shop
+  // icon in the header slides it up from below the composer. Universal
+  // rule across all themes · the Standard Experience owns this
+  // behaviour so no world package has to opt in.
+  const [shopOpen, setShopOpen] = React.useState(false);
+  // Floating 3-dots at bottom-right · tap to reveal Call / Video /
+  // Mic icons sliding in to the LEFT. Universal rule across themes.
+  const [callActionsOpen, setCallActionsOpen] = React.useState(false);
+  // + button in the composer footer opens a centered floating menu
+  // with Contacts / Add Product / Animations. Universal rule.
+  const [plusMenuOpen, setPlusMenuOpen] = React.useState(false);
   const [lastReactId, setLastReactId] = React.useState<string | null>(null);
   const colours = engine.colours;
 
@@ -139,13 +154,15 @@ export function StandardExperience({
         {/* Ambient layer sits above the wallpaper, below everything else. */}
         <StandardAmbientLayer engine={engine} />
 
-        {/* Header · minimal in 2A.0, just so the fixture reads as a chat */}
-        <StandardHeader peer={peer} engine={engine} />
-
-        {/* Shop slider · appears above messages in a slim strip */}
-        <div style={{ position: "relative", zIndex: 5, padding: "6px 10px" }}>
-          <StandardShopSlider engine={engine} products={products} />
-        </div>
+        {/* Header · universal · 3 right-side action icons (Home / Cart
+            / Shop). The Shop icon toggles the slide-up shop sheet
+            below. Rule applies to every theme without exception. */}
+        <StandardHeader
+          peer={peer}
+          engine={engine}
+          shopOpen={shopOpen}
+          onToggleShop={() => setShopOpen((v) => !v)}
+        />
 
         {/* Messages */}
         <div
@@ -188,6 +205,42 @@ export function StandardExperience({
               </StandardBubble>
             );
           })}
+        </div>
+
+        {/* Shop slider · UNIVERSAL RULE across every theme ·
+            - Absolute overlay (does NOT push chat bubbles up).
+            - Floats above the composer with rounded edges on left +
+              right (and top + bottom) so it reads as a floating card.
+            - Hidden by default · Shop icon in header slides it up from
+              below with an ease-out transition.
+            Theming (background + border) inherits from engine colours
+            so each world gets its own tinted overlay with no world-
+            specific branches. */}
+        <div
+          aria-hidden={!shopOpen}
+          data-nex-se-shop-sheet={shopOpen ? "open" : "closed"}
+          style={{
+            position: "absolute",
+            left: 10,
+            right: 10,
+            bottom: "calc(env(safe-area-inset-bottom, 0) + 68px)",
+            zIndex: 7,
+            padding: "10px 12px",
+            borderRadius: 24,
+            background: `linear-gradient(180deg, ${colours.deep}cc, ${colours.deep}ee)`,
+            border: `1px solid ${colours.primary}66`,
+            boxShadow: `0 12px 32px rgba(0,0,0,0.5), 0 2px 6px ${colours.primary}33`,
+            backdropFilter: "blur(10px) saturate(1.1)",
+            WebkitBackdropFilter: "blur(10px) saturate(1.1)",
+            overflow: "hidden",
+            opacity: shopOpen ? 1 : 0,
+            transform: `translateY(${shopOpen ? 0 : 24}px)`,
+            transition:
+              "opacity 220ms ease-out, transform 300ms cubic-bezier(0.2, 0.9, 0.3, 1.1)",
+            pointerEvents: shopOpen ? "auto" : "none",
+          }}
+        >
+          <StandardShopSlider engine={engine} products={products} />
         </div>
 
         {/* Emoji + Sticker picker (overlay above composer when open) */}
@@ -248,18 +301,161 @@ export function StandardExperience({
               placeholder={`Say something in ${engine.package.identity.name}…`}
             />
           </div>
+          <StandardComposerRightActions
+            engine={engine}
+            plusOpen={plusMenuOpen}
+            onTogglePlus={() => setPlusMenuOpen((v) => !v)}
+          />
         </div>
+
+        {/* UNIVERSAL RULE · floating 3-dots at the lower-right of the
+            stage · tap to reveal Call / Video Call / Mic icons that
+            slide in from the right. Theming inherits from the engine.
+            Lives at zIndex 9 so it floats above the shop sheet. */}
+        <FloatingCallActions
+          engine={engine}
+          open={callActionsOpen}
+          onToggle={() => setCallActionsOpen((v) => !v)}
+        />
+
+        {/* UNIVERSAL RULE · + button in composer footer opens a
+            centered floating menu with Contacts / Add Product /
+            Animations. Backdrop click dismisses. zIndex 10 so it
+            floats above every other overlay. */}
+        <FloatingPlusMenu
+          engine={engine}
+          open={plusMenuOpen}
+          onClose={() => setPlusMenuOpen(false)}
+        />
       </div>
     </>
+  );
+}
+
+// Composer footer right-side cluster · universal rule across every
+// theme: round "+" button, then a thin vertical divider, then an
+// attachment file icon. Theming (border, background, icon stroke)
+// inherits from the engine's colours — no world-specific branches.
+function StandardComposerRightActions({
+  engine,
+  plusOpen,
+  onTogglePlus,
+}: {
+  engine: ResolvedEngine;
+  plusOpen: boolean;
+  onTogglePlus: () => void;
+}): React.JSX.Element {
+  const c = engine.colours;
+  const btn: React.CSSProperties = {
+    width: 32,
+    height: 32,
+    borderRadius: 999,
+    border: `1px solid ${c.primary}99`,
+    background: `${c.primary}22`,
+    color: c.highlight,
+    display: "grid",
+    placeItems: "center",
+    cursor: "pointer",
+    flexShrink: 0,
+    padding: 0,
+    transition: "background 160ms ease-out, border-color 160ms ease-out",
+  };
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 8,
+        flexShrink: 0,
+      }}
+    >
+      <button
+        type="button"
+        aria-label={plusOpen ? "Close menu" : "Open menu"}
+        aria-pressed={plusOpen}
+        onClick={onTogglePlus}
+        data-nex-se-composer-action="plus"
+        data-nex-se-plus-toggle={plusOpen ? "open" : "closed"}
+        style={
+          plusOpen
+            ? { ...btn, background: `${c.primary}aa`, borderColor: c.primary }
+            : btn
+        }
+      >
+        <PlusIcon />
+      </button>
+      <div
+        aria-hidden
+        style={{
+          width: 1,
+          height: 18,
+          background: `${c.highlight}55`,
+          flexShrink: 0,
+        }}
+      />
+      <button
+        type="button"
+        aria-label="Attach file"
+        data-nex-se-composer-action="attach"
+        style={{
+          ...btn,
+          background: "transparent",
+          border: "none",
+        }}
+      >
+        <AttachIcon />
+      </button>
+    </div>
+  );
+}
+
+function PlusIcon(): React.JSX.Element {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <path d="M12 5v14" />
+      <path d="M5 12h14" />
+    </svg>
+  );
+}
+
+function AttachIcon(): React.JSX.Element {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <path d="M21.5 11.5 12 21a5 5 0 0 1-7-7l9.5-9.5a3.5 3.5 0 0 1 5 5L10.5 18a2 2 0 0 1-3-3L16 7" />
+    </svg>
   );
 }
 
 function StandardHeader({
   peer,
   engine,
+  shopOpen,
+  onToggleShop,
 }: {
   peer: StandardExperienceFixturePeer;
   engine: ResolvedEngine;
+  shopOpen: boolean;
+  onToggleShop: () => void;
 }): React.JSX.Element {
   const colours = engine.colours;
   return (
@@ -274,19 +470,7 @@ function StandardHeader({
         gap: 10,
       }}
     >
-      <div
-        aria-hidden
-        style={{
-          width: 36,
-          height: 36,
-          borderRadius: "50%",
-          background: peer.avatarUrl
-            ? `center/cover url(${peer.avatarUrl})`
-            : `linear-gradient(135deg, ${colours.primary}, ${colours.secondary})`,
-          border: `1px solid ${colours.highlight}55`,
-          flexShrink: 0,
-        }}
-      />
+      <PeerAvatarWithPresence peer={peer} engine={engine} />
       <div style={{ flex: 1, minWidth: 0 }}>
         <div
           style={{
@@ -307,6 +491,648 @@ function StandardHeader({
           {peer.tagline}
         </div>
       </div>
+      <StandardHeaderActions
+        engine={engine}
+        shopOpen={shopOpen}
+        onToggleShop={onToggleShop}
+      />
     </div>
+  );
+}
+
+// Three circular action buttons docked on the right of the header ·
+// universal across every world · theming inherits from the engine so
+// Ocean renders teal-rimmed buttons, Midnight renders magenta-rimmed
+// buttons, French renders rose-wood-rimmed buttons, etc. No world-
+// specific branches.
+//
+// RULE · every theme design MUST render all three icons (Home, Cart,
+// Shop). The Shop icon toggles the slide-up shop sheet below the
+// composer · universal behaviour · not per-theme-customisable.
+function StandardHeaderActions({
+  engine,
+  shopOpen,
+  onToggleShop,
+}: {
+  engine: ResolvedEngine;
+  shopOpen: boolean;
+  onToggleShop: () => void;
+}): React.JSX.Element {
+  const c = engine.colours;
+  const baseBtn: React.CSSProperties = {
+    width: 32,
+    height: 32,
+    borderRadius: 999,
+    border: `1px solid ${c.primary}99`,
+    background: `${c.primary}22`,
+    color: c.highlight,
+    display: "grid",
+    placeItems: "center",
+    cursor: "pointer",
+    flexShrink: 0,
+    padding: 0,
+    transition: "background 160ms ease-out, border-color 160ms ease-out",
+  };
+  const shopActiveBtn: React.CSSProperties = {
+    ...baseBtn,
+    background: `${c.primary}aa`,
+    borderColor: c.primary,
+  };
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 6,
+        flexShrink: 0,
+      }}
+    >
+      <button
+        type="button"
+        aria-label="Home"
+        data-nex-se-header-action="home"
+        style={baseBtn}
+      >
+        <HomeIcon />
+      </button>
+      <button
+        type="button"
+        aria-label="Cart"
+        data-nex-se-header-action="cart"
+        style={baseBtn}
+      >
+        <CartIcon />
+      </button>
+      <button
+        type="button"
+        aria-label={shopOpen ? "Close shop" : "Open shop"}
+        aria-pressed={shopOpen}
+        data-nex-se-header-action="shop"
+        data-nex-se-shop-toggle={shopOpen ? "open" : "closed"}
+        onClick={onToggleShop}
+        style={shopOpen ? shopActiveBtn : baseBtn}
+      >
+        <ShopIcon />
+      </button>
+    </div>
+  );
+}
+
+// Peer avatar · UNIVERSAL RULE across every theme ·
+//   - Green rim ALWAYS (not theme-tinted · green is the universal
+//     presence colour).
+//   - When isOnline === true, a pulsing outer ring (ping) animates
+//     outward infinitely so you can see the person is live.
+// Fixture defaults isOnline → true in the preview.
+const ONLINE_GREEN = "#22C55E";
+const ONLINE_PING_KEYFRAMES = `
+@keyframes nex-se-online-ping {
+  0%   { transform: scale(1);   opacity: 0.75; }
+  100% { transform: scale(1.9); opacity: 0;    }
+}
+`;
+
+function PeerAvatarWithPresence({
+  peer,
+  engine,
+}: {
+  peer: StandardExperienceFixturePeer;
+  engine: ResolvedEngine;
+}): React.JSX.Element {
+  const colours = engine.colours;
+  const isOnline = peer.isOnline !== false;
+  return (
+    <div
+      style={{
+        position: "relative",
+        width: 36,
+        height: 36,
+        flexShrink: 0,
+      }}
+    >
+      <style>{ONLINE_PING_KEYFRAMES}</style>
+      {isOnline && (
+        <span
+          aria-hidden
+          data-nex-se-online-ping
+          style={{
+            position: "absolute",
+            inset: 0,
+            borderRadius: "50%",
+            border: `2px solid ${ONLINE_GREEN}`,
+            animation: "nex-se-online-ping 1.8s ease-out infinite",
+            pointerEvents: "none",
+          }}
+        />
+      )}
+      <div
+        aria-hidden
+        style={{
+          width: 36,
+          height: 36,
+          borderRadius: "50%",
+          background: peer.avatarUrl
+            ? `center/cover url(${peer.avatarUrl})`
+            : `linear-gradient(135deg, ${colours.primary}, ${colours.secondary})`,
+          border: `2px solid ${ONLINE_GREEN}`,
+          boxShadow: isOnline ? `0 0 0 1px rgba(34,197,94,0.3)` : undefined,
+        }}
+      />
+    </div>
+  );
+}
+
+// Centered floating menu triggered by the composer-footer "+" button ·
+// UNIVERSAL RULE across every theme. Contents (per founder-direction
+// 2026-10-05):
+//   - Contacts  → add a contact to the chat
+//   - Product   → add / edit / delete / turn-off product
+//   - Animation → open the full theme animation gallery
+// Backdrop click dismisses. Theming inherits from the engine so each
+// world's menu reads as part of its visual identity.
+function FloatingPlusMenu({
+  engine,
+  open,
+  onClose,
+}: {
+  engine: ResolvedEngine;
+  open: boolean;
+  onClose: () => void;
+}): React.JSX.Element {
+  const c = engine.colours;
+  const option: React.CSSProperties = {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: 8,
+    padding: "12px 8px",
+    width: "100%",
+    minWidth: 0,
+    borderRadius: 16,
+    border: `1px solid ${c.primary}66`,
+    background: `${c.primary}1a`,
+    color: c.highlight,
+    cursor: "pointer",
+    textAlign: "center",
+    fontFamily: "inherit",
+    fontSize: 12,
+    fontWeight: 600,
+    transition: "background 160ms ease-out, transform 160ms ease-out",
+  };
+  const iconCircle: React.CSSProperties = {
+    width: 44,
+    height: 44,
+    borderRadius: 999,
+    display: "grid",
+    placeItems: "center",
+    background: `linear-gradient(135deg, ${c.primary}, ${c.secondary})`,
+    color: c.highlight,
+    boxShadow: `0 4px 12px ${c.primary}55`,
+  };
+  return (
+    <div
+      aria-hidden={!open}
+      data-nex-se-plus-menu={open ? "open" : "closed"}
+      style={{
+        position: "absolute",
+        inset: 0,
+        zIndex: 10,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        pointerEvents: open ? "auto" : "none",
+        opacity: open ? 1 : 0,
+        transition: "opacity 200ms ease-out",
+      }}
+    >
+      <div
+        aria-hidden
+        onClick={onClose}
+        style={{
+          position: "absolute",
+          inset: 0,
+          background: "rgba(0,0,0,0.45)",
+          backdropFilter: "blur(4px)",
+          WebkitBackdropFilter: "blur(4px)",
+        }}
+      />
+      <div
+        role="dialog"
+        aria-label="Chat actions"
+        style={{
+          position: "relative",
+          padding: 20,
+          borderRadius: 24,
+          background: `linear-gradient(180deg, ${c.deep}e6, ${c.deep}f5)`,
+          border: `1px solid ${c.primary}99`,
+          boxShadow: `0 20px 50px rgba(0,0,0,0.55), 0 0 0 1px ${c.primary}22`,
+          display: "flex",
+          flexDirection: "column",
+          gap: 14,
+          minWidth: 340,
+          maxWidth: "92%",
+          transform: `scale(${open ? 1 : 0.9})`,
+          transition:
+            "transform 240ms cubic-bezier(0.2, 0.9, 0.3, 1.1), opacity 220ms ease-out",
+        }}
+      >
+        <div
+          style={{
+            fontSize: 13,
+            fontWeight: 700,
+            color: c.highlight,
+            letterSpacing: "0.02em",
+            textAlign: "center",
+          }}
+        >
+          Add to this chat
+        </div>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(4, 1fr)",
+            gap: 10,
+            justifyItems: "center",
+          }}
+        >
+          <button
+            type="button"
+            data-nex-se-plus-action="contacts"
+            aria-label="Add contact to chat"
+            style={option}
+          >
+            <span aria-hidden style={iconCircle}>
+              <ContactsIcon />
+            </span>
+            <span>Contacts</span>
+          </button>
+          <button
+            type="button"
+            data-nex-se-plus-action="product"
+            aria-label="Add, edit, delete or turn off a product"
+            style={option}
+          >
+            <span aria-hidden style={iconCircle}>
+              <ProductIcon />
+            </span>
+            <span>Product</span>
+          </button>
+          <button
+            type="button"
+            data-nex-se-plus-action="animation"
+            aria-label="Open all theme animations"
+            style={option}
+          >
+            <span aria-hidden style={iconCircle}>
+              <AnimationIcon />
+            </span>
+            <span>Animation</span>
+          </button>
+          <button
+            type="button"
+            data-nex-se-plus-action="settings"
+            aria-label="Open settings page"
+            style={option}
+          >
+            <span aria-hidden style={iconCircle}>
+              <SettingsIcon />
+            </span>
+            <span>Settings</span>
+          </button>
+        </div>
+        <button
+          type="button"
+          onClick={onClose}
+          style={{
+            alignSelf: "center",
+            marginTop: 2,
+            padding: "6px 14px",
+            borderRadius: 999,
+            border: `1px solid ${c.highlight}33`,
+            background: "transparent",
+            color: c.highlight,
+            fontSize: 11,
+            cursor: "pointer",
+          }}
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function ContactsIcon(): React.JSX.Element {
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <circle cx="9" cy="8" r="3.5" />
+      <path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6" />
+      <circle cx="17" cy="7" r="2.5" />
+      <path d="M15 14c3 0 6 1.5 6 5" />
+    </svg>
+  );
+}
+
+function ProductIcon(): React.JSX.Element {
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <path d="M3 7.5 12 3l9 4.5v9L12 21 3 16.5v-9z" />
+      <path d="M3 7.5 12 12l9-4.5" />
+      <path d="M12 12v9" />
+    </svg>
+  );
+}
+
+function AnimationIcon(): React.JSX.Element {
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <path d="M12 2 l1.6 4.4 L18 8l-4.4 1.6L12 14l-1.6-4.4L6 8l4.4-1.6z" />
+      <path d="M18 15l0.8 2.2L21 18l-2.2 0.8L18 21l-0.8-2.2L15 18l2.2-0.8z" />
+      <path d="M6 15l0.6 1.8L8 17.4l-1.4 0.6L6 19.8l-0.6-1.8L4 17.4l1.4-0.6z" />
+    </svg>
+  );
+}
+
+function SettingsIcon(): React.JSX.Element {
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <circle cx="12" cy="12" r="3" />
+      <path d="M19.4 15a1.6 1.6 0 0 0 .4 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-1.8-.4 1.6 1.6 0 0 0-1 1.5V21a2 2 0 0 1-4 0v-.1a1.6 1.6 0 0 0-1-1.5 1.6 1.6 0 0 0-1.8.4l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0 .4-1.8 1.6 1.6 0 0 0-1.5-1H3a2 2 0 0 1 0-4h.1a1.6 1.6 0 0 0 1.5-1 1.6 1.6 0 0 0-.4-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.4H9a1.6 1.6 0 0 0 1-1.5V3a2 2 0 0 1 4 0v.1a1.6 1.6 0 0 0 1 1.5 1.6 1.6 0 0 0 1.8-.4l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.4 1.8V9a1.6 1.6 0 0 0 1.5 1H21a2 2 0 0 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1z" />
+    </svg>
+  );
+}
+
+// Floating lower-right 3-dots menu · UNIVERSAL RULE · tap to reveal
+// Call / Video Call / Mic icons that slide in from the right side.
+// Theming inherits from engine colours · zero world-specific branches.
+function FloatingCallActions({
+  engine,
+  open,
+  onToggle,
+}: {
+  engine: ResolvedEngine;
+  open: boolean;
+  onToggle: () => void;
+}): React.JSX.Element {
+  const c = engine.colours;
+  const circle: React.CSSProperties = {
+    width: 40,
+    height: 40,
+    borderRadius: 999,
+    border: `1px solid ${c.primary}99`,
+    background: `linear-gradient(180deg, ${c.deep}d9, ${c.deep}f2)`,
+    color: c.highlight,
+    display: "grid",
+    placeItems: "center",
+    cursor: "pointer",
+    padding: 0,
+    boxShadow: `0 6px 16px rgba(0,0,0,0.4), 0 0 0 1px ${c.primary}33`,
+    backdropFilter: "blur(6px)",
+    WebkitBackdropFilter: "blur(6px)",
+  };
+  // Three action buttons slide in from the right (toward the left of
+  // the 3-dots trigger). Stagger via per-button transition-delay.
+  const actionWrap: React.CSSProperties = {
+    display: "flex",
+    gap: 8,
+    alignItems: "center",
+    opacity: open ? 1 : 0,
+    transform: `translateX(${open ? 0 : 20}px)`,
+    transition:
+      "opacity 220ms ease-out, transform 300ms cubic-bezier(0.2, 0.9, 0.3, 1.1)",
+    pointerEvents: open ? "auto" : "none",
+  };
+  return (
+    <div
+      data-nex-se-call-actions={open ? "open" : "closed"}
+      style={{
+        position: "absolute",
+        right: 14,
+        bottom: "calc(env(safe-area-inset-bottom, 0) + 72px)",
+        zIndex: 9,
+        display: "flex",
+        flexDirection: "row",
+        gap: 8,
+        alignItems: "center",
+      }}
+    >
+      <div style={actionWrap}>
+        <button
+          type="button"
+          aria-label="Mic"
+          data-nex-se-call-action="mic"
+          style={circle}
+        >
+          <MicIcon />
+        </button>
+        <button
+          type="button"
+          aria-label="Video call"
+          data-nex-se-call-action="video"
+          style={circle}
+        >
+          <VideoCallIcon />
+        </button>
+        <button
+          type="button"
+          aria-label="Call"
+          data-nex-se-call-action="call"
+          style={circle}
+        >
+          <CallIcon />
+        </button>
+      </div>
+      <button
+        type="button"
+        aria-label={open ? "Close actions" : "Open actions"}
+        aria-pressed={open}
+        onClick={onToggle}
+        data-nex-se-call-actions-toggle={open ? "open" : "closed"}
+        style={{
+          ...circle,
+          background: open
+            ? `linear-gradient(180deg, ${c.primary}cc, ${c.primary}f0)`
+            : circle.background,
+          borderColor: open ? c.primary : `${c.primary}99`,
+          transition: "background 180ms ease-out, border-color 180ms ease-out",
+        }}
+      >
+        <DotsVerticalIcon />
+      </button>
+    </div>
+  );
+}
+
+function DotsVerticalIcon(): React.JSX.Element {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden
+    >
+      <circle cx="12" cy="5" r="1.9" />
+      <circle cx="12" cy="12" r="1.9" />
+      <circle cx="12" cy="19" r="1.9" />
+    </svg>
+  );
+}
+
+function CallIcon(): React.JSX.Element {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L8 9.6a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6A2 2 0 0 1 22 16.9z" />
+    </svg>
+  );
+}
+
+function VideoCallIcon(): React.JSX.Element {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <rect x="2.5" y="6" width="13" height="12" rx="2" />
+      <path d="M22 7.5 15.5 12 22 16.5v-9z" />
+    </svg>
+  );
+}
+
+function MicIcon(): React.JSX.Element {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <rect x="9" y="3" width="6" height="12" rx="3" />
+      <path d="M5 11a7 7 0 0 0 14 0" />
+      <path d="M12 18v3" />
+    </svg>
+  );
+}
+
+function HomeIcon(): React.JSX.Element {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <path d="M3 11.5 12 4l9 7.5" />
+      <path d="M5 10v10h14V10" />
+      <path d="M10 20v-6h4v6" />
+    </svg>
+  );
+}
+
+function CartIcon(): React.JSX.Element {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <circle cx="9" cy="20" r="1.4" />
+      <circle cx="17" cy="20" r="1.4" />
+      <path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.6a2 2 0 0 0 2-1.5L21 8H6" />
+    </svg>
+  );
+}
+
+function ShopIcon(): React.JSX.Element {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <path d="M3 8l1.5-4h15L21 8" />
+      <path d="M3 8v2a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0V8" />
+      <path d="M5 10v10h14V10" />
+      <path d="M10 20v-5h4v5" />
+    </svg>
   );
 }

@@ -33,15 +33,27 @@ function formatRemaining(ms: number): string {
 
 export function TrialCountdownBanner({
   expiresIso,
+  nowIso,
 }: {
   expiresIso: string;
+  /** Server-sampled ISO timestamp passed in as a prop so the initial
+   *  state is identical on the server and on the first client paint.
+   *  Without this, useState would call `Date.now()` once on the server
+   *  and once again on hydration · the ~1s drift produced the
+   *  "6d 7h 1m 9s" vs "6d 7h 1m 8s" hydration mismatch. The useEffect
+   *  below takes over with the real wall clock the moment it mounts. */
+  nowIso: string;
 }) {
   const expiresMs = React.useMemo(
     () => new Date(expiresIso).getTime(),
     [expiresIso],
   );
+  const initialNowMs = React.useMemo(
+    () => new Date(nowIso).getTime(),
+    [nowIso],
+  );
   const [remaining, setRemaining] = React.useState<number>(() =>
-    Math.max(0, expiresMs - Date.now()),
+    Math.max(0, expiresMs - initialNowMs),
   );
 
   React.useEffect(() => {

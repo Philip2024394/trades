@@ -17,6 +17,11 @@
 import { notFound } from "next/navigation";
 import * as React from "react";
 import { OceanPilotBody } from "./_fixture-client";
+import {
+  PRODUCTION_WORLD_IDS,
+  isAllowedThemeId,
+  type ThemeId,
+} from "./_registry";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -33,16 +38,7 @@ export default async function StandardExperiencePreviewPage({
   const sp = await searchParams;
   const wallpaperFallback =
     sp.wallpaper === "off" ? ("none" as const) : ("theme-gradient" as const);
-  const themeId =
-    sp.theme === "coffee"
-      ? "coffee"
-      : sp.theme === "_test-bundle-a"
-        ? "_test-bundle-a"
-        : sp.theme === "_test-bundle-b"
-          ? "_test-bundle-b"
-          : sp.theme === "_test-bundle-c"
-            ? "_test-bundle-c"
-            : "ocean";
+  const themeId: ThemeId = isAllowedThemeId(sp.theme) ? sp.theme : "ocean";
 
   return (
     <>
@@ -63,18 +59,17 @@ export default async function StandardExperiencePreviewPage({
       >
         <div style={{ maxWidth: 560, width: "100%" }}>
           <h1 style={{ margin: "0 0 4px", fontSize: 20, fontWeight: 700 }}>
-            Standard Experience · {themeId === "coffee" ? "Coffee" : "Ocean"} pilot
+            Standard Experience · {themeId} preview
           </h1>
           <p
             style={{
-              margin: "0 0 12px",
+              margin: "0 0 10px",
               fontSize: 12,
               color: "#8BA9D1",
               lineHeight: 1.6,
             }}
           >
-            Phase 2A.0 · five surfaces mounted via the Theme Engine ·
-            Maria Santos / Footwear Designer fixture ·
+            Mounted via the Theme Engine · Maria Santos fixture ·
             {wallpaperFallback === "none" ? (
               <strong style={{ color: "#F4F7FC" }}>
                 {" "}
@@ -95,17 +90,45 @@ export default async function StandardExperiencePreviewPage({
                 ? "Turn wallpaper ON"
                 : "Turn wallpaper OFF (acceptance test)"}
             </a>
-            {" · "}
-            <a
-              href={`?${new URLSearchParams({
-                theme: themeId === "ocean" ? "coffee" : "ocean",
-                ...(wallpaperFallback === "none" ? { wallpaper: "off" } : {}),
-              }).toString()}`}
-              style={{ color: "#00AFFF" }}
-            >
-              Switch to {themeId === "ocean" ? "Coffee" : "Ocean"}
-            </a>
           </p>
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: 6,
+              fontSize: 11,
+              marginBottom: 4,
+            }}
+          >
+            {PRODUCTION_WORLD_IDS.map((t) => {
+              const active = t === themeId;
+              return (
+                <a
+                  key={t}
+                  href={`?${new URLSearchParams({
+                    ...(t !== "ocean" ? { theme: t } : {}),
+                    ...(wallpaperFallback === "none"
+                      ? { wallpaper: "off" }
+                      : {}),
+                  }).toString()}`}
+                  style={{
+                    padding: "4px 10px",
+                    borderRadius: 999,
+                    border: active
+                      ? "1px solid rgba(0,175,255,0.9)"
+                      : "1px solid rgba(0,175,255,0.3)",
+                    background: active
+                      ? "rgba(0,175,255,0.18)"
+                      : "transparent",
+                    color: active ? "#F4F7FC" : "#8BA9D1",
+                    textDecoration: "none",
+                  }}
+                >
+                  {t}
+                </a>
+              );
+            })}
+          </div>
         </div>
         <div
           data-nex-standard-experience-stage

@@ -263,15 +263,22 @@ const WATER_INNER_DRIFT_KF = `
   }
 }`;
 
-// Shop-tile water-light pass · a subtle sheen that drifts across each
-// product tile so items feel like they exist in the same ocean world.
-// Universal · any shop treatment can trigger it.
+// Shop-tile sheen pass · a subtle highlight band that slides across
+// each product tile. The sheen is layered as the FIRST background of
+// a two-layer stack (sheen on top of cardBg) via engine.shopTreatment;
+// animating only the first layer's background-position lets the band
+// pass over the card without disturbing the card itself.
+//
+// IMPORTANT · the keyframe sets background-position for BOTH layers
+// (`A, B`) so the shorthand does not reset the second layer's position
+// to its default each tick. Earlier revisions animated the whole card's
+// opacity, which made every shop card using a sheen oscillate near-
+// transparent · a universal visibility bug that was fixed here.
 const WATER_TILE_SHEEN_KF = `
 @keyframes nex-se-water-tile-sheen {
-  0%   { background-position: -140% 50%; opacity: 0; }
-  25%  { opacity: 0.7; }
-  50%  { background-position: 240% 50%; opacity: 0; }
-  100% { background-position: 240% 50%; opacity: 0; }
+  0%   { background-position: -140% 50%, 0 0; }
+  30%  { background-position: 240% 50%, 0 0; }
+  100% { background-position: 240% 50%, 0 0; }
 }`;
 
 // Surface caustic pulse · soft points of light that pulse at slightly
