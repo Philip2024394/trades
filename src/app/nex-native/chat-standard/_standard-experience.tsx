@@ -624,13 +624,23 @@ function PeerAvatarWithPresence({
 }): React.JSX.Element {
   const colours = engine.colours;
   const isOnline = peer.isOnline !== false;
+  // R12 entry point 2 (sealed 2026-10-05) · tapping the peer avatar
+  // opens their status viewer. In production this will route to the
+  // viewer scoped to this peer; in preview it opens the dev viewer
+  // tinted to the current engine's theme.
+  const viewerHref = `/nex-native/dev/status-viewer-v1?theme=${encodeURIComponent(engine.package.identity.id)}`;
   return (
-    <div
+    <a
+      href={viewerHref}
+      aria-label={`Open ${peer.displayName}'s status`}
+      data-nex-se-peer-avatar
       style={{
         position: "relative",
         width: 36,
         height: 36,
         flexShrink: 0,
+        display: "block",
+        textDecoration: "none",
       }}
     >
       <style>{ONLINE_PING_KEYFRAMES}</style>
@@ -661,7 +671,7 @@ function PeerAvatarWithPresence({
           boxShadow: isOnline ? `0 0 0 1px rgba(34,197,94,0.3)` : undefined,
         }}
       />
-    </div>
+    </a>
   );
 }
 
@@ -981,6 +991,14 @@ function FloatingCallActions({
       }}
     >
       <div style={actionWrap}>
+        <a
+          href="/nex-native/dev/status-viewer-v1"
+          aria-label="Open status"
+          data-nex-se-call-action="status"
+          style={{ ...circle, textDecoration: "none" }}
+        >
+          <StatusIcon />
+        </a>
         <button
           type="button"
           aria-label="Mic"
@@ -1109,6 +1127,29 @@ function CallIcon(): React.JSX.Element {
       aria-hidden
     >
       <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L8 9.6a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6A2 2 0 0 1 22 16.9z" />
+    </svg>
+  );
+}
+
+// R7 extension sealed 2026-10-05 (R12 entry point 1) · Status icon ·
+// opens the full-screen status viewer at /nex-native/dev/status-viewer-v1
+// · in production this will dispatch to the viewer with the current
+// chat's peer status feed.
+function StatusIcon(): React.JSX.Element {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <circle cx="12" cy="12" r="9" strokeDasharray="4 2.5" />
+      <circle cx="12" cy="12" r="3.5" fill="currentColor" stroke="none" />
     </svg>
   );
 }
