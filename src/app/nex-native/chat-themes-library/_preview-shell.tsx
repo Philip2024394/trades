@@ -104,6 +104,7 @@ export function ImmersivePreviewShell(
   const [composerText, setComposerText] = React.useState("");
   const [swipe, setSwipe] = React.useState<SwipeState | null>(null);
   const [reducedMotion, setReducedMotion] = React.useState(false);
+  const [shareOpen, setShareOpen] = React.useState(false);
 
   // URL state sync · the shell owns pushState/popstate for ?preview=<id>.
   // On popstate (back button) → onClose. On theme switch → replaceState.
@@ -213,30 +214,57 @@ export function ImmersivePreviewShell(
           z-index: 950;
           background: ${NEX.bg};
           color: ${NEX.text};
-          display: flex;
-          flex-direction: column;
           animation: nex-immersive-fade-in 160ms ease-out both;
           font-family: inherit;
-        }
-        /* Mobile default · edge-to-edge, no inner phone frame. Rail +
-         * notch hidden here so the mobile layout cannot accidentally
-         * show desktop chrome. */
-        [data-nex-immersive-preview] [data-nex-preview-phone] {
-          flex: 1 1 auto;
-          position: relative;
           overflow: hidden;
         }
+        /* Mobile default · theme fills the entire phone screen (every
+         * pixel of height AND width). TopStrip + ActionFooter sit as
+         * floating blurred overlays so the theme shows through behind
+         * them · no chrome steals vertical space. */
+        [data-nex-immersive-preview] [data-nex-preview-phone] {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+        }
+        [data-nex-immersive-preview] [data-nex-preview-topstrip] {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          z-index: 25;
+          background: linear-gradient(180deg, rgba(2,9,20,0.68) 0%, rgba(2,9,20,0.42) 70%, rgba(2,9,20,0) 100%);
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
+          border-bottom: none;
+        }
+        [data-nex-immersive-preview] [data-nex-preview-footer-mobile] {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          z-index: 25;
+          background: linear-gradient(0deg, rgba(2,9,20,0.78) 0%, rgba(2,9,20,0.42) 70%, rgba(2,9,20,0) 100%);
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
+          border-top: none;
+        }
+        /* The chat surface stays above the wallpaper but below the chrome
+         * overlays · composer leaves room so the floating footer doesn't
+         * sit on top of the input. */
+        [data-nex-immersive-preview] [data-nex-preview-chat-surface] {
+          padding-bottom: 96px;
+          padding-top: 72px;
+        }
+        /* Mobile default · rail + notch hidden so desktop chrome
+         * cannot leak into the mobile layout. */
         [data-nex-immersive-preview] [data-nex-preview-rail] {
           display: none !important;
         }
         [data-nex-immersive-preview] [data-nex-preview-phone-notch] {
           display: none !important;
         }
-        /* Desktop layout · blurred backdrop + centred phone + info rail.
-         * !important on display is deliberate · the InfoRail component
-         * sets an inline display:none fallback so the rail cannot leak
-         * into the mobile layout when CSS is still loading, and we need
-         * the media query to beat inline on the desktop breakpoint. */
+        /* Desktop layout · blurred backdrop + centred phone + info rail. */
         @media (min-width: 901px) {
           [data-nex-immersive-preview] {
             background: ${NEX.bgSoft};
@@ -251,6 +279,8 @@ export function ImmersivePreviewShell(
             gap: 32px;
           }
           [data-nex-immersive-preview] [data-nex-preview-phone] {
+            position: relative;
+            inset: auto;
             width: 390px;
             height: 820px;
             max-height: calc(100vh - 80px);
@@ -259,7 +289,6 @@ export function ImmersivePreviewShell(
             border: 1px solid ${NEX.cyanBorder};
             box-shadow: 0 24px 60px rgba(0,0,0,0.65);
             overflow: hidden;
-            position: relative;
             grid-column: 2 / 3;
           }
           [data-nex-immersive-preview] [data-nex-preview-rail] {
@@ -273,6 +302,9 @@ export function ImmersivePreviewShell(
             top: 24px;
             left: 24px;
             right: unset;
+            background: none;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
             grid-column: 1 / -1;
             align-self: start;
             justify-self: start;
@@ -282,6 +314,10 @@ export function ImmersivePreviewShell(
           }
           [data-nex-immersive-preview] [data-nex-preview-phone-notch] {
             display: block !important;
+          }
+          [data-nex-immersive-preview] [data-nex-preview-chat-surface] {
+            padding-bottom: 20px;
+            padding-top: 10px;
           }
         }
         /* Reduced motion · defeat the swipe cross-fade transition
@@ -302,12 +338,13 @@ export function ImmersivePreviewShell(
         aria-modal="true"
         aria-label={`Preview ${theme.name}`}
       >
-        {/* ─── Top strip · 56 px on mobile, floating on desktop ─── */}
+        {/* ─── Top strip · floating overlay on mobile and desktop ─── */}
         <TopStrip
           theme={theme}
           onClose={onClose}
           onPrev={onPrev}
           onNext={onNext}
+          onShare={() => setShareOpen(true)}
           openFullScreenHref={openFullScreenHref}
         />
 
@@ -398,6 +435,15 @@ export function ImmersivePreviewShell(
           activateAction={activateAction}
           openFullScreenHref={openFullScreenHref}
         />
+
+        {/* ─── Share sheet · bottom slide-up when shareOpen ─── */}
+        {shareOpen && (
+          <ShareSheet
+            theme={theme}
+            onClose={() => setShareOpen(false)}
+            accentHex={theme.accent_hex}
+          />
+        )}
       </div>
     </>
   );
@@ -410,12 +456,14 @@ function TopStrip({
   onClose,
   onPrev,
   onNext,
+  onShare,
   openFullScreenHref: _openFullScreenHref,
 }: {
   theme: BrowserThemeRow;
   onClose: () => void;
   onPrev: (() => void) | null;
   onNext: (() => void) | null;
+  onShare: () => void;
   openFullScreenHref: string | null;
 }): React.JSX.Element {
   return (
@@ -427,10 +475,9 @@ function TopStrip({
         display: "flex",
         alignItems: "center",
         gap: 10,
-        padding: "0 14px",
-        borderBottom: `1px solid rgba(0,175,255,0.14)`,
-        background: NEX.bg,
-        zIndex: 20,
+        padding:
+          "calc(env(safe-area-inset-top, 0) + 4px) 14px 4px",
+        zIndex: 25,
       }}
     >
       <button
@@ -523,7 +570,344 @@ function TopStrip({
           ›
         </span>
       </button>
+      <button
+        type="button"
+        onClick={onShare}
+        aria-label="Share theme"
+        data-nex-preview-share-button
+        style={{
+          width: 36,
+          height: 36,
+          borderRadius: 999,
+          background: `${theme.accent_hex}22`,
+          border: `1px solid ${theme.accent_hex}99`,
+          color: theme.accent_hex,
+          cursor: "pointer",
+          padding: 0,
+          display: "grid",
+          placeItems: "center",
+          flexShrink: 0,
+        }}
+      >
+        <span aria-hidden style={{ fontSize: 15, fontWeight: 700 }}>
+          ↗
+        </span>
+      </button>
     </div>
+  );
+}
+
+// ─── Share sheet · WhatsApp / iMessage / Line / NEX Chat / Copy ─────
+
+/** Build the public share URL for a theme preview. Deliberately points
+ *  at the real library route so recipients land on the gallery with
+ *  the preview pre-opened via ?preview=<id>. */
+function buildShareUrl(themeId: string): string {
+  const origin =
+    typeof window !== "undefined" ? window.location.origin : "";
+  return `${origin}/nex-native/chat-themes-library?preview=${encodeURIComponent(themeId)}`;
+}
+
+function buildShareText(themeName: string, url: string): string {
+  return `Check out this NEX theme — ${themeName}\n${url}`;
+}
+
+function ShareSheet({
+  theme,
+  onClose,
+  accentHex,
+}: {
+  theme: BrowserThemeRow;
+  onClose: () => void;
+  accentHex: string;
+}): React.JSX.Element {
+  const [copied, setCopied] = React.useState(false);
+  const url = buildShareUrl(theme.id);
+  const text = buildShareText(theme.name, url);
+
+  const openNative = React.useCallback(async () => {
+    if (typeof navigator === "undefined" || !navigator.share) return false;
+    try {
+      await navigator.share({
+        title: `NEX theme · ${theme.name}`,
+        text: `Check out this NEX theme — ${theme.name}`,
+        url,
+      });
+      onClose();
+      return true;
+    } catch {
+      return false;
+    }
+  }, [theme.name, url, onClose]);
+
+  const shareWhatsApp = React.useCallback(() => {
+    window.open(
+      `https://wa.me/?text=${encodeURIComponent(text)}`,
+      "_blank",
+      "noopener,noreferrer",
+    );
+  }, [text]);
+
+  const shareLine = React.useCallback(() => {
+    window.open(
+      `https://line.me/R/msg/text/?${encodeURIComponent(text)}`,
+      "_blank",
+      "noopener,noreferrer",
+    );
+  }, [text]);
+
+  const shareIMessage = React.useCallback(() => {
+    // sms:&body= is the iOS Universal Links format; on Android it degrades
+    // to a regular SMS composer. Non-mobile browsers will no-op.
+    window.location.href = `sms:&body=${encodeURIComponent(text)}`;
+  }, [text]);
+
+  const shareNex = React.useCallback(async () => {
+    // MVP · copy the share link to the clipboard then open the NEX
+    // inbox so the user can paste it into any chat. A dedicated
+    // in-NEX share flow (direct theme card insertion) is a future
+    // enhancement separate from this feature.
+    try {
+      await navigator.clipboard.writeText(url);
+    } catch {
+      // ignore · user can long-press to copy manually from the sheet
+    }
+    window.location.href = "/nex-native/chat/inbox";
+  }, [url]);
+
+  const copyLink = React.useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1800);
+    } catch {
+      // ignore
+    }
+  }, [url]);
+
+  // Escape closes the sheet.
+  React.useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        onClose();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  const canUseNative =
+    typeof navigator !== "undefined" && typeof navigator.share === "function";
+
+  return (
+    <>
+      <style>{`
+        @keyframes nex-share-sheet-in {
+          from { transform: translateY(100%); opacity: 0; }
+          to   { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes nex-share-sheet-backdrop-in {
+          from { opacity: 0; }
+          to   { opacity: 1; }
+        }
+      `}</style>
+      <div
+        onClick={onClose}
+        aria-hidden
+        data-nex-preview-share-backdrop
+        style={{
+          position: "absolute",
+          inset: 0,
+          background: "rgba(2,9,20,0.56)",
+          backdropFilter: "blur(6px)",
+          WebkitBackdropFilter: "blur(6px)",
+          zIndex: 40,
+          animation: "nex-share-sheet-backdrop-in 160ms ease-out both",
+        }}
+      />
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label="Share this theme"
+        data-nex-preview-share-sheet
+        style={{
+          position: "absolute",
+          left: 0,
+          right: 0,
+          bottom: 0,
+          zIndex: 50,
+          background: "#061322",
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20,
+          border: `1px solid ${accentHex}33`,
+          padding:
+            "16px 16px calc(env(safe-area-inset-bottom, 0) + 20px)",
+          animation: "nex-share-sheet-in 220ms cubic-bezier(.2,.7,.2,1) both",
+          color: NEX.text,
+          maxWidth: 560,
+          marginLeft: "auto",
+          marginRight: "auto",
+        }}
+      >
+        <div
+          aria-hidden
+          style={{
+            width: 44,
+            height: 5,
+            borderRadius: 999,
+            background: "rgba(255,255,255,0.18)",
+            margin: "0 auto 14px",
+          }}
+        />
+        <div
+          style={{
+            fontSize: 13,
+            fontWeight: 700,
+            textAlign: "center",
+            marginBottom: 4,
+          }}
+        >
+          Share {theme.name}
+        </div>
+        <div
+          style={{
+            fontSize: 11,
+            color: NEX.textDim,
+            textAlign: "center",
+            marginBottom: 16,
+            lineHeight: 1.5,
+          }}
+        >
+          Send this theme so your friend lands on it in one tap.
+        </div>
+        {canUseNative && (
+          <ShareRow
+            label="Share via device…"
+            glyph="⤴"
+            accentHex={accentHex}
+            onClick={openNative}
+          />
+        )}
+        <ShareRow
+          label="WhatsApp"
+          glyph="W"
+          accentHex="#25D366"
+          onClick={shareWhatsApp}
+          data-attr="whatsapp"
+        />
+        <ShareRow
+          label="iMessage"
+          glyph="iM"
+          accentHex="#34C759"
+          onClick={shareIMessage}
+          data-attr="imessage"
+        />
+        <ShareRow
+          label="Line"
+          glyph="L"
+          accentHex="#06C755"
+          onClick={shareLine}
+          data-attr="line"
+        />
+        <ShareRow
+          label="Share in NEX Chat"
+          glyph="N"
+          accentHex="#00AFFF"
+          onClick={shareNex}
+          data-attr="nex"
+        />
+        <ShareRow
+          label={copied ? "Link copied ✓" : "Copy link"}
+          glyph="⧉"
+          accentHex={copied ? "#16D66B" : accentHex}
+          onClick={copyLink}
+          data-attr="copy"
+        />
+        <button
+          type="button"
+          onClick={onClose}
+          style={{
+            width: "100%",
+            marginTop: 12,
+            padding: "10px",
+            borderRadius: 10,
+            background: "transparent",
+            border: "1px solid rgba(255,255,255,0.14)",
+            color: NEX.textDim,
+            fontSize: 12,
+            fontWeight: 700,
+            letterSpacing: "0.08em",
+            textTransform: "uppercase",
+            cursor: "pointer",
+          }}
+        >
+          Cancel
+        </button>
+      </div>
+    </>
+  );
+}
+
+function ShareRow({
+  label,
+  glyph,
+  accentHex,
+  onClick,
+  "data-attr": dataAttr,
+}: {
+  label: string;
+  glyph: string;
+  accentHex: string;
+  onClick: () => void | Promise<void> | Promise<boolean>;
+  "data-attr"?: string;
+}): React.JSX.Element {
+  return (
+    <button
+      type="button"
+      onClick={() => {
+        void onClick();
+      }}
+      data-nex-preview-share-row={dataAttr}
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 12,
+        width: "100%",
+        padding: "11px 12px",
+        marginBottom: 8,
+        borderRadius: 12,
+        background: "rgba(255,255,255,0.03)",
+        border: `1px solid ${accentHex}44`,
+        color: NEX.text,
+        fontSize: 14,
+        fontWeight: 600,
+        cursor: "pointer",
+        textAlign: "left",
+      }}
+    >
+      <span
+        aria-hidden
+        style={{
+          width: 32,
+          height: 32,
+          borderRadius: 999,
+          background: `${accentHex}22`,
+          color: accentHex,
+          display: "grid",
+          placeItems: "center",
+          fontSize: 13,
+          fontWeight: 800,
+          flexShrink: 0,
+        }}
+      >
+        {glyph}
+      </span>
+      <span style={{ flex: 1 }}>{label}</span>
+      <span aria-hidden style={{ color: NEX.textDim, fontSize: 16 }}>
+        ›
+      </span>
+    </button>
   );
 }
 
@@ -553,6 +937,7 @@ function ChatSurface({
   const canSend = canSendLocalMessage(localMessages);
   return (
     <div
+      data-nex-preview-chat-surface
       style={{
         position: "absolute",
         inset: 0,
@@ -560,7 +945,12 @@ function ChatSurface({
         flexDirection: "column",
         justifyContent: "flex-end",
         gap: 10,
-        padding: "0 14px 14px",
+        // Vertical padding comes from CSS so mobile can leave room for
+        // the floating TopStrip (72px top) + ActionFooter (96px bottom)
+        // overlays, while desktop uses tight 10/20 padding inside the
+        // phone silhouette. Horizontal padding stays inline.
+        paddingLeft: 14,
+        paddingRight: 14,
         zIndex: 5,
       }}
     >
@@ -801,16 +1191,16 @@ function ActionFooter({
   const base: React.CSSProperties =
     scope === "mobile"
       ? {
-          flexShrink: 0,
-          padding: "14px 16px calc(env(safe-area-inset-bottom, 0) + 14px)",
-          borderTop: `1px solid rgba(0,175,255,0.14)`,
-          background: NEX.bg,
-          zIndex: 20,
+          padding: "16px 16px calc(env(safe-area-inset-bottom, 0) + 16px)",
+          zIndex: 25,
           minHeight: 72,
           boxSizing: "border-box",
           display: "flex",
           flexDirection: "column",
           gap: 10,
+          // background + backdrop-filter come from CSS media query so
+          // the overlay stays theme-respecting on mobile and the rail
+          // card wrapper handles the desktop case.
         }
       : {
           display: "flex",
