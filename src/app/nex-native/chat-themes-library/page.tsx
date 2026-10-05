@@ -106,15 +106,19 @@ export default async function ThemePickerPage({
     wallpaper_config: t.wallpaper_config,
   }));
 
-  // Phase 1 feature flag · read server-side so the client bundle stays
-  // env-agnostic. NODE_ENV=production + NEX_THEMES_PHONE_TILES=1 opens
-  // the new gallery; without the flag the legacy flat tiles render.
-  const usePhoneTiles = process.env.NEX_THEMES_PHONE_TILES === "1";
-  // Phase 2 feature flag · opens the ImmersivePreviewShell (fullscreen
-  // mobile + phone-plus-rail desktop + URL state + local test chat).
-  // Legacy PreviewModal continues to render when the flag is OFF.
+  // Phase 1 feature flag · founder-flipped 2026-10-05 to opt-OUT:
+  //   unset or anything ≠ "0" → new mini-phone-frame gallery renders
+  //   NEX_THEMES_PHONE_TILES=0 → legacy flat ThemeGridCard renders
+  // The kill switch is retained so a production incident can be
+  // reverted without a redeploy.
+  const usePhoneTiles = process.env.NEX_THEMES_PHONE_TILES !== "0";
+  // Phase 2 feature flag · founder-flipped 2026-10-05 to opt-OUT:
+  //   unset or anything ≠ "0" → new immersive full-screen preview opens
+  //   NEX_THEMES_IMMERSIVE_PREVIEW=0 → legacy PreviewModal (modal + rim)
+  // Preserves the single-flip kill switch while making the authored
+  // experience the default · live on every account from this commit on.
   const useImmersivePreview =
-    process.env.NEX_THEMES_IMMERSIVE_PREVIEW === "1";
+    process.env.NEX_THEMES_IMMERSIVE_PREVIEW !== "0";
 
   const sp = await searchParams;
   const banner = sp.e && sp.m ? { code: sp.e, message: sp.m } : null;

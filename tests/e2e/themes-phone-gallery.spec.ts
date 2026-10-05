@@ -52,10 +52,20 @@ async function isFixtureOpen(
 test.describe("Phase 1 · Phone Gallery · responsive + a11y", () => {
   test.setTimeout(90_000);
 
+  // Phone-size matrix · covers every mainstream mobile viewport so a
+  // narrow iPhone SE and a wide foldable both get the same 2-up grid.
+  // Founder-raised 2026-10-05 · see _phone-tile.tsx breakpoint policy.
   for (const [label, w, h, expectCols] of [
-    ["mobile 390×844", 390, 844, 2],
-    ["tablet 768×900", 768, 900, 3],
-    ["desktop 1280×900", 1280, 900, 4], // auto-fill(min 200) with max-width 920 → ⌊920/200⌋ = 4 cols
+    ["phone 320 · iPhone SE", 320, 568, 2],
+    ["phone 360 · Android compact", 360, 740, 2],
+    ["phone 375 · iPhone mini", 375, 812, 2],
+    ["phone 390 · iPhone 14/15", 390, 844, 2],
+    ["phone 414 · iPhone Plus", 414, 896, 2],
+    ["phone 430 · iPhone 14 Pro Max", 430, 932, 2],
+    ["phone 480 · Pixel 7 Pro", 480, 1040, 2],
+    ["phone 540 · foldable unfolded", 540, 900, 2],
+    ["tablet 768 · iPad", 768, 1024, 3],
+    ["desktop 1280", 1280, 900, 4], // auto-fill(min 200) with max-width 920 → ⌊920/200⌋ = 4 cols
   ] as const) {
     test(`${label} · grid resolves to ${expectCols} columns`, async ({
       page,

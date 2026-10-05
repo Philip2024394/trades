@@ -139,13 +139,20 @@ export function PhoneGrid({
         /* Phase 1 phone gallery · scoped styles. The reduced-motion +
          * off-screen pause rules together ensure animations only burn
          * CPU for tiles the user is actively looking at. */
+        /* Breakpoint policy · founder-raised 2026-10-05 so every
+         * mainstream phone keeps the 2-up side-by-side layout:
+         *   ≤ 600 px  → 2 cols (iPhone SE 320 up to Pixel 7 Pro 480 up
+         *               to foldables unfolded ~540 all stay 2-up)
+         *   601-900   → 3 cols (small tablets)
+         *   ≥ 901     → auto-fill(min 200px) (desktop)
+         * The max-width 920 keeps desktop from spreading too wide. */
         .nex-phone-grid {
           display: grid;
           gap: 12px;
           grid-template-columns: repeat(2, 1fr);
           max-width: 920px;
         }
-        @media (min-width: 481px) {
+        @media (min-width: 601px) {
           .nex-phone-grid { grid-template-columns: repeat(3, 1fr); gap: 14px; }
         }
         @media (min-width: 901px) {
