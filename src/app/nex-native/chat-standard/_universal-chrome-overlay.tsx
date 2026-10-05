@@ -187,6 +187,14 @@ function FloatingCallActions({
       }}
     >
       <div style={actionWrap}>
+        <a
+          href="/nex-native/dev/status-viewer-v1"
+          aria-label="Status"
+          data-nex-universal-call-action="status"
+          style={{ ...circle, textDecoration: "none" }}
+        >
+          <StatusIcon />
+        </a>
         <button
           type="button"
           aria-label="Mic"
@@ -446,6 +454,27 @@ function VideoCallIcon(): React.JSX.Element {
       strokeLinejoin="round" aria-hidden>
       <rect x="2.5" y="6" width="13" height="12" rx="2" />
       <path d="M22 7.5 15.5 12 22 16.5v-9z" />
+    </svg>
+  );
+}
+
+// R12 entry point 1 · sealed 2026-10-05 · Status icon in the 3-dots
+// stack · routes to the full-screen status viewer.
+function StatusIcon(): React.JSX.Element {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <circle cx="12" cy="12" r="9" strokeDasharray="4 2.5" />
+      <circle cx="12" cy="12" r="3.5" fill="currentColor" stroke="none" />
     </svg>
   );
 }
