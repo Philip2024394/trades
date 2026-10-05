@@ -78,41 +78,6 @@ export default async function JokerMotionGalleryPage({
         </header>
 
         <MotionGalleryClient themeId={id} />
-
-        <section style={{ marginTop: 40 }}>
-          <h2
-            style={{
-              fontSize: 14,
-              letterSpacing: "0.14em",
-              textTransform: "uppercase",
-              color: "#8FFF6E",
-              marginBottom: 12,
-              fontWeight: 700,
-            }}
-          >
-            Motion picture animation standards (sealed 2026-10-01)
-          </h2>
-          <ul
-            style={{
-              listStyle: "disc",
-              paddingLeft: 20,
-              margin: 0,
-              color: "#C8D4E6",
-              fontSize: 13,
-              lineHeight: 1.65,
-            }}
-          >
-            <li>GPU-only properties · transform + opacity + filter, never top/left/width/height/margin.</li>
-            <li>Max 40 particles on screen at once · low-end Android ceiling.</li>
-            <li>Loop duration 3–14s · shorter reads jittery, longer reads dead.</li>
-            <li>Opacity ceiling 0.9 · bubble text must remain readable behind every effect.</li>
-            <li>z-index 3 · above wallpaper + mist, below composer + modals.</li>
-            <li>pointer-events: none on root AND descendants · taps always reach the chat.</li>
-            <li>Deterministic seed · particle positions come from a numeric seed, no Math.random in render.</li>
-            <li>Prefer Joker accent #8FFF6E for tinted glows so the effect belongs to the theme.</li>
-            <li>Sealed variant must gain a @media (prefers-reduced-motion) killswitch before ship.</li>
-          </ul>
-        </section>
       </div>
     </main>
   );
