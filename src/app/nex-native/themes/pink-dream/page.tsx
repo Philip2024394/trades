@@ -23,6 +23,7 @@ import {
   type ReactionPickerAnchor,
   type ReplyTarget,
 } from "../_shared/gestures";
+import { UniversalChromeOverlay } from "../../chat-standard/_universal-chrome-overlay";
 
 // -- Palette -----------------------------------------------------
 const P = {
@@ -595,6 +596,7 @@ export default function PinkDreamPreviewPage() {
         onPick={addReaction}
         onClose={closePicker}
       />
+      <UniversalChromeOverlay accent={P.hotPink} deep={P.primaryDark} />
     </div>
   );
 }

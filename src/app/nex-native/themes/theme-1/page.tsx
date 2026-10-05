@@ -20,6 +20,7 @@ import {
   type ReactionPickerAnchor,
   type ReplyTarget,
 } from "../_shared/gestures";
+import { UniversalChromeOverlay } from "../../chat-standard/_universal-chrome-overlay";
 
 const P = {
   accent: "#7EB6FF",      // Theme 1 accent (light sky blue)
@@ -373,6 +374,7 @@ export default function Theme1PreviewPage() {
         onPick={addReaction}
         onClose={closePicker}
       />
+      <UniversalChromeOverlay accent={P.accentDeep} deep={P.midnight} />
     </div>
   );
 }

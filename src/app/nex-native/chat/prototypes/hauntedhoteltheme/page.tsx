@@ -28,6 +28,7 @@ import { VisualThemeBoundary } from "@/components/nex-native/surface-health/Visu
 import { OptionalVisualModuleBoundary } from "@/components/nex-native/surface-health/OptionalVisualModuleBoundary";
 import { TierOneCanary } from "./_tier-one-canary";
 import { resolveFaultInjection } from "./_test-bridge";
+import { UniversalChromeOverlay } from "../../../chat-standard/_universal-chrome-overlay";
 import { isThemeKillSwitchedSafe } from "@/lib/nex-native/theme-kill-switch";
 import { HauntedHotelAtmosphere } from "@/components/nex-native/HauntedHotelAtmosphere";
 import { HauntedHotelController } from "@/components/nex-native/HauntedHotelController";
@@ -470,6 +471,7 @@ export default async function DepthCardsLivePage(props: DepthCardsPageProps) {
           </div>
         </ChatCoreBoundary>
       </main>
+      <UniversalChromeOverlay accent="#d8a856" deep="#0A0604" />
     </>
   );
 }

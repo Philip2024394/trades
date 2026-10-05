@@ -31,6 +31,7 @@ import {
   LIVE_WORLD_PACKAGES,
 } from "../../chat-standard/_live-worlds";
 import { StandardExperienceLiveClient } from "./_standard-experience-live-client";
+import { UniversalChromeOverlay } from "../../chat-standard/_universal-chrome-overlay";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -145,6 +146,14 @@ export default async function ThemeViewerPage({
           itself is a client component). Chrome's 10 FX toggles ship
           OFF by default · discoverable via the floating 3-dots. */}
       {theme.id === "haunted-hotel" && <HauntedHotelChrome />}
+      {/* UNIVERSAL CHROME OVERLAY · sealed 2026-10-05 · every live
+          theme route carries the + menu and 3-dots call actions ·
+          Joker (theme-0) has its own lower-right controller so we
+          raise the call-actions group above it. */}
+      <UniversalChromeOverlay
+        accent={theme.accent_hex}
+        avoidLowerRight={theme.id === "theme-0"}
+      />
     </>
   );
 }
