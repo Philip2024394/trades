@@ -788,50 +788,50 @@ function FloatingPlusMenu({
             justifyItems: "center",
           }}
         >
-          <button
-            type="button"
+          <a
+            href="/nex-native/friends"
             data-nex-se-plus-action="contacts"
             aria-label="Add contact to chat"
-            style={option}
+            style={{ ...option, textDecoration: "none" }}
           >
             <span aria-hidden style={iconCircle}>
               <ContactsIcon />
             </span>
             <span>Contacts</span>
-          </button>
-          <button
-            type="button"
+          </a>
+          <a
+            href="/nex-native/manage/products"
             data-nex-se-plus-action="product"
             aria-label="Add, edit, delete or turn off a product"
-            style={option}
+            style={{ ...option, textDecoration: "none" }}
           >
             <span aria-hidden style={iconCircle}>
               <ProductIcon />
             </span>
             <span>Product</span>
-          </button>
-          <button
-            type="button"
+          </a>
+          <a
+            href={`/nex-native/themes/${engine.package.identity.id}/motion`}
             data-nex-se-plus-action="animation"
             aria-label="Open all theme animations"
-            style={option}
+            style={{ ...option, textDecoration: "none" }}
           >
             <span aria-hidden style={iconCircle}>
               <AnimationIcon />
             </span>
             <span>Animation</span>
-          </button>
-          <button
-            type="button"
+          </a>
+          <a
+            href="/nex-native/settings"
             data-nex-se-plus-action="settings"
             aria-label="Open settings page"
-            style={option}
+            style={{ ...option, textDecoration: "none" }}
           >
             <span aria-hidden style={iconCircle}>
               <SettingsIcon />
             </span>
             <span>Settings</span>
-          </button>
+          </a>
         </div>
         <button
           type="button"

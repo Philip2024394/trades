@@ -601,7 +601,7 @@ export default function PinkDreamPreviewPage() {
         onClose={closePicker}
       />
       <UniversalChromeOverlay accent={P.hotPink} deep={P.primaryDark} />
-      <UniversalComposerFooter accent={P.hotPink} deep={P.primaryDark} />
+      <UniversalComposerFooter accent={P.hotPink} deep={P.primaryDark} themeId="pink-dream" />
     </div>
   );
 }

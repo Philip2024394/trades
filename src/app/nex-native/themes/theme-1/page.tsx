@@ -378,7 +378,7 @@ export default function Theme1PreviewPage() {
         onClose={closePicker}
       />
       <UniversalChromeOverlay accent={P.accentDeep} deep={P.midnight} />
-      <UniversalComposerFooter accent={P.accentDeep} deep={P.midnight} />
+      <UniversalComposerFooter accent={P.accentDeep} deep={P.midnight} themeId="theme-1" />
     </div>
   );
 }

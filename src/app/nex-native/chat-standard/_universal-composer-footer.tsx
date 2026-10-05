@@ -34,12 +34,16 @@ export interface UniversalComposerFooterProps {
   /** Optional send glyph · defaults to a paper-plane arrow. Themes may
    *  pass their signature glyph (🫧 for ocean · ☕ for coffee etc.) */
   sendGlyph?: React.ReactNode;
+  /** The current theme id · used by the + menu's Animation action so
+   *  it routes to this theme's motion page. */
+  themeId?: string;
 }
 
 export function UniversalComposerFooter({
   accent = NEX_CYAN,
   deep = NEX_DEEP,
   sendGlyph,
+  themeId,
 }: UniversalComposerFooterProps): React.JSX.Element {
   const [value, setValue] = React.useState("");
   const [emojiActive, setEmojiActive] = React.useState(false);
@@ -61,6 +65,9 @@ export function UniversalComposerFooter({
             /* ThemeViewerClient / PortraitBloomShell · covers Joker
                (theme-0), motorbike, vitamins, cakes, Haunted Hotel */
             [data-nex-peer-composer] { display: none !important; }
+            /* Joker · hide native dancing-dots trigger · the Animation
+               action moved under the universal + menu */
+            button[aria-label="Theme animations"] { display: none !important; }
           `,
         }}
       />
@@ -119,6 +126,7 @@ export function UniversalComposerFooter({
         deep={deep}
         open={plusOpen}
         onClose={() => setPlusOpen(false)}
+        themeId={themeId}
       />
     </>
   );
@@ -331,11 +339,13 @@ function PlusMenu({
   deep,
   open,
   onClose,
+  themeId,
 }: {
   accent: string;
   deep: string;
   open: boolean;
   onClose: () => void;
+  themeId?: string;
 }): React.JSX.Element {
   const option: React.CSSProperties = {
     display: "flex",
@@ -412,22 +422,26 @@ function PlusMenu({
           Add to this chat
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10, justifyItems: "center" }}>
-          <button type="button" aria-label="Contacts" style={option}>
+          <a href="/nex-native/friends" aria-label="Contacts" style={{ ...option, textDecoration: "none" }}>
             <span aria-hidden style={iconCircle}><ContactsIcon /></span>
             <span>Contacts</span>
-          </button>
-          <button type="button" aria-label="Product" style={option}>
+          </a>
+          <a href="/nex-native/manage/products" aria-label="Product" style={{ ...option, textDecoration: "none" }}>
             <span aria-hidden style={iconCircle}><ProductIcon /></span>
             <span>Product</span>
-          </button>
-          <button type="button" aria-label="Animation" style={option}>
+          </a>
+          <a
+            href={themeId ? `/nex-native/themes/${themeId}/motion` : "/nex-native/themes/motion"}
+            aria-label="Animation"
+            style={{ ...option, textDecoration: "none" }}
+          >
             <span aria-hidden style={iconCircle}><AnimationIcon /></span>
             <span>Animation</span>
-          </button>
-          <button type="button" aria-label="Settings" style={option}>
+          </a>
+          <a href="/nex-native/settings" aria-label="Settings" style={{ ...option, textDecoration: "none" }}>
             <span aria-hidden style={iconCircle}><SettingsIcon /></span>
             <span>Settings</span>
-          </button>
+          </a>
         </div>
         <button
           type="button"

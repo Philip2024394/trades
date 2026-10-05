@@ -473,7 +473,7 @@ export default async function DepthCardsLivePage(props: DepthCardsPageProps) {
         </ChatCoreBoundary>
       </main>
       <UniversalChromeOverlay accent="#d8a856" deep="#0A0604" />
-      <UniversalComposerFooter accent="#d8a856" deep="#0A0604" />
+      <UniversalComposerFooter accent="#d8a856" deep="#0A0604" themeId="haunted-hotel" />
     </>
   );
 }

@@ -148,19 +148,15 @@ export default async function ThemeViewerPage({
           OFF by default · discoverable via the floating 3-dots. */}
       {theme.id === "haunted-hotel" && <HauntedHotelChrome />}
       {/* UNIVERSAL CHROME OVERLAY · sealed 2026-10-05 · every live
-          theme route carries the 3-dots call actions. Joker (theme-0)
-          has its own native lower-right controller (zIndex 9995) so
-          the universal overlay is NOT mounted for Joker · otherwise
-          two 3-dots buttons would be visible. Joker keeps its native
-          motion controller as its only lower-right affordance. */}
-      {theme.id !== "theme-0" && (
-        <UniversalChromeOverlay accent={theme.accent_hex} />
-      )}
+          theme including Joker · Joker's native dancing-dots is
+          hidden by the UniversalComposerFooter CSS block so the
+          universal 3-dots becomes the sole lower-right affordance. */}
+      <UniversalChromeOverlay accent={theme.accent_hex} />
       {/* UNIVERSAL COMPOSER FOOTER OVERLAY · sealed R3 revision 2 ·
           Prototype 5 pattern is the ONE default footer across every
           live theme · no exceptions. UniversalComposerFooter itself
           injects the CSS that hides native composers underneath. */}
-      <UniversalComposerFooter accent={theme.accent_hex} />
+      <UniversalComposerFooter accent={theme.accent_hex} themeId={theme.id} />
     </>
   );
 }
