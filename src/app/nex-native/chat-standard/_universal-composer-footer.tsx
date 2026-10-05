@@ -149,7 +149,9 @@ function ComposerPill({
         padding: "0 10px",
         height: 44,
         borderRadius: 999,
-        background: `linear-gradient(180deg, ${accent}11, ${accent}22)`,
+        // Pill fill removed 2026-10-05 · outlined border only ·
+        // matches the Standard Experience composer treatment.
+        background: "transparent",
         border: `1px solid ${accent}55`,
       }}
     >

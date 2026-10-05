@@ -267,9 +267,11 @@ export function createEngine(pkg: ThemePackage): ResolvedEngine {
         gap: 8,
         padding: "9px 12px",
         borderRadius,
-        background: containerBg,
+        // Pill fill removed 2026-10-05 · R3 revision 2 refinement ·
+        // the composer pill is now an outlined border only · chat
+        // area / ambient layer shows through for a lighter composer.
+        background: "transparent",
         border: containerBorder,
-        backdropFilter: resolveBackdropFilter(material) ?? undefined,
         boxShadow: containerBoxShadow,
         // Perceptible-during-use motion · water gets a shimmer with a
         // tiny lateral surface ripple; warm materials get a calm breath

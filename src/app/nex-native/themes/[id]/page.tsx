@@ -151,10 +151,7 @@ export default async function ThemeViewerPage({
           theme route carries the + menu and 3-dots call actions ·
           Joker (theme-0) has its own lower-right controller so we
           raise the call-actions group above it. */}
-      <UniversalChromeOverlay
-        accent={theme.accent_hex}
-        avoidLowerRight={theme.id === "theme-0"}
-      />
+      <UniversalChromeOverlay accent={theme.accent_hex} />
       {/* UNIVERSAL COMPOSER FOOTER OVERLAY · sealed R3 revision 2 ·
           Prototype 5 pattern (pill with inline divider) drops on top
           of every legacy theme's native composer so the footer looks

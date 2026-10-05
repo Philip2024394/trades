@@ -25,12 +25,16 @@
 // colour.
 //
 // Props:
-//   accent        · optional CSS colour · defaults to NEX cyan
-//   deep          · optional dark base for buttons/menu · defaults
-//                   to NEX deep blue
-//   avoidLowerRight · when true, the call-actions 3-dots is raised
-//                   so it does not collide with a theme's existing
-//                   lower-right control (e.g. the Joker controller).
+//   accent · optional CSS colour · defaults to NEX cyan
+//   deep   · optional dark base for buttons/menu · defaults to NEX
+//            deep blue
+//
+// Sealed 2026-10-05 refinement · "one + button, one 3-dots button":
+//   - Floating + button + its menu REMOVED · now owned by the
+//     UniversalComposerFooter mounted alongside this overlay.
+//   - The 3-dots sits at its standard lower-right position on every
+//     theme. zIndex 60 visually covers any native theme-specific
+//     3-dots behind it, so every live theme shows exactly one.
 
 import * as React from "react";
 
@@ -41,39 +45,28 @@ const NEX_HIGHLIGHT = "#F4F7FC";
 export interface UniversalChromeOverlayProps {
   accent?: string;
   deep?: string;
-  avoidLowerRight?: boolean;
 }
 
 export function UniversalChromeOverlay({
   accent = NEX_CYAN,
   deep = NEX_DEEP,
-  avoidLowerRight = false,
 }: UniversalChromeOverlayProps): React.JSX.Element {
-  const [plusOpen, setPlusOpen] = React.useState(false);
   const [callActionsOpen, setCallActionsOpen] = React.useState(false);
 
+  // Sealed 2026-10-05 refinement · "one + button, one 3-dots button" ·
+  //   - The floating + button and its menu were removed because the
+  //     UniversalComposerFooter already owns the + button + menu.
+  //   - The 3-dots sits at its standard lower-right position on every
+  //     theme (no `avoidLowerRight` raise). zIndex 60 means it visually
+  //     covers any native theme-specific 3-dots sitting behind it, so
+  //     every live theme shows exactly one 3-dots button.
   return (
-    <>
-      <FloatingPlusButton
-        accent={accent}
-        deep={deep}
-        open={plusOpen}
-        onToggle={() => setPlusOpen((v) => !v)}
-      />
-      <FloatingCallActions
-        accent={accent}
-        deep={deep}
-        avoidLowerRight={avoidLowerRight}
-        open={callActionsOpen}
-        onToggle={() => setCallActionsOpen((v) => !v)}
-      />
-      <FloatingPlusMenu
-        accent={accent}
-        deep={deep}
-        open={plusOpen}
-        onClose={() => setPlusOpen(false)}
-      />
-    </>
+    <FloatingCallActions
+      accent={accent}
+      deep={deep}
+      open={callActionsOpen}
+      onToggle={() => setCallActionsOpen((v) => !v)}
+    />
   );
 }
 
@@ -136,13 +129,11 @@ function FloatingPlusButton({
 function FloatingCallActions({
   accent,
   deep,
-  avoidLowerRight,
   open,
   onToggle,
 }: {
   accent: string;
   deep: string;
-  avoidLowerRight: boolean;
   open: boolean;
   onToggle: () => void;
 }): React.JSX.Element {
@@ -180,10 +171,7 @@ function FloatingCallActions({
       "opacity 220ms ease-out, transform 300ms cubic-bezier(0.2, 0.9, 0.3, 1.1)",
     pointerEvents: open ? "auto" : "none",
   };
-  // When the host theme already has a control at the normal lower-
-  // right position (e.g. the Joker controller) raise this group up
-  // the right axis so they do not collide.
-  const bottomOffset = avoidLowerRight ? 150 : 76;
+  const bottomOffset = 76;
   return (
     <div
       data-nex-universal-call-actions={open ? "open" : "closed"}
