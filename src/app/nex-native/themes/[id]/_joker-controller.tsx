@@ -29,11 +29,13 @@ const BAT_BURST_MS = 5000;
 // the 8s animation at the 20-80% keyframe band).
 const WISE_CARD_LIFE_MS = 10000;
 const WISE_CARD_ENABLED_KEY = "nex_joker_wise_card_enabled_v1";
-// NEX Trust Scan · auto-open preference · when ON, the Trust Scan
-// overlay fires automatically the first time a chat is opened with a
-// new/unverified peer (consumer wiring handled by the parent). Open
-// button always works regardless of this toggle.
-const TRUST_SCAN_AUTO_KEY = "nex_trust_scan_auto_v1";
+// Stage 1 universal-chrome convergence (sealed 2026-10-05) · the Trust
+// Scan auto-open preference used to live here as a theme-local toggle.
+// Trust Scan is a universal NEX feature now (rendered by
+// UniversalChatControls), so the preference is no longer a Joker
+// concern. The localStorage key itself is preserved — not deleted
+// elsewhere — so any value a user already set is retained for a future
+// universal-Trust-Scan preference surface.
 
 type Toggles = Partial<Record<JokerMotionVariant, boolean>>;
 
@@ -84,15 +86,16 @@ const CARDS: CardSpec[] = [
 ];
 
 export interface JokerControllerProps {
-  /** When tapped on the NEX Trust Scan action card, the controller
-   *  closes its panel and calls this. The parent (theme viewer /
-   *  chat shell) owns the Trust Scan overlay state. */
-  onOpenTrustScan?: () => void;
+  // Stage 1 (sealed 2026-10-05) · onOpenTrustScan removed · Trust Scan
+  // is now a universal shell action owned by UniversalChatControls, not
+  // a Joker-controller action. The prop interface is kept exported so
+  // any residual importers typecheck cleanly while the preview layer
+  // migration completes.
 }
 
-export function JokerController({
-  onOpenTrustScan,
-}: JokerControllerProps = {}): React.JSX.Element {
+export function JokerController(
+  _props: JokerControllerProps = {},
+): React.JSX.Element {
   const [open, setOpen] = React.useState(false);
   const [toggles, setToggles] = React.useState<Toggles>({});
   const [batBurstKey, setBatBurstKey] = React.useState<number | null>(null);
@@ -119,7 +122,6 @@ export function JokerController({
   // mounts a fresh instance (restarting the animation cleanly).
   const [wiseCardEnabled, setWiseCardEnabled] = React.useState(false);
   const [wiseCardKey, setWiseCardKey] = React.useState<number | null>(null);
-  const [trustScanAuto, setTrustScanAuto] = React.useState(false);
 
   // Hydrate from localStorage + listen for cross-tab changes.
   React.useEffect(() => {
@@ -127,9 +129,6 @@ export function JokerController({
     try {
       setWiseCardEnabled(
         window.localStorage.getItem(WISE_CARD_ENABLED_KEY) === "1",
-      );
-      setTrustScanAuto(
-        window.localStorage.getItem(TRUST_SCAN_AUTO_KEY) === "1",
       );
     } catch {
       /* no-op */
@@ -139,21 +138,9 @@ export function JokerController({
       if (e.key === WISE_CARD_ENABLED_KEY) {
         setWiseCardEnabled(e.newValue === "1");
       }
-      if (e.key === TRUST_SCAN_AUTO_KEY) {
-        setTrustScanAuto(e.newValue === "1");
-      }
     };
     window.addEventListener("storage", onStorage);
     return () => window.removeEventListener("storage", onStorage);
-  }, []);
-
-  const setTrustScanAutoPersisted = React.useCallback((next: boolean) => {
-    setTrustScanAuto(next);
-    try {
-      window.localStorage.setItem(TRUST_SCAN_AUTO_KEY, next ? "1" : "0");
-    } catch {
-      /* no-op */
-    }
   }, []);
 
   const setWiseCardEnabledPersisted = React.useCallback((next: boolean) => {
@@ -320,31 +307,14 @@ export function JokerController({
               marginRight: "auto",
             }}
           >
-            {/* NEX Trust Scan · theme-neutral action card · the panel
-                is theme-specific but the action it fires is a NEX
-                product (see trust-scan-skin.tsx). Tapping Open closes
-                the panel and asks the parent to mount the Trust Scan
-                overlay. */}
-            {onOpenTrustScan && (
-              <ActionCard
-                icon={<ShieldIcon />}
-                label="NEX Trust Scan"
-                caption="Account trust report."
-                toggleValue={trustScanAuto}
-                onToggle={(next) => {
-                  setTrustScanAutoPersisted(next);
-                  if (next) {
-                    setOpen(false);
-                    // Same RAF + delay guard as Daily Insight so the
-                    // Trust Scan overlay doesn't race the panel unmount.
-                    requestAnimationFrame(() => {
-                      window.setTimeout(() => onOpenTrustScan(), 140);
-                    });
-                  }
-                }}
-                toggleLabel="NEX Trust Scan"
-              />
-            )}
+            {/* Stage 1 universal-chrome convergence (sealed 2026-10-05) ·
+                the Trust Scan action card previously lived here. It has
+                been moved out of JokerController into
+                `UniversalChatControls` so Trust Scan is now reachable on
+                every production theme, not just Joker. Joker's panel
+                keeps the theme-specific ambient toggles + Wise Card
+                below; universal NEX actions live in the universal
+                3-dots menu rendered natively by PortraitBloomShell. */}
             {CARDS.map((c) => (
               <AnimationCard
                 key={c.variant}

@@ -37,6 +37,7 @@ import {
   type ShopSection,
 } from "./_shop-grid-modal";
 import { HeaderRightCluster } from "./_header-right-cluster";
+import { UniversalChatControls } from "./_universal-chat-controls";
 import { ImageQrProbe } from "./_qr-image-scanner";
 import { ThemeIntroInterstitial } from "./_theme-intro-interstitial";
 import { TradeAgreementCard } from "./_trade-agreement-card";
@@ -318,6 +319,17 @@ export interface PortraitBloomShellProps {
   composerPlaceholder: string;
   /** Data attribute for test/telemetry scoping. */
   scope: string;
+  /** Stage 1 universal-chrome convergence · the account id the shell's
+   *  built-in `UniversalChatControls` scans when the viewer taps
+   *  Trust Scan. Peer chat passes the peer id · business chat passes
+   *  null today (business-side identity-scan is a separate product
+   *  decision). When null, Trust Scan is hidden from the universal
+   *  3-dots menu. */
+  scannedAccountId?: string | null;
+  /** Stage 1 universal-chrome convergence · the viewer looking at the
+   *  scan · drives Trust Scan's "your history with them" block. Null
+   *  when the viewer is anonymous. */
+  viewerAccountId?: string | null;
   /** Optional badge · currently unused visually (header tag removed
    *  by Founder direction 2026-09-27). Callers may keep passing it. */
   headerTag?: string;
@@ -596,6 +608,8 @@ export function PortraitBloomShell({
   likeProductAction,
   toggleReactionAction,
   selfAccountId,
+  scannedAccountId = null,
+  viewerAccountId = null,
 }: PortraitBloomShellProps) {
   const isOffline = presenceKind !== "online";
   // Per-element theme colours · fall back to rippleColor (accent)
@@ -994,8 +1008,16 @@ export function PortraitBloomShell({
             </div>
             {/* Right column · name stacks over subtitle so
                 "Footwear designer" sits directly under "Maria",
-                not under the whole row. Sealed 2026-09-27. */}
-            <div style={{ minWidth: 0, flex: 1 }}>
+                not under the whole row. Sealed 2026-09-27.
+                Stage 1 refinement (sealed 2026-10-06) · reserve 120px
+                on the right so long peer names (e.g. "Motorbike
+                Rental/Sale") truncate with an ellipsis before they
+                overflow into the HeaderRightCluster's absolute-
+                positioned R1 icons at right:12. Previously the Home
+                icon was visually occluded on themes with long peer
+                names · the fix is a passive reserve, no structural
+                change. */}
+            <div style={{ minWidth: 0, flex: 1, paddingRight: 120 }}>
               <div
                 style={{
                   display: "flex",
@@ -1909,6 +1931,19 @@ export function PortraitBloomShell({
         showShopSetupChooser={showShopSetupChooser}
         onSelectShopType={onSelectShopType}
         themeAccent={rippleColor}
+      />
+      {/* Stage 1 universal-chrome convergence (sealed 2026-10-05) · the
+         universal 3-dots carrying Call / Video / Mic / Status / Trust
+         Scan is rendered NATIVELY inside the shell on every production
+         chat route. This is NOT an overlay patch · it is part of the
+         functional shell. Trust Scan was previously only accessible
+         via Joker's theme-specific controller; it is now universal and
+         available on every theme. Hidden gracefully when the surface
+         has no scannable subject (null `scannedAccountId`). */}
+      <UniversalChatControls
+        accent={rippleColor}
+        scannedAccountId={scannedAccountId}
+        viewerAccountId={viewerAccountId}
       />
     </>
   );

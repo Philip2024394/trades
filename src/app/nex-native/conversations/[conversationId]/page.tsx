@@ -118,6 +118,15 @@ export default async function ConversationPage({
           ? "NEX Business"
           : "NEX · your business"
       }
+      /* Stage 1 universal-chrome convergence (sealed 2026-10-05) ·
+         thread the viewer so the universal chat controls carry a
+         consistent viewer context. scannedAccountId stays null for
+         business chat today · a business-identity Trust Scan is a
+         separate product decision, so the universal 3-dots hides the
+         Trust Scan action here without disabling the other universal
+         actions (call / video / mic / status). */
+      scannedAccountId={null}
+      viewerAccountId={session.account.id}
     />
   );
 }

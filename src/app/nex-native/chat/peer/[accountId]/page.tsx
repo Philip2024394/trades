@@ -24,8 +24,7 @@ import * as chatThemeService from "@/lib/nex-native/chat-theme-service";
 import { listThemeEmojis } from "@/lib/nex-native/theme-emoji-service";
 import { listThemeStickers } from "@/lib/nex-native/theme-sticker-service";
 import { getThemeAssets } from "@/lib/nex-native/theme-assets";
-import { JokerChatOverlays } from "@/app/nex-native/themes/[id]/_joker-chat-overlays";
-import { HauntedHotelChrome } from "@/components/nex-native/HauntedHotelChrome";
+import { ThemeAtmosphereLayer } from "../../_theme-atmosphere-layer";
 import {
   sendPeerMessageAction,
   sendPeerStickerAction,
@@ -688,6 +687,8 @@ export default async function PeerChatPage({
       likeProductAction={toggleLikeProductAction}
       toggleReactionAction={bindReaction}
       selfAccountId={session.account.id}
+      scannedAccountId={peer.id}
+      viewerAccountId={session.account.id}
       composerPlaceholder={`Message ${peer.display_name}…`}
       headerTag="NEX Chat"
       contacts={contacts}
@@ -710,24 +711,20 @@ export default async function PeerChatPage({
       />
         );
       })()}
-      {/* Joker theme chat overlays · sealed 2026-10-01 · mounted only
-          when the peer's chat_theme is theme-0 so the 3-dots side
-          panel + Trust Scan trigger live inside the real chat (no
-          longer preview-only). Scoped to the current peer so the Trust
-          Scan reports describe this specific chat partner. */}
-      {peerThemeRow?.id === "theme-0" && (
-        <JokerChatOverlays
-          scannedAccountId={peer.id}
-          viewerAccountId={session.account.id}
-        />
-      )}
-      {/* Haunted Hotel theme chrome · 2026-10-03 · mounted only when
-          the peer's chat_theme is 'haunted-hotel'. Atmosphere (lights
-          + sparks + 60s blow-out one-shot) + smoke overlay + the FX
-          controller's floating 3-dots trigger. Mirrors the Joker
-          mount pattern · theme-ownership doctrine: the chrome tracks
-          the peer's theme, not the viewer's. */}
-      {peerThemeRow?.id === "haunted-hotel" && <HauntedHotelChrome />}
+      {/* Stage 1 universal-chrome convergence (sealed 2026-10-05) ·
+         declarative atmosphere mount. Replaces the two theme-id
+         if-branches that previously lived here (theme-0 →
+         JokerChatOverlays · haunted-hotel → HauntedHotelChrome). The
+         registry at `src/lib/nex-native/chat-render/atmosphere-registry.ts`
+         decides which atmosphere component mounts for a given theme id;
+         this page carries no theme-specific knowledge. Trust Scan +
+         call / video / mic / status are now universal · they live in
+         `UniversalChatControls` natively inside PortraitBloomShell, not
+         inside any atmosphere bundle. */}
+      <ThemeAtmosphereLayer
+        themeId={peerThemeRow?.id ?? null}
+        subjectId={peer.id}
+      />
       {/* Bridge 68 · voice-call launcher · disabled for NEX1 support so
           ops isn't paged through WebRTC. Own signalling channel keyed on
           conversation.id. */}
