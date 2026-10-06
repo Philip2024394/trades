@@ -270,15 +270,49 @@ async function listConversationAttachments(
 }
 
 /** Fetch bytes from the public chat-attachment URL. Returns null on
- *  error so the caller can count the failure without aborting the batch. */
+ *  error so the caller can count the failure without aborting the batch.
+ *
+ *  SSRF HARDENING (sealed 2026-10-06 Phase A.1 security verification)
+ *  ------------------------------------------------------------------
+ *  attachment_url rows CAN be user-supplied today · the peer-message
+ *  send paths at _actions.ts (sendPeerMessageAction) and
+ *  _e2e-composer-intercept.tsx read attachment_url straight from client
+ *  FormData without origin validation. A crafted FormData could set
+ *  attachment_url to anything · without this guard a Vault migration
+ *  on a vaulted conversation would turn into a server-side fetch of
+ *  attacker-chosen URLs (classic SSRF · OWASP A10:2021).
+ *
+ *  This guard narrows the fetch destination to the sealed
+ *  nex-peer-chat-attachments bucket URL · nothing else. Specifically:
+ *    · scheme MUST be https (no file://, data:, javascript:, http://)
+ *    · host MUST equal the Supabase project host derived from
+ *      NEXT_PUBLIC_NEX_SUPABASE_URL (no attacker-controlled host · no
+ *      localhost · no 127.0.0.1 · no 169.254.169.254 metadata · no
+ *      private IP ranges · no alternate ports · no userinfo credentials)
+ *    · path MUST start with /storage/v1/object/public/nex-peer-chat-attachments/
+ *      (prevents an attacker from pivoting to a different Supabase
+ *      bucket on the same host)
+ *    · fetch is called with redirect: "error" (defeats a 302 bypass
+ *      from the Supabase gateway to a different origin)
+ *
+ *  Rejected URLs are COUNTED (attachments_failed++) · the move keeps
+ *  running for the valid attachments in the batch. This is intentional ·
+ *  a vault owner should not have the whole move operation reject
+ *  because the counterparty sent them one weird link. */
 async function fetchAttachmentBytes(
   url: string,
 ): Promise<{ body: Buffer; contentType: string } | null> {
+  if (!isTrustedChatAttachmentUrl(url)) {
+    console.warn(
+      `[vault-persistence] fetch REJECTED untrusted attachment_url (SSRF guard)`,
+    );
+    return null;
+  }
   try {
-    const res = await fetch(url);
+    const res = await fetch(url, { redirect: "error" });
     if (!res.ok) {
       console.warn(
-        `[vault-persistence] fetch returned ${res.status} for ${url}`,
+        `[vault-persistence] fetch returned ${res.status} for trusted-origin URL`,
       );
       return null;
     }
@@ -288,10 +322,59 @@ async function fetchAttachmentBytes(
     return { body: Buffer.from(arrayBuf), contentType };
   } catch (err) {
     console.warn(
-      `[vault-persistence] fetch threw for ${url}: ${
+      `[vault-persistence] fetch threw: ${
         err instanceof Error ? err.message : err
       }`,
     );
+    return null;
+  }
+}
+
+/** Validate that `rawUrl` points at the sealed nex-peer-chat-attachments
+ *  bucket on the configured Supabase project. Exported for tests only ·
+ *  callers inside this file use it through fetchAttachmentBytes. */
+export function isTrustedChatAttachmentUrl(rawUrl: string): boolean {
+  if (typeof rawUrl !== "string" || rawUrl.length === 0) return false;
+  let parsed: URL;
+  try {
+    parsed = new URL(rawUrl);
+  } catch {
+    return false;
+  }
+  if (parsed.protocol !== "https:") return false;
+  // No credentials in the URL · defeats user:pass@host tricks.
+  if (parsed.username.length > 0 || parsed.password.length > 0) return false;
+  // No alternate port · the Supabase public URL uses the default 443.
+  if (parsed.port.length > 0 && parsed.port !== "443") return false;
+  // Hostname must match the sealed Supabase project host.
+  const expectedHost = resolveTrustedChatAttachmentHost();
+  if (!expectedHost) return false;
+  if (parsed.hostname.toLowerCase() !== expectedHost.toLowerCase()) return false;
+  // Path must point at the sealed public-bucket prefix. Prevents a
+  // same-origin pivot to a different Supabase bucket.
+  if (
+    !parsed.pathname.startsWith(
+      "/storage/v1/object/public/nex-peer-chat-attachments/",
+    )
+  ) {
+    return false;
+  }
+  return true;
+}
+
+/** Derive the host portion of NEXT_PUBLIC_NEX_SUPABASE_URL · never
+ *  trusts anything but the configured project origin. Returns null when
+ *  the env is missing or malformed so isTrustedChatAttachmentUrl
+ *  rejects every URL by default (fail-closed). */
+function resolveTrustedChatAttachmentHost(): string | null {
+  const raw =
+    process.env.NEXT_PUBLIC_NEX_SUPABASE_URL ??
+    process.env.NEX_SUPABASE_URL ??
+    "";
+  if (!raw) return null;
+  try {
+    return new URL(raw).hostname;
+  } catch {
     return null;
   }
 }

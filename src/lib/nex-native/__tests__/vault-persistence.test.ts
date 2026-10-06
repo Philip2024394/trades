@@ -19,9 +19,32 @@
 // Does NOT execute Supabase queries · the integration script
 // scripts/_verify-phase-a1.mjs covers the end-to-end live run.
 
-import { describe, test, expect } from "vitest";
+import { describe, test, expect, beforeAll, vi } from "vitest";
 import * as fs from "node:fs";
 import * as path from "node:path";
+
+// Stub supabase-admin so the dynamic import of vault-persistence-service
+// inside the SSRF section doesn't bootstrap the real client (which
+// requires NEX_SUPABASE_SERVICE_ROLE_KEY at module load). Only the pure
+// URL guard is exercised; the Supabase surface is untouched by the
+// grep assertions elsewhere in this file.
+vi.mock("../supabase-admin", () => ({
+  nexSupabaseAdmin: new Proxy(
+    {},
+    {
+      get() {
+        throw new Error("supabase-admin unused in these tests");
+      },
+    },
+  ),
+}));
+// vault-file-service imports the object-registry · stub that too so
+// the dynamic chain stays side-effect-free in test environment.
+vi.mock("@/lib/nex/storage/object-registry", () => ({
+  getObjectStorage: () => {
+    throw new Error("getObjectStorage unused in these tests");
+  },
+}));
 
 const REPO = path.resolve(__dirname, "../../../..");
 const MIGRATION_140 = path.join(
@@ -317,6 +340,141 @@ describe("E · vault/settings honest-limits disclaimer carries the Phase A key-p
     // "not yet protected by ... end-to-end encryption".
     expect(vaultSettings).toContain("end-to-end encryption");
     expect(vaultSettings).toContain("not\n              yet protected");
+  });
+});
+
+// ─── E2 · SSRF trust-boundary · attachment URL hardening ───────────
+
+describe("E2 · isTrustedChatAttachmentUrl · SSRF guard rejects attacker URLs", () => {
+  // Set the trusted host before importing + evaluating the guard. The
+  // guard reads NEXT_PUBLIC_NEX_SUPABASE_URL at call time so this stub
+  // works without re-import gymnastics.
+  const PROJECT_HOST = "ijvqdvsvwtwxzcqmoqit.supabase.co";
+  const SEALED_PREFIX = "/storage/v1/object/public/nex-peer-chat-attachments/";
+  const TRUSTED = `https://${PROJECT_HOST}${SEALED_PREFIX}sender-id/1234567890-abc.jpg`;
+
+  beforeAll(() => {
+    process.env.NEXT_PUBLIC_NEX_SUPABASE_URL = `https://${PROJECT_HOST}`;
+  });
+
+  // Lazy-import so the env-tweak above is visible to the guard.
+  async function guard(url: string): Promise<boolean> {
+    const mod = await import("../vault-persistence-service");
+    return mod.isTrustedChatAttachmentUrl(url);
+  }
+
+  test("accepts a well-formed chat-attachment URL on the sealed host + prefix", async () => {
+    expect(await guard(TRUSTED)).toBe(true);
+  });
+
+  test("rejects http:// (plaintext)", async () => {
+    expect(
+      await guard(TRUSTED.replace("https://", "http://")),
+    ).toBe(false);
+  });
+
+  test("rejects file:// (local file read)", async () => {
+    expect(await guard("file:///etc/passwd")).toBe(false);
+  });
+
+  test("rejects data: URIs (XSS/data-exfil)", async () => {
+    expect(await guard("data:text/plain,hello")).toBe(false);
+  });
+
+  test("rejects javascript: URIs", async () => {
+    expect(await guard("javascript:alert(1)")).toBe(false);
+  });
+
+  test("rejects AWS/GCP metadata endpoint 169.254.169.254", async () => {
+    expect(await guard("http://169.254.169.254/latest/meta-data/")).toBe(false);
+    expect(await guard("https://169.254.169.254/latest/meta-data/")).toBe(false);
+  });
+
+  test("rejects localhost / loopback", async () => {
+    expect(await guard("https://localhost/anything")).toBe(false);
+    expect(await guard("https://127.0.0.1/anything")).toBe(false);
+    expect(await guard("https://[::1]/anything")).toBe(false);
+  });
+
+  test("rejects private RFC1918 ranges", async () => {
+    expect(await guard("https://10.0.0.1/x")).toBe(false);
+    expect(await guard("https://192.168.1.1/x")).toBe(false);
+    expect(await guard("https://172.16.0.1/x")).toBe(false);
+  });
+
+  test("rejects alternate hosts (even same TLD · phishing lookalike)", async () => {
+    // ijvqdvsvwtwxzcqmoqit (correct) vs iivqdvsvwtwxzcqmoqit (typo attack)
+    expect(
+      await guard(
+        `https://iivqdvsvwtwxzcqmoqit.supabase.co${SEALED_PREFIX}evil.jpg`,
+      ),
+    ).toBe(false);
+    expect(
+      await guard(`https://evil.com${SEALED_PREFIX}evil.jpg`),
+    ).toBe(false);
+    // Attacker's domain + sealed project host as path · classic bypass attempt.
+    expect(
+      await guard(
+        `https://evil.com/${PROJECT_HOST}${SEALED_PREFIX}evil.jpg`,
+      ),
+    ).toBe(false);
+  });
+
+  test("rejects URLs with embedded credentials (user:pass@host)", async () => {
+    expect(
+      await guard(
+        `https://attacker:pwd@${PROJECT_HOST}${SEALED_PREFIX}f.jpg`,
+      ),
+    ).toBe(false);
+  });
+
+  test("rejects alternate ports (even on the sealed host)", async () => {
+    expect(
+      await guard(`https://${PROJECT_HOST}:4443${SEALED_PREFIX}f.jpg`),
+    ).toBe(false);
+  });
+
+  test("rejects same-host pivot to a different bucket", async () => {
+    expect(
+      await guard(
+        `https://${PROJECT_HOST}/storage/v1/object/public/nex-vault-files/other/path.jpg`,
+      ),
+    ).toBe(false);
+    expect(
+      await guard(
+        `https://${PROJECT_HOST}/storage/v1/object/public/some-other-bucket/f.jpg`,
+      ),
+    ).toBe(false);
+    expect(
+      await guard(
+        `https://${PROJECT_HOST}/storage/v1/object/sign/nex-peer-chat-attachments/f.jpg`,
+      ),
+    ).toBe(false);
+  });
+
+  test("rejects garbage, empty, and non-URL inputs", async () => {
+    expect(await guard("")).toBe(false);
+    expect(await guard("not a url")).toBe(false);
+    expect(await guard("//missing-scheme/path")).toBe(false);
+  });
+
+  test("fail-closed when NEXT_PUBLIC_NEX_SUPABASE_URL is unset", async () => {
+    const prev = process.env.NEXT_PUBLIC_NEX_SUPABASE_URL;
+    const prev2 = process.env.NEX_SUPABASE_URL;
+    delete process.env.NEXT_PUBLIC_NEX_SUPABASE_URL;
+    delete process.env.NEX_SUPABASE_URL;
+    try {
+      expect(await guard(TRUSTED)).toBe(false);
+    } finally {
+      process.env.NEXT_PUBLIC_NEX_SUPABASE_URL = prev;
+      if (prev2) process.env.NEX_SUPABASE_URL = prev2;
+    }
+  });
+
+  test("fetchAttachmentBytes uses redirect: 'error' (defeats cross-origin 302)", () => {
+    // Source-level invariant · the fetch call MUST pass redirect:"error"
+    // so a Supabase gateway 302 to an attacker domain cannot complete.
+    expect(vaultPersistence).toMatch(/fetch\(url,\s*\{\s*redirect:\s*"error"/);
   });
 });
 
