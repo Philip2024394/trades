@@ -156,16 +156,31 @@ describe("B · code remains the source of truth · DB is never augmented", () =>
     }
   });
 
-  test("Library page consumes the adapter (not a hardcoded live-world list)", () => {
-    const source = fs.readFileSync(LIBRARY_PAGE, "utf8");
+  test("Library data loader consumes the adapter (not a hardcoded live-world list)", () => {
+    // Step 1B refactor (2026-10-06) · the merge logic moved from
+    // page.tsx into the shared `_load-library-data.ts` loader. Both
+    // the Category Landing (page.tsx) and the Category Showcase
+    // (category/[categoryId]/page.tsx) call the loader · so this
+    // guard now asserts on the loader source.
+    const loaderPath = require("node:path").join(
+      REPO_ROOT,
+      "src/app/nex-native/chat-themes-library/_load-library-data.ts",
+    );
+    const source = require("node:fs").readFileSync(loaderPath, "utf8");
     expect(source).toContain("listLiveWorldsAsBrowserRows");
     expect(source).toContain("_live-worlds-adapter");
   });
 
-  test("Library page dedupes against collisions (code wins)", () => {
-    const source = fs.readFileSync(LIBRARY_PAGE, "utf8");
-    // The merge must drop any DB row whose id collides with a
-    // registered live-world · otherwise the grid shows duplicates.
+  test("Library data loader dedupes against collisions (code wins)", () => {
+    // Step 1B refactor · dedupe logic moved from page.tsx into the
+    // shared loader. The merge must drop any DB row whose id collides
+    // with a registered live-world · otherwise the grid shows
+    // duplicates.
+    const loaderPath = require("node:path").join(
+      REPO_ROOT,
+      "src/app/nex-native/chat-themes-library/_load-library-data.ts",
+    );
+    const source = require("node:fs").readFileSync(loaderPath, "utf8");
     expect(source).toMatch(/liveWorldIds/);
     expect(source).toMatch(/liveWorldIds\.has/);
   });

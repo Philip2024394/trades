@@ -206,21 +206,13 @@ describe("D · architectural guards", () => {
     }
   });
 
-  test("no category UI exists yet (Step 1B scope · must stay empty)", () => {
-    // Step 1B will create a category landing page and showcase route ·
-    // Step 1A must not touch the Library UX. Confirm neither surface
-    // exists.
-    const categoryRoute = path.join(LIBRARY_DIR, "category");
-    const categoryGrid = path.join(LIBRARY_DIR, "_category-grid.tsx");
-    expect(
-      fs.existsSync(categoryRoute),
-      "Step 1B category/[categoryId] route must not exist yet",
-    ).toBe(false);
-    expect(
-      fs.existsSync(categoryGrid),
-      "Step 1B category grid component must not exist yet",
-    ).toBe(false);
-  });
+  // Step 1A originally asserted that no category UI existed. Step 1B
+  // (sealed in a follow-up commit) INTRODUCED the category landing +
+  // showcase route · the assertion is now the opposite and lives in
+  // `src/app/nex-native/chat-themes-library/_category-grid.test.ts`.
+  // Keeping a stub here would misrepresent the architecture; deletion
+  // is the correct move. Retained as a comment so git-blame explains
+  // the removal.
 
   test("no 'waterworld' implementation exists yet (Step 3 scope)", () => {
     // Step 3 renames the Ocean World to Waterworld. Step 1A must not

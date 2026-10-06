@@ -1,10 +1,18 @@
 // src/app/nex-native/chat-themes-library/page.tsx
 //
-// User-facing chat theme browser · Bridge 4.
-// ------------------------------------------
-// Server component · fetches every active theme + resolves the caller's
-// effective tier + current active theme id, then hands over to the
-// client browser (search / filter / grid / enlarge preview).
+// Category Landing · Step 1B (sealed 2026-10-06).
+//
+// First Theme Library surface · shows one tile per registered
+// category (Ocean · Café · Explore · future-added). Tapping a tile
+// opens the category showcase at:
+//
+//   /nex-native/chat-themes-library/category/[categoryId]
+//
+// This surface no longer renders the world grid directly · each
+// category's worlds live inside its showcase room. The world-level
+// presentation (ThemeBrowserClient / ThemeMockHero / preview modal /
+// Use this theme / universal handoff) is untouched · it just lives
+// one navigation step deeper now.
 //
 // URL renamed 2026-10-04 · was /nex-native/settings/theme ·
 // old URL still 301s to this location (see next.config.mjs redirects).
@@ -13,21 +21,12 @@
 
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
-import {
-  effectiveTier,
-  hasUsedThemesTrial,
-  isThemesTrialActive,
-  themesTrialExpiresAt,
-} from "@/lib/nex-native/account-service";
 import { startThemesTrialAction } from "../_actions";
-import * as chatThemeService from "@/lib/nex-native/chat-theme-service";
-import { nexSupabaseAdmin } from "@/lib/nex-native/supabase-admin";
-import { updateChatThemeAction } from "../_actions";
-import type { NexAccountRow } from "@/lib/nex-native/types";
-import { ThemeBrowserClient, type BrowserThemeRow } from "./_theme-browser-client";
-import { listLiveWorldsAsBrowserRows } from "./_live-worlds-adapter";
-import { EXPLORE_CATEGORY_ID } from "@/lib/nex-native/theme-category/registry";
+import { CategoryGrid } from "./_category-grid";
+import {
+  countCategoryMembers,
+  loadLibraryData,
+} from "./_load-library-data";
 import { TrialCountdownBanner } from "./_trial-countdown-banner";
 import { NexPageHeader } from "../_page-header";
 
@@ -50,101 +49,10 @@ export default async function ThemePickerPage({
 }: {
   searchParams: Promise<{ e?: string; m?: string }>;
 }) {
-  const session = await resolveNexAppSessionFromContext();
-  if (!session) redirect("/nex-native/sign-in");
+  const data = await loadLibraryData();
+  if (data.kind === "unauthenticated") redirect("/nex-native/sign-in");
 
-  // Read tier + trial state + current theme from the latest DB row
-  // (session may be stale). Bridge 56g · themes_trial_used_at is
-  // required by effectiveTier so trial-active accounts unlock the
-  // premium catalogue automatically for the 7-day window.
-  const row = await nexSupabaseAdmin
-    .from("nex_account")
-    .select("tier, bisnis_expires_at, chat_theme, themes_trial_used_at")
-    .eq("id", session.account.id)
-    .maybeSingle();
-  const account = (row.data ?? {}) as Pick<
-    NexAccountRow,
-    "tier" | "bisnis_expires_at" | "chat_theme" | "themes_trial_used_at"
-  >;
-  const currentTier = effectiveTier(account);
-  const currentThemeId = account.chat_theme ?? "default";
-  const canUsePremium = currentTier === "bisnis" || currentTier === "pro";
-  // Bridge 63 · trial signals for the theme picker banner + inline CTAs.
-  const trialActive = isThemesTrialActive(account);
-  const trialUsed = hasUsedThemesTrial(account);
-  const trialExpiresIso = themesTrialExpiresAt(account);
-
-  // Viewer's own profile photo · used by themes that don't ship
-  // their own hero_image_url (Rose · Origin · etc.) to preview the
-  // Portrait Bloom mechanic with the viewer's actual face.
-  const viewerAvatarUrl = await (async () => {
-    try {
-      const svc = await import("@/lib/nex-native/account-profile-service");
-      const profile = await svc.getProfileByAccountId(session.account.id);
-      return profile?.avatar_url ?? null;
-    } catch {
-      return null;
-    }
-  })();
-
-  const dbThemes = await chatThemeService.listActiveThemes();
-  // Standard Experience worlds live in `src/app/nex-native/chat-standard/
-  // _live-worlds.ts` as code-registered `ThemePackage` objects, not DB
-  // rows. The adapter maps them into `BrowserThemeRow` shape so the
-  // Library presents DB themes + live-worlds as one collection without
-  // seeding duplicates into `nex_chat_theme`. Code remains the single
-  // source of truth for live-worlds; DB is still authoritative for
-  // DB-created themes. Sealed 2026-10-06 per the Theme Library
-  // visibility fix.
-  const liveWorldRows = listLiveWorldsAsBrowserRows();
-  const liveWorldIds = new Set(liveWorldRows.map((r) => r.id));
-  // On the rare case a DB row collides with a code-registered world id,
-  // code wins: the DB row is dropped from the Library collection. This
-  // prevents a mis-seeded DB entry from shadowing a live-world and
-  // avoids presenting the same id twice in the grid.
-  const dbRowsFiltered = dbThemes.filter((t) => !liveWorldIds.has(t.id));
-  const browserThemes: BrowserThemeRow[] = [
-    ...liveWorldRows,
-    ...dbRowsFiltered.map((t) => ({
-      id: t.id,
-      name: t.name,
-      tagline: t.tagline,
-      accent_hex: t.accent_hex,
-      bubble_rim_hex: t.bubble_rim_hex,
-      composer_rim_hex: t.composer_rim_hex,
-      tier: t.tier,
-      category: t.category,
-      // Step 1A (sealed 2026-10-06) · DB-backed themes carry no
-      // category_id column yet · every row defaults to "explore" (the
-      // uncategorised collection) until a later authorisation decides
-      // whether to add a DB column or an in-code override map. This is
-      // code-only · no DB migration · no schema change.
-      category_id: EXPLORE_CATEGORY_ID,
-      hero_image_url: t.hero_image_url,
-      sort_order: t.sort_order,
-      // Phase 4A · gallery-always-plays intro.
-      intro_video_url: t.intro_video_url,
-      intro_poster_url: t.intro_poster_url,
-      // Phase 1 · thread the overlay/bubble config to the client so the
-      // Phone Gallery tile can render the theme accurately via <ThemeWorld>.
-      // Legacy ThemeGridCard ignores this field; only the flag-ON path reads it.
-      wallpaper_config: t.wallpaper_config,
-    })),
-  ];
-
-  // Phase 1 feature flag · founder-flipped 2026-10-05 to opt-OUT:
-  //   unset or anything ≠ "0" → new mini-phone-frame gallery renders
-  //   NEX_THEMES_PHONE_TILES=0 → legacy flat ThemeGridCard renders
-  // The kill switch is retained so a production incident can be
-  // reverted without a redeploy.
-  const usePhoneTiles = process.env.NEX_THEMES_PHONE_TILES !== "0";
-  // Phase 2 feature flag · founder-flipped 2026-10-05 to opt-OUT:
-  //   unset or anything ≠ "0" → new immersive full-screen preview opens
-  //   NEX_THEMES_IMMERSIVE_PREVIEW=0 → legacy PreviewModal (modal + rim)
-  // Preserves the single-flip kill switch while making the authored
-  // experience the default · live on every account from this commit on.
-  const useImmersivePreview =
-    process.env.NEX_THEMES_IMMERSIVE_PREVIEW !== "0";
+  const memberCounts = countCategoryMembers(data.browserThemes);
 
   const sp = await searchParams;
   const banner = sp.e && sp.m ? { code: sp.e, message: sp.m } : null;
@@ -229,18 +137,18 @@ export default async function ThemePickerPage({
             </div>
           )}
 
-          {/* Bridge 63 · trial state banner · shows above the theme grid
+          {/* Bridge 63 · trial state banner · shows above the category grid
              so the user always knows why the padlock is (or isn't) up.
              Three states:
                · active   → green "N days left" chip
                · unused   → orange "Try 7 days free" inline CTA form
                · used     → dim "Trial used · subscribe to keep premium" */}
-          {trialActive && trialExpiresIso ? (
+          {data.trialActive && data.trialExpiresIso ? (
             <TrialCountdownBanner
-              expiresIso={trialExpiresIso}
+              expiresIso={data.trialExpiresIso}
               nowIso={new Date().toISOString()}
             />
-          ) : !trialUsed && currentTier === "gratis" ? (
+          ) : !data.trialUsed && data.currentTier === "gratis" ? (
             <form
               action={startThemesTrialAction}
               style={{
@@ -329,7 +237,7 @@ export default async function ThemePickerPage({
                 Start 7-day trial
               </button>
             </form>
-          ) : trialUsed && currentTier === "gratis" ? (
+          ) : data.trialUsed && data.currentTier === "gratis" ? (
             <div
               style={{
                 marginBottom: 18,
@@ -363,15 +271,7 @@ export default async function ThemePickerPage({
             </div>
           ) : null}
 
-          <ThemeBrowserClient
-            themes={browserThemes}
-            currentThemeId={currentThemeId}
-            canUsePremium={canUsePremium}
-            activateAction={updateChatThemeAction}
-            viewerAvatarUrl={viewerAvatarUrl}
-            usePhoneTiles={usePhoneTiles}
-            useImmersivePreview={useImmersivePreview}
-          />
+          <CategoryGrid memberCounts={memberCounts} />
         </div>
       </main>
     </>
