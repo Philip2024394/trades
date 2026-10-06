@@ -16,9 +16,11 @@ import Image from "next/image";
 import { redirect } from "next/navigation";
 import { ChevronRight, Settings } from "lucide-react";
 import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
+import { nexSupabaseAdmin } from "@/lib/nex-native/supabase-admin";
 import { mapChatThemeToDoorwaySlug } from "./_resolve-theme";
 import { NEX, GLASS, GLASS_CHIP } from "./_palette";
 import { VaultQuickActions } from "./_upload-dialog";
+import { LockVaultNowButton } from "./_lock-button-client";
 import {
   IconChats,
   IconDocument,
@@ -53,6 +55,20 @@ export default async function VaultWorkspaceHomePage() {
   const session = await resolveNexAppSessionFromContext();
   if (!session) {
     redirect("/nex-native/sign-in?next=/nex-native/vault/home");
+  }
+
+  // Vault Phase A · require configured Vault to view home. Server-side
+  // "unlocked" state is tracked by nex_session.last_vault_unlock_at but
+  // the authoritative in-tab state is the client VMK singleton. We route
+  // based on the configured flag only here; the Lock Vault Now button
+  // reflects live client state.
+  const { data: setup } = await nexSupabaseAdmin
+    .from("nex_vault_setup")
+    .select("account_id")
+    .eq("account_id", session.account.id)
+    .maybeSingle();
+  if (!setup) {
+    redirect("/nex-native/vault/setup");
   }
 
   const chatTheme = (session.account.chat_theme as string | null) ?? null;
@@ -143,23 +159,26 @@ function HomeHeader() {
           </p>
         </div>
 
-        <Link
-          href="/nex-native/vault/settings"
-          aria-label="Vault settings"
-          data-nex-vault-settings-link
-          style={{
-            ...GLASS_CHIP,
-            width: 40,
-            height: 40,
-            borderRadius: 999,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            color: NEX.textPrimary,
-          }}
-        >
-          <Settings size={18} strokeWidth={1.6} aria-hidden />
-        </Link>
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <LockVaultNowButton />
+          <Link
+            href="/nex-native/vault/settings"
+            aria-label="Vault settings"
+            data-nex-vault-settings-link
+            style={{
+              ...GLASS_CHIP,
+              width: 40,
+              height: 40,
+              borderRadius: 999,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: NEX.textPrimary,
+            }}
+          >
+            <Settings size={18} strokeWidth={1.6} aria-hidden />
+          </Link>
+        </div>
       </div>
     </header>
   );

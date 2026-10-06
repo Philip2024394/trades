@@ -10,12 +10,7 @@ import { SKIN_PINK_DREAM } from "../_doorway-skin";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-interface PageProps {
-  searchParams: Promise<{ mock?: string }>;
-}
-
-export default async function PinkDreamVaultDoorwayPage({ searchParams }: PageProps) {
-  const params = await searchParams;
-  const mockReason = params.mock === "unavailable" ? "unavailable" : "incorrect";
-  return <DoorwayShell skin={SKIN_PINK_DREAM} mockReason={mockReason} />;
+// Themed doorway routes are preview-only (per sealed memory).
+export default async function PinkDreamVaultDoorwayPage() {
+  return <DoorwayShell skin={SKIN_PINK_DREAM} deviceId="preview-device-00000000" />;
 }

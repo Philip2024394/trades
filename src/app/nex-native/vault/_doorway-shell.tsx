@@ -14,10 +14,10 @@ import type { VaultDoorwaySkin } from "./_doorway-skin";
 
 interface DoorwayShellProps {
   skin: VaultDoorwaySkin;
-  mockReason: "incorrect" | "unavailable";
+  deviceId: string;
 }
 
-export function DoorwayShell({ skin, mockReason }: DoorwayShellProps) {
+export function DoorwayShell({ skin, deviceId }: DoorwayShellProps) {
   const bgLayers: string[] = [];
   if (skin.bg.radialOverlay) bgLayers.push(skin.bg.radialOverlay);
   if (skin.bg.imageUrl) {
@@ -112,11 +112,11 @@ export function DoorwayShell({ skin, mockReason }: DoorwayShellProps) {
               color: skin.text.primary,
             }}
           >
-            Enter your 6-digit Vault PIN
+            Unlock your Vault
           </h1>
 
           <div style={{ marginTop: 36 }}>
-            <PinEntryClient mockReason={mockReason} skin={skin} />
+            <PinEntryClient skin={skin} deviceId={deviceId} />
           </div>
         </div>
       </main>

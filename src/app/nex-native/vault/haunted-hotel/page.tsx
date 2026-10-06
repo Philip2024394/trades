@@ -10,12 +10,7 @@ import { SKIN_HAUNTED_HOTEL } from "../_doorway-skin";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-interface PageProps {
-  searchParams: Promise<{ mock?: string }>;
-}
-
-export default async function HauntedHotelVaultDoorwayPage({ searchParams }: PageProps) {
-  const params = await searchParams;
-  const mockReason = params.mock === "unavailable" ? "unavailable" : "incorrect";
-  return <DoorwayShell skin={SKIN_HAUNTED_HOTEL} mockReason={mockReason} />;
+// Themed doorway routes are preview-only (per sealed memory).
+export default async function HauntedHotelVaultDoorwayPage() {
+  return <DoorwayShell skin={SKIN_HAUNTED_HOTEL} deviceId="preview-device-00000000" />;
 }

@@ -10,12 +10,10 @@ import { SKIN_JOKER } from "../_doorway-skin";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-interface PageProps {
-  searchParams: Promise<{ mock?: string }>;
-}
-
-export default async function JokerVaultDoorwayPage({ searchParams }: PageProps) {
-  const params = await searchParams;
-  const mockReason = params.mock === "unavailable" ? "unavailable" : "incorrect";
-  return <DoorwayShell skin={SKIN_JOKER} mockReason={mockReason} />;
+// Themed doorway routes are preview-only (per sealed memory).
+// They render the shell for screenshot purposes; the PIN flow does
+// not perform real unlock here. Visitors land on the real
+// /nex-native/vault route for actual Vault operations.
+export default async function JokerVaultDoorwayPage() {
+  return <DoorwayShell skin={SKIN_JOKER} deviceId="preview-device-00000000" />;
 }

@@ -163,22 +163,23 @@ export default async function VaultSettingsPage() {
               What this Vault is today
             </p>
             <p style={{ margin: "6px 0 0" }}>
-              Vault uses your normal NEX account authentication. The six-digit
-              PIN entry you unlocked with is currently a prototype — real PIN
-              verification arrives with a later security stage. Rooms, chats
-              and files are treated as account-authenticated data, not
-              yet protected by the PIN or end-to-end encryption.
+              Your Vault key is created on your device the first time you set
+              Vault up. NEX stores only the encrypted key material. NEX cannot
+              read your Vault key or unlock Vault on your behalf.
             </p>
             <p style={{ margin: "10px 0 0" }}>
-              Vault now preserves the encrypted data you move into it so it
-              stays available on this device. Cross-device access to that
-              preserved data arrives with the future NEX key-portability
-              phase. This is a known phase boundary, not a regression.
+              If your device loses its local keys (for example clearing
+              browser storage or signing in on a new device without first
+              authorising it), Vault will need to be unlocked again on that
+              device. Cross-device authorisation and recovery arrive with the
+              next sealed phases. This is a known phase boundary, not a
+              regression.
             </p>
             <p style={{ margin: "10px 0 0" }}>
-              Recovery, device management, and encryption controls will appear
-              here when the real security architecture ships. Nothing fake
-              lives on this screen.
+              Password reset or account recovery automatically locks Vault on
+              every device so you must re-enter your PIN or passphrase
+              before Vault opens again. Your Vault content is preserved;
+              only the unlocked state is cleared.
             </p>
           </section>
         </main>

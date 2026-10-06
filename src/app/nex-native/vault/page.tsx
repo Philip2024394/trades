@@ -1,54 +1,53 @@
 // src/app/nex-native/vault/page.tsx
 //
-// NEX Vault · entry doorway (NEX-only).
+// NEX Vault · entry doorway (Vault Phase A · Commit A.3b).
 //
-// Theme scope boundary doctrine · 2026-10-04
-// (doctrine_theme_scope_boundary_2026_10_04). The Vault is a SYSTEM
-// surface — never a conversation surface — so the entry doorway
-// renders in NEX regardless of the viewer's picked chat_theme. The
-// previously-themed doorways (Joker, Haunted Hotel, Pink Dream)
-// stay reachable at their explicit `/vault/{slug}` routes for
-// preview + screenshot use per vault-research.md §10.0.1, but the
-// default entry (`/nex-native/vault`) now ALWAYS resolves SKIN_NEX.
+// This page is the authoritative state resolver for the Vault surface.
+// After authenticating the NEX session it inspects the per-session
+// Vault state and routes:
 //
-// Unauthenticated visitors still bounce to sign-in · the mock PIN
-// screen must not be reachable without a NEX session.
+//   NOT CONFIGURED → /nex-native/vault/setup  (setup wizard)
+//   UNLOCKED       → /nex-native/vault/home   (actual Vault surface)
+//   LOCKED         → the real locked PIN entry shell
 //
-// There is NO Vault cryptography wired up here, no server action,
-// no HSM, no key derivation, no auth boundary beyond the user's
-// existing NEX session. Phase A has not started.
+// Themed doorway routes (joker, pink-dream, haunted-hotel) remain
+// reachable for preview + screenshot use only (per sealed memory).
 //
-// Governed by:
-//   · doctrine_theme_scope_boundary_2026_10_04 · THIS SURFACE
-//   · vault-research.md §10.0 — user-facing simplicity principle
-//   · vault-research.md §10.0.1 — themed routes remain reachable
-//     directly for preview use (not as default entry)
-//   · vault-security-architecture-research.md §14 — Phase A not
-//     authorised
+// This file is Server Component · resolves state once per request from
+// the sealed resolveVaultStateForSession. The client component takes
+// over for interactive crypto.
 
 import { redirect } from "next/navigation";
 import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
-import { DoorwayShell } from "./_doorway-shell";
+import { nexSupabaseAdmin } from "@/lib/nex-native/supabase-admin";
 import { SKIN_NEX } from "./_doorway-skin";
+import { VaultLockedBootstrap } from "./_vault-locked-bootstrap";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-interface PageProps {
-  searchParams: Promise<{ mock?: string }>;
-}
-
-export default async function VaultPinEntryPage({ searchParams }: PageProps) {
+export default async function VaultEntryPage() {
   const session = await resolveNexAppSessionFromContext();
   if (!session) {
     redirect("/nex-native/sign-in?next=/nex-native/vault");
   }
 
-  const params = await searchParams;
-  const mockReason = params.mock === "unavailable" ? "unavailable" : "incorrect";
+  // Server-side state resolution. The client component will refresh
+  // via GET /api/nex-native/vault/status after the browser's device-
+  // bootstrap completes, but we route this initial render based on
+  // the configured flag only (we cannot know client-memory unlock
+  // state from the server).
+  const { data: setup } = await nexSupabaseAdmin
+    .from("nex_vault_setup")
+    .select("account_id")
+    .eq("account_id", session.account.id)
+    .maybeSingle();
 
-  // Doctrine 2026-10-04 · default Vault entry is ALWAYS NEX, never
-  // repainted from chat_theme. Themed previews remain at their own
-  // explicit `/vault/{slug}` routes.
-  return <DoorwayShell skin={SKIN_NEX} mockReason={mockReason} />;
+  if (!setup) {
+    redirect("/nex-native/vault/setup");
+  }
+
+  // Render the locked shell (bootstrap wraps PinEntryClient with the
+  // device_id resolved from the browser's IndexedDB key).
+  return <VaultLockedBootstrap skin={SKIN_NEX} />;
 }

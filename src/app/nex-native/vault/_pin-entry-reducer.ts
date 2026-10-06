@@ -1,41 +1,58 @@
 // src/app/nex-native/vault/_pin-entry-reducer.ts
 //
-// NEX Vault · 6-digit PIN entry state machine.
-// UI-foundation reducer only. No crypto, no auth, no network, no storage.
-// Governed by vault-security-architecture-research.md §0.2 — the PIN is an
-// unlock factor at the UI surface; it is NOT the Vault encryption key.
+// Vault Phase A · Commit A.3b · PIN entry state machine (8-12 digits).
+//
+// Founder-locked policy 2026-10-06: 8-12 digit PINs ONLY. 6-digit PINs
+// are impossible at every surface. Users who want stronger protection
+// use passphrase mode (_passphrase-entry-client.tsx).
+//
+// Pure state machine · no crypto, no network, no storage. The actual
+// cryptographic flow lives in unlock-orchestrator.ts; this reducer only
+// drives the UI.
 
-export const PIN_LENGTH = 6;
+export const PIN_MIN_LENGTH = 8;
+export const PIN_MAX_LENGTH = 12;
 
 export type PinEntryKind =
   | "entering"
+  | "ready"
   | "submitting"
-  | "incorrect"
-  | "unavailable";
+  | "wrong"
+  | "rate_limited";
 
 export type PinEntryState =
   | { kind: "entering"; digits: string }
+  | { kind: "ready"; digits: string }
   | { kind: "submitting"; digits: string }
-  | { kind: "incorrect"; digits: string }
-  | { kind: "unavailable" };
+  | { kind: "wrong"; digits: "" }
+  | { kind: "rate_limited"; retryAfterSeconds: number };
 
 export type PinEntryEvent =
   | { kind: "digit"; value: string }
   | { kind: "backspace" }
   | { kind: "setDigits"; digits: string }
   | { kind: "submit" }
-  | { kind: "reject"; reason: "incorrect" | "unavailable" }
+  | { kind: "rejectWrong" }
+  | { kind: "rejectRateLimited"; retryAfterSeconds: number }
   | { kind: "reset" };
 
 export function initialPinState(): PinEntryState {
   return { kind: "entering", digits: "" };
 }
 
+function enterState(digits: string): PinEntryState {
+  const cleaned = digits.replace(/\D/g, "").slice(0, PIN_MAX_LENGTH);
+  if (cleaned.length >= PIN_MIN_LENGTH) {
+    return { kind: "ready", digits: cleaned };
+  }
+  return { kind: "entering", digits: cleaned };
+}
+
 export function reducePinState(
   state: PinEntryState,
   event: PinEntryEvent,
 ): PinEntryState {
-  if (state.kind === "unavailable") {
+  if (state.kind === "rate_limited") {
     if (event.kind === "reset") return initialPinState();
     return state;
   }
@@ -44,27 +61,30 @@ export function reducePinState(
     case "digit": {
       if (state.kind === "submitting") return state;
       if (!/^\d$/.test(event.value)) return state;
-      const next = (state.digits + event.value).slice(0, PIN_LENGTH);
-      return { kind: "entering", digits: next };
+      const current = state.kind === "wrong" ? "" : state.digits;
+      return enterState(current + event.value);
     }
     case "backspace": {
       if (state.kind === "submitting") return state;
-      const next = state.digits.slice(0, -1);
-      return { kind: "entering", digits: next };
+      const current = state.kind === "wrong" ? "" : state.digits;
+      return enterState(current.slice(0, -1));
     }
     case "setDigits": {
       if (state.kind === "submitting") return state;
-      const cleaned = event.digits.replace(/\D/g, "").slice(0, PIN_LENGTH);
-      return { kind: "entering", digits: cleaned };
+      return enterState(event.digits);
     }
     case "submit": {
-      if (state.kind !== "entering") return state;
-      if (state.digits.length !== PIN_LENGTH) return state;
+      if (state.kind !== "ready") return state;
       return { kind: "submitting", digits: state.digits };
     }
-    case "reject": {
-      if (event.reason === "unavailable") return { kind: "unavailable" };
-      return { kind: "incorrect", digits: "" };
+    case "rejectWrong": {
+      return { kind: "wrong", digits: "" };
+    }
+    case "rejectRateLimited": {
+      return {
+        kind: "rate_limited",
+        retryAfterSeconds: event.retryAfterSeconds,
+      };
     }
     case "reset": {
       return initialPinState();
@@ -73,10 +93,11 @@ export function reducePinState(
 }
 
 export function isSubmittable(state: PinEntryState): boolean {
-  return state.kind === "entering" && state.digits.length === PIN_LENGTH;
+  return state.kind === "ready";
 }
 
 export function digitCount(state: PinEntryState): number {
-  if (state.kind === "unavailable") return 0;
+  if (state.kind === "rate_limited") return 0;
+  if (state.kind === "wrong") return 0;
   return state.digits.length;
 }

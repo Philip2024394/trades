@@ -324,22 +324,35 @@ describe("D · vault-entry-service calls persistence on move + remove", () => {
 
 // ─── E · honest-limits disclaimer sealed ────────────────────────────
 
-describe("E · vault/settings honest-limits disclaimer carries the Phase A key-portability note", () => {
-  test("disclaimer still mentions PIN prototype", () => {
-    expect(vaultSettings).toContain("prototype");
+describe("E · vault/settings honest-limits disclaimer (updated for A.3b)", () => {
+  test("disclaimer tells the user the Vault key is created on their device", () => {
+    expect(vaultSettings).toContain("Vault key is created on your device");
   });
 
-  test("disclaimer carries the device-lineage / cross-device note", () => {
-    expect(vaultSettings).toContain("Cross-device access");
-    expect(vaultSettings).toContain("key-portability");
-    expect(vaultSettings).toContain("phase boundary, not a regression");
+  test("disclaimer asserts NEX cannot read the key / unlock Vault", () => {
+    // JSX source line-wraps between whitespace; collapse before match.
+    const collapsed = vaultSettings.replace(/\s+/g, " ");
+    expect(collapsed).toContain("NEX cannot read your Vault key");
   });
 
-  test("disclaimer does NOT claim end-to-end encryption today", () => {
-    // Phase A delivers E2E · until then the honest copy MUST say
-    // "not yet protected by ... end-to-end encryption".
-    expect(vaultSettings).toContain("end-to-end encryption");
-    expect(vaultSettings).toContain("not\n              yet protected");
+  test("disclaimer carries the cross-device / phase boundary note", () => {
+    const collapsed = vaultSettings.replace(/\s+/g, " ");
+    expect(collapsed).toContain(
+      "Cross-device authorisation and recovery arrive with the next sealed phases",
+    );
+    expect(collapsed).toContain("phase boundary, not a regression");
+  });
+
+  test("disclaimer documents password-reset auto-lock (design §G.1)", () => {
+    expect(vaultSettings).toContain("Password reset or account recovery");
+    expect(vaultSettings).toContain("automatically locks Vault");
+    expect(vaultSettings).toContain(
+      "Your Vault content is preserved",
+    );
+  });
+
+  test("disclaimer no longer calls PIN a prototype (A.3b ships real PIN)", () => {
+    expect(vaultSettings).not.toContain("prototype");
   });
 });
 
