@@ -216,17 +216,41 @@ describe("C · _motion-client.tsx consumes resolved colours · NEW badge wired",
     expect(src).toContain("New");
   });
 
-  test("NEW badge tint derives from theme colours (not a hardcoded gold / green / etc)", () => {
-    // The badge paints `background: colours.primary` with text in
-    // `colours.deep` · it should NEVER be gold / green / orange etc.
-    // by default · the theme chooses its NEW tint via colours.primary.
+  test("NEW badge is a UNIVERSAL NEX semantic indicator · theme-independent gold (sealed 2026-10-06)", () => {
+    // Founder sealed the NEW badge as a universal NEX semantic
+    // signal: "there is something new here" needs to be instantly
+    // recognisable regardless of World palette. This test guards
+    // against a future bridge accidentally re-wiring it back to
+    // theme colours.
     const badgeBlock = src.slice(
       src.indexOf("data-nex-new-badge"),
       src.indexOf("</span>", src.indexOf("data-nex-new-badge")),
     );
-    expect(badgeBlock).toContain("colours.primary");
-    expect(badgeBlock).toContain("colours.deep");
-    expect(badgeBlock).not.toMatch(/#(FF9900|FFD700|FFA500)/);
+    // Must reference the centralised universal constants · never a
+    // theme-derived colour.
+    expect(badgeBlock).toContain("NEW_BADGE_GOLD");
+    expect(badgeBlock).toContain("NEW_BADGE_INK");
+    expect(badgeBlock).toContain("NEW_BADGE_GLOW");
+    expect(badgeBlock).not.toContain("colours.primary");
+    expect(badgeBlock).not.toContain("colours.deep");
+    expect(badgeBlock).not.toContain("colours.secondary");
+    expect(badgeBlock).not.toContain("colours.highlight");
+  });
+
+  test("NEW badge gold constant is bright yellow/gold · not an off-theme accent", () => {
+    // Pin the exact gold hex so a future tweak flows through this
+    // test · the pair must stay bright gold + near-black ink for
+    // strong contrast on every World background.
+    expect(src).toContain('const NEW_BADGE_GOLD = "#FFD54A"');
+    expect(src).toContain('const NEW_BADGE_INK = "#1A1300"');
+  });
+
+  test("NEW badge carries a subtle pulse (keyframes mounted · animation applied)", () => {
+    // Pulse keyframes must be defined AND actually applied to the
+    // badge · if either half is missing the badge sits static.
+    expect(src).toContain("@keyframes nex-new-badge-pulse");
+    expect(src).toMatch(/animation:\s*["'`]nex-new-badge-pulse/);
+    expect(src).toContain("<style>{NEW_BADGE_PULSE_KEYFRAMES}</style>");
   });
 
   test("source carries the sealed Universal Theme Colour Rule doctrine comment", () => {

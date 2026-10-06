@@ -11,12 +11,27 @@
 //
 // Universal Theme Colour Rule (sealed 2026-10-06):
 //
-//   Every surface tinted here — status strip · card · NEW badge ·
-//   toggle · back link — derives from the active world's
-//   `Required<ColourSystem>` passed in via props. There are NO
-//   hardcoded palette constants in this file. No per-theme id
+//   Every surface tinted here — status strip · card background +
+//   border · toggle · back link — derives from the active world's
+//   `Required<ColourSystem>` passed in via props. No per-theme id
 //   branches. A future world with a completely different palette
 //   auto-tints every surface with zero code change.
+//
+// NEW badge · universal semantic exception (sealed 2026-10-06):
+//
+//   The NEW badge is DELIBERATELY NOT theme-coloured. It is a
+//   universal NEX semantic indicator — "there is something new
+//   here" — and must be instantly recognisable across every World.
+//   One treatment everywhere: bright gold on near-black with a
+//   subtle glow + pulse. See the NEW_BADGE_* constants below.
+//
+//   Architecture:
+//     World ThemePackage colours  → animation cards + chrome
+//     Universal NEX semantic       → NEW badge
+//
+//   Regression tests in `_motion-client.test.ts` section C enforce
+//   both halves: the chrome stays theme-derived, the NEW badge
+//   stays yellow/gold universal.
 
 import * as React from "react";
 import Link from "next/link";
@@ -28,6 +43,30 @@ import {
 import { JokerMotionOverlay } from "../_joker-motion";
 
 type ToggleState = Partial<Record<JokerMotionVariant, boolean>>;
+
+// ─── Universal NEX NEW badge · theme-independent ──────────────────
+//
+// A single visual treatment used across every World so NEW stays
+// instantly recognisable regardless of whether the surrounding
+// atmosphere is Ocean blue, Café warm, Joker green, etc. Centralised
+// here so if/when a shared NewBadge primitive is extracted to the
+// lib layer the values move together.
+const NEW_BADGE_GOLD = "#FFD54A";
+const NEW_BADGE_INK = "#1A1300";
+const NEW_BADGE_GLOW =
+  "0 0 10px rgba(255,213,74,0.55), 0 0 20px rgba(255,213,74,0.28)";
+const NEW_BADGE_PULSE_KEYFRAMES = `
+@keyframes nex-new-badge-pulse {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(255,213,74,0.55), 0 0 20px rgba(255,213,74,0.28);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 14px rgba(255,213,74,0.72), 0 0 28px rgba(255,213,74,0.42);
+    transform: scale(1.04);
+  }
+}
+`;
 
 // Local alpha helper · same shape as the engine's private hexToRgba.
 // Lets us tint theme colours at various intensities without ever
@@ -66,6 +105,10 @@ export function MotionGalleryClient({
 
   return (
     <>
+      {/* Universal NEW-badge pulse keyframes · mounted once per
+          gallery render · theme-independent. */}
+      <style>{NEW_BADGE_PULSE_KEYFRAMES}</style>
+
       {/* Status strip · theme-tinted · reflects live-count without
           generic greens/greys. */}
       <div
@@ -239,15 +282,18 @@ function AnimationCard({
               data-nex-new-badge
               style={{
                 display: "inline-block",
-                padding: "2px 8px",
+                padding: "3px 9px",
                 borderRadius: 999,
-                background: colours.primary,
-                color: colours.deep,
+                background: NEW_BADGE_GOLD,
+                color: NEW_BADGE_INK,
                 fontSize: 9,
                 fontWeight: 800,
-                letterSpacing: "0.14em",
+                letterSpacing: "0.16em",
                 textTransform: "uppercase",
                 lineHeight: 1,
+                boxShadow: NEW_BADGE_GLOW,
+                animation: "nex-new-badge-pulse 2.4s ease-in-out infinite",
+                willChange: "transform, box-shadow",
               }}
             >
               New
