@@ -159,34 +159,25 @@ export async function setSessionTrustedForOwner(
   return !!data?.id;
 }
 
-/** "Sign out all other sessions" · bumps `nex_account.sessions_invalidated_at`
- *  to the current time, so the session resolver will reject every
- *  session whose JWT iat predates now. Also marks every nex_session row
- *  for this account (except the current one, if `keepSessionKey` is
- *  provided) as revoked so the devices page immediately reflects the
- *  change. Returns the number of nex_session rows that were revoked. */
+/** "Sign out all other sessions" · marks every nex_session row for this
+ *  account (except the current one, if `keepSessionKey` is provided)
+ *  as revoked_at = now. The session resolver rejects any session whose
+ *  nex_session row is revoked, so other devices are kicked off on
+ *  their next protected request.
+ *
+ *  Does NOT bump `nex_account.sessions_invalidated_at` · that column
+ *  is reserved for future "mass invalidation including the current
+ *  device" flows (e.g. a dedicated 'sign out everywhere + this device'
+ *  button, or a password-change-triggered mass invalidation). Mixing
+ *  the two mechanisms would kick out the current session too (because
+ *  the current session's JWT iat is older than the bump time) ·
+ *  defeating the sealed 'keep me signed in, log everyone else out'
+ *  rule. Returns the number of nex_session rows that were revoked. */
 export async function revokeAllOtherSessionsForOwner(
   ownerAccountId: NexUuid,
   keepSessionKey?: string | null,
 ): Promise<{ invalidated_at: string; revoked_count: number }> {
   const now = new Date().toISOString();
-  // Bump the account-level timestamp first · this is what actually
-  // forces every other session off on their next request.
-  const bumpResult = await nexSupabaseAdmin
-    .from("nex_account")
-    .update({ sessions_invalidated_at: now })
-    .eq("id", ownerAccountId)
-    .select("id")
-    .maybeSingle();
-  if (bumpResult.error) {
-    throw new Error(
-      `security-service.revokeAllOtherSessionsForOwner (bump): ${bumpResult.error.message}`,
-    );
-  }
-  // Then mark the row-level nex_session entries revoked (except the
-  // current one, if specified) so the Security devices page reflects
-  // the change without waiting for the other sessions to be rejected
-  // on their next request.
   let revokeQuery = nexSupabaseAdmin
     .from("nex_session")
     .update({ revoked_at: now })
@@ -198,7 +189,7 @@ export async function revokeAllOtherSessionsForOwner(
   const { data: revokedRows, error: revokeError } = await revokeQuery.select("id");
   if (revokeError) {
     throw new Error(
-      `security-service.revokeAllOtherSessionsForOwner (revoke): ${revokeError.message}`,
+      `security-service.revokeAllOtherSessionsForOwner: ${revokeError.message}`,
     );
   }
   return {

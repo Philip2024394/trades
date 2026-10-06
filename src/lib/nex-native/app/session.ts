@@ -200,12 +200,36 @@ async function resolveFromUser(
   // entry point passes null, or the token is malformed), we skip the
   // check. This is intentional · Bridge 2b's existing flows that call
   // the resolver without a token must keep working.
-  if (accessToken && account.sessions_invalidated_at) {
-    const issuedAtSec = extractJwtIssuedAt(accessToken);
-    if (issuedAtSec !== null) {
-      const invalidatedAtMs = Date.parse(account.sessions_invalidated_at);
-      if (Number.isFinite(invalidatedAtMs) && issuedAtSec * 1000 < invalidatedAtMs) {
-        return null;
+  // Phase 1.0 Security · reject sessions when:
+  //   (a) this specific session's nex_session row has been marked
+  //       revoked (per-session revoke · "sign out all other sessions"
+  //       works via this path · the current session's row stays
+  //       non-revoked so the device that triggered the action keeps
+  //       its session), OR
+  //   (b) the account's `sessions_invalidated_at` is newer than this
+  //       session's JWT iat (mass invalidation path · reserved for
+  //       future flows like "revoke on password change · including
+  //       this device"). Phase 1.0 does NOT bump sessions_invalidated_at
+  //       from any user-triggered action · the column is wired but
+  //       only (a) is user-reachable today.
+  if (accessToken) {
+    const sessionKey = sha256Hex(accessToken);
+    const sessRow = await nexSupabaseAdmin
+      .from("nex_session")
+      .select("revoked_at")
+      .eq("account_id", account.id)
+      .eq("supabase_session_key", sessionKey)
+      .maybeSingle();
+    if (sessRow.data?.revoked_at) {
+      return null;
+    }
+    if (account.sessions_invalidated_at) {
+      const issuedAtSec = extractJwtIssuedAt(accessToken);
+      if (issuedAtSec !== null) {
+        const invalidatedAtMs = Date.parse(account.sessions_invalidated_at);
+        if (Number.isFinite(invalidatedAtMs) && issuedAtSec * 1000 < invalidatedAtMs) {
+          return null;
+        }
       }
     }
   }
