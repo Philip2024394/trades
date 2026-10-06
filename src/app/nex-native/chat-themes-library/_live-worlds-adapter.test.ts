@@ -171,6 +171,36 @@ describe("B · code remains the source of truth · DB is never augmented", () =>
   });
 });
 
+// ─── C2 · Step 1A · category_id field is populated universally ──────
+
+describe("C2 · category_id is populated on every live-world row (Step 1A)", () => {
+  test("Ocean row carries category_id = 'ocean'", () => {
+    const row = liveWorldAsBrowserRow("ocean");
+    expect(row.category_id).toBe("ocean");
+  });
+
+  const CAFE_WORLDS = ["coffee", "botanical-cafe", "midnight-cafe", "french-cafe"] as const;
+  for (const id of CAFE_WORLDS) {
+    test(`${id} row carries category_id = 'cafe'`, () => {
+      const row = liveWorldAsBrowserRow(id);
+      expect(row.category_id).toBe("cafe");
+    });
+  }
+
+  test("every live-world row has a non-empty category_id string", () => {
+    for (const row of listLiveWorldsAsBrowserRows()) {
+      expect(row.category_id).toBeTruthy();
+      expect(typeof row.category_id).toBe("string");
+    }
+  });
+
+  test("category_id is always a REGISTERED category id (never a raw / unknown value)", () => {
+    for (const row of listLiveWorldsAsBrowserRows()) {
+      expect(["ocean", "cafe", "explore"]).toContain(row.category_id);
+    }
+  });
+});
+
 // ─── C · merged collection has no duplicate ids ─────────────────────
 
 describe("C · merged collection has no duplicate ids", () => {

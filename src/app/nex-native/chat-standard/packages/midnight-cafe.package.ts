@@ -27,6 +27,8 @@ import type { ThemePackage } from "../_engine/types";
 
 export const MIDNIGHT_CAFE_PACKAGE: ThemePackage = {
   identity: {
+    // Step 1A (sealed 2026-10-06) · belongs to the Café visual family.
+    categoryId: "cafe",
     id: "midnight-cafe",
     name: "Midnight Café",
     tagline: "Rain on the glass · neon in the dark · vinyl spinning",

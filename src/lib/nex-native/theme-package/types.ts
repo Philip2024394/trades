@@ -306,6 +306,17 @@ export interface ThemeIdentity {
   name: string;
   tagline: string;
   conceptOneLine: string; // e.g. "Ocean / underwater / peaceful / premium"
+  /** Step 1A (sealed 2026-10-06) · the visual-family / showcase category
+   *  this World belongs to. The World says "I belong to category X" ·
+   *  the actual category metadata (display name, tagline, icon) lives
+   *  in the Theme Category Registry at src/lib/nex-native/theme-category/.
+   *  Resolved via `resolveCategoryId(identity.categoryId)` · when
+   *  null / undefined, the Library adapter defaults the World to the
+   *  "explore" collection. Future Worlds declaring a registered id
+   *  automatically join that category · the Library needs no code
+   *  change. "explore" is the uncategorised bucket, NOT a visual
+   *  family. */
+  categoryId?: string | null;
 }
 
 /** 05 Typography · Extension Batch 001 (founder-authorised 2026-10-05).

@@ -33,6 +33,14 @@ export const OCEAN_PACKAGE: ThemePackage = {
     name: "Ocean",
     tagline: "Peaceful underwater · drift · shimmer",
     conceptOneLine: "Ocean · underwater · peaceful · premium",
+    // Step 1A (sealed 2026-10-06) · the Ocean World belongs to the
+    // Ocean visual-family / showcase. Category metadata (display name,
+    // tagline, icon) lives in src/lib/nex-native/theme-category/
+    // registry.ts · the World only declares membership. The World id
+    // remains "ocean" through Steps 1 and 2 · Step 3 is where the
+    // World id becomes "waterworld" and "ocean" refers only to the
+    // category.
+    categoryId: "ocean",
   },
   colours: {
     primary: "#2E90B5", // deep blue

@@ -27,6 +27,7 @@ import { updateChatThemeAction } from "../_actions";
 import type { NexAccountRow } from "@/lib/nex-native/types";
 import { ThemeBrowserClient, type BrowserThemeRow } from "./_theme-browser-client";
 import { listLiveWorldsAsBrowserRows } from "./_live-worlds-adapter";
+import { EXPLORE_CATEGORY_ID } from "@/lib/nex-native/theme-category/registry";
 import { TrialCountdownBanner } from "./_trial-countdown-banner";
 import { NexPageHeader } from "../_page-header";
 
@@ -113,6 +114,12 @@ export default async function ThemePickerPage({
       composer_rim_hex: t.composer_rim_hex,
       tier: t.tier,
       category: t.category,
+      // Step 1A (sealed 2026-10-06) · DB-backed themes carry no
+      // category_id column yet · every row defaults to "explore" (the
+      // uncategorised collection) until a later authorisation decides
+      // whether to add a DB column or an in-code override map. This is
+      // code-only · no DB migration · no schema change.
+      category_id: EXPLORE_CATEGORY_ID,
       hero_image_url: t.hero_image_url,
       sort_order: t.sort_order,
       // Phase 4A · gallery-always-plays intro.

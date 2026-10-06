@@ -34,6 +34,7 @@ import {
   LIVE_WORLD_PACKAGES,
   type LiveWorldId,
 } from "../chat-standard/_live-worlds";
+import { resolveCategoryId } from "@/lib/nex-native/theme-category/registry";
 import type { BrowserThemeRow } from "./_theme-browser-client";
 
 /** Convert a single live-world `ThemePackage` into the shape the
@@ -57,6 +58,11 @@ export function liveWorldAsBrowserRow(id: LiveWorldId): BrowserThemeRow {
     // every account. Never gated behind the Bisnis premium tier.
     tier: "gratis",
     category: "standard",
+    // Step 1A (sealed 2026-10-06) · visual-family / showcase membership
+    // derived from the ThemePackage. `resolveCategoryId` guarantees we
+    // always emit a valid registered category id · typos default to
+    // "explore" and are caught at CI by the registry test suite.
+    category_id: resolveCategoryId(pkg.identity.categoryId),
     hero_image_url: pkg.wallpaperUrl ?? null,
     // Sort live-worlds before DB themes · DB themes typically carry
     // positive sort_order values · a negative value puts live-worlds

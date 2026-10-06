@@ -39,7 +39,18 @@ export interface BrowserThemeRow {
   bubble_rim_hex: string | null;
   composer_rim_hex: string | null;
   tier: "gratis" | "bisnis";
+  /** Tier-ish catalogue classification (distinct from the Step 1A
+   *  visual-family `category_id` field below). Kept for backwards
+   *  compatibility with the existing filter UI · do NOT conflate with
+   *  the Category → World architecture. */
   category: "standard" | "premium";
+  /** Step 1A (sealed 2026-10-06) · visual-family / showcase membership.
+   *  Resolved via `resolveCategoryId(…)` so this is ALWAYS a valid
+   *  registered category id · unknown or missing values default to
+   *  the universal `EXPLORE_CATEGORY_ID` bucket. Live-world rows derive
+   *  from `pkg.identity.categoryId` · DB-backed rows currently default
+   *  to "explore" (no DB column for category exists yet). */
+  category_id: string;
   hero_image_url: string | null;
   sort_order: number;
   /** Phase 4A · optional intro video shown in the preview modal.

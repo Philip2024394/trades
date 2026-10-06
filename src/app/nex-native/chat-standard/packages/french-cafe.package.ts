@@ -30,6 +30,8 @@ import type { ThemePackage } from "../_engine/types";
 
 export const FRENCH_CAFE_PACKAGE: ThemePackage = {
   identity: {
+    // Step 1A (sealed 2026-10-06) · belongs to the Café visual family.
+    categoryId: "cafe",
     id: "french-cafe",
     name: "French Café",
     tagline: "Marbre · parchment · candlelight · elegance",
