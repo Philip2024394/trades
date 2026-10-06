@@ -23,10 +23,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { startThemesTrialAction } from "../_actions";
 import { CategoryGrid } from "./_category-grid";
-import {
-  countCategoryMembers,
-  loadLibraryData,
-} from "./_load-library-data";
+import { loadLibraryData } from "./_load-library-data";
 import { TrialCountdownBanner } from "./_trial-countdown-banner";
 import { NexPageHeader } from "../_page-header";
 
@@ -51,8 +48,6 @@ export default async function ThemePickerPage({
 }) {
   const data = await loadLibraryData();
   if (data.kind === "unauthenticated") redirect("/nex-native/sign-in");
-
-  const memberCounts = countCategoryMembers(data.browserThemes);
 
   const sp = await searchParams;
   const banner = sp.e && sp.m ? { code: sp.e, message: sp.m } : null;
@@ -82,7 +77,15 @@ export default async function ThemePickerPage({
           padding: "20px 16px 40px",
         }}
       >
-        <div style={{ maxWidth: 720, margin: "0 auto" }}>
+        {/* Step 1B.1 · the outer container widens to 1120px so the
+            phone-frame hero gallery can read as a premium phone/app
+            showcase on desktop. Header prose + banners keep their own
+            narrower max-width below so copy stays readable. */}
+        <div style={{ maxWidth: 1120, margin: "0 auto" }}>
+          {/* Header + banners stay in a narrower 720px prose column so
+              the copy keeps a comfortable reading width. The phone
+              gallery below opens up to the full 1120px to breathe. */}
+          <div style={{ maxWidth: 720, margin: "0 auto" }}>
           <NexPageHeader dataScope="settings-theme" />
 
           <h1
@@ -270,8 +273,11 @@ export default async function ThemePickerPage({
               </Link>
             </div>
           ) : null}
+          </div>
 
-          <CategoryGrid memberCounts={memberCounts} />
+          {/* Phone-frame hero gallery · spans the full 1120px shell so
+              each category phone reads as a dominant device. */}
+          <CategoryGrid browserThemes={data.browserThemes} />
         </div>
       </main>
     </>

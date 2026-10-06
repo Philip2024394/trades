@@ -59,6 +59,10 @@ const CATEGORY_REGISTRY: Readonly<Record<string, ThemeCategory>> = {
       glow: "rgba(130,210,255,0.55)", // aqua glow
       deep: "#0A2535", // abyss · page background
     },
+    // Hero World · the Ocean room has one world today and it's
+    // obviously the face. If a second ocean world ships, the hero
+    // stays stable here unless re-authorised.
+    heroThemeId: "ocean",
   },
   cafe: {
     id: "cafe",
@@ -77,6 +81,11 @@ const CATEGORY_REGISTRY: Readonly<Record<string, ThemeCategory>> = {
       glow: "rgba(232,170,90,0.55)", // amber warm glow
       deep: "#2A160A", // dark roast · page background
     },
+    // Hero World · "coffee" is the archetypal / baseline café world
+    // and matches the warm-espresso palette most directly. The other
+    // three Café worlds (botanical / midnight / french) remain visible
+    // inside the Café showcase room.
+    heroThemeId: "coffee",
   },
   [EXPLORE_CATEGORY_ID]: {
     id: EXPLORE_CATEGORY_ID,
@@ -93,6 +102,12 @@ const CATEGORY_REGISTRY: Readonly<Record<string, ThemeCategory>> = {
       glow: "rgba(0,175,255,0.35)",
       deep: "#020914",
     },
+    // Hero World · Explore is a mixed bucket · "food" is the strongest
+    // visual asset in it today (grilled intro video + wallpaper).
+    // When Explore no longer contains food (e.g. food graduates into a
+    // dedicated Food category later), the fallback in the Library grid
+    // picks the first world in Explore so this stays safe.
+    heroThemeId: "food",
   },
 };
 

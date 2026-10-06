@@ -3,6 +3,8 @@
 // Theme Category · type contract · sealed 2026-10-06 (Step 1A).
 // Colour contract added 2026-10-06 (Step 2 · Universal Theme Colour
 // Rule).
+// Hero World mapping added 2026-10-06 (Step 1B.1 · Phone-Frame Hero
+// Tiles).
 //
 // A Theme Category is a visual family / showcase room. A Theme World
 // (ThemePackage) declares which category it belongs to via
@@ -27,6 +29,14 @@
 //     world via its own ThemePackage colours · only the surrounding
 //     wrapper (header · tagline · back-link · empty-state) uses the
 //     category palette.
+//   · PHONE-FRAME HERO (sealed 2026-10-06 · Step 1B.1): a category
+//     declares which World represents it on the Theme Library landing
+//     via `heroThemeId`. The landing tile for that category renders
+//     a phone-frame showing that World painted through the Theme
+//     Engine (ThemeWorld + ThemeBubble). Null means "fall back to the
+//     first world in this category" at render time. The hero id is
+//     advisory · if it does not resolve to a world currently in the
+//     category, the fallback kicks in without crashing.
 
 import type { ColourSystem } from "@/lib/nex-native/theme-package/types";
 
@@ -60,4 +70,19 @@ export interface ThemeCategory {
    *  where a `??` fallback would silently re-introduce the generic
    *  palette the rule forbids. */
   readonly colours: Required<ColourSystem>;
+  /** Hero World · which Theme World represents this category on the
+   *  Library landing phone-frame tile. The id references a
+   *  `ThemePackage.identity.id` · the Library's merged theme collection
+   *  resolves it to a `BrowserThemeRow` for the engine to paint.
+   *
+   *  · String · a specific world id · the preferred face of the
+   *    category. Must point at a world whose own `categoryId` matches
+   *    this category (code-level check in the registry test suite).
+   *  · null · "no fixed hero" · the Library tile falls back to the
+   *    first world currently in this category. Safer for a bucket like
+   *    Explore where the membership can shift.
+   *
+   *  Hero resolution is a universal, data-driven step at tile render
+   *  time · zero per-category JSX branches live inside the grid. */
+  readonly heroThemeId: string | null;
 }

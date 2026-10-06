@@ -21,7 +21,9 @@ import {
 } from "./_test-registry-view";
 import { countCategoryMembers } from "./_category-member-counts";
 import { listLiveWorldsAsBrowserRows } from "./_live-worlds-adapter";
+import { resolveHeroWorld } from "./_category-grid";
 import type { BrowserThemeRow } from "./_theme-browser-client";
+import type { ThemeCategory } from "@/lib/nex-native/theme-category/types";
 
 const REPO_ROOT = path.resolve(__dirname, "../../../..");
 const LIBRARY_DIR = path.join(
@@ -373,6 +375,230 @@ describe("Sanity · the three registered category ids today", () => {
   });
 });
 
+// ─── Step 1B.1 · phone-frame hero tiles · sealed 2026-10-06 ─────────
+
+// Context · the founder's directive (2026-10-06) rejects the
+// rectangular icon/name/"Enter →" category card. The landing now
+// renders a large phone-frame per category · the screen inside paints
+// the representative World (ThemePackage) through the Theme Engine.
+// The following sections guard the new architecture against drift.
+
+// ─── P · heroThemeId exists on every registered category ────────────
+
+describe("P · heroThemeId · every registered category declares a hero", () => {
+  const cats = listCategories();
+
+  test.each(cats.map((c) => [c.id] as const))(
+    "category '%s' declares a `heroThemeId` field (string or null)",
+    (id) => {
+      const cat = getCategory(id);
+      expect(cat).not.toBeNull();
+      expect(cat).toHaveProperty("heroThemeId");
+      const hero = cat?.heroThemeId;
+      expect(hero === null || typeof hero === "string").toBe(true);
+    },
+  );
+
+  test("Ocean hero is the ocean world (only member today)", () => {
+    expect(getCategory("ocean")?.heroThemeId).toBe("ocean");
+  });
+
+  test("Café hero is 'coffee' (archetypal baseline café)", () => {
+    expect(getCategory("cafe")?.heroThemeId).toBe("coffee");
+  });
+
+  test("Explore hero is 'food' (strongest Explore visual today)", () => {
+    expect(getCategory("explore")?.heroThemeId).toBe("food");
+  });
+});
+
+// ─── Q · hero ids resolve to a world actually in that category ──────
+
+describe("Q · every heroThemeId resolves to a world in its category", () => {
+  test.each(
+    listCategories().filter((c) => c.heroThemeId !== null).map((c) => [c.id, c.heroThemeId!] as const),
+  )(
+    "category '%s' · hero '%s' is a live-world row with matching category_id",
+    (id, heroId) => {
+      const hero = liveRows.find((r) => r.id === heroId);
+      expect(hero, `heroThemeId=${heroId} must exist as a live-world row`).toBeDefined();
+      expect(hero?.category_id, `hero ${heroId} must belong to category ${id}`).toBe(id);
+    },
+  );
+});
+
+// ─── R · phone-frame tile uses Theme Engine primitives (no iframe) ──
+
+describe("R · phone-frame tile paints the hero via Theme Engine primitives", () => {
+  const src = fs.readFileSync(CATEGORY_GRID, "utf8");
+
+  test("imports ThemeWorld + ThemeBubble from the engine (single implementation of the World)", () => {
+    expect(src).toContain("ThemeWorld");
+    expect(src).toContain("ThemeBubble");
+    expect(src).toContain('from "@/lib/nex-native/chat-render/theme-world"');
+  });
+
+  test("renders <ThemeWorld and <ThemeBubble inside the tile", () => {
+    expect(src).toContain("<ThemeWorld");
+    expect(src).toContain("<ThemeBubble");
+  });
+
+  test("has no iframe element anywhere (sealed 8f805d7d · dev-mode performance.measure race)", () => {
+    // Allow the word "iframe" in doctrine comments that describe the
+    // sealed rule · forbid any actual <iframe> element OR
+    // React.createElement("iframe", ...) call in the code.
+    expect(src.toLowerCase()).not.toContain("<iframe");
+    expect(src.toLowerCase()).not.toMatch(/createelement\s*\(\s*["'`]iframe["'`]/);
+  });
+
+  test("tile exposes stable test hooks for the phone frame", () => {
+    // These selectors let future browser/visual tests target the
+    // phone silhouette without relying on class names.
+    expect(src).toContain("data-nex-category-phone");
+    expect(src).toContain("data-nex-category-tile");
+    expect(src).toContain("data-nex-category-caption");
+  });
+});
+
+// ─── S · the rejected rectangular card is gone ──────────────────────
+
+describe("S · the rejected icon/name/'Enter →' rectangular card is gone", () => {
+  const src = fs.readFileSync(CATEGORY_GRID, "utf8");
+
+  test("file no longer renders the 'Enter →' affordance", () => {
+    expect(src).not.toContain("Enter →");
+  });
+
+  test("file no longer carries the rejected linear-gradient card background", () => {
+    // The pre-Step-1B.1 card used:
+    //   background: "linear-gradient(165deg, rgba(16,30,52,0.75) 0%, rgba(4,10,20,0.90) 100%)"
+    // The phone frame derives its surface from category.colours · a
+    // return to the old literal would mean the rejected design is back.
+    expect(src).not.toContain("rgba(16,30,52,0.75)");
+    expect(src).not.toContain("rgba(4,10,20,0.90)");
+  });
+});
+
+// ─── T · outer phone frame derives from category.colours, not NEX ───
+
+describe("T · outer phone-frame chrome derives from category.colours (Universal Theme Colour Rule)", () => {
+  const src = fs.readFileSync(CATEGORY_GRID, "utf8");
+
+  test("file consumes category.colours (not a hardcoded NEX palette)", () => {
+    expect(src).toContain("category.colours");
+    expect(src).toContain("colours.deep");
+    expect(src).toContain("colours.primary");
+    expect(src).toContain("colours.glow");
+    expect(src).toContain("colours.highlight");
+  });
+
+  test("file does NOT redeclare a generic NEX palette constant", () => {
+    // The pre-Step-1B.1 _category-grid.tsx carried:
+    //   const NEX = { bg: "#020914", cyan: "#00AFFF", ... }
+    // That block is the archetypal violation of the Universal Theme
+    // Colour Rule (sealed 2026-10-06). It has been removed; a return
+    // of the constant would mean the rule has been bypassed.
+    expect(src).not.toMatch(/const\s+NEX\s*=\s*\{[^}]*bg\s*:\s*["']#020914["']/);
+  });
+
+  test("no world-specific hex literals leak into the grid (ocean · coffee primaries)", () => {
+    // The CATEGORY grid should never carry a world's hex directly ·
+    // category colour comes through category.colours · world colour
+    // comes through BrowserThemeRow/ThemeWorld.
+    expect(src).not.toContain("#2E90B5"); // ocean primary
+    expect(src).not.toContain("#6B3F22"); // coffee primary
+  });
+});
+
+// ─── U · resolveHeroWorld fallback behaviour (unit test) ────────────
+
+describe("U · resolveHeroWorld · universal, no per-id branches", () => {
+  test("returns the row matching heroThemeId when present", () => {
+    const inCategory: BrowserThemeRow[] = [
+      row("world-a", "ocean"),
+      row("world-b", "ocean"),
+    ];
+    const cat = withHero("ocean", "world-b");
+    expect(resolveHeroWorld(cat, inCategory)?.id).toBe("world-b");
+  });
+
+  test("falls back to the first in-category row when heroThemeId is null", () => {
+    const inCategory: BrowserThemeRow[] = [
+      row("world-x", "explore"),
+      row("world-y", "explore"),
+    ];
+    const cat = withHero("explore", null);
+    expect(resolveHeroWorld(cat, inCategory)?.id).toBe("world-x");
+  });
+
+  test("falls back to the first in-category row when heroThemeId does not resolve", () => {
+    const inCategory: BrowserThemeRow[] = [
+      row("world-m", "cafe"),
+      row("world-n", "cafe"),
+    ];
+    const cat = withHero("cafe", "world-does-not-exist");
+    expect(resolveHeroWorld(cat, inCategory)?.id).toBe("world-m");
+  });
+
+  test("returns null for a category with zero in-category rows (hidden from landing)", () => {
+    const cat = withHero("explore", null);
+    expect(resolveHeroWorld(cat, [])).toBeNull();
+  });
+});
+
+// ─── V · the three current hero worlds exist in the merged collection ─
+
+describe("V · all three current hero worlds exist in the live-world collection", () => {
+  // Guards against a sealed-registry hero id drifting out of sync
+  // with the live-world package set · the Library's resolveHeroWorld
+  // would silently fall back to the first in-category world and the
+  // category tile would look "fine but wrong".
+  test("ocean / coffee / food are all registered live-world rows", () => {
+    for (const id of ["ocean", "coffee", "food"]) {
+      const row = liveRows.find((r) => r.id === id);
+      expect(row, `hero world '${id}' must be a registered live-world row`).toBeDefined();
+    }
+  });
+});
+
+// ─── W · wallpaper-null fallback keeps the phone screen visible ─────
+
+describe("W · phone screen falls back to World palette when wallpaperUrl is null", () => {
+  // Coffee is the Café hero today · its ThemePackage declares
+  // `wallpaperUrl: null` (the engine falls back to a layered gradient
+  // in the live chat). The Library phone-screen must likewise show
+  // the World's identity · an accent-tinted gradient derived from the
+  // BrowserThemeRow colour slots · rather than an empty bezel.
+  const src = fs.readFileSync(CATEGORY_GRID, "utf8");
+
+  test("source renders a palette-derived fallback when hero_image_url is null", () => {
+    expect(src).toContain("data-nex-category-phone-fallback");
+    // The fallback derives from the row's own colour slots · zero
+    // per-id branches · the same three channels drive every
+    // wallpaper-null World.
+    expect(src).toContain("hero.accent_hex");
+    expect(src).toContain("hero.bubble_rim_hex");
+    expect(src).toContain("hero.composer_rim_hex");
+  });
+
+  test("coffee row today has wallpaperUrl=null · the fallback path is exercised", () => {
+    const coffee = liveRows.find((r) => r.id === "coffee");
+    expect(coffee).toBeDefined();
+    // The adapter maps package.wallpaperUrl → hero_image_url · a
+    // null wallpaperUrl surfaces as null hero_image_url. If a future
+    // commit adds a coffee wallpaper, this test flips (no behaviour
+    // change required · the fallback simply isn't painted).
+    expect(coffee?.hero_image_url).toBeNull();
+  });
+
+  test("ocean + food rows have wallpaperUrl set · the fallback is NOT painted for them", () => {
+    const ocean = liveRows.find((r) => r.id === "ocean");
+    const food = liveRows.find((r) => r.id === "food");
+    expect(ocean?.hero_image_url).toBeTruthy();
+    expect(food?.hero_image_url).toBeTruthy();
+  });
+});
+
 // ─── Helpers ────────────────────────────────────────────────────────
 
 function row(id: string, categoryId: string): BrowserThemeRow {
@@ -392,4 +618,16 @@ function row(id: string, categoryId: string): BrowserThemeRow {
     intro_poster_url: null,
     wallpaper_config: null,
   };
+}
+
+/** Build a minimal ThemeCategory stub with a specific heroThemeId for
+ *  the resolveHeroWorld unit tests · uses the real category when the
+ *  id is registered (so colour fields stay valid) and only overrides
+ *  heroThemeId. */
+function withHero(id: string, heroThemeId: string | null): ThemeCategory {
+  const base = getCategory(id);
+  if (!base) {
+    throw new Error(`test fixture: unknown category '${id}'`);
+  }
+  return { ...base, heroThemeId };
 }
