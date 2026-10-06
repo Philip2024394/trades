@@ -44,6 +44,20 @@ const ROWS: SettingsRow[] = [
     href: "/nex-native/vault/settings/devices",
   },
   {
+    key: "vault-recovery",
+    title: "Recovery passphrase",
+    description:
+      "Set a passphrase so you can recover Vault if you lose access to every device. NEX cannot read your passphrase.",
+    href: "/nex-native/vault/settings/recovery",
+  },
+  {
+    key: "vault-rotate",
+    title: "Rotate Vault keys",
+    description:
+      "Create a brand-new Vault key on this device. Any other devices (including revoked ones) lose access to Vault's current contents.",
+    href: "/nex-native/vault/settings/rotate",
+  },
+  {
     key: "back-to-nex",
     title: "Return to NEX",
     description: "Leave Vault and go back to your main NEX surfaces.",

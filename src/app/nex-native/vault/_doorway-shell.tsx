@@ -118,6 +118,22 @@ export function DoorwayShell({ skin, deviceId }: DoorwayShellProps) {
           <div style={{ marginTop: 36 }}>
             <PinEntryClient skin={skin} deviceId={deviceId} />
           </div>
+
+          <div style={{ marginTop: 16 }}>
+            <a
+              href="/nex-native/vault/recover"
+              data-nex-vault-use-recovery
+              style={{
+                display: "inline-block",
+                color: skin.text.secondary,
+                fontSize: 13,
+                textDecoration: "underline",
+                opacity: 0.85,
+              }}
+            >
+              Forgot your PIN? Use recovery passphrase.
+            </a>
+          </div>
         </div>
       </main>
     </>
