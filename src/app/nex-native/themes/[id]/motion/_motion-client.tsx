@@ -2,19 +2,25 @@
 
 // src/app/nex-native/themes/[id]/motion/_motion-client.tsx
 //
-// Theme motion gallery · toggle on/off cards · founder-sealed
-// 2026-10-05. Replaces the earlier tap-through list with the same
-// toggle-card UX the JokerController's lower-right dancing-dots
-// panel used to expose. The 3-dots entry point was retired in
-// favour of the universal + menu → Animation · this page now hosts
-// every animation toggle in one place.
+// Animation Gallery · client component · sealed 2026-10-06.
+// --------------------------------------------------------
+// Toggle on/off cards for every animation. Multiple can be enabled
+// simultaneously · each enabled variant mounts a live overlay above
+// the gallery so the user sees exactly how it behaves without
+// leaving the page.
 //
-// Multiple toggles can be on at the same time · each enabled
-// variant mounts a live overlay on top of the gallery so the
-// founder sees exactly how it behaves without leaving the page.
+// Universal Theme Colour Rule (sealed 2026-10-06):
+//
+//   Every surface tinted here — status strip · card · NEW badge ·
+//   toggle · back link — derives from the active world's
+//   `Required<ColourSystem>` passed in via props. There are NO
+//   hardcoded palette constants in this file. No per-theme id
+//   branches. A future world with a completely different palette
+//   auto-tints every surface with zero code change.
 
 import * as React from "react";
 import Link from "next/link";
+import type { ColourSystem } from "@/app/nex-native/chat-standard/_engine/types";
 import {
   JOKER_MOTION_INDEX,
   type JokerMotionVariant,
@@ -23,10 +29,31 @@ import { JokerMotionOverlay } from "../_joker-motion";
 
 type ToggleState = Partial<Record<JokerMotionVariant, boolean>>;
 
+// Local alpha helper · same shape as the engine's private hexToRgba.
+// Lets us tint theme colours at various intensities without ever
+// touching a generic black/white/grey rgba constant.
+function withAlpha(hex: string, alpha: number): string {
+  const clean = hex.replace(/^#/, "");
+  if (clean.length !== 3 && clean.length !== 6) return hex;
+  const full =
+    clean.length === 3
+      ? clean
+          .split("")
+          .map((c) => c + c)
+          .join("")
+      : clean;
+  const r = parseInt(full.slice(0, 2), 16);
+  const g = parseInt(full.slice(2, 4), 16);
+  const b = parseInt(full.slice(4, 6), 16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
 export function MotionGalleryClient({
   themeId,
+  colours,
 }: {
   themeId: string;
+  colours: Required<ColourSystem>;
 }): React.JSX.Element {
   const [toggles, setToggles] = React.useState<ToggleState>({});
 
@@ -35,26 +62,26 @@ export function MotionGalleryClient({
   };
 
   const enabledCount = Object.values(toggles).filter(Boolean).length;
+  const active = enabledCount > 0;
 
   return (
     <>
-      {/* Status strip · sealed 2026-10-05 at the TOP of the gallery
-          so the founder sees the current state before scanning the
-          toggle list. Moves below the title, above the toggle grid. */}
+      {/* Status strip · theme-tinted · reflects live-count without
+          generic greens/greys. */}
       <div
         style={{
           marginBottom: 20,
           padding: "10px 14px",
           borderRadius: 10,
-          background:
-            enabledCount > 0
-              ? "rgba(143,255,110,0.08)"
-              : "rgba(139,169,209,0.05)",
-          border:
-            enabledCount > 0
-              ? "1px solid rgba(143,255,110,0.3)"
-              : "1px solid rgba(139,169,209,0.2)",
-          color: enabledCount > 0 ? "#8FFF6E" : "#8BA9D1",
+          background: active
+            ? withAlpha(colours.primary, 0.1)
+            : withAlpha(colours.secondary, 0.06),
+          border: `1px solid ${
+            active
+              ? withAlpha(colours.primary, 0.4)
+              : withAlpha(colours.secondary, 0.22)
+          }`,
+          color: active ? colours.primary : colours.secondary,
           fontSize: 12,
           letterSpacing: "0.08em",
           textTransform: "uppercase",
@@ -72,16 +99,16 @@ export function MotionGalleryClient({
               ? "1 animation live"
               : `${enabledCount} animations running simultaneously`}
         </span>
-        {enabledCount > 0 && (
+        {active && (
           <button
             type="button"
             onClick={() => setToggles({})}
             style={{
               padding: "4px 10px",
               borderRadius: 999,
-              background: "rgba(0,0,0,0.3)",
-              border: "1px solid rgba(143,255,110,0.4)",
-              color: "#8FFF6E",
+              background: withAlpha(colours.deep, 0.4),
+              border: `1px solid ${withAlpha(colours.primary, 0.5)}`,
+              color: colours.primary,
               fontSize: 11,
               letterSpacing: "0.08em",
               textTransform: "uppercase",
@@ -94,8 +121,7 @@ export function MotionGalleryClient({
         )}
       </div>
 
-      {/* Toggle grid · landscape AnimationCard pattern · same shape
-          as the JokerController's cards for continuity. */}
+      {/* Card grid · each card tinted from the active world's palette. */}
       <div
         style={{
           display: "grid",
@@ -104,20 +130,22 @@ export function MotionGalleryClient({
           marginBottom: 32,
         }}
       >
-        {JOKER_MOTION_INDEX.map((row, i) => (
+        {JOKER_MOTION_INDEX.map((row) => (
           <AnimationCard
             key={row.variant}
-            number={i + 1}
             variant={row.variant}
             label={row.label}
             description={row.description}
+            isNew={!!row.isNew}
             enabled={!!toggles[row.variant]}
             onToggle={(next) => setToggle(row.variant, next)}
+            colours={colours}
           />
         ))}
       </div>
 
-      {/* Back to chat · same pattern as the sealed older page */}
+      {/* Back to chat · theme-tinted so it still feels like part of
+          this world even in a navigational control. */}
       <nav>
         <Link
           href={`/nex-native/themes/${themeId}`}
@@ -126,8 +154,8 @@ export function MotionGalleryClient({
             padding: "10px 16px",
             borderRadius: 999,
             background: "transparent",
-            border: "1px solid rgba(139,169,209,0.35)",
-            color: "#DDE9FA",
+            border: `1px solid ${withAlpha(colours.primary, 0.5)}`,
+            color: colours.highlight,
             textDecoration: "none",
             fontSize: 13,
             fontWeight: 600,
@@ -138,10 +166,7 @@ export function MotionGalleryClient({
         </Link>
       </nav>
 
-      {/* Live overlays · one per enabled toggle · same JokerMotionOverlay
-          component used by the sealed Joker runtime. Multiple can run
-          at once; pointer-events are off at the overlay root so taps
-          still reach the toggle cards above. */}
+      {/* Live overlays · one per enabled toggle. */}
       {JOKER_MOTION_INDEX.map((row) =>
         toggles[row.variant] ? (
           <JokerMotionOverlay key={row.variant} variant={row.variant} />
@@ -151,25 +176,29 @@ export function MotionGalleryClient({
   );
 }
 
-// ─── Animation card · same shape as the JokerController's card ─────
+// ─── Animation card ────────────────────────────────────────────────
 
 function AnimationCard({
-  number,
   variant,
   label,
   description,
+  isNew,
   enabled,
   onToggle,
+  colours,
 }: {
-  number: number;
   variant: JokerMotionVariant;
   label: string;
   description: string;
+  isNew: boolean;
   enabled: boolean;
   onToggle: (next: boolean) => void;
+  colours: Required<ColourSystem>;
 }): React.JSX.Element {
   return (
     <div
+      data-nex-animation-card
+      data-nex-animation-variant={variant}
       style={{
         display: "flex",
         alignItems: "center",
@@ -177,60 +206,60 @@ function AnimationCard({
         padding: "14px 16px",
         borderRadius: 14,
         background: enabled
-          ? "linear-gradient(180deg, rgba(143,255,110,0.18) 0%, rgba(143,255,110,0.06) 100%)"
-          : "linear-gradient(180deg, rgba(10,22,36,0.9) 0%, rgba(6,14,24,0.92) 100%)",
-        border: enabled
-          ? "1px solid rgba(143,255,110,0.6)"
-          : "1px solid rgba(143,255,110,0.22)",
+          ? `linear-gradient(180deg, ${withAlpha(colours.primary, 0.18)} 0%, ${withAlpha(colours.primary, 0.06)} 100%)`
+          : `linear-gradient(180deg, ${withAlpha(colours.deep, 0.85)} 0%, ${withAlpha(colours.deep, 0.92)} 100%)`,
+        border: `1px solid ${
+          enabled
+            ? withAlpha(colours.primary, 0.6)
+            : withAlpha(colours.primary, 0.2)
+        }`,
         transition:
           "background 200ms ease-out, border-color 200ms ease-out, box-shadow 200ms ease-out",
         boxShadow: enabled
-          ? "0 8px 24px rgba(143,255,110,0.15)"
-          : "0 10px 24px rgba(0,0,0,0.4)",
+          ? `0 8px 24px ${withAlpha(colours.primary, 0.18)}`
+          : `0 10px 24px ${withAlpha(colours.deep, 0.5)}`,
       }}
     >
-      {/* Number badge */}
-      <div
-        style={{
-          flexShrink: 0,
-          width: 36,
-          height: 36,
-          borderRadius: 10,
-          background: enabled
-            ? "rgba(143,255,110,0.2)"
-            : "rgba(0,0,0,0.4)",
-          border: enabled
-            ? "1px solid rgba(143,255,110,0.6)"
-            : "1px solid rgba(143,255,110,0.3)",
-          display: "grid",
-          placeItems: "center",
-          color: "#8FFF6E",
-          fontSize: 12,
-          fontWeight: 800,
-          letterSpacing: "0.05em",
-        }}
-      >
-        #{String(number).padStart(2, "0")}
-      </div>
-
-      {/* Label + description */}
+      {/* Label + optional NEW badge + description */}
       <div style={{ flex: 1, minWidth: 0 }}>
         <div
           style={{
-            color: "#F4F7FC",
-            fontSize: 14,
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            color: colours.highlight,
+            fontSize: 15,
             fontWeight: 700,
             letterSpacing: "0.01em",
           }}
         >
-          {label}
+          <span>{label}</span>
+          {isNew && (
+            <span
+              data-nex-new-badge
+              style={{
+                display: "inline-block",
+                padding: "2px 8px",
+                borderRadius: 999,
+                background: colours.primary,
+                color: colours.deep,
+                fontSize: 9,
+                fontWeight: 800,
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+                lineHeight: 1,
+              }}
+            >
+              New
+            </span>
+          )}
         </div>
         <div
           style={{
-            color: "#8BA9D1",
-            fontSize: 11,
-            lineHeight: 1.4,
-            marginTop: 3,
+            color: colours.secondary,
+            fontSize: 12,
+            lineHeight: 1.45,
+            marginTop: 4,
             display: "-webkit-box",
             WebkitLineClamp: 2,
             WebkitBoxOrient: "vertical",
@@ -241,26 +270,29 @@ function AnimationCard({
         </div>
       </div>
 
-      {/* Toggle */}
+      {/* Toggle · theme-primary gradient when on. */}
       <ToggleSwitch
         value={enabled}
         onChange={onToggle}
         ariaLabel={`${label} toggle`}
+        colours={colours}
       />
     </div>
   );
 }
 
-// ─── Toggle switch · 44pt tap target ───────────────────────────────
+// ─── Toggle switch · 44pt tap target · theme-tinted ────────────────
 
 function ToggleSwitch({
   value,
   onChange,
   ariaLabel,
+  colours,
 }: {
   value: boolean;
   onChange: (next: boolean) => void;
   ariaLabel: string;
+  colours: Required<ColourSystem>;
 }): React.JSX.Element {
   return (
     <button
@@ -279,11 +311,13 @@ function ToggleSwitch({
         alignItems: "center",
         justifyContent: value ? "flex-end" : "flex-start",
         background: value
-          ? "linear-gradient(180deg, #8FFF6E, #5fcf3f)"
-          : "rgba(255,255,255,0.1)",
-        border: value
-          ? "1px solid rgba(143,255,110,0.9)"
-          : "1px solid rgba(139,169,209,0.3)",
+          ? `linear-gradient(180deg, ${colours.primary}, ${colours.secondary})`
+          : withAlpha(colours.highlight, 0.1),
+        border: `1px solid ${
+          value
+            ? withAlpha(colours.primary, 0.9)
+            : withAlpha(colours.secondary, 0.3)
+        }`,
         cursor: "pointer",
         transition:
           "background 200ms ease-out, border-color 200ms ease-out, justify-content 200ms ease-out",
@@ -295,10 +329,8 @@ function ToggleSwitch({
           width: 20,
           height: 20,
           borderRadius: "50%",
-          background: value ? "#0A2010" : "#F4F7FC",
-          boxShadow: value
-            ? "0 1px 3px rgba(0,0,0,0.6)"
-            : "0 1px 3px rgba(0,0,0,0.4)",
+          background: value ? colours.deep : colours.highlight,
+          boxShadow: `0 1px 3px ${withAlpha(colours.deep, 0.5)}`,
           transition: "background 200ms ease-out",
         }}
       />

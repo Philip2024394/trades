@@ -1,20 +1,33 @@
 // src/app/nex-native/themes/[id]/motion/page.tsx
 //
-// Theme motion gallery · founder-updated 2026-10-05.
-// --------------------------------------------------
-// Lists all ten motion variants with TOGGLE SWITCHES (restored from
-// the JokerController's dancing-dots panel · the dancing-dots entry
-// point was retired, this page now owns the toggle UX). Multiple
-// animations can run simultaneously · each enabled variant overlays
-// live on this page via <JokerMotionOverlay />.
+// Animation Gallery · theme-coloured user feature · sealed 2026-10-06.
+// --------------------------------------------------------------------
+// Lists the available animation effects users can turn on inside the
+// chat they are visiting. Reached from the universal + menu →
+// Animation on every world · the gallery derives its ENTIRE colour
+// treatment from the active world's resolved ThemePackage via
+// `resolveGalleryColours`. Zero generic NEX palette lives here.
 //
-// Sealed 2026-10-01 motion standards section preserved at the end.
+// Universal Theme Colour Rule (sealed 2026-10-06):
+//
+//   Active World ThemePackage
+//      ↓
+//   Theme Engine / resolved colours
+//      ↓
+//   Chat
+//      ↓
+//   Animation Gallery (background · heading · subcopy · caption)
+//
+// User-facing copy sealed 2026-10-06 · experiential language · never
+// describes implementation details (no CSS behaviour / radial /
+// scanline / "reads X" / RGB shift / etc).
 
 import * as React from "react";
 import { MotionGalleryClient } from "./_motion-client";
+import { resolveGalleryColours } from "./_resolve-gallery-engine";
 
 export const runtime = "nodejs";
-export const dynamic = "force-static";
+export const dynamic = "force-dynamic";
 
 export default async function JokerMotionGalleryPage({
   params,
@@ -22,13 +35,16 @@ export default async function JokerMotionGalleryPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+  const colours = await resolveGalleryColours(id);
 
   return (
     <main
+      data-nex-animation-gallery
+      data-nex-theme-id={id}
       style={{
         minHeight: "100vh",
-        background: "#070b0f",
-        color: "#F4F7FC",
+        background: colours.deep,
+        color: colours.highlight,
         fontFamily:
           "Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
         padding: "48px 20px",
@@ -42,12 +58,12 @@ export default async function JokerMotionGalleryPage({
               fontSize: 11,
               letterSpacing: "0.2em",
               textTransform: "uppercase",
-              color: "#8FFF6E",
+              color: colours.primary,
               marginBottom: 8,
               fontWeight: 700,
             }}
           >
-            Theme · Animation Gallery
+            Animation
           </div>
           <h1
             style={{
@@ -56,28 +72,27 @@ export default async function JokerMotionGalleryPage({
               letterSpacing: "-0.01em",
               margin: 0,
               lineHeight: 1.1,
+              color: colours.highlight,
             }}
           >
-            Ten animation effects to choose from
+            Bring your world to life
           </h1>
           <p
             style={{
-              color: "#8BA9D1",
+              color: colours.secondary,
               fontSize: 15,
               lineHeight: 1.55,
               marginTop: 12,
               maxWidth: 580,
             }}
           >
-            Toggle any effect on with the switch · multiple can run at
-            the same time and will overlay live on this page. Turn them
-            all off and return to the plain chat with the back link
-            below. Reached via the universal + menu → Animation on
-            every theme.
+            Choose the atmosphere you want in your chat. Turn on one
+            effect or mix several together. New animations will be
+            added regularly.
           </p>
         </header>
 
-        <MotionGalleryClient themeId={id} />
+        <MotionGalleryClient themeId={id} colours={colours} />
       </div>
     </main>
   );

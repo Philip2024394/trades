@@ -1,12 +1,18 @@
 // src/app/nex-native/themes/[id]/_joker-motion-data.ts
 //
-// Joker motion · shared data + types · sealed 2026-10-01.
+// Animation gallery · shared data + types.
 // --------------------------------------------------------
-// Pure data + a type guard · lives in its own module (no "use client")
-// so both Server Components (page.tsx, motion/page.tsx) and Client
-// Components (_viewer.tsx, _joker-motion.tsx) can import without
-// crossing the server/client boundary. The animated React components
-// still live in _joker-motion.tsx behind "use client".
+// Originally named for the Joker theme but now the universal data
+// source for the Animation gallery reached from the + menu of every
+// world. Pure data + a type guard · lives in its own module (no
+// "use client") so Server Components (motion/page.tsx) and Client
+// Components (_motion-client.tsx, _joker-motion.tsx) can import
+// without crossing the server/client boundary.
+//
+// Copy sealed 2026-10-06 (Animation Gallery UX pass) · user-facing
+// strings written in experiential language · never developer tone.
+// Guards in `_motion-client.test.ts` enforce this across future
+// edits.
 
 export type JokerMotionVariant =
   | "rain"
@@ -20,72 +26,78 @@ export type JokerMotionVariant =
   | "embers"
   | "glitch";
 
-/** Founder-facing labels + short descriptions. Used by the gallery
- *  index page so the founder can pick without opening every URL. */
+/** User-facing labels + short experiential descriptions used by the
+ *  Animation gallery. The `isNew` flag surfaces a subtle NEW badge
+ *  on recently-added animations so users understand the gallery
+ *  keeps growing · the badge rendering is theme-aware and the flag
+ *  is data-driven (never hard-coded in the page layout). */
 export const JOKER_MOTION_INDEX: {
   variant: JokerMotionVariant;
   label: string;
   description: string;
+  /** Mark newly-added animations · surfaces a NEW badge on the
+   *  card. Keep this list short (1–2 at a time) so NEW stays
+   *  meaningful. */
+  isNew?: boolean;
 }[] = [
   {
     variant: "rain",
-    label: "Rain",
+    label: "Rainfall",
     description:
-      "Vertical translucent streaks fall the length of the screen · toxic green tint · reads calm/moody.",
+      "A soft rain effect that gives your chat a calm, atmospheric feel.",
   },
   {
     variant: "sparks",
     label: "Welding Sparks",
     description:
-      "Orange sparks emit from behind the header and fall with gravity · brief flash on release · reads industrial/dangerous.",
+      "Bright sparks burst across the scene for an industrial, bold mood.",
   },
   {
     variant: "bat",
     label: "Flying Bat",
     description:
-      "A single silhouette bat swoops across the screen on a loop · uneven arc + wing flap · reads gothic/theatrical.",
+      "A bat sweeps across your chat for a darker, dramatic touch.",
   },
   {
     variant: "cards",
     label: "Falling Cards",
-    description:
-      "Miniature joker cards tumble down with rotation · reads playful/mischievous.",
+    description: "Playful cards tumble through your world.",
   },
   {
     variant: "lightning",
     label: "Lightning",
     description:
-      "Full-screen flash every 6-9s + jagged bolt visible for ~180ms · reads dramatic/high-stakes.",
+      "Occasional flashes light your chat for a high-stakes mood.",
   },
   {
     variant: "bubbles",
-    label: "Toxic Bubbles",
+    label: "Rising Bubbles",
     description:
-      "Green bubbles rise from below the composer + pop near the top · reads poison/potion.",
+      "Soft bubbles rise through your chat for a dreamy, buoyant feel.",
   },
   {
     variant: "confetti",
-    label: "Confetti Chaos",
+    label: "Confetti",
     description:
-      "Coloured rectangles drift down + spin · reads Joker's theatricality/riot.",
+      "Festive confetti fills your chat for a celebratory moment.",
   },
   {
     variant: "smoke",
     label: "Smoke Wisps",
     description:
-      "Dark radial-gradient blobs drift sideways across the screen · reads mysterious/covert.",
+      "Gentle smoke drifts across for a mysterious, cinematic air.",
   },
   {
     variant: "embers",
     label: "Rising Embers",
-    description:
-      "Small glowing dots rise from below the composer + flicker · reads smouldering/warm.",
+    description: "Warm embers rise and flicker through your world.",
+    isNew: true,
   },
   {
     variant: "glitch",
-    label: "CRT Glitch",
-    description:
-      "Scanline sweep every 5-8s + brief RGB shift on the chat surface · reads digital/broken-mirror.",
+    label: "Glitch",
+    description: "A subtle digital shimmer for a modern, edgy feel.",
+    isNew: true,
   },
 ];
 
