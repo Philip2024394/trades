@@ -37,6 +37,13 @@ const ROWS: SettingsRow[] = [
     href: "/nex-native/vault",
   },
   {
+    key: "vault-devices",
+    title: "Vault devices",
+    description:
+      "Manage which devices can unlock your Vault. Add another device or revoke an existing one.",
+    href: "/nex-native/vault/settings/devices",
+  },
+  {
     key: "back-to-nex",
     title: "Return to NEX",
     description: "Leave Vault and go back to your main NEX surfaces.",
