@@ -6,11 +6,18 @@
 //   name/concept  : Ocean · underwater · peaceful · premium
 //   personality   : drift (float · ripple · shimmer)
 //   colours       : deep blue / turquoise / white / aqua glow
-//   intro         : scripted-animation placeholder (video asset
-//                   supplied later by founder; the engine renders
-//                   a programmatic drift intro in the meantime)
-//   wallpaper     : CSS-generated deep-blue gradient placeholder
-//                   (real wallpaper asset supplied later)
+//   intro         : fish + turtle underwater footage (sealed asset
+//                   supplied 2026-10-06 · lives in public/nex-themes/
+//                   ocean-intro.mp4). The scripted "ocean-drift"
+//                   fallback is retained so the intro still plays if
+//                   the MP4 fails to load (poor connection · unknown
+//                   codec).
+//   wallpaper     : ship.png (sealed asset supplied 2026-10-06 · lives
+//                   in public/nex-themes/ocean-ship.png). The engine
+//                   still falls back to its layered CSS gradient when
+//                   the wallpaper is absent, keeping the "remove the
+//                   wallpaper, does it still feel Ocean?" acceptance
+//                   intact.
 //
 // Everything else below is Ocean's visual-identity vocabulary. The
 // engine translates these tokens into concrete treatments. If any
@@ -36,21 +43,22 @@ export const OCEAN_PACKAGE: ThemePackage = {
   },
   personality: "drift",
 
-  // 02 Intro · scripted-animation placeholder until founder supplies
-  // the real Ocean MP4. Engine's intro resolver returns this; the
-  // intro-overlay renders a procedurally-animated drift gradient.
+  // 02 Intro · fish-and-turtle underwater footage (sealed 2026-10-06).
+  // Engine's intro resolver prefers videoUrl; `scriptedAnimation`
+  // is retained as a fallback for devices/connections that cannot
+  // play the MP4.
   intro: {
     kind: "standard",
-    videoUrl: null,
+    videoUrl: "/nex-themes/ocean-intro.mp4",
     scriptedAnimation: "ocean-drift",
     playPolicy: "twice-then-skip",
   },
 
-  // 03 Environment · wallpaper is a CSS gradient placeholder. The
-  // acceptance test is "remove the wallpaper, does it still feel
-  // Ocean?" — so this slot is explicitly minimal. The theme must
-  // feel Ocean WITHOUT this.
-  wallpaperUrl: null, // engine falls back to its own layered CSS gradient
+  // 03 Environment · ship wallpaper (sealed 2026-10-06). The engine
+  // still falls back to its own layered CSS gradient when wallpaperUrl
+  // is null, so the acceptance test "remove the wallpaper, does it
+  // still feel Ocean?" remains valid at the engine level.
+  wallpaperUrl: "/nex-themes/ocean-ship.png",
   wallpaperScrim: "default",
 
   // 06-09 Bubbles · the single most important Ocean choice.
