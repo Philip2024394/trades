@@ -1090,17 +1090,37 @@ function GalleryPreviewArea({
       }}
     >
       {/* ─── CHAT PREVIEW · always mounted · warms behind the intro ───
-         Universal handoff (sealed 2026-10-06) · every active theme has
-         a reachable preview surface at themePreviewHref(theme.id) via
-         the dynamic viewer at src/app/nex-native/themes/[id]/page.tsx ·
-         the previous allowlist-gated branch (iframe for 4 themes · mock
-         for everything else) was replaced to prevent future-theme
-         exceptions from reappearing. */}
-      <PhoneFramePreview
-        src={themePreviewHref(theme.id)}
-        accentHex={accentHex}
-        themeName={theme.name}
-      />
+         Universal handoff (sealed 2026-10-06 · 4974edc9) means every
+         theme CTA destination resolves to themePreviewHref(theme.id)
+         via the dynamic viewer. The grid tile preview is a different
+         concern · it is a lightweight thumbnail, not the handoff.
+         The commit that universalised the CTA also universalised the
+         tile iframe, which triggered a Next.js 16.2.9 Turbopack
+         dev-mode race in `performance.measure("ThemeViewerPage", …)`
+         when ~20 iframes mounted the same route component in close
+         succession. Site 5 was narrowly reverted to render
+         `<ThemeMockHero>` universally so there is no per-theme
+         allowlist AND no iframe collision. The CTA destination
+         (sites 1-4 above · active-grid link · inactive-grid link ·
+         hidden `next` form input · modal openFullScreenHref) remains
+         universal via `themePreviewHref`. */}
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          overflow: "auto",
+          padding: "0 10px",
+        }}
+      >
+        <ThemeMockHero
+          theme={theme}
+          viewerAvatarUrl={viewerAvatarUrl}
+          outgoingRim={outgoingRim}
+          incomingRim={incomingRim}
+          composerRimStyle={composerRimStyle}
+          composerGlow={composerGlow}
+        />
+      </div>
 
       {/* ─── INTRO OVERLAY · sits on top until video ends ─── */}
       {introVisible && theme.intro_video_url ? (
