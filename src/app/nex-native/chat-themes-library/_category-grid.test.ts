@@ -80,12 +80,15 @@ describe("B · member counts come from the actual merged world collection", () =
     expect(counts["explore"]).toBe(1);
   });
 
-  test("live-world rows produce ocean=1, cafe=4 counts today", () => {
+  test("live-world rows produce ocean=1, cafe=4, explore=1 counts today", () => {
+    // Updated 2026-10-06 · Food world sealed as the first live-world
+    // in the "explore" bucket (per the sealed Step 1A doctrine that a
+    // real category is only added when a genuine family of Worlds
+    // warrants it · Food currently stands alone).
     const counts = countCategoryMembers(liveRows);
     expect(counts["ocean"]).toBe(1);
     expect(counts["cafe"]).toBe(4);
-    // Live-worlds are never in "explore" · DB themes default there.
-    expect(counts["explore"] ?? 0).toBe(0);
+    expect(counts["explore"] ?? 0).toBe(1);
   });
 });
 

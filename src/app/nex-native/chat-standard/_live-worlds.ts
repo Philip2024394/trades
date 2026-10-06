@@ -22,6 +22,7 @@ import { COFFEE_PACKAGE } from "./packages/coffee.package";
 import { BOTANICAL_CAFE_PACKAGE } from "./packages/botanical-cafe.package";
 import { MIDNIGHT_CAFE_PACKAGE } from "./packages/midnight-cafe.package";
 import { FRENCH_CAFE_PACKAGE } from "./packages/french-cafe.package";
+import { FOOD_PACKAGE } from "./packages/food.package";
 
 export const LIVE_WORLD_PACKAGES = {
   ocean: OCEAN_PACKAGE,
@@ -29,6 +30,7 @@ export const LIVE_WORLD_PACKAGES = {
   "botanical-cafe": BOTANICAL_CAFE_PACKAGE,
   "midnight-cafe": MIDNIGHT_CAFE_PACKAGE,
   "french-cafe": FRENCH_CAFE_PACKAGE,
+  food: FOOD_PACKAGE,
 } as const satisfies Record<string, ThemePackage>;
 
 export type LiveWorldId = keyof typeof LIVE_WORLD_PACKAGES;

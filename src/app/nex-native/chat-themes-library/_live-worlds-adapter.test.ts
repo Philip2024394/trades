@@ -46,6 +46,7 @@ describe("A · live-worlds adapter · every world appears in the Library collect
     "botanical-cafe",
     "midnight-cafe",
     "french-cafe",
+    "food",
   ] as const;
 
   test("listLiveWorldsAsBrowserRows returns a row for every registered live-world", () => {
