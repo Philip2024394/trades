@@ -315,22 +315,18 @@ describe("N · no iframe grid pattern reintroduced", () => {
   });
 });
 
-// ─── O · no Step 2 or Step 3 work exists ────────────────────────────
+// ─── O · Step 3 (Waterworld) remains unmade ─────────────────────────
 
-describe("O · Step 2 (shell asset consumption) + Step 3 (Waterworld) remain unmade", () => {
-  test("_standard-experience.tsx does not consume wallpaperUrl or intro.videoUrl", () => {
-    const shell = fs.readFileSync(
-      path.join(
-        REPO_ROOT,
-        "src/app/nex-native/chat-standard/_standard-experience.tsx",
-      ),
-      "utf8",
-    );
-    // Confirm the shell has not been wired yet · Step 2 scope.
-    expect(shell).not.toMatch(/pkg\.wallpaperUrl|package\.wallpaperUrl/);
-    expect(shell).not.toMatch(/pkg\.intro\.videoUrl|package\.intro\.videoUrl/);
-  });
+// Step 2 (shell asset consumption) was explicitly authorised and
+// sealed in a follow-up commit after Step 1B. The original Step 1B
+// guard that asserted the shell did NOT consume wallpaperUrl /
+// intro.videoUrl is retired · the live assertions on Step 2 now live
+// in src/app/nex-native/chat-standard/_standard-experience.test.ts.
+//
+// Only the Step 3 guards (Ocean rename to Waterworld) remain active
+// here.
 
+describe("O · Step 3 (Ocean → Waterworld rename) remains unmade", () => {
   test("no 'waterworld' package exists", () => {
     const packagesDir = path.join(
       REPO_ROOT,

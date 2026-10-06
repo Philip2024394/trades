@@ -27,6 +27,11 @@ import {
   StandardShopSlider,
   type StandardShopProduct,
 } from "./_surfaces/_shop-slider";
+// Step 2 (sealed 2026-10-06) · universal ThemePackage asset
+// consumption · the intro-video overlay plays `pkg.intro.videoUrl`
+// twice-then-skip for every Standard Experience world without any
+// per-theme code.
+import { StandardIntroOverlay } from "./_standard-intro-overlay";
 
 export interface StandardExperienceFixturePeer {
   accountId: string;
@@ -124,27 +129,58 @@ export function StandardExperience({
     }
   }, [allMessages]);
 
+  // Step 2 (sealed 2026-10-06) · universal consumption of
+  // `pkg.wallpaperUrl`. When the ThemePackage declares a wallpaper
+  // asset, the shell renders it as the background image for every
+  // world · ambient effects continue to sit above it exactly as
+  // before. When the package declares `null`, the existing
+  // gradient-based fallback renders unchanged (preserves the sealed
+  // "remove the wallpaper, does it still feel Ocean?" acceptance
+  // test). Zero per-theme branches · zero id checks · the behaviour
+  // is universal across every Standard Experience world.
+  const packageWallpaperUrl = engine.package.wallpaperUrl ?? null;
+  const backgroundStyle: React.CSSProperties = packageWallpaperUrl
+    ? {
+        backgroundImage: `url("${packageWallpaperUrl}")`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        // Underlay in the engine's deep token so a transient image
+        // load failure doesn't flash to white · never a hardcoded
+        // colour.
+        backgroundColor: colours.deep,
+      }
+    : {
+        background:
+          wallpaperFallback === "theme-gradient"
+            ? `radial-gradient(ellipse at 50% 10%, ${colours.secondary}, ${colours.deep} 65%, #000 100%)`
+            : // Even with the "wallpaper off" acceptance test, we provide
+              // a very dark theme-tinted base rather than pure #000. This
+              // is not a wallpaper — it's the colour of water at depth,
+              // emitted by the Theme Engine's deep token. The ambient
+              // layer then provides all motion / light / bubbles on top.
+              `linear-gradient(180deg, #000 0%, ${colours.deep} 18%, ${colours.deep} 82%, #000 100%)`,
+      };
+
   return (
     <>
       <style>{engine.stylesheet}</style>
+      {/* Step 2 · universal intro-video overlay · plays
+          `pkg.intro.videoUrl` twice-then-skip for any world that
+          declares one · renders null for every world without a video.
+          Sealed 2026-10-06. */}
+      <StandardIntroOverlay engine={engine} />
       <div
         data-nex-standard-experience
         data-theme-id={engine.package.identity.id}
         data-personality={engine.personality}
+        data-nex-wallpaper-mode={packageWallpaperUrl ? "image" : "fallback"}
         style={{
           position: "relative",
           width: "100%",
           height: "100%",
           overflow: "hidden",
-          background:
-            wallpaperFallback === "theme-gradient"
-              ? `radial-gradient(ellipse at 50% 10%, ${colours.secondary}, ${colours.deep} 65%, #000 100%)`
-              : // Even with the "wallpaper off" acceptance test, we provide
-                // a very dark theme-tinted base rather than pure #000. This
-                // is not a wallpaper — it's the colour of water at depth,
-                // emitted by the Theme Engine's deep token. The ambient
-                // layer then provides all motion / light / bubbles on top.
-                `linear-gradient(180deg, #000 0%, ${colours.deep} 18%, ${colours.deep} 82%, #000 100%)`,
+          ...backgroundStyle,
           color: colours.highlight,
           display: "flex",
           flexDirection: "column",
