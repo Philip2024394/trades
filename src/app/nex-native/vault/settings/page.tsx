@@ -166,8 +166,14 @@ export default async function VaultSettingsPage() {
               Vault uses your normal NEX account authentication. The six-digit
               PIN entry you unlocked with is currently a prototype — real PIN
               verification arrives with a later security stage. Rooms, chats
-              and future files are treated as account-authenticated data, not
+              and files are treated as account-authenticated data, not
               yet protected by the PIN or end-to-end encryption.
+            </p>
+            <p style={{ margin: "10px 0 0" }}>
+              Vault now preserves the encrypted data you move into it so it
+              stays available on this device. Cross-device access to that
+              preserved data arrives with the future NEX key-portability
+              phase. This is a known phase boundary, not a regression.
             </p>
             <p style={{ margin: "10px 0 0" }}>
               Recovery, device management, and encryption controls will appear

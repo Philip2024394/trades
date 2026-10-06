@@ -29,6 +29,25 @@ const { peerSvcMock, friendSvcMock } = vi.hoisted(() => ({
 vi.mock("../peer-conversation-service", () => peerSvcMock);
 vi.mock("../friend-service", () => friendSvcMock);
 
+// Phase A.1 · the entry service now delegates attachment copy + cleanup
+// to vault-persistence-service. Mock it as a no-op so these tests stay
+// focused on the entry-row semantics they were sealed to prove · the
+// persistence contract has its own dedicated test file at
+// src/lib/nex-native/__tests__/vault-persistence.test.ts.
+vi.mock("../vault-persistence-service", () => ({
+  copyConversationAttachmentsToVault: vi.fn().mockResolvedValue({
+    attachments_total: 0,
+    attachments_copied: 0,
+    attachments_skipped: 0,
+    attachments_failed: 0,
+    bytes_added: 0,
+  }),
+  removeConversationAttachmentsFromVault: vi.fn().mockResolvedValue({
+    files_deleted: 0,
+    bytes_released: 0,
+  }),
+}));
+
 // ─── mock supabase-admin store ──────────────────────────────────────────
 interface Row {
   id: string;
@@ -165,7 +184,7 @@ afterEach(() => {
 describe("moveConversationToVault", () => {
   it("inserts a row when the viewer is a participant", async () => {
     peerSvcMock.isPeerConversationParticipant.mockResolvedValue(true);
-    const row = await vault.moveConversationToVault(VIEWER, CONV_WITH_A);
+    const { entry: row } = await vault.moveConversationToVault(VIEWER, CONV_WITH_A);
     expect(row.account_id).toBe(VIEWER);
     expect(row.entry_kind).toBe("conversation");
     expect(row.ref_id).toBe(CONV_WITH_A);
@@ -174,8 +193,8 @@ describe("moveConversationToVault", () => {
 
   it("is idempotent · second call returns the existing row", async () => {
     peerSvcMock.isPeerConversationParticipant.mockResolvedValue(true);
-    const r1 = await vault.moveConversationToVault(VIEWER, CONV_WITH_A);
-    const r2 = await vault.moveConversationToVault(VIEWER, CONV_WITH_A);
+    const { entry: r1 } = await vault.moveConversationToVault(VIEWER, CONV_WITH_A);
+    const { entry: r2 } = await vault.moveConversationToVault(VIEWER, CONV_WITH_A);
     expect(r1.id).toBe(r2.id);
     expect(store.rows).toHaveLength(1);
   });

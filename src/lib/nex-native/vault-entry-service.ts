@@ -29,6 +29,12 @@ import type { NexUuid } from "./types";
 import * as peerConvService from "./peer-conversation-service";
 import * as friendService from "./friend-service";
 import type { NexPeerConversationRow } from "./peer-conversation-service";
+import {
+  copyConversationAttachmentsToVault,
+  removeConversationAttachmentsFromVault,
+  type VaultAttachmentCopyResult,
+  type VaultAttachmentCleanupResult,
+} from "./vault-persistence-service";
 
 export type VaultEntryKind = "conversation" | "friend";
 
@@ -133,11 +139,23 @@ export async function isFriendVaulted(
 
 /** Move a single conversation into the viewer's Vault. Idempotent.
  *  The counterparty's view is unchanged. Returns the resulting row.
- *  Rejects if the viewer is not a participant of the conversation. */
+ *  Rejects if the viewer is not a participant of the conversation.
+ *
+ *  Phase A.1 (sealed 2026-10-06) · the vault entry row is written FIRST
+ *  so the Bridge 78 vault-aware purge (migration 140) begins preserving
+ *  the encrypted ciphertext rows for this conversation IMMEDIATELY. The
+ *  attachment-copy pass then runs; its results are returned alongside
+ *  the entry row for logging/UI reporting but do NOT gate the move
+ *  succeeding · if some attachments fail to copy the user keeps the
+ *  surviving copies + the preserved ciphertext (and can retry the move,
+ *  which is idempotent via source_message_id). */
 export async function moveConversationToVault(
   accountId: NexUuid,
   conversationId: NexUuid,
-): Promise<VaultEntryRow> {
+): Promise<{
+  entry: VaultEntryRow;
+  attachments: VaultAttachmentCopyResult;
+}> {
   const isParticipant = await peerConvService.isPeerConversationParticipant(
     conversationId,
     accountId,
@@ -147,6 +165,9 @@ export async function moveConversationToVault(
       "vault-entry-service.moveConversationToVault: viewer is not a participant",
     );
   }
+  // Step 1 · persist the entry row. Bridge 78 exemption keys off this
+  // existing · so a subsequent purge in the microseconds between
+  // insert and attachment-copy already respects the vault state.
   const { data, error } = await nexSupabaseAdmin
     .from("nex_vault_entry")
     .upsert(
@@ -164,7 +185,17 @@ export async function moveConversationToVault(
       `vault-entry-service.moveConversationToVault: ${error?.message ?? "no row"}`,
     );
   }
-  return data as VaultEntryRow;
+
+  // Step 2 · copy attachments to Vault storage (idempotent). Non-fatal
+  // partial failures are counted + logged inside the persistence
+  // service · a user retrying the move resumes cleanly from where the
+  // previous attempt left off.
+  const attachmentResult = await copyConversationAttachmentsToVault(
+    accountId,
+    conversationId,
+  );
+
+  return { entry: data as VaultEntryRow, attachments: attachmentResult };
 }
 
 /** Move an entire friend (and implicitly every conversation with them)
@@ -207,10 +238,22 @@ export async function moveFriendToVault(
 
 // ─── mutations · remove ─────────────────────────────────────────────────
 
+/** Phase A.1 · remove a conversation from the viewer's Vault.
+ *  Sequence (sealed 2026-10-06):
+ *    1. Delete the nex_vault_entry row · immediately · so the Bridge 78
+ *       purge no longer exempts this conversation on the next cycle.
+ *    2. Delete every nex_vault_file row whose source_conversation_id
+ *       matches · releases the bytes from the vault bucket + decrements
+ *       the account's Vault usage.
+ *  The ORIGINAL chat attachments in nex-peer-chat-attachments are NEVER
+ *  touched · the counterparty may still need them.
+ *  Returns a summary; non-fatal file-level failures are logged inside
+ *  the persistence service and reported through the cleanup result. */
 export async function removeConversationFromVault(
   accountId: NexUuid,
   conversationId: NexUuid,
-): Promise<void> {
+): Promise<{ cleanup: VaultAttachmentCleanupResult }> {
+  // Step 1 · drop the vault entry so Bridge 78 no longer exempts.
   const { error } = await nexSupabaseAdmin
     .from("nex_vault_entry")
     .delete()
@@ -222,6 +265,13 @@ export async function removeConversationFromVault(
       `vault-entry-service.removeConversationFromVault: ${error.message}`,
     );
   }
+  // Step 2 · cascade-delete the Vault attachment copies for this
+  // conversation + account · bytes released from nex-vault-files.
+  const cleanup = await removeConversationAttachmentsFromVault(
+    accountId,
+    conversationId,
+  );
+  return { cleanup };
 }
 
 export async function removeFriendFromVault(
