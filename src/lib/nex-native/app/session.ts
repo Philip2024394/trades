@@ -26,6 +26,7 @@
 //   · Identity Doctrine · nex_account.id UUID is the anchor · never phone/email
 
 import "server-only";
+import { createHash } from "node:crypto";
 import { cookies as nextCookies, headers as nextHeaders } from "next/headers";
 import { createClient } from "@supabase/supabase-js";
 import { createServerClient } from "@supabase/ssr";
@@ -110,7 +111,18 @@ export async function resolveNexAppSessionFromContext(): Promise<NexAppSession |
   });
   const { data, error } = await supabase.auth.getUser();
   if (error || !data.user) return null;
-  return await resolveFromUser(data.user.id, data.user.email ?? null);
+  // Phase 1.0 Security · derive the raw access token from the cookie
+  // envelope so we can key `nex_session` by sha256(access_token) and
+  // read the JWT iat for the sessions_invalidated_at check inside
+  // resolveFromUser. Falls back to null when the token can't be
+  // extracted; the resolver treats null as "no session enforcement"
+  // (fail-open; the account still loads so Bridge 2b is unaffected).
+  const cookieHeader = cookieStore
+    .getAll()
+    .map((c) => `${c.name}=${c.value}`)
+    .join("; ");
+  const accessToken = extractAccessTokenFromCookieHeader(cookieHeader);
+  return await resolveFromUser(data.user.id, data.user.email ?? null, accessToken);
 }
 
 /** Script/test entry · pass the raw JWT (e.g. after signInWithPassword). */
@@ -160,10 +172,14 @@ async function resolveByAccessTokenInternal(accessToken: string): Promise<NexApp
   });
   const { data, error } = await verifier.auth.getUser(accessToken);
   if (error || !data.user) return null;
-  return await resolveFromUser(data.user.id, data.user.email ?? null);
+  return await resolveFromUser(data.user.id, data.user.email ?? null, accessToken);
 }
 
-async function resolveFromUser(supabaseUserId: string, email: string | null): Promise<NexAppSession> {
+async function resolveFromUser(
+  supabaseUserId: string,
+  email: string | null,
+  accessToken: string | null,
+): Promise<NexAppSession | null> {
   let account = await accountService.getAccountBySupabaseUserId(supabaseUserId);
   if (!account) {
     const displayName = email ? (email.split("@")[0] || email) : `nex-user-${supabaseUserId.slice(0, 8)}`;
@@ -172,12 +188,112 @@ async function resolveFromUser(supabaseUserId: string, email: string | null): Pr
       display_name: displayName,
     });
   }
+
+  // Phase 1.0 Security · session invalidation enforcement.
+  // When the account has a `sessions_invalidated_at` timestamp and the
+  // current session's JWT was issued BEFORE that moment, reject the
+  // session. This is how "sign out all other sessions" propagates
+  // across requests · the resolver is the single enforcement point
+  // (221 callsites inherit the check with zero change on their side).
+  //
+  // Fail-open semantics: if we cannot read the JWT iat (e.g. the test
+  // entry point passes null, or the token is malformed), we skip the
+  // check. This is intentional · Bridge 2b's existing flows that call
+  // the resolver without a token must keep working.
+  if (accessToken && account.sessions_invalidated_at) {
+    const issuedAtSec = extractJwtIssuedAt(accessToken);
+    if (issuedAtSec !== null) {
+      const invalidatedAtMs = Date.parse(account.sessions_invalidated_at);
+      if (Number.isFinite(invalidatedAtMs) && issuedAtSec * 1000 < invalidatedAtMs) {
+        return null;
+      }
+    }
+  }
+
   // Guarantee the public nex_handle is allocated · historical accounts
   // provisioned before migration 013 will not have one yet. Idempotent.
   if (!account.nex_handle) {
     account = await accountService.ensureNexHandle(account.id);
   }
+
+  // Phase 1.0 Security · write-through session touch.
+  // Fire-and-forget UPSERT into nex_session so the Security devices page
+  // sees every live session and its last-seen timestamp. The write is
+  // keyed by sha256(access_token); it rotates on every Supabase token
+  // refresh (which is desirable · each refresh is a new row with a
+  // fresh last_seen baseline). We never block the request on this
+  // write; failures are logged and swallowed.
+  if (accessToken) {
+    const sessionKey = sha256Hex(accessToken);
+    void touchNexSession(account.id, sessionKey).catch((err) => {
+      console.warn(
+        `[nex-session] touch failed for account ${account.id}:`,
+        err instanceof Error ? err.message : err,
+      );
+    });
+  }
+
   return { supabaseUserId, email, account };
+}
+
+// ---------------------------------------------------------------------------
+// Phase 1.0 Security helpers
+// ---------------------------------------------------------------------------
+
+/** sha256 of the input as lowercase hex (64 chars). */
+function sha256Hex(input: string): string {
+  return createHash("sha256").update(input, "utf8").digest("hex");
+}
+
+/** Extract the `iat` (issued-at, seconds since epoch) claim from a JWT.
+ *  Returns null when the token is malformed · never throws. */
+function extractJwtIssuedAt(jwt: string): number | null {
+  const parts = jwt.split(".");
+  if (parts.length !== 3) return null;
+  try {
+    // JWT payload is base64url-encoded. Convert to base64 then decode.
+    const b64 = parts[1].replace(/-/g, "+").replace(/_/g, "/");
+    const padLen = (4 - (b64.length % 4)) % 4;
+    const padded = b64 + "=".repeat(padLen);
+    const json = Buffer.from(padded, "base64").toString("utf8");
+    const obj = JSON.parse(json);
+    const iat = obj?.iat;
+    return typeof iat === "number" && Number.isFinite(iat) ? iat : null;
+  } catch {
+    return null;
+  }
+}
+
+/** Upsert the nex_session row for this (account, session key) pair.
+ *  Insert path creates a minimal row (no device_label · the sign-in
+ *  action logs that separately). Update path bumps last_seen_at.
+ *  Service-role write (bypasses RLS). */
+async function touchNexSession(accountId: string, sessionKey: string): Promise<void> {
+  const now = new Date().toISOString();
+  // Try UPDATE first (hot path · existing session being touched).
+  const upd = await nexSupabaseAdmin
+    .from("nex_session")
+    .update({ last_seen_at: now })
+    .eq("account_id", accountId)
+    .eq("supabase_session_key", sessionKey)
+    .is("revoked_at", null)
+    .select("id")
+    .maybeSingle();
+  if (upd.data?.id) return;
+  // Cold path · insert a minimal row. ON CONFLICT via unique(account_id,
+  // supabase_session_key) swallows races between concurrent requests.
+  await nexSupabaseAdmin
+    .from("nex_session")
+    .upsert(
+      {
+        account_id: accountId,
+        supabase_session_key: sessionKey,
+        created_at: now,
+        last_seen_at: now,
+        trusted: false,
+      },
+      { onConflict: "account_id,supabase_session_key" },
+    );
 }
 
 function extractAccessTokenFromCookieHeader(cookieHeader: string): string | null {

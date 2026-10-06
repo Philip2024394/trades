@@ -29,6 +29,11 @@ import { PostgresObjectStorage } from "./adapters/object-postgres";
 // NEX Media Foundation Stage 1 · Cloudflare R2 · Philip 2026-08-27.
 // Wired but only activates when NEX_OBJECT_BACKEND=r2 AND R2 creds are set.
 import { R2ObjectStorage } from "./adapters/object-r2";
+// Phase 1.0 · self-hosted MinIO (NEX-owned object storage) · sealed 2026-10-06.
+// Activates when NEX_OBJECT_BACKEND=minio AND NEX_MINIO_ACCESS_KEY/SECRET_KEY
+// are set. The MinIO server itself runs via `deploy/minio/start-minio.cmd`
+// (Windows Scheduled Task NEX-MinIO-Server · hourly idempotent).
+import { MinioObjectStorage } from "./adapters/object-minio";
 import { getStorage } from "./registry";
 import { COLLECTIONS } from "./types";
 import type {
@@ -128,13 +133,18 @@ function buildRaw(kind: string): ObjectStorage {
     // R2ObjectStorage constructor throws with a clear message if any is missing.
     case "r2":
       return new R2ObjectStorage();
+    // Phase 1.0 · self-hosted MinIO · NEX-owned object storage · sealed 2026-10-06.
+    // Requires NEX_MINIO_ACCESS_KEY + NEX_MINIO_SECRET_KEY (NEX_MINIO_ENDPOINT
+    // defaults to http://localhost:9000). MinioObjectStorage constructor throws
+    // with a clear message if credentials are missing.
+    case "minio":
+      return new MinioObjectStorage();
     // Remaining roadmap adapters — throw with clear guidance until implemented.
     case "supabase":
     case "imagekit":
     case "s3":
-    case "minio":
       throw new Error(
-        `[nex-object] backend "${kind}" is on the Contract §12.4 roadmap but not yet implemented · use "filesystem" or "postgres" or "r2" until it ships`,
+        `[nex-object] backend "${kind}" is on the Contract §12.4 roadmap but not yet implemented · use "filesystem" or "postgres" or "r2" or "minio" until it ships`,
       );
     default:
       throw new Error(`[nex-object] unknown backend: ${kind}`);

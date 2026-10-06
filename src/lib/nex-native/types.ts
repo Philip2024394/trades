@@ -9,6 +9,8 @@
 //   · Currency is ISO-4217 uppercase 3-char code
 //   · Timestamps are ISO strings (Supabase JS returns them as string)
 
+import type { BusinessProfile } from "./business/types";
+
 /** UUID string · alias for readability. Every FK is one of these. */
 export type NexUuid = string;
 
@@ -87,6 +89,21 @@ export interface NexAccountRow {
    *  Accept-Language + Indonesian market default. Values: 'id',
    *  'en'. Updated via updateAccountLocaleAction. */
   locale: string | null;
+  /**
+   * Phase 1.0 Security · migration 139 · bumped by the "sign out all
+   * other sessions" action. The session resolver rejects sessions whose
+   * JWT iat predates this timestamp. NULL = no forced-signout has ever
+   * occurred for this account.
+   */
+  sessions_invalidated_at: NexTimestamp | null;
+  /**
+   * Phase 1.0 Settings · migration 139 · owner toggle for whether the
+   * theme intro plays when visitors enter this account's chat.
+   * Default TRUE preserves prior behaviour for every existing account.
+   * Read in the peer-chat mount gate; written by the World Intro
+   * settings page server action.
+   */
+  world_intro_enabled: boolean;
   created_at: NexTimestamp;
 }
 
@@ -554,6 +571,19 @@ export interface NexBusinessRow {
   /** Bridge 30 · Admin-only note about the verification event ·
    *  migration 083. Never shown to buyers. */
   verified_note: string | null;
+  /** Migration 126 · sealed 2026-10-02 · Rev 6 business profile ·
+   *  jsonb column carrying the owner's primary + secondary subtype
+   *  classification. Shape:
+   *    { primary: { category, subtype }, secondary: [{ category, subtype }, …] }
+   *  NULL when the owner has not yet completed the business wizard
+   *  (the DB signal for "has this account activated NEX business
+   *  configuration?" is `profile IS NOT NULL`). Consumed by the
+   *  terminology engine, capability recommender, and cover-content-
+   *  loader (motorbike vertical configuration 2026-10-04 reads
+   *  profile.primary.subtype to derive the MockCoverContent.showPrice
+   *  signal · see docs/architecture/reviews/motorbike-vertical-
+   *  config-review.md). */
+  profile?: BusinessProfile | null;
   created_at: NexTimestamp;
   updated_at: NexTimestamp;
 }

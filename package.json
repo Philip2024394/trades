@@ -120,6 +120,7 @@
     "konva": "^10.3.0",
     "leaflet": "^1.9.4",
     "lucide-react": "^1.23.0",
+    "maxmind": "^5.0.7",
     "mjml": "^5.4.0",
     "next": "^16.2.9",
     "nodemailer": "^10.0.3",

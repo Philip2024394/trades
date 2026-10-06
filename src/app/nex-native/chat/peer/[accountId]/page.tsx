@@ -391,8 +391,35 @@ export default async function PeerChatPage({
   // simply plays or doesn't · entry is never blocked.
   const viewerIsThemeOwner =
     !!peerThemeRow && session.account.chat_theme === peerThemeRow.id;
-  const peerThemeIntro =
-    peerThemeRow?.intro_video_url && !viewerIsThemeOwner
+  // Phase 1.0 · the peer (chat owner) can disable their World Intro
+  // entirely via /settings/world-intro · default TRUE preserves the
+  // prior behaviour. When FALSE, no intro plays for any visitor
+  // regardless of whether a standard or custom intro is configured.
+  const peerWantsIntro = peer.world_intro_enabled !== false;
+  // Phase 1.0 · Custom Intro takes precedence over Standard Intro when
+  // the peer has an active entitlement AND an uploaded video. Owners
+  // still bypass. "Always-when-on" policy · we never consult the
+  // nex_theme_intro_seen tracker for custom intros.
+  const peerCustomIntro =
+    peerWantsIntro && !viewerIsThemeOwner
+      ? await (async () => {
+          try {
+            const svc = await import("@/lib/nex-native/custom-intro-service");
+            return await svc.getActiveCustomIntroForOwner(peer.id);
+          } catch {
+            return null;
+          }
+        })()
+      : null;
+  const peerThemeIntro = peerCustomIntro
+    ? {
+        themeId: `custom-${peer.id}`,
+        themeName: "Custom Intro",
+        videoUrl: peerCustomIntro.video_url,
+        durationMs: peerCustomIntro.duration_ms,
+        posterUrl: null as string | null,
+      }
+    : peerWantsIntro && peerThemeRow?.intro_video_url && !viewerIsThemeOwner
       ? {
           themeId: peerThemeRow.id,
           themeName: peerThemeRow.name,
@@ -401,18 +428,23 @@ export default async function PeerChatPage({
           posterUrl: peerThemeRow.intro_poster_url,
         }
       : null;
-  const viewerHasSeenThemeIntro = peerThemeIntro
-    ? await (async () => {
-        try {
-          const svc = await import("@/lib/nex-native/theme-intro-service");
-          return await svc.hasSeenThemeIntro(session.account.id, peerThemeIntro.themeId);
-        } catch {
-          // Safe default · let the intro play. We never falsely claim
-          // the user has seen something.
-          return false;
-        }
-      })()
-    : true;
+  const viewerHasSeenThemeIntro = peerCustomIntro
+    ? // Custom intros use the "always-when-on" play policy · the
+      // seen-state tracker does not apply (it only tracks standard
+      // themes). Return false so the intro plays every time.
+      false
+    : peerThemeIntro
+      ? await (async () => {
+          try {
+            const svc = await import("@/lib/nex-native/theme-intro-service");
+            return await svc.hasSeenThemeIntro(session.account.id, peerThemeIntro.themeId);
+          } catch {
+            // Safe default · let the intro play. We never falsely claim
+            // the user has seen something.
+            return false;
+          }
+        })()
+      : true;
 
   // Header contacts menu · list of accepted friends so the user can
   // hop between peer chats without leaving the chat surface. Best-

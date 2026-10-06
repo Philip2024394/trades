@@ -108,3 +108,50 @@ export async function markCredentialUsed(
     throw new Error(`webauthn-service.markCredentialUsed: ${error.message}`);
   }
 }
+
+/** Phase 1.0 Security · owner-scoped revoke. Deletes the credential ONLY
+ *  if it belongs to the supplied account. Returns true when a row was
+ *  deleted · false when no matching credential exists for this owner
+ *  (silent · caller treats as idempotent). */
+export async function revokeCredentialForOwner(
+  credentialId: string,
+  ownerAccountId: NexUuid,
+): Promise<boolean> {
+  const { data, error } = await nexSupabaseAdmin
+    .from("nex_webauthn_credential")
+    .delete()
+    .eq("credential_id", credentialId)
+    .eq("account_id", ownerAccountId)
+    .select("id")
+    .maybeSingle();
+  if (error) {
+    throw new Error(`webauthn-service.revokeCredentialForOwner: ${error.message}`);
+  }
+  return !!data?.id;
+}
+
+/** Phase 1.0 Security · owner-scoped rename of a credential's device
+ *  label. Trims + truncates to 80 chars (matches the DB CHECK). Returns
+ *  true when the row was updated · false when no matching credential
+ *  exists for this owner. */
+export async function renameCredentialForOwner(
+  credentialId: string,
+  ownerAccountId: NexUuid,
+  newLabel: string,
+): Promise<boolean> {
+  const trimmed = newLabel.trim().slice(0, 80);
+  if (trimmed.length === 0) {
+    throw new Error("webauthn-service.renameCredentialForOwner: label required");
+  }
+  const { data, error } = await nexSupabaseAdmin
+    .from("nex_webauthn_credential")
+    .update({ device_label: trimmed })
+    .eq("credential_id", credentialId)
+    .eq("account_id", ownerAccountId)
+    .select("id")
+    .maybeSingle();
+  if (error) {
+    throw new Error(`webauthn-service.renameCredentialForOwner: ${error.message}`);
+  }
+  return !!data?.id;
+}

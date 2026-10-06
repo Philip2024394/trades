@@ -258,3 +258,7 @@ data/nex-lab/hq-*.jsonl
 data/nex-lab/*-cursor.json
 data/nex-lab/*-health.json
 data/nex-lab/wikidata-cache/
+
+# MaxMind GeoLite2 databases · provisioned per machine by ops, never
+# committed. Monthly refresh cadence · size ~70MB. See deploy/maxmind/README.md.
+deploy/maxmind/*.mmdb
