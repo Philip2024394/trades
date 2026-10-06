@@ -32,6 +32,13 @@
 //   · The overlay is DEV / SSR safe · `window` access is wrapped and
 //     the initial render always matches the server pass (null video
 //     url ⇒ null overlay).
+//   · UNIVERSAL THEME COLOUR RULE (sealed 2026-10-06): every pixel of
+//     this overlay derives from `engine.colours` · the backdrop, the
+//     skip button background, text and border all pull from the
+//     resolved ThemePackage. NEVER introduce `#000` / `#fff` / fixed
+//     rgba literals here · the overlay is part of the chat atmosphere,
+//     not generic NEX chrome. A regression test
+//     (`_standard-experience.test.ts` section E) enforces this.
 
 import * as React from "react";
 import type { ResolvedEngine } from "./_engine/theme-engine";
@@ -111,6 +118,9 @@ export function StandardIntroOverlay({
   if (!isBusinessIntro && playCount >= STANDARD_PLAY_LIMIT) return null;
   if (dismissed) return null;
 
+  // Universal Theme Colour Rule · every surface here is theme-derived.
+  const colours = engine.colours;
+
   return (
     <div
       data-nex-standard-intro-overlay
@@ -120,7 +130,11 @@ export function StandardIntroOverlay({
         position: "fixed",
         inset: 0,
         zIndex: 100,
-        background: "#000",
+        // Letterbox / backdrop behind the video pulls the theme's deep
+        // anchor colour · never pure black. Ocean reads abyss-blue;
+        // Café reads dark-roast brown; a future world reads its own
+        // declared `colours.deep`.
+        background: colours.deep,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -152,9 +166,12 @@ export function StandardIntroOverlay({
           zIndex: 10,
           padding: "8px 14px",
           borderRadius: 999,
-          background: "rgba(0,0,0,0.6)",
-          color: "#fff",
-          border: "1px solid rgba(255,255,255,0.3)",
+          // Skip-button chrome is theme-tinted · the deep anchor as
+          // background + the theme highlight for text + primary for
+          // border = the button sits inside the world, not outside it.
+          background: colours.deep,
+          color: colours.highlight,
+          border: `1px solid ${colours.primary}`,
           fontSize: 12,
           fontWeight: 700,
           cursor: "pointer",

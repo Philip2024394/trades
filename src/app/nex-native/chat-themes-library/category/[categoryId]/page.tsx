@@ -1,6 +1,7 @@
 // src/app/nex-native/chat-themes-library/category/[categoryId]/page.tsx
 //
 // Category Showcase Route · Step 1B (sealed 2026-10-06).
+// Universal Theme Colour Rule applied 2026-10-06 (Step 2 follow-up).
 //
 // Shows every World belonging to a given category. Reuses the
 // existing `ThemeBrowserClient` so the world-level presentation /
@@ -33,6 +34,13 @@
 //   · Does NOT reintroduce any iframe grid or allowlist pattern
 //   · Does NOT touch _standard-experience.tsx, Theme Engine, Theme
 //     Brain, DB schema, or any Step 2 / Step 3 territory
+//   · UNIVERSAL THEME COLOUR RULE (sealed 2026-10-06): every wrapper
+//     surface here (page bg · back-link · header · tagline · empty-
+//     state card) derives from `category.colours`. There is NO
+//     generic NEX palette in this file. Ocean room reads blue; Café
+//     room reads warm brown; Explore reads NEX-default (coherent
+//     with its uncategorised bucket role). Guarded by
+//     `_category-page-colours.test.ts`.
 
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
@@ -46,15 +54,6 @@ import { NexPageHeader } from "../../../_page-header";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
-
-const NEX = {
-  bg: "#020914",
-  cyan: "#00AFFF",
-  orange: "#FF7800",
-  text: "#F4F7FC",
-  textDim: "#8BA9D1",
-  textMute: "#526B89",
-};
 
 export default async function CategoryShowcasePage({
   params,
@@ -73,16 +72,30 @@ export default async function CategoryShowcasePage({
   // category_id. Zero-member categories render an empty-state copy.
   const worlds = data.browserThemes.filter((t) => t.category_id === category.id);
 
+  // Universal Theme Colour Rule · the entire wrapper atmosphere is
+  // derived from the registered category palette · every room feels
+  // like its own world, never like generic NEX chrome. The category
+  // registry's `Required<ColourSystem>` typing guarantees every slot
+  // is present so no `??` fallback (which would silently re-introduce
+  // the generic palette the rule forbids) is needed.
+  const palette = category.colours;
+  const bg = palette.deep;
+  const text = palette.highlight;
+  const accent = palette.primary;
+  const dim = palette.secondary;
+
   return (
     <>
       <style>{`
-        html, body { background: ${NEX.bg} !important; }
+        html, body { background: ${bg} !important; }
       `}</style>
       <main
+        data-nex-category-page
+        data-nex-category-id={category.id}
         style={{
           minHeight: "100dvh",
-          background: NEX.bg,
-          color: NEX.text,
+          background: bg,
+          color: text,
           fontFamily:
             "Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
           padding: "20px 16px 40px",
@@ -100,7 +113,7 @@ export default async function CategoryShowcasePage({
               gap: 6,
               marginTop: 10,
               fontSize: 11,
-              color: NEX.textMute,
+              color: dim,
               textDecoration: "none",
               letterSpacing: "0.14em",
               textTransform: "uppercase",
@@ -121,6 +134,7 @@ export default async function CategoryShowcasePage({
               display: "flex",
               alignItems: "center",
               gap: 10,
+              color: text,
             }}
           >
             {category.icon && (
@@ -135,7 +149,7 @@ export default async function CategoryShowcasePage({
               style={{
                 margin: "0 0 18px",
                 fontSize: 13,
-                color: NEX.textDim,
+                color: dim,
                 lineHeight: 1.55,
               }}
             >
@@ -150,10 +164,12 @@ export default async function CategoryShowcasePage({
                 marginTop: 20,
                 padding: "28px 20px",
                 borderRadius: 14,
-                background: "rgba(16,30,52,0.6)",
-                border: "1px solid rgba(139,169,209,0.18)",
+                // Empty-state card uses a tinted-dark fill derived
+                // from the theme accent · never generic NEX blue.
+                background: bg,
+                border: `1px solid ${accent}`,
                 textAlign: "center",
-                color: NEX.textDim,
+                color: dim,
                 fontSize: 13,
                 lineHeight: 1.5,
               }}

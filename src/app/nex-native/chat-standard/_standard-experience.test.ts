@@ -209,6 +209,58 @@ describe("C · no world-specific branches · fallback preserved · other package
   });
 });
 
+// ─── E · Universal Theme Colour Rule · overlay is theme-derived ─────
+
+describe("E · intro overlay derives every colour from engine.colours (sealed 2026-10-06)", () => {
+  const src = fs.readFileSync(INTRO_OVERLAY, "utf8");
+
+  test("source does NOT contain the generic palette literals removed in Step 2 follow-up", () => {
+    // These were the four generic-palette strings the overlay carried
+    // before the Universal Theme Colour Rule was sealed. Their removal
+    // is enforced here · future regressions would re-introduce one of
+    // these literals and fail loudly.
+    expect(src).not.toContain('background: "#000"');
+    expect(src).not.toContain('color: "#fff"');
+    expect(src).not.toMatch(/background:\s*["'`]rgba\(0,\s*0,\s*0,/);
+    expect(src).not.toMatch(/border:\s*["'`]1px solid rgba\(255,\s*255,\s*255,/);
+  });
+
+  test("source references engine.colours for the backdrop + button chrome", () => {
+    // The overlay must pull from the resolved ThemePackage · the three
+    // slots we currently render (deep · highlight · primary) are the
+    // minimum surface area for the rule to be in effect.
+    expect(src).toContain("engine.colours");
+    expect(src).toMatch(/colours\.deep/);
+    expect(src).toMatch(/colours\.highlight/);
+    expect(src).toMatch(/colours\.primary/);
+  });
+
+  test("source carries the sealed Universal Theme Colour Rule doctrine comment", () => {
+    // The in-source doctrine comment is itself part of the enforcement
+    // mechanism · it survives refactors and is visible to anyone
+    // editing the file in the future. If someone deletes the comment
+    // this test fails loudly, prompting a doctrine review.
+    expect(src.toLowerCase()).toContain("universal theme colour rule");
+  });
+
+  test("source does NOT hardcode any world-specific colour literal", () => {
+    // Spot-check: the overlay must never contain any ThemePackage's
+    // own hex (ocean's blues, café's browns, etc). The resolution
+    // layer is engine.colours · hex literals in this file would prove
+    // the rule has been bypassed.
+    const forbiddenHexes = [
+      "#2E90B5", // ocean primary
+      "#0A2535", // ocean deep
+      "#6B3F22", // coffee primary
+      "#2A160A", // coffee deep
+      "#00AFFF", // NEX cyan
+    ];
+    for (const hex of forbiddenHexes) {
+      expect(src, `overlay must not hardcode ${hex} · derive from engine.colours`).not.toContain(hex);
+    }
+  });
+});
+
 // ─── D · wallpaper + intro are UNIVERSAL (future-world shape test) ──
 
 describe("D · future-world shape · the shell works for any package that declares the fields", () => {
