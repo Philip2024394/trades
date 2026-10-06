@@ -26,6 +26,7 @@ import { nexSupabaseAdmin } from "@/lib/nex-native/supabase-admin";
 import { updateChatThemeAction } from "../_actions";
 import type { NexAccountRow } from "@/lib/nex-native/types";
 import { ThemeBrowserClient, type BrowserThemeRow } from "./_theme-browser-client";
+import { listLiveWorldsAsBrowserRows } from "./_live-worlds-adapter";
 import { TrialCountdownBanner } from "./_trial-countdown-banner";
 import { NexPageHeader } from "../_page-header";
 
@@ -85,26 +86,44 @@ export default async function ThemePickerPage({
     }
   })();
 
-  const themes = await chatThemeService.listActiveThemes();
-  const browserThemes: BrowserThemeRow[] = themes.map((t) => ({
-    id: t.id,
-    name: t.name,
-    tagline: t.tagline,
-    accent_hex: t.accent_hex,
-    bubble_rim_hex: t.bubble_rim_hex,
-    composer_rim_hex: t.composer_rim_hex,
-    tier: t.tier,
-    category: t.category,
-    hero_image_url: t.hero_image_url,
-    sort_order: t.sort_order,
-    // Phase 4A · gallery-always-plays intro.
-    intro_video_url: t.intro_video_url,
-    intro_poster_url: t.intro_poster_url,
-    // Phase 1 · thread the overlay/bubble config to the client so the
-    // Phone Gallery tile can render the theme accurately via <ThemeWorld>.
-    // Legacy ThemeGridCard ignores this field; only the flag-ON path reads it.
-    wallpaper_config: t.wallpaper_config,
-  }));
+  const dbThemes = await chatThemeService.listActiveThemes();
+  // Standard Experience worlds live in `src/app/nex-native/chat-standard/
+  // _live-worlds.ts` as code-registered `ThemePackage` objects, not DB
+  // rows. The adapter maps them into `BrowserThemeRow` shape so the
+  // Library presents DB themes + live-worlds as one collection without
+  // seeding duplicates into `nex_chat_theme`. Code remains the single
+  // source of truth for live-worlds; DB is still authoritative for
+  // DB-created themes. Sealed 2026-10-06 per the Theme Library
+  // visibility fix.
+  const liveWorldRows = listLiveWorldsAsBrowserRows();
+  const liveWorldIds = new Set(liveWorldRows.map((r) => r.id));
+  // On the rare case a DB row collides with a code-registered world id,
+  // code wins: the DB row is dropped from the Library collection. This
+  // prevents a mis-seeded DB entry from shadowing a live-world and
+  // avoids presenting the same id twice in the grid.
+  const dbRowsFiltered = dbThemes.filter((t) => !liveWorldIds.has(t.id));
+  const browserThemes: BrowserThemeRow[] = [
+    ...liveWorldRows,
+    ...dbRowsFiltered.map((t) => ({
+      id: t.id,
+      name: t.name,
+      tagline: t.tagline,
+      accent_hex: t.accent_hex,
+      bubble_rim_hex: t.bubble_rim_hex,
+      composer_rim_hex: t.composer_rim_hex,
+      tier: t.tier,
+      category: t.category,
+      hero_image_url: t.hero_image_url,
+      sort_order: t.sort_order,
+      // Phase 4A · gallery-always-plays intro.
+      intro_video_url: t.intro_video_url,
+      intro_poster_url: t.intro_poster_url,
+      // Phase 1 · thread the overlay/bubble config to the client so the
+      // Phone Gallery tile can render the theme accurately via <ThemeWorld>.
+      // Legacy ThemeGridCard ignores this field; only the flag-ON path reads it.
+      wallpaper_config: t.wallpaper_config,
+    })),
+  ];
 
   // Phase 1 feature flag · founder-flipped 2026-10-05 to opt-OUT:
   //   unset or anything ≠ "0" → new mini-phone-frame gallery renders
