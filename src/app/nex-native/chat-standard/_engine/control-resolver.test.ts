@@ -197,13 +197,21 @@ describe("F · send button draws from theme primary (SEND_GREEN SUPERSEDED)", ()
     expect(String(ocean.sendButton(false).border)).not.toContain(SEND_GREEN);
   });
 
-  test("send button disabled dims opacity without changing colour", () => {
+  test("send button stays SOLID in both states · opacity pinned at 1", () => {
+    // Sealed 2026-10-06 · the send button must never look washed
+    // out against the wallpaper. Disabledness is signalled by the
+    // removed outer glow + `cursor: default` + host's `disabled`
+    // attribute · NOT by dimming the fill.
     const t = resolveControlsTreatment(OCEAN);
     const enabled = t.sendButton(false);
     const disabled = t.sendButton(true);
     expect(enabled.background).toBe(disabled.background);
-    expect(disabled.opacity).toBeLessThan(1);
     expect(enabled.opacity).toBe(1);
+    expect(disabled.opacity).toBe(1);
+    // Disabled still removes the hover glow so the button reads
+    // non-interactive without going translucent.
+    expect(enabled.boxShadow).not.toBe("none");
+    expect(disabled.boxShadow).toBe("none");
   });
 
   test("send button carries a theme-primary outer glow when enabled", () => {

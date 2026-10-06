@@ -188,9 +188,14 @@ export function resolveControlsTreatment(
     boxShadow: `0 0 0 2px ${primary}55`,
   };
 
-  // Send button · solid theme primary · auto-contrast icon · subtle
-  // outer glow in theme colour so the primary action still has
-  // visual weight on busy wallpapers.
+  // Send button · ALWAYS solid theme primary · auto-contrast icon ·
+  // sealed 2026-10-06. The disabled state keeps the SAME solid fill
+  // (so the button never looks washed out against the wallpaper) ·
+  // disabledness is signalled by (a) removed outer glow, (b)
+  // `cursor: default`, and (c) the host's `disabled` attribute (which
+  // makes the browser's own disabled affordances kick in without
+  // dimming the paint). Opacity is pinned at 1 so the fill stays
+  // solid regardless of state.
   const sendButton = (disabled: boolean): React.CSSProperties => ({
     width: 40,
     height: 40,
@@ -205,12 +210,12 @@ export function resolveControlsTreatment(
     color: iconColorOn(primary, highlight, deep),
     fontSize: 16,
     fontWeight: 800,
-    opacity: disabled ? 0.5 : 1,
+    opacity: 1,
     boxShadow: disabled
       ? "none"
       : `0 4px 12px ${primary}55, inset 0 1px 1px ${highlight}55`,
     transition:
-      "background 160ms ease-out, opacity 160ms ease-out, box-shadow 160ms ease-out",
+      "background 160ms ease-out, box-shadow 160ms ease-out",
   });
 
   // Composer container · solid deep bg + theme accent border ·
