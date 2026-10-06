@@ -43,15 +43,31 @@
 // Positioning · fixed, top-right, respects safe-area-inset-top.
 // zIndex 60 matches the UniversalChromeOverlay 3-dots.
 //
-// Icons self-contained · no engine dependency.
+// Icons self-contained · colour contract comes from the shared
+// control resolver so the overlay matches the Standard Experience
+// shell's native buttons byte-for-byte.
 
 import * as React from "react";
+import {
+  resolveControlsTreatment,
+} from "./_engine/control-resolver";
 
 const NEX_CYAN = "#00AFFF";
+const NEX_SECONDARY = "#4FC3DC";
 const NEX_HIGHLIGHT = "#F4F7FC";
+const NEX_DEEP = "#020914";
 
 export interface UniversalHeaderIconsOverlayProps {
   accent?: string;
+  /** Optional theme deep/anchor colour · passed through to the
+   *  shared control resolver so header buttons sit on a theme-
+   *  coherent solid surface. Defaults to NEX deep. */
+  deep?: string;
+  /** Optional theme highlight · drives icon colour (auto-contrasts
+   *  for toggled-on states). Defaults to NEX highlight. */
+  highlight?: string;
+  /** Optional secondary · echoed to the resolver for consistency. */
+  secondary?: string;
   /** Optional handler for Shop. When supplied the Shop icon fires
    *  this callback (e.g. to open a theme-specific shop sheet).
    *  When omitted the icon renders as a link (see `shopHref`),
@@ -72,30 +88,26 @@ export interface UniversalHeaderIconsOverlayProps {
 
 export function UniversalHeaderIconsOverlay({
   accent = NEX_CYAN,
+  deep = NEX_DEEP,
+  highlight = NEX_HIGHLIGHT,
+  secondary = NEX_SECONDARY,
   onShopClick,
   shopOpen,
   shopHref,
 }: UniversalHeaderIconsOverlayProps): React.JSX.Element {
-  const circle: React.CSSProperties = {
-    width: 32,
-    height: 32,
-    borderRadius: 999,
-    border: `1px solid ${accent}99`,
-    background: `${accent}22`,
-    color: NEX_HIGHLIGHT,
-    display: "grid",
-    placeItems: "center",
-    cursor: "pointer",
-    flexShrink: 0,
-    padding: 0,
-    textDecoration: "none",
-    transition: "background 160ms ease-out, border-color 160ms ease-out",
-  };
-  const activeShop: React.CSSProperties = {
-    ...circle,
-    background: `${accent}aa`,
-    border: `1px solid ${accent}`,
-  };
+  // Universal Theme Controls Rule · sealed 2026-10-06 · the overlay
+  // consumes the SAME `resolveControlsTreatment()` as the Standard
+  // Experience shell. The sealed-away `background: "${accent}22"`
+  // pattern (semi-transparent accent that disappeared against dark
+  // wallpapers) is EXPLICITLY SUPERSEDED by this rule.
+  const controls = resolveControlsTreatment({
+    primary: accent,
+    secondary,
+    highlight,
+    deep,
+  });
+  const circle = controls.headerButton;
+  const activeShop = controls.headerButtonActive;
   return (
     <>
       {/* SEALED RULE 2026-10-05 · R11b · "one R1 implementation per

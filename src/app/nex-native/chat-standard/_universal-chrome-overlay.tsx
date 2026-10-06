@@ -35,35 +35,45 @@
 //   - The 3-dots sits at its standard lower-right position on every
 //     theme. zIndex 60 visually covers any native theme-specific
 //     3-dots behind it, so every live theme shows exactly one.
+//
+// Sealed 2026-10-06 (Universal Theme Controls Rule) · the chrome
+// buttons derive their surface treatment from the shared control
+// resolver so they stay solid and visible on every wallpaper (the
+// sealed-away semi-transparent `${deep}d9` pattern is still mostly
+// solid but the resolver gives us the SAME shape as the shell's
+// native buttons · one source of truth).
 
 import * as React from "react";
+import { resolveControlsTreatment } from "./_engine/control-resolver";
 
 const NEX_CYAN = "#00AFFF";
+const NEX_SECONDARY = "#4FC3DC";
 const NEX_DEEP = "#020914";
 const NEX_HIGHLIGHT = "#F4F7FC";
 
 export interface UniversalChromeOverlayProps {
   accent?: string;
   deep?: string;
+  /** Theme highlight · drives icon colour. Defaults to NEX highlight. */
+  highlight?: string;
+  /** Theme secondary · echoed to the resolver for consistency. */
+  secondary?: string;
 }
 
 export function UniversalChromeOverlay({
   accent = NEX_CYAN,
   deep = NEX_DEEP,
+  highlight = NEX_HIGHLIGHT,
+  secondary = NEX_SECONDARY,
 }: UniversalChromeOverlayProps): React.JSX.Element {
   const [callActionsOpen, setCallActionsOpen] = React.useState(false);
 
-  // Sealed 2026-10-05 refinement · "one + button, one 3-dots button" ·
-  //   - The floating + button and its menu were removed because the
-  //     UniversalComposerFooter already owns the + button + menu.
-  //   - The 3-dots sits at its standard lower-right position on every
-  //     theme (no `avoidLowerRight` raise). zIndex 60 means it visually
-  //     covers any native theme-specific 3-dots sitting behind it, so
-  //     every live theme shows exactly one 3-dots button.
   return (
     <FloatingCallActions
       accent={accent}
       deep={deep}
+      highlight={highlight}
+      secondary={secondary}
       open={callActionsOpen}
       onToggle={() => setCallActionsOpen((v) => !v)}
     />
@@ -129,37 +139,44 @@ function FloatingPlusButton({
 function FloatingCallActions({
   accent,
   deep,
+  highlight,
+  secondary,
   open,
   onToggle,
 }: {
   accent: string;
   deep: string;
+  highlight: string;
+  secondary: string;
   open: boolean;
   onToggle: () => void;
 }): React.JSX.Element {
+  // Universal Theme Controls Rule · sealed 2026-10-06 · chrome
+  // buttons use the SAME solid-themed treatment as the header R1
+  // buttons via the shared resolver. 40×40 instead of 32×32 so the
+  // floating group has enough tap-target weight.
+  const controls = resolveControlsTreatment({
+    primary: accent,
+    secondary,
+    highlight,
+    deep,
+  });
   const circle: React.CSSProperties = {
+    ...controls.headerButton,
     width: 40,
     height: 40,
-    borderRadius: 999,
-    border: `1px solid ${accent}99`,
-    background: `linear-gradient(180deg, ${deep}d9, ${deep}f2)`,
-    color: NEX_HIGHLIGHT,
-    display: "grid",
-    placeItems: "center",
-    cursor: "pointer",
-    padding: 0,
-    boxShadow: `0 6px 16px rgba(0,0,0,0.5), 0 0 0 1px ${accent}33`,
-    backdropFilter: "blur(6px)",
-    WebkitBackdropFilter: "blur(6px)",
+    boxShadow: `0 6px 16px ${deep}66, 0 0 0 1px ${accent}55`,
   };
   const toggleActive: React.CSSProperties = open
     ? {
-        background: `linear-gradient(180deg, ${accent}cc, ${accent}f0)`,
-        border: `1px solid ${accent}`,
+        background: controls.headerButtonActive.background,
+        color: controls.headerButtonActive.color,
+        border: controls.headerButtonActive.border,
       }
     : {
         background: circle.background,
-        border: `1px solid ${accent}99`,
+        color: circle.color,
+        border: circle.border,
       };
   const actionWrap: React.CSSProperties = {
     display: "flex",

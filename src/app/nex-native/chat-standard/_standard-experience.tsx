@@ -396,10 +396,14 @@ export function StandardExperience({
   );
 }
 
-// Round send button · UNIVERSAL RULE R3 revision 2 (2026-10-05) ·
-// sits OUTSIDE the input pill, to the right of the composer and to
-// the left of the + button. Theming inherits from engine.colours ·
-// primary gradient fill when enabled, dimmed when the input is empty.
+// Round send button · UNIVERSAL THEME CONTROLS RULE (sealed 2026-10-06).
+// Sits OUTSIDE the input pill. Colour comes from the active
+// ThemePackage's resolved primary via engine.controlsTreatment() ·
+// Ocean renders ocean blue, Café renders espresso, future worlds auto-
+// inherit. The sealed 2026-10-05 "SEND_GREEN everywhere" rule is
+// EXPLICITLY SUPERSEDED by this rule · universal recognisability now
+// comes from (a) the button's fixed outside-right position, (b) its
+// solid filled treatment, and (c) its theme sendGlyph.
 function ComposerSendButton({
   engine,
   disabled,
@@ -409,8 +413,8 @@ function ComposerSendButton({
   disabled: boolean;
   onSend: () => void;
 }): React.JSX.Element {
-  const c = engine.colours;
-  const t = engine.composerTreatment();
+  const composer = engine.composerTreatment();
+  const controls = engine.controlsTreatment();
   return (
     <button
       type="button"
@@ -420,31 +424,9 @@ function ComposerSendButton({
         if (!disabled) onSend();
       }}
       disabled={disabled}
-      style={{
-        width: 40,
-        height: 40,
-        borderRadius: 999,
-        display: "grid",
-        placeItems: "center",
-        cursor: disabled ? "default" : "pointer",
-        flexShrink: 0,
-        padding: 0,
-        background: disabled
-          ? `${c.primary}44`
-          : `linear-gradient(180deg, ${c.primary}, ${c.primary}dd)`,
-        border: `1px solid ${c.primary}`,
-        color: c.deep,
-        fontSize: 16,
-        fontWeight: 800,
-        opacity: disabled ? 0.55 : 1,
-        boxShadow: disabled
-          ? "none"
-          : `0 4px 12px ${c.primary}55, inset 0 1px 1px rgba(255,255,255,0.3)`,
-        transition:
-          "background 160ms ease-out, opacity 160ms ease-out, box-shadow 160ms ease-out",
-      }}
+      style={controls.sendButton(disabled)}
     >
-      {t.sendGlyph}
+      {composer.sendGlyph}
     </button>
   );
 }
@@ -577,26 +559,12 @@ function StandardHeaderActions({
   shopOpen: boolean;
   onToggleShop: () => void;
 }): React.JSX.Element {
-  const c = engine.colours;
-  const baseBtn: React.CSSProperties = {
-    width: 32,
-    height: 32,
-    borderRadius: 999,
-    border: `1px solid ${c.primary}99`,
-    background: `${c.primary}22`,
-    color: c.highlight,
-    display: "grid",
-    placeItems: "center",
-    cursor: "pointer",
-    flexShrink: 0,
-    padding: 0,
-    transition: "background 160ms ease-out, border-color 160ms ease-out",
-  };
-  const shopActiveBtn: React.CSSProperties = {
-    ...baseBtn,
-    background: `${c.primary}aa`,
-    border: `1px solid ${c.primary}`,
-  };
+  // Universal Theme Controls Rule · sealed 2026-10-06 · header R1
+  // buttons draw from engine.controlsTreatment() so they stay solid
+  // and visible on every wallpaper regardless of world.
+  const controls = engine.controlsTreatment();
+  const baseBtn = controls.headerButton;
+  const shopActiveBtn = controls.headerButtonActive;
   return (
     <div
       style={{
@@ -984,21 +952,18 @@ function FloatingCallActions({
   open: boolean;
   onToggle: () => void;
 }): React.JSX.Element {
-  const c = engine.colours;
+  // Universal Theme Controls Rule · sealed 2026-10-06 · lower-right
+  // 3-dots stack uses the same solid-themed treatment as the header
+  // R1 buttons so the chrome is visually coherent across every
+  // world. 40×40 instead of 32×32 so the floating group has enough
+  // tap-target weight without changing size.
+  const controls = engine.controlsTreatment();
+  const c = controls.colors;
   const circle: React.CSSProperties = {
+    ...controls.headerButton,
     width: 40,
     height: 40,
-    borderRadius: 999,
-    border: `1px solid ${c.primary}99`,
-    background: `linear-gradient(180deg, ${c.deep}d9, ${c.deep}f2)`,
-    color: c.highlight,
-    display: "grid",
-    placeItems: "center",
-    cursor: "pointer",
-    padding: 0,
-    boxShadow: `0 6px 16px rgba(0,0,0,0.4), 0 0 0 1px ${c.primary}33`,
-    backdropFilter: "blur(6px)",
-    WebkitBackdropFilter: "blur(6px)",
+    boxShadow: `0 6px 16px ${c.deep}66, 0 0 0 1px ${c.primary}55`,
   };
   // Three action buttons slide in from the right (toward the left of
   // the 3-dots trigger).
@@ -1068,13 +1033,14 @@ function FloatingCallActions({
         data-nex-se-call-actions-toggle={open ? "open" : "closed"}
         style={{
           ...circle,
-          background: open
-            ? `linear-gradient(180deg, ${c.primary}cc, ${c.primary}f0)`
-            : circle.background,
-          border: open
-            ? `1px solid ${c.primary}`
-            : `1px solid ${c.primary}99`,
-          transition: "background 180ms ease-out, border 180ms ease-out",
+          // Open state uses the universal solid-primary active
+          // treatment with auto-contrast icon colour · sealed
+          // 2026-10-06 · the icon colour comes from headerButtonActive
+          // so a very light primary gets dark glyph automatically.
+          background: open ? controls.headerButtonActive.background : circle.background,
+          color: open ? controls.headerButtonActive.color : circle.color,
+          border: open ? controls.headerButtonActive.border : circle.border,
+          transition: "background 180ms ease-out, border 180ms ease-out, color 180ms ease-out",
         }}
       >
         <DotsVerticalIcon />
@@ -1095,21 +1061,12 @@ function ComposerPlusButton({
   plusOpen: boolean;
   onTogglePlus: () => void;
 }): React.JSX.Element {
-  const c = engine.colours;
-  const btn: React.CSSProperties = {
-    width: 32,
-    height: 32,
-    borderRadius: 999,
-    border: `1px solid ${c.primary}99`,
-    background: `${c.primary}22`,
-    color: c.highlight,
-    display: "grid",
-    placeItems: "center",
-    cursor: "pointer",
-    flexShrink: 0,
-    padding: 0,
-    transition: "background 160ms ease-out, border 160ms ease-out",
-  };
+  // Universal Theme Controls Rule · sealed 2026-10-06 · the + button
+  // is a UNIVERSAL NEX semantic (near-black background on every
+  // world · theme accent border/glow for integration). Same
+  // philosophy as the universal gold NEW badge: "add to this chat"
+  // must be instantly recognisable regardless of host theme.
+  const controls = engine.controlsTreatment();
   return (
     <button
       type="button"
@@ -1118,15 +1075,7 @@ function ComposerPlusButton({
       onClick={onTogglePlus}
       data-nex-se-composer-action="plus"
       data-nex-se-plus-toggle={plusOpen ? "open" : "closed"}
-      style={
-        plusOpen
-          ? {
-              ...btn,
-              background: `${c.primary}aa`,
-              border: `1px solid ${c.primary}`,
-            }
-          : btn
-      }
+      style={plusOpen ? controls.plusButtonActive : controls.plusButton}
     >
       <PlusIcon />
     </button>

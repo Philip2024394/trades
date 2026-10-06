@@ -93,6 +93,15 @@ export interface ComposerTreatment {
   focusAnimation: string | null;
 }
 
+// Re-export the ControlsTreatment contract from the pure resolver so
+// callers can `import { ControlsTreatment } from "../_engine/types"`
+// alongside the other engine types. See `./control-resolver.ts` for
+// the sealed Universal Theme Controls Rule the resolver implements.
+export type {
+  ControlsPalette,
+  ControlsTreatment,
+} from "./control-resolver";
+
 export interface EmojiTreatment {
   tileSize: number;
   tileStyle: React.CSSProperties;

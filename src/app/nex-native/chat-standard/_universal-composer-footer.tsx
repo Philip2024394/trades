@@ -19,18 +19,30 @@
 // Settings) so the + button on the right of the composer triggers the
 // same menu the Standard Experience shows.
 //
-// Theme-neutral defaults · NEX cyan. Callers pass accent/deep to tint
-// the overlay to the theme's identity.
+// Universal Theme Controls Rule · sealed 2026-10-06 · the composer
+// footer consumes `resolveControlsTreatment()` so its pill + send +
+// plus buttons use the SAME solid themed surface as the Standard
+// Experience shell's native composer. Pill is NO LONGER transparent
+// (sealed 2026-10-05's R3 revision 2 "outlined border only" is
+// EXPLICITLY SUPERSEDED).
 
 import * as React from "react";
+import { resolveControlsTreatment } from "./_engine/control-resolver";
 
 const NEX_CYAN = "#00AFFF";
+const NEX_SECONDARY = "#4FC3DC";
 const NEX_DEEP = "#020914";
 const NEX_HIGHLIGHT = "#F4F7FC";
 
 export interface UniversalComposerFooterProps {
   accent?: string;
   deep?: string;
+  /** Theme highlight · drives icon colour inside controls (auto-
+   *  contrasts for primary-filled send button). Defaults to NEX
+   *  highlight. */
+  highlight?: string;
+  /** Theme secondary · echoed to the resolver for consistency. */
+  secondary?: string;
   /** Optional send glyph · defaults to a paper-plane arrow. Themes may
    *  pass their signature glyph (🫧 for ocean · ☕ for coffee etc.) */
   sendGlyph?: React.ReactNode;
@@ -42,6 +54,8 @@ export interface UniversalComposerFooterProps {
 export function UniversalComposerFooter({
   accent = NEX_CYAN,
   deep = NEX_DEEP,
+  highlight = NEX_HIGHLIGHT,
+  secondary = NEX_SECONDARY,
   sendGlyph,
   themeId,
 }: UniversalComposerFooterProps): React.JSX.Element {
@@ -49,6 +63,12 @@ export function UniversalComposerFooter({
   const [emojiActive, setEmojiActive] = React.useState(false);
   const [plusOpen, setPlusOpen] = React.useState(false);
   const hasText = value.trim().length > 0;
+  const controls = resolveControlsTreatment({
+    primary: accent,
+    secondary,
+    highlight,
+    deep,
+  });
 
   return (
     <>
@@ -94,7 +114,7 @@ export function UniversalComposerFooter({
       >
         <div style={{ flex: 1, minWidth: 0, pointerEvents: "auto" }}>
           <ComposerPill
-            accent={accent}
+            controls={controls}
             value={value}
             onChange={setValue}
             onSend={() => {
@@ -105,8 +125,7 @@ export function UniversalComposerFooter({
           />
         </div>
         <SendButton
-          accent={accent}
-          deep={deep}
+          controls={controls}
           disabled={!hasText}
           onClick={() => {
             if (hasText) setValue("");
@@ -114,8 +133,7 @@ export function UniversalComposerFooter({
           glyph={sendGlyph}
         />
         <PlusButton
-          accent={accent}
-          deep={deep}
+          controls={controls}
           open={plusOpen}
           onToggle={() => setPlusOpen((v) => !v)}
         />
@@ -124,6 +142,7 @@ export function UniversalComposerFooter({
       <PlusMenu
         accent={accent}
         deep={deep}
+        highlight={highlight}
         open={plusOpen}
         onClose={() => setPlusOpen(false)}
         themeId={themeId}
@@ -132,30 +151,33 @@ export function UniversalComposerFooter({
   );
 }
 
+type ResolvedControls = ReturnType<typeof resolveControlsTreatment>;
+
 // ─── Composer input pill ────────────────────────────────────────────
 
 function ComposerPill({
-  accent,
+  controls,
   value,
   onChange,
   onSend,
   emojiActive,
   onToggleEmoji,
 }: {
-  accent: string;
+  controls: ResolvedControls;
   value: string;
   onChange: (v: string) => void;
   onSend: () => void;
   emojiActive: boolean;
   onToggleEmoji: () => void;
 }): React.JSX.Element {
+  const { primary, highlight } = controls.colors;
   const inlineIconStyle: React.CSSProperties = {
     width: 24,
     height: 24,
     borderRadius: 999,
     background: "transparent",
     border: "none",
-    color: NEX_HIGHLIGHT,
+    color: highlight,
     cursor: "pointer",
     display: "grid",
     placeItems: "center",
@@ -164,20 +186,7 @@ function ComposerPill({
     fontSize: 16,
   };
   return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        gap: 6,
-        padding: "0 10px",
-        height: 44,
-        borderRadius: 999,
-        // Pill fill removed 2026-10-05 · outlined border only ·
-        // matches the Standard Experience composer treatment.
-        background: "transparent",
-        border: `1px solid ${accent}55`,
-      }}
-    >
+    <div style={controls.composerContainer}>
       <button
         type="button"
         aria-label={emojiActive ? "Close picker" : "Open emoji picker"}
@@ -185,7 +194,7 @@ function ComposerPill({
         onClick={onToggleEmoji}
         style={{
           ...inlineIconStyle,
-          background: emojiActive ? `${accent}aa` : "transparent",
+          background: emojiActive ? primary : "transparent",
         }}
       >
         {emojiActive ? "×" : "😊"}
@@ -195,7 +204,7 @@ function ComposerPill({
         style={{
           width: 1,
           height: 20,
-          background: `${NEX_HIGHLIGHT}44`,
+          background: `${highlight}44`,
           margin: "0 2px",
           flexShrink: 0,
         }}
@@ -231,7 +240,7 @@ function ComposerPill({
           background: "transparent",
           border: "none",
           outline: "none",
-          color: NEX_HIGHLIGHT,
+          color: highlight,
           fontSize: 13,
           fontFamily: "inherit",
           paddingLeft: 6,
@@ -244,14 +253,12 @@ function ComposerPill({
 // ─── Send button ────────────────────────────────────────────────────
 
 function SendButton({
-  accent,
-  deep,
+  controls,
   disabled,
   onClick,
   glyph,
 }: {
-  accent: string;
-  deep: string;
+  controls: ResolvedControls;
   disabled: boolean;
   onClick: () => void;
   glyph?: React.ReactNode;
@@ -262,30 +269,7 @@ function SendButton({
       aria-label="Send"
       disabled={disabled}
       onClick={onClick}
-      style={{
-        width: 40,
-        height: 40,
-        borderRadius: 999,
-        display: "grid",
-        placeItems: "center",
-        cursor: disabled ? "default" : "pointer",
-        flexShrink: 0,
-        padding: 0,
-        pointerEvents: "auto",
-        background: disabled
-          ? `${accent}44`
-          : `linear-gradient(180deg, ${accent}, ${accent}dd)`,
-        border: `1px solid ${accent}`,
-        color: deep,
-        fontSize: 16,
-        fontWeight: 800,
-        opacity: disabled ? 0.55 : 1,
-        boxShadow: disabled
-          ? "none"
-          : `0 4px 12px ${accent}55, inset 0 1px 1px rgba(255,255,255,0.3)`,
-        transition:
-          "background 160ms ease-out, opacity 160ms ease-out, box-shadow 160ms ease-out",
-      }}
+      style={{ ...controls.sendButton(disabled), pointerEvents: "auto" }}
     >
       {glyph ?? <SendIcon />}
     </button>
@@ -295,13 +279,11 @@ function SendButton({
 // ─── Plus button ────────────────────────────────────────────────────
 
 function PlusButton({
-  accent,
-  deep: _deep,
+  controls,
   open,
   onToggle,
 }: {
-  accent: string;
-  deep: string;
+  controls: ResolvedControls;
   open: boolean;
   onToggle: () => void;
 }): React.JSX.Element {
@@ -312,19 +294,8 @@ function PlusButton({
       aria-pressed={open}
       onClick={onToggle}
       style={{
-        width: 40,
-        height: 40,
-        borderRadius: 999,
-        display: "grid",
-        placeItems: "center",
-        cursor: "pointer",
-        flexShrink: 0,
-        padding: 0,
+        ...(open ? controls.plusButtonActive : controls.plusButton),
         pointerEvents: "auto",
-        background: open ? `${accent}aa` : `${accent}22`,
-        border: open ? `1px solid ${accent}` : `1px solid ${accent}99`,
-        color: NEX_HIGHLIGHT,
-        transition: "background 160ms ease-out, border 160ms ease-out",
       }}
     >
       <PlusIcon />
@@ -337,12 +308,14 @@ function PlusButton({
 function PlusMenu({
   accent,
   deep,
+  highlight,
   open,
   onClose,
   themeId,
 }: {
   accent: string;
   deep: string;
+  highlight: string;
   open: boolean;
   onClose: () => void;
   themeId?: string;
@@ -358,7 +331,7 @@ function PlusMenu({
     borderRadius: 16,
     border: `1px solid ${accent}66`,
     background: `${accent}1a`,
-    color: NEX_HIGHLIGHT,
+    color: highlight,
     cursor: "pointer",
     textAlign: "center",
     fontFamily: "inherit",
@@ -372,7 +345,7 @@ function PlusMenu({
     display: "grid",
     placeItems: "center",
     background: `linear-gradient(135deg, ${accent}, ${accent}aa)`,
-    color: NEX_HIGHLIGHT,
+    color: highlight,
     boxShadow: `0 4px 12px ${accent}55`,
   };
   return (
@@ -418,7 +391,7 @@ function PlusMenu({
           transition: "transform 240ms cubic-bezier(0.2, 0.9, 0.3, 1.1)",
         }}
       >
-        <div style={{ fontSize: 13, fontWeight: 700, color: NEX_HIGHLIGHT, textAlign: "center" }}>
+        <div style={{ fontSize: 13, fontWeight: 700, color: highlight, textAlign: "center" }}>
           Add to this chat
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10, justifyItems: "center" }}>
@@ -450,9 +423,9 @@ function PlusMenu({
             alignSelf: "center",
             padding: "6px 14px",
             borderRadius: 999,
-            border: `1px solid ${NEX_HIGHLIGHT}33`,
+            border: `1px solid ${highlight}33`,
             background: "transparent",
-            color: NEX_HIGHLIGHT,
+            color: highlight,
             fontSize: 11,
             cursor: "pointer",
           }}

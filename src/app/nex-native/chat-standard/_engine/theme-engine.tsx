@@ -33,6 +33,10 @@ import {
 } from "./types";
 import { generateStickerSet } from "./sticker-generator";
 import { FALLBACK_FADE_IN, MOTION_TABLE, keyframesFor } from "./motion-library";
+import {
+  resolveControlsTreatment,
+  type ControlsTreatment,
+} from "./control-resolver";
 
 // ─── Default colour system ──────────────────────────────────────────
 
@@ -79,6 +83,7 @@ export interface ResolvedEngine {
   // Surface treatments
   bubbleTreatment(args: { mine: boolean; isReacting?: boolean }): BubbleTreatment;
   composerTreatment(): ComposerTreatment;
+  controlsTreatment(): ControlsTreatment;
   emojiTreatment(): EmojiTreatment;
   stickerTreatment(): StickerTreatment;
   ambientTreatment(): AmbientTreatment;
@@ -267,10 +272,15 @@ export function createEngine(pkg: ThemePackage): ResolvedEngine {
         gap: 8,
         padding: "9px 12px",
         borderRadius,
-        // Pill fill removed 2026-10-05 · R3 revision 2 refinement ·
-        // the composer pill is now an outlined border only · chat
-        // area / ambient layer shows through for a lighter composer.
-        background: "transparent",
+        // SEALED 2026-10-06 (Universal Theme Controls Rule) · the
+        // sealed-away `background: "transparent"` (R3 revision 2,
+        // 2026-10-05) is EXPLICITLY SUPERSEDED by this rule · the
+        // composer container is now solid themed so controls stay
+        // visible on every wallpaper. containerBg is the resolved
+        // bubble material background for the active theme · it's
+        // theme-coherent (water for Ocean, parchment for French Café
+        // etc.) rather than a flat deep.
+        background: containerBg,
         border: containerBorder,
         boxShadow: containerBoxShadow,
         // Perceptible-during-use motion · water gets a shimmer with a
@@ -529,12 +539,17 @@ export function createEngine(pkg: ThemePackage): ResolvedEngine {
     return null;
   }
 
+  function controlsTreatment(): ControlsTreatment {
+    return resolveControlsTreatment(colours);
+  }
+
   return {
     package: pkg,
     personality,
     colours,
     bubbleTreatment,
     composerTreatment,
+    controlsTreatment,
     emojiTreatment,
     stickerTreatment,
     ambientTreatment,
