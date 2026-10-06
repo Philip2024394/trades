@@ -21,6 +21,7 @@ import { mapChatThemeToDoorwaySlug } from "./_resolve-theme";
 import { NEX, GLASS, GLASS_CHIP } from "./_palette";
 import { VaultQuickActions } from "./_upload-dialog";
 import { LockVaultNowButton } from "./_lock-button-client";
+import { MigrationRunner } from "./_migration-runner-client";
 import {
   IconChats,
   IconDocument,
@@ -114,6 +115,7 @@ export default async function VaultWorkspaceHomePage() {
             zIndex: 1,
           }}
         >
+          <MigrationRunner />
           <Hero />
           <VaultQuickActions />
           <ChatsFriendsCard />
