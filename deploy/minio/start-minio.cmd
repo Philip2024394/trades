@@ -6,9 +6,9 @@ setlocal
 set MINIO_ROOT_USER=nex_admin
 set MINIO_ROOT_PASSWORD=NexStorageRockSolid2026!!
 set MINIO_REGION=eu-west
-set MINIO_DIR=C:\Users\Victus\trades\deploy\minio
-set MINIO_DATA=C:\Users\Victus\trades\deploy\minio\data
-set MINIO_LOG=C:\Users\Victus\trades\deploy\minio\minio-server.log
+set MINIO_DIR=D:\trades\deploy\minio
+set MINIO_DATA=D:\trades\deploy\minio\data
+set MINIO_LOG=D:\trades\deploy\minio\minio-server.log
 
 REM Check if already running
 powershell -NoProfile -Command "if (Get-NetTCPConnection -LocalPort 9000 -State Listen -ErrorAction SilentlyContinue) { exit 0 } else { exit 1 }"
