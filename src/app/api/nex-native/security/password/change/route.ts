@@ -19,6 +19,7 @@ import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
 import { nexSupabaseAdmin } from "@/lib/nex-native/supabase-admin";
 import { logSignInEvent } from "@/lib/nex-native/security-service";
 import { readClientIp, readUserAgent } from "@/lib/nex-native/app/security-request";
+import { clearAllStepUpForAccount } from "@/lib/nex-native/vault/step-up-service";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -115,6 +116,14 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       { status: 400 },
     );
   }
+
+  // Vault Phase A · design §G.1 password-reset lock sweep. Password
+  // change is a high-risk security event; every active session for this
+  // account must drop its Vault-unlock freshness (and the two step-up
+  // factor timestamps) so sensitive Vault ops require re-authentication.
+  // Keeps Vault envelopes / files / devices intact (per design) ·
+  // password reset ≠ Vault destruction.
+  await clearAllStepUpForAccount(session.account.id);
 
   // Audit · successful password change.
   await logSignInEvent({
