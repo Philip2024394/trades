@@ -59,7 +59,8 @@ export type BrainCapability =
   | "governance"
   | "adaptation"
   | "long_term_memory"
-  | "personality";
+  | "personality"
+  | "theme_intelligence";
 
 export type CapabilityStatus = "GREEN" | "PARTIAL" | "MISSING";
 
@@ -257,6 +258,21 @@ const REGISTRY: readonly CapabilityRecord[] = [
     files: ["src/lib/nex/brain/adaptation.ts", "src/lib/nex/brain/orchestrate.ts"],
     activatesWhen: "every gated-reply turn after Initiative · reads Learning ledger for this conversation",
     notes: "Stage 3.25 · closes second loop (Learning → Adaptation) · 4 pattern kinds: repeated_gap_scope (≥2 same-scope gaps) · frequent_corrections (≥2 slot changes) · recurring_reflection_failure (≥2 same-check failures) · persistent_low_confidence (≥3 low-conf turns) · Reads recentLearningForConversation() · window 20 · v1 observational · attaches AdaptationReport{signals[],hasSignals,summary} · v2 composer would consume adjustments to actually change reply text · Bounded thresholds prevent noise" },
+  { id: "theme_intelligence",   name: "Theme Intelligence",    baby: "Choose and build worlds that match the business",
+    status: "PARTIAL",
+    files: [
+      "src/lib/nex/theme-brain/index.ts",
+      "src/lib/nex/theme-brain/intent.ts",
+      "src/lib/nex/theme-brain/vocabulary.ts",
+      "src/lib/nex/theme-brain/vocabulary-selector.ts",
+      "src/lib/nex/theme-brain/capability-validator.ts",
+      "src/lib/nex/theme-brain/package-compiler.ts",
+      "src/lib/nex/theme-brain/authority.ts",
+      "src/lib/nex/theme-brain/capability.ts",
+      "src/lib/nex-native/theme-package/types.ts",
+    ],
+    activatesWhen: "a caller invokes requestThemeProposal via the shared capability contract (NEX Chat / worker / agent)",
+    notes: "Phase 1 (sealed 2026-10-05) · reasoning-only · emits ThemePackage proposals + missing_capability reports · uses NexBrainProvider when supplied · NEVER publishes a world (execute.theme_publish denied by DEFAULT_POLICY) · NEVER modifies engine vocabulary (write.theme_vocabulary denied) · Four-layer architecture: Brain reasons → ThemePackage declares → Theme Engine resolves → Standard NEX Experience renders · Core-owned contract at src/lib/nex-native/theme-package/types.ts (zero React deps) keeps Brain decoupled from UI layer per sealed dependency direction" },
 ];
 
 export function listCapabilities(): readonly CapabilityRecord[] {

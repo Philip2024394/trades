@@ -10,8 +10,8 @@ import {
 } from "./capabilities";
 
 describe("Brain Capability Registry", () => {
-  it("registers all 34 canonical capabilities", () => {
-    expect(listCapabilities()).toHaveLength(43); // 34 canonical + meta_cognition + entity_intelligence + reference_resolution + comparison + recommendation + governance + adaptation + long_term_memory + personality (3.30)
+  it("registers all canonical capabilities", () => {
+    expect(listCapabilities()).toHaveLength(44); // 43 pre-Theme-Brain + theme_intelligence (Phase 1 · sealed 2026-10-05)
   });
 
   it("every capability has an id, name, baby description, and status", () => {
@@ -38,7 +38,7 @@ describe("Brain Capability Registry", () => {
   it("summary counts add up to total", () => {
     const s = capabilitySummary();
     expect(s.GREEN + s.PARTIAL + s.MISSING).toBe(s.total);
-    expect(s.total).toBe(43);
+    expect(s.total).toBe(44);
   });
 
   it("core capabilities that should be GREEN post-Phase-2 are GREEN", () => {

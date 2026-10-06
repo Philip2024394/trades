@@ -32,7 +32,10 @@ export type Permission =
   | "execute.user_action"       // future · book/buy/message/etc against a reference
   | "call.live_source"          // BMKG / OSM live fetches
   | "call.external_llm"         // Qwen (UK staircase) / future LLMs
-  | "read.image_bytes";         // future · image content processing
+  | "read.image_bytes"          // future · image content processing
+  | "request.theme_proposal"    // Theme Brain · request a ThemePackage proposal / refine / validate
+  | "execute.theme_publish"     // Theme Brain · publish a world (founder-gated · deny by default)
+  | "write.theme_vocabulary";   // Theme Brain · modify engine vocabulary (founder-gated · deny by default)
 
 export type GovernanceDecision = "allow" | "deny" | "require_consent";
 
@@ -57,6 +60,9 @@ export const DEFAULT_POLICY: GovernancePolicy = {
     "write.long_term_memory": "require_consent",
     "execute.user_action": "require_consent",
     "read.image_bytes": "require_consent",
+    "request.theme_proposal": "allow",
+    "execute.theme_publish": "deny",
+    "write.theme_vocabulary": "deny",
   },
 };
 
@@ -76,6 +82,9 @@ export const STRICT_POLICY: GovernancePolicy = {
     "write.long_term_memory": "deny",
     "execute.user_action": "deny",
     "read.image_bytes": "deny",
+    "request.theme_proposal": "require_consent",
+    "execute.theme_publish": "deny",
+    "write.theme_vocabulary": "deny",
   },
 };
 
