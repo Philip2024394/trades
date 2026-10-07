@@ -54,6 +54,20 @@ export const I18N_KEYS = [
   "signon.welcome",
   "signon.continueBtn",
   "signon.guestBtn",
+
+  // ─── Settings · Language picker (Phase B.7 P1-P3 dogfood) ───
+  //     Minimal set required to migrate /nex-native/settings/
+  //     language/page.tsx off its hard-coded COPY map so the pipe
+  //     is proven end-to-end. Zero speculative keys here · every
+  //     entry below has an actual call-site in the migrated page.
+  "settings.language.eyebrow",
+  "settings.language.title",
+  "settings.language.lede",
+  "settings.language.save",
+  "settings.language.id_label",
+  "settings.language.id_blurb",
+  "settings.language.en_label",
+  "settings.language.en_blurb",
 ] as const;
 
 export type I18nKey = (typeof I18N_KEYS)[number];

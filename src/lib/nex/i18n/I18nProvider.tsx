@@ -21,8 +21,8 @@
 
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { type Lang, DEFAULT_LANG, resolveClientLang, writeClientLang } from "./lang";
+import { PACKS } from "./supported-locales";
 import { EN_PACK } from "./packs/en";
-import { ID_PACK } from "./packs/id";
 import type { I18nKey } from "./keys";
 
 type I18nContextValue = {
@@ -32,11 +32,6 @@ type I18nContextValue = {
 };
 
 const I18nContext = createContext<I18nContextValue | null>(null);
-
-const PACKS: Record<Lang, Record<I18nKey, string>> = {
-  en: EN_PACK,
-  id: ID_PACK,
-};
 
 export function I18nProvider({
   children,

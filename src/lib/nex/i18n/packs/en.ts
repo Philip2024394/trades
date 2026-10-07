@@ -40,4 +40,14 @@ export const EN_PACK: Record<I18nKey, string> = {
   "signon.welcome":     "Welcome",
   "signon.continueBtn": "Continue",
   "signon.guestBtn":    "Continue as guest",
+
+  // Settings · Language picker (Phase B.7 P1-P3 dogfood)
+  "settings.language.eyebrow":  "Language",
+  "settings.language.title":    "Choose your NEX language",
+  "settings.language.lede":     "Applies to the Safe-trade modal, Terms of Service, and every bilingual surface. You can change this any time.",
+  "settings.language.save":     "Save preference",
+  "settings.language.id_label": "Bahasa Indonesia",
+  "settings.language.id_blurb": "Default for the Indonesian market · recommended",
+  "settings.language.en_label": "English",
+  "settings.language.en_blurb": "For international sellers and buyers",
 };

@@ -16,7 +16,13 @@ import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
 import { updateAccountLocaleAction } from "../../_actions";
-import { resolveLocale } from "@/lib/nex-native/i18n/safe-trade-strings";
+// Phase B.7 · dogfood proof · this page now reads from the universal
+// NEX i18n registry rather than its own hard-coded COPY map. The
+// sealed `safe-trade-strings.resolveLocale` is replaced by the
+// universal `resolveServerLocale` which uses the single
+// authoritative DEFAULT_LANG (`"id"`). Translation strings come
+// from the same packs the client `useT` hook consumes.
+import { resolveServerLocale, tFor } from "@/lib/nex/i18n/server";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -35,28 +41,13 @@ const NEX = {
   green: "#16D66B",
 };
 
-const COPY = {
-  id: {
-    eyebrow: "Bahasa",
-    title: "Pilih bahasa NEX",
-    lede: "Berlaku untuk modal Aman Bertransaksi, ketentuan layanan, dan setiap surface yang mendukung dua bahasa. Kamu bisa mengubahnya kapan saja.",
-    save: "Simpan pilihan",
-    id_label: "Bahasa Indonesia",
-    id_blurb: "Default untuk pasar Indonesia · direkomendasikan",
-    en_label: "English",
-    en_blurb: "For international sellers and buyers",
-  },
-  en: {
-    eyebrow: "Language",
-    title: "Choose your NEX language",
-    lede: "Applies to the Safe-trade modal, Terms of Service, and every bilingual surface. You can change this any time.",
-    save: "Save preference",
-    id_label: "Bahasa Indonesia",
-    id_blurb: "Default for the Indonesian market · recommended",
-    en_label: "English",
-    en_blurb: "For international sellers and buyers",
-  },
-} as const;
+// Phase B.7 · the hard-coded COPY map that used to live here has
+// been removed · strings now come from `t("settings.language.*",
+// locale)` through the shared NEX i18n registry (keys registered in
+// `src/lib/nex/i18n/keys.ts` · translations in `packs/en.ts` +
+// `packs/id.ts`). Adding another supported locale is now one
+// registry edit + one pack file · zero changes required to this
+// page.
 
 export default async function LanguageSettingsPage({
   searchParams,
@@ -68,12 +59,12 @@ export default async function LanguageSettingsPage({
 
   const sp = await searchParams;
   const acceptLanguage = (await headers()).get("accept-language");
-  const locale = resolveLocale({
+  const locale = resolveServerLocale({
     urlParam: sp.lang ?? null,
     accountLocale: session.account.locale ?? null,
     acceptLanguage,
   });
-  const copy = COPY[locale];
+  const t = tFor(locale);
   const current = session.account.locale ?? null;
 
   return (
@@ -122,7 +113,7 @@ export default async function LanguageSettingsPage({
             marginBottom: 10,
           }}
         >
-          {copy.eyebrow}
+          {t("settings.language.eyebrow")}
         </div>
         <h1
           style={{
@@ -136,7 +127,7 @@ export default async function LanguageSettingsPage({
             marginBottom: 12,
           }}
         >
-          {copy.title}
+          {t("settings.language.title")}
         </h1>
         <p
           style={{
@@ -147,7 +138,7 @@ export default async function LanguageSettingsPage({
             marginBottom: 26,
           }}
         >
-          {copy.lede}
+          {t("settings.language.lede")}
         </p>
 
         {sp.locale_error && (
@@ -178,15 +169,15 @@ export default async function LanguageSettingsPage({
           />
           <LocaleOption
             value="id"
-            label={copy.id_label}
-            blurb={copy.id_blurb}
+            label={t("settings.language.id_label")}
+            blurb={t("settings.language.id_blurb")}
             emoji="🇮🇩"
             checked={current === "id"}
           />
           <LocaleOption
             value="en"
-            label={copy.en_label}
-            blurb={copy.en_blurb}
+            label={t("settings.language.en_label")}
+            blurb={t("settings.language.en_blurb")}
             emoji="🌏"
             checked={current === "en"}
           />
@@ -210,7 +201,7 @@ export default async function LanguageSettingsPage({
                 "0 10px 24px rgba(255,114,0,0.35), inset 0 1px 0 rgba(255,255,255,0.28)",
             }}
           >
-            {copy.save}
+            {t("settings.language.save")}
           </button>
         </form>
       </main>

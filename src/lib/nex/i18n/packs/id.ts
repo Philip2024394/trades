@@ -40,4 +40,14 @@ export const ID_PACK: Record<I18nKey, string> = {
   "signon.welcome":     "Selamat datang",
   "signon.continueBtn": "Lanjutkan",
   "signon.guestBtn":    "Lanjutkan sebagai tamu",
+
+  // Settings · Pemilih bahasa (Phase B.7 P1-P3 dogfood)
+  "settings.language.eyebrow":  "Bahasa",
+  "settings.language.title":    "Pilih bahasa NEX",
+  "settings.language.lede":     "Berlaku untuk modal Aman Bertransaksi, ketentuan layanan, dan setiap surface yang mendukung dua bahasa. Kamu bisa mengubahnya kapan saja.",
+  "settings.language.save":     "Simpan pilihan",
+  "settings.language.id_label": "Bahasa Indonesia",
+  "settings.language.id_blurb": "Default untuk pasar Indonesia · direkomendasikan",
+  "settings.language.en_label": "English",
+  "settings.language.en_blurb": "For international sellers and buyers",
 };
