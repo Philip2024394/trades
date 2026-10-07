@@ -1,8 +1,10 @@
 // src/app/nex-native/vault/home/documents/page.tsx
 
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
 import * as vaultFileService from "@/lib/nex-native/vault-file-service";
+import { resolveServerLocale, tFor } from "@/lib/nex/i18n/server";
 import { RoomShell, EmptyState } from "../_room-shell";
 import { IconDocument } from "../_room-icons";
 import { mapChatThemeToDoorwaySlug } from "../_resolve-theme";
@@ -23,21 +25,27 @@ export default async function VaultDocumentsRoom() {
     session.account.id,
     "documents",
   );
+  const headerBag = await headers();
+  const locale = resolveServerLocale({
+    accountLocale: (session.account.locale as string | null) ?? null,
+    acceptLanguage: headerBag.get("accept-language"),
+  });
+  const t = tFor(locale);
   return (
     <RoomShell
-      title="Documents"
-      subtitle="Contracts, manuals, reports"
+      title={t("vault.files.rooms.documents.title")}
+      subtitle={t("vault.files.rooms.documents.subtitle")}
       themeSlug={themeSlug}
     >
       {files.length === 0 ? (
         <EmptyState
           icon={<IconDocument />}
-          title="No documents yet"
-          message="Upload contracts, manuals, reports and other documents here. They are visible only to you under your NEX account authentication."
-          footnote="Access-controlled storage · not yet end-to-end encrypted. Phase A ships that separately."
+          title={t("vault.files.rooms.documents.emptyTitle")}
+          message={t("vault.files.rooms.documents.emptyBody")}
+          footnote={t("vault.files.rooms.footnote")}
         />
       ) : (
-        <VaultFileList files={files} />
+        <VaultFileList files={files} lang={locale} />
       )}
     </RoomShell>
   );

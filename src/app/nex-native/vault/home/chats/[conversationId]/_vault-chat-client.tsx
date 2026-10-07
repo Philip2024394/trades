@@ -90,21 +90,24 @@ interface Props {
   initialMessages: InitialMessage[];
 }
 
-// ─── palette tokens (reused from Vault home · neutral · theme-safe) ─
+// ─── palette tokens ────────────────────────────────────────────────
+//
+// Master-pass 2026-10-07 · the local Vault-chat palette was a drift
+// from the sealed Vault interior palette · we now import the one
+// source of truth from `../../_palette`. This brings the chat
+// surface into NEX visual alignment (navy base + cyan protection
+// badge + orange brand accent) · bubble tokens are declared inline
+// here because they are chat-specific and derived from the shared
+// tokens.
+import { NEX as NEX_PALETTE } from "../../_palette";
 
 const NEX = {
-  bg: "#06040a",
-  bgGradient:
-    "radial-gradient(80% 60% at 50% 10%, rgba(60, 30, 50, 0.6), transparent 70%)",
-  textPrimary: "#F7EFE4",
-  textSecondary: "rgba(247, 239, 228, 0.72)",
-  textMuted: "rgba(247, 239, 228, 0.45)",
-  accent: "#FF8A2A",
-  accentSoft: "rgba(255, 138, 42, 0.14)",
-  accentStrong: "rgba(255, 138, 42, 0.4)",
-  glassBorder: "rgba(255, 255, 255, 0.08)",
-  bubbleOut: "rgba(255, 138, 42, 0.22)",
-  bubbleIn: "rgba(255, 255, 255, 0.07)",
+  ...NEX_PALETTE,
+  // Chat-specific bubble tokens · outgoing uses the brand orange
+  // (identity continuity) · incoming uses a translucent light
+  // overlay that reads against the navy base.
+  bubbleOut: "rgba(255, 114, 0, 0.22)",
+  bubbleIn: "rgba(125, 155, 192, 0.12)",
 };
 
 // ─── decrypted-message type (what we render) ────────────────────────
@@ -676,9 +679,9 @@ export function VaultChatClient(props: Props) {
               style={{
                 fontSize: 10,
                 letterSpacing: "0.18em",
-                color: NEX.accent,
-                border: `1px solid ${NEX.accentStrong}`,
-                background: NEX.accentSoft,
+                color: NEX.secure,
+                border: `1px solid ${NEX.secureStrong}`,
+                background: NEX.secureSoft,
                 padding: "2px 6px",
                 borderRadius: 999,
                 marginLeft: 4,
@@ -705,17 +708,20 @@ export function VaultChatClient(props: Props) {
               // signal with no key material.
               lockVaultEverywhere();
             }}
+            aria-label={t("vault.chat.header.lockBtn")}
             style={{
-              background: "transparent",
-              border: `1px solid ${NEX.glassBorder}`,
-              color: NEX.textPrimary,
+              background: NEX.secureSoft,
+              border: `1px solid ${NEX.secureStrong}`,
+              color: NEX.secure,
               borderRadius: 999,
-              padding: "6px 10px",
+              padding: "6px 12px",
               fontSize: 11,
+              fontWeight: 600,
               display: "inline-flex",
               alignItems: "center",
               gap: 6,
               cursor: "pointer",
+              fontFamily: "inherit",
             }}
           >
             <Lock size={12} strokeWidth={1.8} /> {t("vault.chat.header.lockBtn")}
@@ -758,13 +764,14 @@ export function VaultChatClient(props: Props) {
               width: 72,
               height: 72,
               borderRadius: 999,
-              background: NEX.accentSoft,
-              color: NEX.accent,
+              background: NEX.secureSoft,
+              color: NEX.secure,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               marginBottom: 16,
-              border: `1px solid ${NEX.accentStrong}`,
+              border: `1px solid ${NEX.secureStrong}`,
+              boxShadow: `0 0 24px rgba(0, 175, 255, 0.18)`,
             }}
           >
             <Lock size={28} strokeWidth={1.6} />
@@ -931,10 +938,13 @@ export function VaultChatClient(props: Props) {
           position: "sticky",
           bottom: 0,
           padding: "10px 12px",
-          background: "rgba(6, 4, 10, 0.9)",
-          backdropFilter: "blur(12px)",
-          WebkitBackdropFilter: "blur(12px)",
-          borderTop: `1px solid ${NEX.glassBorder}`,
+          // Master-pass 2026-10-07 · solid composer surface (NEX
+          // navy, high-opacity) so + / send controls never visually
+          // disappear into the message area.
+          background: "rgba(3, 16, 29, 0.96)",
+          backdropFilter: "blur(14px) saturate(140%)",
+          WebkitBackdropFilter: "blur(14px) saturate(140%)",
+          borderTop: `1px solid ${NEX.glassBorderStrong}`,
           display: "flex",
           flexDirection: "column",
           gap: 6,
@@ -990,15 +1000,27 @@ export function VaultChatClient(props: Props) {
           <label
             data-nex-vault-chat-attach-label
             htmlFor="nex-vault-chat-file-input"
+            aria-label={t("vault.chat.composer.attachLabel")}
+            title={t("vault.chat.composer.attachLabel")}
             style={{
-              padding: "10px 12px",
+              // Master-pass · solid visible + button with cyan border
+              // so it reads clearly against the composer surface.
+              width: 40,
+              height: 40,
               borderRadius: 999,
-              border: `1px solid ${NEX.glassBorder}`,
-              background: "rgba(255,255,255,0.03)",
-              color: NEX.textSecondary,
-              fontSize: 14,
+              border: `1px solid ${NEX.secureStrong}`,
+              background: NEX.secureSoft,
+              color: NEX.secure,
+              fontSize: 20,
+              fontWeight: 400,
+              lineHeight: 1,
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
               cursor: phase === "ready" ? "pointer" : "not-allowed",
+              opacity: phase === "ready" ? 1 : 0.5,
               userSelect: "none",
+              flexShrink: 0,
             }}
           >
             +
@@ -1027,10 +1049,12 @@ export function VaultChatClient(props: Props) {
               flex: 1,
               padding: "10px 14px",
               borderRadius: 999,
-              border: `1px solid ${NEX.glassBorder}`,
-              background: "rgba(255,255,255,0.05)",
+              border: `1px solid ${NEX.glassBorderStrong}`,
+              background: "rgba(5, 22, 42, 0.78)",
               color: NEX.textPrimary,
               fontSize: 14,
+              fontFamily: "inherit",
+              outline: "none",
             }}
           />
           <button
@@ -1041,14 +1065,17 @@ export function VaultChatClient(props: Props) {
               (!draft.trim() && !pendingAttachment)
             }
             data-nex-vault-chat-send
+            aria-label={t("vault.chat.composer.sendBtn")}
             style={{
-              padding: "10px 16px",
+              padding: "10px 18px",
               borderRadius: 999,
               border: "none",
               background: NEX.accent,
               color: "#1A1300",
               fontSize: 13,
-              fontWeight: 600,
+              fontWeight: 700,
+              fontFamily: "inherit",
+              boxShadow: "0 4px 12px rgba(255, 114, 0, 0.35)",
               cursor:
                 sending ||
                 phase !== "ready" ||

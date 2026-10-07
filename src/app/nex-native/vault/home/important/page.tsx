@@ -1,8 +1,10 @@
 // src/app/nex-native/vault/home/important/page.tsx
 
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
 import * as vaultFileService from "@/lib/nex-native/vault-file-service";
+import { resolveServerLocale, tFor } from "@/lib/nex/i18n/server";
 import { RoomShell, EmptyState } from "../_room-shell";
 import { IconLock } from "../_room-icons";
 import { mapChatThemeToDoorwaySlug } from "../_resolve-theme";
@@ -23,21 +25,27 @@ export default async function VaultImportantRoom() {
     session.account.id,
     "important",
   );
+  const headerBag = await headers();
+  const locale = resolveServerLocale({
+    accountLocale: (session.account.locale as string | null) ?? null,
+    acceptLanguage: headerBag.get("accept-language"),
+  });
+  const t = tFor(locale);
   return (
     <RoomShell
-      title="Important"
-      subtitle="Items you flag as important"
+      title={t("vault.files.rooms.important.title")}
+      subtitle={t("vault.files.rooms.important.subtitle")}
       themeSlug={themeSlug}
     >
       {files.length === 0 ? (
         <EmptyState
           icon={<IconLock />}
-          title="Nothing marked important yet"
-          message="Store contracts, certificates, credentials and anything else you want fast access to. Only you can list them under your NEX account authentication."
-          footnote="Website passwords and recovery codes belong to the separate Vault Secrets surface (v1.1), not here."
+          title={t("vault.files.rooms.important.emptyTitle")}
+          message={t("vault.files.rooms.important.emptyBody")}
+          footnote={t("vault.files.rooms.footnote")}
         />
       ) : (
-        <VaultFileList files={files} />
+        <VaultFileList files={files} lang={locale} />
       )}
     </RoomShell>
   );

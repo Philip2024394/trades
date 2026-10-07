@@ -20,6 +20,7 @@ import {
   runMigrationQueue,
 } from "@/lib/nex-native/vault/client/legacy-migration";
 import { useVaultSession } from "@/lib/nex-native/vault/client/vault-session";
+import { useT } from "@/lib/nex/i18n/I18nProvider";
 
 type RunnerState =
   | { kind: "idle"; files: QueueFile[] }
@@ -27,6 +28,7 @@ type RunnerState =
   | { kind: "done"; migrated: number; failed: number };
 
 export function MigrationRunner() {
+  const t = useT();
   const vault = useVaultSession();
   const [state, setState] = useState<RunnerState>({
     kind: "idle",
@@ -104,9 +106,14 @@ export function MigrationRunner() {
           <p style={{ margin: 0, fontWeight: 600, fontSize: 13 }}>
             {state.failed === 0
               ? state.migrated === 1
-                ? "1 earlier file is now secured on this device."
-                : `${state.migrated} earlier files are now secured on this device.`
-              : `${state.migrated} secured · ${state.failed} need another try.`}
+                ? t("vault.migration.doneOne")
+                : t("vault.migration.doneManyTemplate").replace(
+                    "{count}",
+                    String(state.migrated),
+                  )
+              : t("vault.migration.doneMixedTemplate")
+                  .replace("{migrated}", String(state.migrated))
+                  .replace("{failed}", String(state.failed))}
           </p>
         </div>
         <button
@@ -114,7 +121,7 @@ export function MigrationRunner() {
           onClick={() => setState({ kind: "idle", files: [] })}
           style={bannerBtnStyle("ghost")}
         >
-          Dismiss
+          {t("vault.migration.dismissBtn")}
         </button>
       </section>
     );
@@ -128,7 +135,7 @@ export function MigrationRunner() {
       >
         <div>
           <p style={{ margin: 0, fontWeight: 600, fontSize: 13 }}>
-            Securing earlier files on this device…
+            {t("vault.migration.runnerBanner")}
           </p>
           <p
             style={{
@@ -137,7 +144,7 @@ export function MigrationRunner() {
               opacity: 0.8,
             }}
           >
-            This runs in the background while you use Vault.
+            {t("vault.migration.runnerSubtitle")}
           </p>
         </div>
       </section>
@@ -154,8 +161,11 @@ export function MigrationRunner() {
       <div>
         <p style={{ margin: 0, fontWeight: 600, fontSize: 13 }}>
           {state.files.length === 1
-            ? "1 file from earlier isn't secured on this device yet."
-            : `${state.files.length} files from earlier aren't secured on this device yet.`}
+            ? t("vault.migration.pendingOne")
+            : t("vault.migration.pendingManyTemplate").replace(
+                "{count}",
+                String(state.files.length),
+              )}
         </p>
         <p
           style={{
@@ -164,7 +174,7 @@ export function MigrationRunner() {
             opacity: 0.8,
           }}
         >
-          They&apos;ll be secured automatically while Vault is unlocked.
+          {t("vault.migration.pendingAutoNote")}
         </p>
       </div>
       <button
@@ -173,25 +183,29 @@ export function MigrationRunner() {
         onClick={run}
         style={bannerBtnStyle("primary")}
       >
-        Secure now
+        {t("vault.migration.secureNowBtn")}
       </button>
     </section>
   );
 }
 
+// Master-pass 2026-10-07 · banner tones now use NEX visual tokens:
+//   · warn    · brand orange (needs user attention · "Secure now")
+//   · info    · cyan secure accent (background work · "Securing…")
+//   · success · gentle green (migration done)
 function bannerStyle(tone: "info" | "warn" | "success"): React.CSSProperties {
   const toneColor =
     tone === "warn"
-      ? "rgba(255, 138, 42, 0.5)"
+      ? "rgba(255, 114, 0, 0.5)"
       : tone === "success"
         ? "rgba(100, 200, 120, 0.5)"
-        : "rgba(100, 160, 255, 0.5)";
+        : "rgba(0, 175, 255, 0.5)";
   const bg =
     tone === "warn"
-      ? "rgba(255, 138, 42, 0.08)"
+      ? "rgba(255, 114, 0, 0.08)"
       : tone === "success"
         ? "rgba(100, 200, 120, 0.08)"
-        : "rgba(100, 160, 255, 0.08)";
+        : "rgba(0, 175, 255, 0.08)";
   return {
     display: "flex",
     alignItems: "center",
@@ -201,7 +215,7 @@ function bannerStyle(tone: "info" | "warn" | "success"): React.CSSProperties {
     borderRadius: 12,
     border: `1px solid ${toneColor}`,
     background: bg,
-    color: "#F7EFE4",
+    color: "#F2F5F8",
     marginBottom: 12,
   };
 }
@@ -213,23 +227,25 @@ function bannerBtnStyle(
     return {
       padding: "8px 14px",
       borderRadius: 999,
-      background: "#FF8A2A",
-      color: "#F7EFE4",
+      background: "#FF7200",
+      color: "#1A1300",
       fontSize: 12.5,
-      fontWeight: 600,
+      fontWeight: 700,
       border: "none",
       cursor: "pointer",
       flexShrink: 0,
+      fontFamily: "inherit",
     };
   }
   return {
     padding: "6px 10px",
     borderRadius: 999,
     background: "transparent",
-    border: "1px solid rgba(255,255,255,0.2)",
-    color: "#F7EFE4",
+    border: "1px solid rgba(125, 155, 192, 0.26)",
+    color: "#F2F5F8",
     fontSize: 12,
     cursor: "pointer",
     flexShrink: 0,
+    fontFamily: "inherit",
   };
 }

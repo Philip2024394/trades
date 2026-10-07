@@ -3,6 +3,12 @@
 // Stage 5 · shared Vault file-row renderer. Used by every file room.
 // Glass-styled rows + Lucide extension badge + Open button that
 // requests a short-lived signed URL from the Stage 4 endpoint.
+//
+// Master-pass 2026-10-07 · dates now route through the universal
+// NEX formatter · the row renderer accepts a `lang` prop so the
+// relative-time phrase comes out in the viewer's chosen NEX
+// language. File-size units ("B", "KB", "MB", "GB") stay as ISO
+// units which are intentionally the same in every locale.
 
 import type { VaultFileRow } from "@/lib/nex-native/vault-file-service";
 import {
@@ -13,14 +19,20 @@ import {
   FileAudio,
   File as FileIcon,
 } from "lucide-react";
+import { formatRelativeFrom } from "@/lib/nex/i18n/format";
+import type { Lang } from "@/lib/nex/i18n/supported-locales";
 import { OpenVaultFileButton } from "./_open-vault-file-button";
 import { NEX, GLASS_CHIP } from "./_palette";
 
 interface Props {
   files: VaultFileRow[];
+  /** Resolved NEX locale · drives the relative-time rendering.
+   *  Callers resolve server-side via `resolveServerLocale(…)`. */
+  lang: Lang;
 }
 
-export function VaultFileList({ files }: Props) {
+export function VaultFileList({ files, lang }: Props) {
+  const now = new Date();
   return (
     <section
       data-nex-vault-file-list
@@ -82,7 +94,7 @@ export function VaultFileList({ files }: Props) {
                 color: NEX.textSecondary,
               }}
             >
-              {formatBytes(f.byte_size)} · {formatRelative(f.created_at)}
+              {formatBytes(f.byte_size)} · {formatRelativeFrom(f.created_at, lang, now)}
             </div>
           </div>
           <OpenVaultFileButton fileId={f.id} displayName={f.display_name} />
@@ -111,16 +123,7 @@ function formatBytes(n: number): string {
   return `${(n / (1024 * 1024 * 1024)).toFixed(2)} GB`;
 }
 
-function formatRelative(iso: string): string {
-  const now = Date.now();
-  const then = new Date(iso).getTime();
-  const diff = Math.max(0, Math.floor((now - then) / 1000));
-  if (diff < 60) return "just now";
-  if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
-  if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
-  if (diff < 7 * 86400) return `${Math.floor(diff / 86400)}d ago`;
-  return new Date(iso).toLocaleDateString("en-GB", {
-    day: "numeric",
-    month: "short",
-  });
-}
+// Legacy hand-rolled relative-time helper removed · superseded by
+// the Phase B.7 universal `formatRelativeFrom` which is locale-aware
+// via Intl.RelativeTimeFormat.
+

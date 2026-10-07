@@ -5,46 +5,91 @@
 // truth for interior tokens. Doorway personality still lives per-theme
 // at the doorway (§10.0.1); interior stays uniformly dark + glass.
 //
-// Design update 2026-10-03 · founder direction: deeper dark base,
-// glassmorphism panels and buttons, modern iconography. The glass
-// tokens are translucent colors meant to be combined with the
-// `backdropBlur` property on surfaces that want the frosted effect.
+// Design update 2026-10-07 · founder master-pass direction: Vault
+// must look like NEX. The underlying visual language now matches
+// `NEX_SETTINGS` (src/app/nex-native/settings/_settings-shell.tsx)
+// and `NexPageHeader` (navy base + cyan primary + orange identity).
+// Vault keeps its own identity through:
+//   · the lock iconography (sealed per-surface)
+//   · orange accent (brand continuity with the main NEX "X")
+//   · subtle cyan protection glow on secure surfaces
+//   · the glass-panel aesthetic
+// but the colour SYSTEM is now the same navy/cyan/orange trio the
+// rest of NEX uses. The result reads as "I'm inside NEX" not "I'm
+// in a different app".
+//
+// Colour hierarchy
+//   · base               · NEX deep navy
+//   · panel / glass      · translucent navy over the base
+//   · primary brand/CTA  · NEX orange (#FF7200) · continuity with "X"
+//   · secure accent      · NEX cyan   (#00AFFF) · lock/protection
+//   · text               · NEX off-white + steel-blue secondary
 
 export const NEX = {
-  // Deeper near-black base so the orange accent and the glass highlights
-  // feel properly recessed. (Prior value #0A0608.)
-  bg: "#06040A",
-  // Subtle warm radial glow painted behind the top of the viewport so the
-  // dark base doesn't read flat. Applied on home + room backgrounds via
-  // an aria-hidden layer so interactive surfaces still render over it.
+  // ── Base ────────────────────────────────────────────────────
+  //
+  // Matches NEX_SETTINGS.bg · the deep navy every NEX surface uses.
+  // Prior value `#06040A` (warm near-black) was Vault-specific and
+  // made the surface read as a different app.
+  bg: "#020914",
+
+  // Subtle cyan+orange radial glow painted behind the top of the
+  // viewport so the dark base doesn't read flat. Cyan dominates
+  // (secure identity) · orange softens the top (NEX brand).
   bgGradient:
-    "radial-gradient(90% 50% at 50% -10%, rgba(255, 138, 42, 0.08), transparent 72%)",
+    "radial-gradient(70% 50% at 50% -10%, rgba(0, 175, 255, 0.07), transparent 70%), radial-gradient(60% 50% at 50% 110%, rgba(255, 114, 0, 0.05), transparent 70%)",
 
-  // Translucent panels for glassmorphism. Combine with `backdropBlur`
-  // and `glassBorder` on each surface. For form controls where blur
+  // ── Panels / glass ──────────────────────────────────────────
+  //
+  // Translucent navy panels. Combine with `backdropBlur` and
+  // `glassBorder` on each surface. For form controls where blur
   // interferes with native rendering, use `panelSolid` instead.
-  panel: "rgba(22, 16, 12, 0.62)",
-  panelHigh: "rgba(30, 22, 18, 0.78)",
-  panelSolid: "#16100C",
-  panelSolidHigh: "#1E1612",
+  // Base hue sampled from NEX_SETTINGS.panel (#03101D).
+  panel: "rgba(3, 16, 29, 0.70)",
+  panelHigh: "rgba(5, 22, 38, 0.84)",
+  panelSolid: "#03101D",
+  panelSolidHigh: "#05162A",
 
-  textPrimary: "#F7EFE4",
-  textSecondary: "#C9B99E",
-  textMuted: "#8A7E6E",
-  accent: "#FF8A2A",
-  accentSoft: "rgba(255, 138, 42, 0.14)",
-  accentStrong: "rgba(255, 138, 42, 0.26)",
+  // ── Text hierarchy ──────────────────────────────────────────
+  //
+  // Mirrors NEX_SETTINGS text tokens for cross-surface consistency.
+  textPrimary: "#F2F5F8",
+  textSecondary: "#7D9BC0",
+  textMuted: "#526B89",
 
-  divider: "rgba(247, 239, 228, 0.10)",
-  glassBorder: "rgba(247, 239, 228, 0.08)",
-  glassBorderStrong: "rgba(247, 239, 228, 0.16)",
+  // ── Primary accent · NEX orange (brand continuity) ──────────
+  //
+  // Vault keeps the NEX "X" orange as its primary CTA / brand chip
+  // colour · same hue as the main NEX wordmark + the settings page
+  // CTA. This is what the Vault chip, prominent CTAs, and the
+  // Vault-specific brand chip use.
+  accent: "#FF7200",
+  accentSoft: "rgba(255, 114, 0, 0.14)",
+  accentStrong: "rgba(255, 114, 0, 0.34)",
 
-  // Shadows tuned for the translucent panels: a soft deep drop plus an
+  // ── Secure accent · NEX cyan (lock / protection) ────────────
+  //
+  // The protection / lock / encrypted-content indicator. Mirrors
+  // NexPageHeader + NEX_SETTINGS.cyan. Used for the Vault lock
+  // badge, encrypted-attachment chip rims, secure-state glow, and
+  // the "Locking Vault" overlay ring.
+  secure: "#00AFFF",
+  secureSoft: "rgba(0, 175, 255, 0.12)",
+  secureStrong: "rgba(0, 175, 255, 0.35)",
+
+  // ── Dividers / borders ──────────────────────────────────────
+  divider: "rgba(125, 155, 192, 0.14)",
+  glassBorder: "rgba(125, 155, 192, 0.14)",
+  glassBorderStrong: "rgba(125, 155, 192, 0.26)",
+
+  // ── Shadows ─────────────────────────────────────────────────
+  //
+  // Tuned for navy translucent panels: a soft deep drop plus an
   // inset top-edge highlight that reads as a glass bevel.
   cardShadow:
-    "0 1px 2px rgba(0,0,0,0.5), 0 14px 36px rgba(0,0,0,0.42), inset 0 1px 0 rgba(247,239,228,0.06)",
+    "0 1px 2px rgba(0,0,0,0.5), 0 14px 36px rgba(0,0,0,0.42), inset 0 1px 0 rgba(242,245,248,0.06)",
   chipShadow:
-    "0 1px 1px rgba(0,0,0,0.35), 0 6px 18px rgba(0,0,0,0.32), inset 0 1px 0 rgba(247,239,228,0.06)",
+    "0 1px 1px rgba(0,0,0,0.35), 0 6px 18px rgba(0,0,0,0.32), inset 0 1px 0 rgba(242,245,248,0.06)",
   pressedShadow:
     "0 1px 1px rgba(0,0,0,0.35), inset 0 1px 2px rgba(0,0,0,0.6)",
 
@@ -72,4 +117,13 @@ export const GLASS_CHIP: React.CSSProperties = {
   WebkitBackdropFilter: NEX.backdropBlur,
   border: `1px solid ${NEX.glassBorder}`,
   boxShadow: NEX.chipShadow,
+};
+
+/** Secure-state chip · for lock badges, protected-content pills, and
+ *  anywhere the UI needs to signal "this is encrypted / Vault-only".
+ *  Uses the cyan secure accent, NOT the brand orange. */
+export const SECURE_CHIP: React.CSSProperties = {
+  background: NEX.secureSoft,
+  color: NEX.secure,
+  border: `1px solid ${NEX.secureStrong}`,
 };
