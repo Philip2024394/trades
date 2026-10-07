@@ -13,6 +13,16 @@
 //   WBR8 · withBrainRoleStrict THROWS with code="pg-not-configured" when pool absent
 //   WBR9 · withBrainRoleStrict returns T (unwrapped) on success
 //   WBR10 · withBrainRoleStrict rethrows fn errors like the base helper
+//   WBR11 · (2026-10-07 regression) withBrainRoleStrict PASSES THROUGH
+//            null when the pool is available and fn legitimately returns
+//            null — previously the strict wrapper misreported "pg-not-
+//            configured" because it inferred availability from fn's
+//            return value, breaking PostgresObjectStorage.head() /
+//            .get() on missing keys and §M.3 reconciliation.
+//   WBR12 · (2026-10-07 regression) withBrainRoleStrict decides pool
+//            availability from getPool() BEFORE fn runs. If getPool
+//            returns null, fn must NOT run (no side effects) and the
+//            throw must be the "pg-not-configured" sentinel.
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -29,15 +39,23 @@ const requireFromHere = createRequire(import.meta.url);
 // Load the helper with a stubbed @/lib/nex/db so we control pool state
 // per-test. The real db.ts pulls in pg driver + env-var reads · we
 // only need withClient to be a function we can control.
-async function loadHelper(mockWithClient) {
+//
+// 2026-10-07 · withBrainRoleStrict now ALSO consults getPool() directly
+// to decide pool availability before running fn (see WBR11/WBR12). The
+// loader accepts an optional mockGetPool that returns null for the
+// "pool absent" cases and a truthy sentinel for the "pool present"
+// cases. When unspecified, defaults to a non-null sentinel so existing
+// base-helper tests keep passing with no edits.
+async function loadHelper(mockWithClient, mockGetPool) {
   const src = readFileSync(join(REPO, "src/lib/nex/db/with-brain-role.ts"), "utf8");
   const stripped = src.replace(/^export\s+/gm, "");
   const t = await esbuild.transform(stripped, { loader: "ts", format: "cjs", target: "node20" });
   const mod = { exports: {} };
+  const defaultGetPool = mockGetPool ?? (async () => ({ _sentinel: "pool-present" }));
   new Function("module", "process", "exports", "require",
     t.code + `\nmodule.exports = { withBrainRole, withBrainRoleStrict };`,
   )(mod, process, mod.exports, (id) => {
-    if (id === "@/lib/nex/db") return { withClient: mockWithClient };
+    if (id === "@/lib/nex/db") return { withClient: mockWithClient, getPool: defaultGetPool };
     // Wave 3 · H3 · with-brain-role.ts imports statement_timeout / idle_tx
     // config values from the shared timeouts module. The tests don't need the
     // real values · stub to defaults so call-count assertions stay stable.
@@ -169,7 +187,9 @@ test("WBR7 · ROLLBACK failure does not mask fn's original throw", async () => {
 // ── WBR8-WBR10 · withBrainRoleStrict ───────────────────────────────
 
 test("WBR8 · withBrainRoleStrict THROWS with code='pg-not-configured' when pool absent", async () => {
-  const { withBrainRoleStrict } = await loadHelper(async () => null);
+  // getPool returns null → strict wrapper throws BEFORE touching fn.
+  const client = makeFakeClient();
+  const { withBrainRoleStrict } = await loadHelper(fakeWithClient(client), async () => null);
   let caught = null;
   try {
     await withBrainRoleStrict(async () => 1, "test-context");
@@ -197,4 +217,45 @@ test("WBR10 · withBrainRoleStrict rethrows fn errors like the base helper", asy
   } catch (e) { caught = e; }
   assert.equal(caught.message, "y");
   assert.equal(caught.code, "y-code");
+});
+
+// ── WBR11-WBR12 · 2026-10-07 regression · pool-availability conflation ──
+
+test("WBR11 · withBrainRoleStrict PASSES THROUGH null when pool is available and fn returns null", async () => {
+  // Reproduces the exact bug surfaced by the A.6 Playwright proof:
+  // PostgresObjectStorage.head() on a missing key returns null from
+  // its inner function. The strict wrapper previously misread that
+  // null as "pool unavailable" and threw pg-not-configured. With the
+  // availability-first fix, a null from fn now returns null to the
+  // caller, letting head() correctly report "object not found".
+  const client = makeFakeClient();
+  const { withBrainRoleStrict } = await loadHelper(fakeWithClient(client));
+  const out = await withBrainRoleStrict(async () => null, "object-pg");
+  assert.equal(out, null, "null fn result must pass through when pool is live");
+});
+
+test("WBR12 · withBrainRoleStrict decides availability from getPool() BEFORE fn runs (no fn side-effects on absent pool)", async () => {
+  let fnRan = false;
+  const client = makeFakeClient();
+  const { withBrainRoleStrict } = await loadHelper(fakeWithClient(client), async () => null);
+  let caught = null;
+  try {
+    await withBrainRoleStrict(async () => {
+      fnRan = true;
+      return 1;
+    }, "test-context");
+  } catch (e) { caught = e; }
+  assert.ok(caught, "must throw when pool is unavailable");
+  assert.equal(caught.code, "pg-not-configured");
+  assert.equal(fnRan, false, "fn must NOT run when pool is unavailable · no side effects");
+  // No DB queries at all when pool is absent.
+  assert.equal(client.calls.length, 0, "no SQL queries fired when pool is absent");
+});
+
+test("WBR11b · withBrainRoleStrict preserves non-null falsy values when pool is live (0, empty string, false)", async () => {
+  const client = makeFakeClient();
+  const { withBrainRoleStrict } = await loadHelper(fakeWithClient(client));
+  assert.equal(await withBrainRoleStrict(async () => 0), 0);
+  assert.equal(await withBrainRoleStrict(async () => ""), "");
+  assert.equal(await withBrainRoleStrict(async () => false), false);
 });

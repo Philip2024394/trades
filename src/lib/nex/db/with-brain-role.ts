@@ -21,6 +21,13 @@
 //   withBrainRoleStrict(fn) · returns Promise<T>
 //                             · throws with .code="pg-not-configured" on null pool
 //                             · rethrows any error fn throws (after ROLLBACK)
+//                             · PASSES THROUGH fn's return value unchanged ·
+//                               including null · pool availability is decided
+//                               from getPool() BEFORE fn runs so the strict
+//                               wrapper never conflates "pool unavailable"
+//                               with "fn legitimately returned null" (surfaced
+//                               by PostgresObjectStorage.head() returning null
+//                               for missing keys · see 2026-10-07 audit)
 //
 // SAFETY
 //   · Every transaction is guaranteed to end in COMMIT or ROLLBACK
@@ -29,7 +36,7 @@
 //   · SET LOCAL ROLE is LOCAL to the transaction · never leaks across
 //     connection reuse in the pool
 
-import { withClient, type PgClientLike } from "@/lib/nex/db";
+import { getPool, withClient, type PgClientLike } from "@/lib/nex/db";
 // Wave 3 · H3 · SET LOCAL statement_timeout + idle_in_transaction_session_timeout
 // (T-1, T-4) — §4.2 of WAVE-3-H3-TIMEOUT-BUDGETS.md.
 import { statementTimeoutMs, idleInTransactionTimeoutMs } from "@/lib/nex/config/timeouts";
@@ -77,17 +84,30 @@ export async function withBrainRole<T>(fn: BrainRoleFn<T>): Promise<T | null> {
  * The thrown error carries `.code = "pg-not-configured"` so callers
  * can map it via the shared error envelope (`toClientError`) to the
  * standard `misconfigured` safe code.
+ *
+ * 2026-10-07 · Prior implementation checked `withBrainRole(fn) === null`
+ * to decide pool availability. That conflated two distinct meanings of
+ * null: (a) pool was absent, and (b) fn legitimately returned null.
+ * PostgresObjectStorage.head()/get() return null for missing keys · the
+ * strict wrapper then misreported infra unavailability on a healthy
+ * pool, so e.g. §M.3 reconciliation would fail on first encrypted-path
+ * HEAD. Fix: decide availability from getPool() BEFORE fn runs so fn's
+ * return value is business-valid regardless of its shape.
  */
 export async function withBrainRoleStrict<T>(fn: BrainRoleFn<T>, contextTag = "pg"): Promise<T> {
-  const result = await withBrainRole(fn);
-  if (result === null) {
+  const pool = await getPool();
+  if (!pool) {
     const err: Error & { code?: string } = new Error(
       `[${contextTag}] NEX_POSTGRES_URL not configured · this operation requires Postgres`,
     );
     err.code = "pg-not-configured";
     throw err;
   }
-  return result;
+  // Pool is available · fn's return value (including null) is business-
+  // valid. The cast is semantically safe: withBrainRole only returns
+  // null (a) when the pool is absent (ruled out above) or (b) when fn
+  // returns null (which is the legitimate T when T includes null).
+  return (await withBrainRole(fn)) as T;
 }
 
 // PgClientLike is re-exported via type alias so callers importing the
