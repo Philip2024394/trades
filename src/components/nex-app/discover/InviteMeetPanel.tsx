@@ -50,10 +50,15 @@ export type InviteMeetPanelProps = {
   /** Fires only when the (simulated) recipient accepts. Parent should
    *  navigate to Friends Chat. */
   onOpenFriendsChat?: (friendId: string) => void;
+  /** NEX Socials · lens-specific primary action label. Sourced from
+   *  the sealed intent catalog (`inviteCtaLabel`). Falls back to the
+   *  generic "Send invitation" when no lens is active. */
+  inviteCtaLabel?: string;
 };
 
 export function InviteMeetPanel({
   isOpen, onClose, profileRef, recipientMeetingPrefs, onOpenFriendsChat,
+  inviteCtaLabel,
 }: InviteMeetPanelProps) {
   const [phase, setPhase] = useState<Phase>("pick");
   const [choice, setChoice] = useState<MeetingPreferenceId | null>(null);
@@ -222,7 +227,7 @@ export function InviteMeetPanel({
                 }}
               >
                 <Send size={14} strokeWidth={2.2} />
-                Send invitation
+                {inviteCtaLabel ?? "Send invitation"}
               </button>
             )}
           </div>

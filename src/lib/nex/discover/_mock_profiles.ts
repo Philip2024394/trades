@@ -1,6 +1,15 @@
 // Mock discover profiles — V1 seed data so the Discover feed has
 // something visible while the real discovery backend is being built.
 // Photos from Unsplash. Every field placeholder-only.
+//
+// NEX Socials multi-intent tagging · founder-sealed 2026-10-07.
+// Each profile below carries `social_intents` from the exact same
+// `SocialIntent` catalog that production accounts will use (migration
+// 145 · nex_account.social_intents). This is DEMONSTRATION data only ·
+// it exercises the same filter path (`profile.social_intents` overlap
+// with the lens) that the real discover service will use when real
+// accounts are seeded via signup. There is NO mock-only intent
+// vocabulary · one engine for both pools.
 
 import type { DiscoverProfile } from "./_types";
 
@@ -19,6 +28,7 @@ export const MOCK_PROFILES: DiscoverProfile[] = [
     gender: "female", availability: "available_now", distance_km: 2,
     business_info: "Interior Design Studio",
     meeting_preferences: ["coffee", "walk", "meal"],
+    social_intents: ["business", "new_friends"],
   },
   {
     id: "james-leeds",
@@ -33,6 +43,7 @@ export const MOCK_PROFILES: DiscoverProfile[] = [
     gender: "male", availability: "available_this_week", distance_km: 62,
     business_info: "Joinery Workshop",
     meeting_preferences: ["meal", "drink", "office"],
+    social_intents: ["business"],
   },
   {
     id: "aisha-bristol",
@@ -47,6 +58,7 @@ export const MOCK_PROFILES: DiscoverProfile[] = [
     gender: "female", availability: "available_now", distance_km: 210,
     business_info: "Passive-House Architecture",
     meeting_preferences: ["coffee", "walk"],
+    social_intents: ["business", "new_friends", "dating"],
   },
   {
     id: "michael-birmingham",
@@ -61,6 +73,7 @@ export const MOCK_PROFILES: DiscoverProfile[] = [
     gender: "male", availability: "available_now", distance_km: 88,
     business_info: "Property Development",
     meeting_preferences: ["office", "meal", "golf"],
+    social_intents: ["business"],
   },
   {
     id: "priya-edinburgh",
@@ -72,7 +85,8 @@ export const MOCK_PROFILES: DiscoverProfile[] = [
     interests: ["Gardens", "Watercolour", "Vegan Food"],
     bio: "Small courtyards a speciality.",
     rating: 4, accepts_from: ["friends", "business", "community"],
-    gender: "female", availability: "available_this_week", distance_km: 320
+    gender: "female", availability: "available_this_week", distance_km: 320,
+    social_intents: ["business", "new_friends"],
   },
   {
     id: "tom-liverpool",
@@ -84,7 +98,8 @@ export const MOCK_PROFILES: DiscoverProfile[] = [
     interests: ["Music", "Running", "DIY"],
     bio: "18th Ed certified. Fair rates, fast turnaround.",
     rating: 5, accepts_from: ["business", "community"],
-    gender: "male", availability: "available_now", distance_km: 45
+    gender: "male", availability: "available_now", distance_km: 45,
+    social_intents: ["business", "nightlife"],
   },
   {
     id: "emma-manchester",
@@ -96,7 +111,8 @@ export const MOCK_PROFILES: DiscoverProfile[] = [
     interests: ["Portraits", "Coffee", "Vinyl"],
     bio: "Weddings + events. Booking dates flexibly.",
     rating: 5, accepts_from: ["friends", "business"],
-    gender: "female", availability: "available_now", distance_km: 3
+    gender: "female", availability: "available_now", distance_km: 3,
+    social_intents: ["business", "new_friends", "dating", "nightlife"],
   },
   {
     id: "daniel-stockport",
@@ -108,7 +124,8 @@ export const MOCK_PROFILES: DiscoverProfile[] = [
     interests: ["Football", "BBQ", "Dogs"],
     bio: "Same-day call-outs across Greater Manchester.",
     rating: 5, accepts_from: ["business", "community"],
-    gender: "male", availability: "available_now", distance_km: 8
+    gender: "male", availability: "available_now", distance_km: 8,
+    social_intents: ["business", "new_friends"],
   },
   {
     id: "olivia-altrincham",
@@ -120,7 +137,8 @@ export const MOCK_PROFILES: DiscoverProfile[] = [
     interests: ["Cooking", "Travel", "Wine"],
     bio: "Bespoke kitchens across the North West.",
     rating: 5, accepts_from: ["friends", "business"],
-    gender: "female", availability: "available_this_week", distance_km: 12
+    gender: "female", availability: "available_this_week", distance_km: 12,
+    social_intents: ["business", "new_friends", "dating"],
   },
   {
     id: "ben-manchester",
@@ -132,7 +150,8 @@ export const MOCK_PROFILES: DiscoverProfile[] = [
     interests: ["Cycling", "Art", "Craft Beer"],
     bio: "Ten years painting Manchester homes.",
     rating: 4, accepts_from: ["business", "community"],
-    gender: "male", availability: "available_now", distance_km: 4
+    gender: "male", availability: "available_now", distance_km: 4,
+    social_intents: ["business", "nightlife"],
   },
   {
     id: "hannah-salford",
@@ -144,7 +163,8 @@ export const MOCK_PROFILES: DiscoverProfile[] = [
     interests: ["Music", "Baking", "Cinema"],
     bio: "Loft-conversion calcs signed off in 48h.",
     rating: 5, accepts_from: ["business"],
-    gender: "female", availability: "available_this_week", distance_km: 6
+    gender: "female", availability: "available_this_week", distance_km: 6,
+    social_intents: ["business", "new_friends"],
   },
   {
     id: "adam-oldham",
@@ -156,7 +176,8 @@ export const MOCK_PROFILES: DiscoverProfile[] = [
     interests: ["Football", "DIY", "Fishing"],
     bio: "Slate + tile specialist. 20 years covering the North West.",
     rating: 5, accepts_from: ["business", "community"],
-    gender: "male", availability: "available_now", distance_km: 15
+    gender: "male", availability: "available_now", distance_km: 15,
+    social_intents: ["business", "nightlife"],
   },
 
   // ─── Businesses ────────────────────────────────────────────────
@@ -170,7 +191,8 @@ export const MOCK_PROFILES: DiscoverProfile[] = [
     interests: ["Oak", "Glass balustrades", "Loft conversions"],
     bio: "Bespoke and standard staircases across the North.",
     rating: 5, accepts_from: ["business", "community"],
-    availability: "available_this_week", distance_km: 5
+    availability: "available_this_week", distance_km: 5,
+    social_intents: ["business"],
   },
 
   // ─── Communities ───────────────────────────────────────────────
@@ -183,6 +205,7 @@ export const MOCK_PROFILES: DiscoverProfile[] = [
     interests: ["Self-build", "Planning", "Off-grid"],
     bio: "The UK's most active self-build community. Weekly meetups.",
     accepts_from: ["community", "anyone"],
-    availability: "available_now", distance_km: 0
+    availability: "available_now", distance_km: 0,
+    social_intents: ["business", "new_friends"],
   }
 ];

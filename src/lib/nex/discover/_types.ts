@@ -37,4 +37,11 @@ export type DiscoverProfile = {
    *  Social Card ONLY when present. Absent = we don't display an empty
    *  field. Never fabricated. */
   business_info?: string;
+  /** NEX Socials multi-intent membership · founder-sealed 2026-10-07.
+   *  Which of the four sealed Socials lenses this profile is visible
+   *  on. Uses the exact same `SocialIntent` type as the identity-layer
+   *  `nex_account.social_intents` column (migration 145) so the mock
+   *  pool and real-account pool share one vocabulary. Absent / empty
+   *  = not participating in NEX Socials. */
+  social_intents?: import("@/app/nex-native/nex-socials/_actions").SocialIntent[];
 };

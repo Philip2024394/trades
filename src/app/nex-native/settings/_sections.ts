@@ -69,11 +69,11 @@ export const SETTINGS_GROUPS: readonly SettingsGroupDef[] = [
     rows: [
       {
         key: "nex-socials",
-        href: "/nex-native/nex-socials/discover",
+        href: "/nex-native/nex-socials",
         emoji: "🌃",
         title: "NEX Socials",
         subtitle:
-          "Business openings · new friends · dating · nightlife partners · everyone around you",
+          "Business · new friends · dating · night life · everyone around you",
         highlighted: true,
       },
       {

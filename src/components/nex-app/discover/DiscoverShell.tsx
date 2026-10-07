@@ -16,15 +16,22 @@ import { FloatingProfileUniverse } from "./FloatingProfileUniverse";
 // Phase Social · Philip 2026-09-07 · new top discovery selector · sits
 // underneath the existing title strip · never removes anything.
 import { DiscoverySelector } from "./DiscoverySelector";
+// NEX Socials multi-intent · founder-sealed 2026-10-07 · pass through
+// the lens so the universal filter in FloatingProfileUniverse narrows
+// the pool to profiles whose social_intents overlaps the lens.
+import type { SocialIntent } from "@/app/nex-native/nex-socials/_actions";
 
 interface DiscoverShellProps {
   /** Legacy: previously portalled the surface into the phone-frame
    *  chassis. Retained for API compatibility; now ignored — Social
    *  always renders as a full-viewport fullscreen canvas. */
   inShell?: boolean;
+  /** NEX Socials lens · when set, the floating universe filters to
+   *  profiles whose `social_intents` overlaps the lens. */
+  intent?: SocialIntent;
 }
 
-export function DiscoverShell(_props: DiscoverShellProps = {}) {
+export function DiscoverShell({ intent }: DiscoverShellProps = {}) {
   // Master-pass follow-up 2026-10-07 · founder direction: NEX Socials
   // (floating profiles) is a night-life surface. The night-life hero
   // paints the full viewport behind the floating cards + the status
@@ -117,7 +124,7 @@ export function DiscoverShell(_props: DiscoverShellProps = {}) {
       </div>
 
       <div className="relative z-20 flex flex-1 flex-col">
-        <FloatingProfileUniverse />
+        <FloatingProfileUniverse intent={intent} />
       </div>
     </div>
   );

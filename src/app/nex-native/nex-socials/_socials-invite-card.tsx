@@ -34,39 +34,16 @@ const NEX = {
   orange: "#FF7200",
 };
 
-interface IntentOption {
-  intent: SocialIntent;
-  label: string;
-  emoji: string;
-  blurb: string;
-}
+// Signup chooser reads from the sealed single-source catalog so the
+// 4 labels + emojis + blurbs never drift between signup and landing.
+import { INTENT_CATALOG } from "./_intent-catalog";
 
-const OPTIONS: readonly IntentOption[] = [
-  {
-    intent: "business",
-    label: "Business",
-    emoji: "💼",
-    blurb: "Opening + growing · meet founders · suppliers · customers",
-  },
-  {
-    intent: "new_friends",
-    label: "New Friends",
-    emoji: "🤝",
-    blurb: "New city · new scene · just want good people around",
-  },
-  {
-    intent: "dating",
-    label: "Dating",
-    emoji: "💞",
-    blurb: "Open to meeting someone · relaxed, respectful introductions",
-  },
-  {
-    intent: "nightlife",
-    label: "Night Life partner",
-    emoji: "🌃",
-    blurb: "Bars · clubs · live music · never going out alone",
-  },
-] as const;
+const OPTIONS = INTENT_CATALOG.map((e) => ({
+  intent: e.intent,
+  label: e.displayLabel,
+  emoji: e.emoji,
+  blurb: e.blurb,
+}));
 
 interface Props {
   /** The route the server action redirects to after Save. Defaults to

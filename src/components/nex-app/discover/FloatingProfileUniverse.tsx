@@ -25,6 +25,9 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { MOCK_PROFILES } from "@/lib/nex/discover/_mock_profiles";
 import type { DiscoverProfile } from "@/lib/nex/discover/_types";
+// NEX Socials multi-intent filter · founder-sealed 2026-10-07.
+import type { SocialIntent } from "@/app/nex-native/nex-socials/_actions";
+import { INTENT_BY_TOKEN } from "@/app/nex-native/nex-socials/_intent-catalog";
 import { FloatingProfileCard, type CardController, type ActivityKind } from "./FloatingProfileCard";
 import { ConnectionSpeechCard } from "./ConnectionSpeechCard";
 import { ConnectDialog } from "./ConnectDialog";
@@ -92,7 +95,20 @@ const CATEGORIES = [
 
 const ACTIVITIES: ActivityKind[] = ["liked", "viewing", "sent-like", "new-match"];
 
-export function FloatingProfileUniverse() {
+export interface FloatingProfileUniverseProps {
+  /** NEX Socials lens · when set, the mock pool is filtered to
+   *  profiles whose `social_intents` overlaps the lens. Uses the exact
+   *  same `SocialIntent` catalog + predicate (`social_intents &&
+   *  ARRAY[intent]`) that the production discover service will use
+   *  against `nex_account.social_intents` (migration 145), so the mock
+   *  path and real path share one filter engine. Absent = no lens
+   *  filter (legacy behaviour). */
+  intent?: SocialIntent;
+}
+
+export function FloatingProfileUniverse({
+  intent,
+}: FloatingProfileUniverseProps = {}) {
   const canvasRef      = useRef<HTMLDivElement>(null);
   const cardsRef       = useRef<CardState[]>([]);
   const controllersRef = useRef<Map<string, CardController>>(new Map());
@@ -128,8 +144,21 @@ export function FloatingProfileUniverse() {
   }, [category]);
 
   const pool = useMemo(() => {
-    return MOCK_PROFILES.filter((p) => activeMatcher(p) && !dismissedProfileIds.has(p.id));
-  }, [activeMatcher, dismissedProfileIds]);
+    // Universal multi-intent filter · the sealed predicate (profile's
+    // `social_intents` overlaps the lens) is the exact same shape the
+    // production discover service will use against
+    // `nex_account.social_intents` (migration 145). No mock-only
+    // vocabulary · one engine for both pools.
+    const matchesIntent = (p: DiscoverProfile) =>
+      !intent ||
+      (p.social_intents != null && p.social_intents.includes(intent));
+    return MOCK_PROFILES.filter(
+      (p) =>
+        activeMatcher(p) &&
+        matchesIntent(p) &&
+        !dismissedProfileIds.has(p.id),
+    );
+  }, [activeMatcher, dismissedProfileIds, intent]);
 
   // ── Spawn helpers ──────────────────────────────────────────────
   function nextSlotId(): string {
@@ -561,6 +590,9 @@ export function FloatingProfileUniverse() {
             business_info: openConnect.business_info ?? null,
           } satisfies SocialProfileRef}
           recipientMeetingPrefs={normaliseMeetingPreferences(openConnect.meeting_preferences) as MeetingPreferenceId[]}
+          inviteCtaLabel={
+            intent ? INTENT_BY_TOKEN[intent].inviteCtaLabel : undefined
+          }
           onOpenFriendsChat={(friendId) => {
             // Friends Chat surface is a separate authorised slice.
             // Until it ships we deselect + close · the friend record
