@@ -118,7 +118,10 @@ const LEGACY_MARKETPLACE_PREFIXES = [
   "/tc/trade-center",
   "/tc/trade-counter"
 ];
-const MARKETPLACE_CANONICAL_PATH = "/nex-app/centre";
+// Founder-authorised 2026-10-07 · /nex-app route tree retired. The
+// legacy trade-counter redirects now land users on the canonical
+// /nex-native home rather than a dead marketplace surface.
+const MARKETPLACE_CANONICAL_PATH = "/nex-native/home";
 
 // Legacy Xrated affiliate cookie plumbing removed 2026-10-02.
 const ADMIN_PATH_PREFIXES = ["/admin", "/api/"];
@@ -265,12 +268,13 @@ export async function middleware(req: NextRequest): Promise<NextResponse> {
     }
   }
 
-  // Founder Phase 30 (2026-09-10) · NEX unification · founder confirmed
-  // canonical is /nexapp (no hyphen). /nex-app remains a mirror for
-  // backward compat. /nex/chat was a duplicate surface (wrong theme).
+  // Founder-authorised 2026-10-07 · retired the /nexapp + /nex-app
+  // experimental surfaces. Canonical NEX surface is /nex-native. The
+  // legacy /nex and /nex/chat deep-links now redirect to the canonical
+  // Nex Native home.
   if (pathname === "/nex/chat" || pathname === "/nex") {
     const target = req.nextUrl.clone();
-    target.pathname = "/nexapp";
+    target.pathname = "/nex-native/home";
     return attachCid(NextResponse.redirect(target, 302), cid);
   }
 

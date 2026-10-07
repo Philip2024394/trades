@@ -20,7 +20,7 @@ import { useRouter } from "next/navigation";
 
 const BG_URL = "/nex-socials/night-life-background.png";
 const INTRO_SRC = "/nex-socials/intro.mp4";
-const DISCOVER_HREF = "/nex-app/discover";
+const DISCOVER_HREF = "/nex-native/nex-socials/discover";
 
 const NEX_NAVY = "#020914";
 const NEX_ORANGE = "#FF7200";
