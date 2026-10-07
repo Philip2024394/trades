@@ -448,13 +448,10 @@ describe("B.2 · scope guards · nothing outside the authorised boundary", () =>
     expect(fs.existsSync(file)).toBe(false);
   });
 
-  test("no new Vault chat UI route (B.4 scope)", () => {
-    const uiDir = path.join(REPO_ROOT, "src/app/nex-native/vault/home/chats");
-    if (!fs.existsSync(uiDir)) return;
-    for (const name of fs.readdirSync(uiDir)) {
-      expect(name).not.toMatch(/^\[.*conversationId.*\]$/);
-    }
-  });
+  // The "no [conversationId] route" guard was B.2-time forward-looking.
+  // B.4 (commit b4) is explicitly authorised to build that route. The
+  // B.4 deterministic suite enforces the one-conversation rule going
+  // forward. Guard removed to avoid colliding with sealed B.4 scope.
 
   test("no new client orchestrator for move-to-Vault (B.5 scope)", () => {
     const file = path.join(

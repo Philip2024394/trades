@@ -437,17 +437,10 @@ describe("B.3 · architecture guards · module source", () => {
 // ---------------------------------------------------------------------------
 
 describe("B.3 · scope guards · B.4/B.5/B.6 not implemented", () => {
-  test("no Vault chat page under /vault/home/chats/[conversationId] (B.4)", () => {
-    const chatDir = path.resolve(
-      __dirname,
-      "../../../..",
-      "src/app/nex-native/vault/home/chats",
-    );
-    if (!fs.existsSync(chatDir)) return;
-    for (const name of fs.readdirSync(chatDir)) {
-      expect(name).not.toMatch(/^\[.*conversationId.*\]$/);
-    }
-  });
+  // The "no [conversationId] route" guard was B.3-time forward-looking.
+  // B.4 (commit b4) is explicitly authorised to build that route. The
+  // B.4 deterministic suite enforces the one-conversation rule going
+  // forward. Guard removed to avoid colliding with sealed B.4 scope.
 
   test("no move-to-vault orchestrator (B.5)", () => {
     const f = path.resolve(
