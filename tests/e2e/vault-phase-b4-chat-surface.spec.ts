@@ -327,10 +327,57 @@ test.describe("Vault Phase B.4 · canonical Vault chat surface", () => {
       await page.locator("[data-nex-vault-create]").click();
       await page.waitForURL(/\/vault\/home/, { timeout: 60_000 });
 
-      // 2. Hard-navigate to the canonical vault chat route · this wipes
-      //    the tab-scoped VMK (correct Phase A posture).
-      const chatUrl = `${BASE_URL}/nex-native/vault/home/chats/${conversationId}`;
-      await page.goto(chatUrl, { waitUntil: "networkidle" });
+      // 2a. Settings → Vault entry point.
+      //     The B.4 follow-up added a real "Vault" card under Storage &
+      //     Data that routes to /nex-native/vault/home. Prove it works
+      //     as a user-facing doorway rather than requiring the user to
+      //     know a /vault/home URL.
+      await page.goto(`${BASE_URL}/nex-native/settings`, {
+        waitUntil: "networkidle",
+      });
+      // Grep the Settings landing · the row must be visible and point
+      // at /vault/home · the title must say "Vault" (not "Storage")
+      // and the subtitle must not mention any commercial figure.
+      await expect(
+        page.getByRole("link", { name: /Vault/i }).first(),
+      ).toBeVisible({ timeout: 15_000 });
+      const vaultHref = await page
+        .locator('a[href="/nex-native/vault/home"]')
+        .first()
+        .getAttribute("href");
+      expect(vaultHref).toBe("/nex-native/vault/home");
+
+      // Tap the Vault card.
+      await page.locator('a[href="/nex-native/vault/home"]').first().click();
+      await page.waitForURL(/\/vault\/home$/, { timeout: 30_000 });
+
+      // 2b. Vault Home · the Chats section must list our vaulted
+      //     conversation with a direct link to the sealed B.4 chat
+      //     route. Taking that link navigates straight to the chat ·
+      //     no extra drill-down page.
+      await expect(
+        page.locator("[data-nex-vault-chats-section]"),
+      ).toBeVisible({ timeout: 15_000 });
+      const chatLink = page.locator(
+        `[data-nex-vault-home-chat-link][data-nex-vault-home-chat-conversation-id="${conversationId}"]`,
+      );
+      await expect(chatLink).toBeVisible();
+      const chatLinkHref = await chatLink.getAttribute("href");
+      expect(chatLinkHref).toBe(`/nex-native/vault/home/chats/${conversationId}`);
+
+      // Prove no plaintext of Bob's message appears on the Vault Home
+      // itself (metadata-only · the chat route is where plaintext
+      // may appear, gated by VMK unlock).
+      const homeBodyText = await page.locator("body").innerText();
+      expect(homeBodyText).not.toContain(BOB_SENTINEL);
+
+      // Tap it · hard-navigate wipes the tab-scoped VMK (correct
+      // Phase A posture · we re-unlock on the chat page).
+      await chatLink.click();
+      await page.waitForURL(
+        new RegExp(`/vault/home/chats/${conversationId}$`),
+        { timeout: 30_000 },
+      );
 
       // 3. Locked shell must appear with no plaintext from Bob visible.
       await expect(

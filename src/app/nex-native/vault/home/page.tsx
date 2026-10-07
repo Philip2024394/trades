@@ -14,9 +14,11 @@
 import Link from "next/link";
 import Image from "next/image";
 import { redirect } from "next/navigation";
-import { ChevronRight, Settings } from "lucide-react";
+import { ChevronRight, Lock, Settings } from "lucide-react";
 import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
 import { nexSupabaseAdmin } from "@/lib/nex-native/supabase-admin";
+import * as vaultEntryService from "@/lib/nex-native/vault-entry-service";
+import * as accountService from "@/lib/nex-native/account-service";
 import { mapChatThemeToDoorwaySlug } from "./_resolve-theme";
 import { NEX, GLASS, GLASS_CHIP } from "./_palette";
 import { VaultQuickActions } from "./_upload-dialog";
@@ -75,6 +77,35 @@ export default async function VaultWorkspaceHomePage() {
   const chatTheme = (session.account.chat_theme as string | null) ?? null;
   const doorwaySlug = mapChatThemeToDoorwaySlug(chatTheme);
 
+  // B.4 follow-up (2026-10-07) · the Vaulted Chats section replaces
+  // the Phase-A ChatsFriendsCard doorway so each row navigates
+  // directly to the sealed B.4 Vault chat route at /vault/home/chats/
+  // [conversationId] (one click into the actual conversation · no
+  // extra drill-down page). Peer display names + a count are
+  // metadata-only · no protected message content is revealed by Vault
+  // Home rendering alone · the per-conversation chat page gates
+  // plaintext behind VMK unlock.
+  const [vaultedConversations, vaultedFriendIds] = await Promise.all([
+    vaultEntryService.listVaultedConversationsForAccount(session.account.id),
+    vaultEntryService.listVaultedFriendIdsForAccount(session.account.id),
+  ]);
+  const vaultedChatsRows: Array<{
+    conversationId: string;
+    peerAccountId: string;
+    displayName: string;
+    handle: string | null;
+  }> = await Promise.all(
+    vaultedConversations.map(async (v) => {
+      const peer = await accountService.getAccountById(v.peerAccountId);
+      return {
+        conversationId: v.conversation.id,
+        peerAccountId: v.peerAccountId,
+        displayName: peer?.display_name ?? "Private contact",
+        handle: peer?.nex_handle ?? null,
+      };
+    }),
+  );
+
   return (
     <>
       <style>{`
@@ -117,8 +148,11 @@ export default async function VaultWorkspaceHomePage() {
         >
           <MigrationRunner />
           <Hero />
+          <VaultedChatsSection
+            rows={vaultedChatsRows}
+            vaultedFriendCount={vaultedFriendIds.length}
+          />
           <VaultQuickActions />
-          <ChatsFriendsCard />
           <FileCategoriesList />
         </main>
       </div>
@@ -257,60 +291,225 @@ function Hero() {
   );
 }
 
-function ChatsFriendsCard() {
-  return (
-    <section
-      data-nex-vault-chats-friends
-      aria-label="Chats and Friends doorway"
-      style={{ marginTop: 20 }}
+function VaultedChatsSection(props: {
+  rows: Array<{
+    conversationId: string;
+    peerAccountId: string;
+    displayName: string;
+    handle: string | null;
+  }>;
+  vaultedFriendCount: number;
+}) {
+  // Section header
+  const header = (
+    <h2
+      data-nex-vault-chats-section-title
+      style={{
+        fontSize: 11,
+        letterSpacing: "0.22em",
+        textTransform: "uppercase",
+        color: NEX.accent,
+        fontWeight: 700,
+        margin: "0 2px 10px",
+      }}
     >
-      <Link
-        href="/nex-native/vault/home/chats"
-        data-nex-vault-chats-link
-        style={{
-          ...GLASS,
-          display: "flex",
-          alignItems: "center",
-          gap: 14,
-          padding: "16px 16px",
-          borderRadius: 20,
-          minHeight: 72,
-        }}
+      Chats
+    </h2>
+  );
+
+  if (props.rows.length === 0) {
+    // Empty state · the Vault is set up but nothing has been moved
+    // in yet · we do NOT reveal protected content so this message is
+    // safe to show regardless of lock state.
+    return (
+      <section
+        data-nex-vault-chats-section
+        data-nex-vault-chats-empty="true"
+        aria-label="Your Vault chats"
+        style={{ marginTop: 20 }}
       >
-        <span
-          aria-hidden
+        {header}
+        <div
           style={{
-            width: 44,
-            height: 44,
-            borderRadius: 999,
-            background: NEX.accentSoft,
-            color: NEX.accent,
+            ...GLASS,
             display: "flex",
             alignItems: "center",
-            justifyContent: "center",
-            flexShrink: 0,
-            border: `1px solid ${NEX.accentStrong}`,
+            gap: 14,
+            padding: "16px 16px",
+            borderRadius: 20,
+            minHeight: 72,
           }}
         >
-          <IconChats />
-        </span>
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <p style={{ margin: 0, fontSize: 15, fontWeight: 600, color: NEX.textPrimary }}>
-            Chats &amp; Friends
-          </p>
-          <p
+          <span
+            aria-hidden
             style={{
-              margin: "2px 0 0",
-              fontSize: 12.5,
-              color: NEX.textSecondary,
-              lineHeight: 1.35,
+              width: 44,
+              height: 44,
+              borderRadius: 999,
+              background: NEX.accentSoft,
+              color: NEX.accent,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexShrink: 0,
+              border: `1px solid ${NEX.accentStrong}`,
             }}
           >
-            Messages, people and shared files
-          </p>
+            <IconChats />
+          </span>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <p
+              style={{
+                margin: 0,
+                fontSize: 15,
+                fontWeight: 600,
+                color: NEX.textPrimary,
+              }}
+            >
+              Your Vault is empty
+            </p>
+            <p
+              style={{
+                margin: "2px 0 0",
+                fontSize: 12.5,
+                color: NEX.textSecondary,
+                lineHeight: 1.35,
+              }}
+            >
+              Move a chat into Vault to keep it protected here.
+            </p>
+          </div>
         </div>
-        <ChevronRight size={18} strokeWidth={1.8} color={NEX.textMuted} aria-hidden />
-      </Link>
+      </section>
+    );
+  }
+
+  return (
+    <section
+      data-nex-vault-chats-section
+      data-nex-vault-chats-empty="false"
+      aria-label="Your Vault chats"
+      style={{
+        marginTop: 20,
+        display: "flex",
+        flexDirection: "column",
+        gap: 8,
+      }}
+    >
+      {header}
+      {props.rows.map((r) => (
+        <Link
+          key={`vconv-${r.conversationId}`}
+          href={`/nex-native/vault/home/chats/${r.conversationId}`}
+          data-nex-vault-home-chat-link
+          data-nex-vault-home-chat-conversation-id={r.conversationId}
+          style={{
+            ...GLASS,
+            display: "flex",
+            alignItems: "center",
+            gap: 14,
+            padding: "14px 16px",
+            borderRadius: 18,
+            minHeight: 64,
+            color: NEX.textPrimary,
+          }}
+        >
+          <span
+            aria-hidden
+            style={{
+              width: 40,
+              height: 40,
+              borderRadius: 999,
+              background: NEX.accentSoft,
+              color: NEX.accent,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexShrink: 0,
+              border: `1px solid ${NEX.accentStrong}`,
+            }}
+          >
+            <IconChats />
+          </span>
+          <span style={{ flex: 1, minWidth: 0 }}>
+            <span
+              style={{
+                display: "block",
+                fontSize: 15,
+                fontWeight: 600,
+                color: NEX.textPrimary,
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
+              {r.displayName}
+            </span>
+            <span
+              style={{
+                display: "block",
+                marginTop: 2,
+                fontSize: 12,
+                color: NEX.textSecondary,
+                lineHeight: 1.3,
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
+              {r.handle ?? "Protected on this device"}
+            </span>
+          </span>
+          <span
+            aria-hidden
+            data-nex-vault-home-chat-badge
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 4,
+              padding: "4px 8px",
+              borderRadius: 999,
+              background: NEX.accentSoft,
+              color: NEX.accent,
+              border: `1px solid ${NEX.accentStrong}`,
+              fontSize: 10,
+              fontWeight: 700,
+              letterSpacing: "0.14em",
+              marginRight: 4,
+            }}
+          >
+            <Lock size={11} strokeWidth={2} />
+            VAULT
+          </span>
+          <ChevronRight size={18} strokeWidth={1.8} color={NEX.textMuted} aria-hidden />
+        </Link>
+      ))}
+      {props.vaultedFriendCount > 0 ? (
+        // The whole-friend-vault path still has its own doorway page ·
+        // link here so users with vaulted friends can still reach it.
+        <Link
+          href="/nex-native/vault/home/chats"
+          data-nex-vault-home-friends-doorway
+          style={{
+            ...GLASS_CHIP,
+            display: "flex",
+            alignItems: "center",
+            gap: 14,
+            padding: "12px 16px",
+            borderRadius: 18,
+            minHeight: 52,
+            color: NEX.textPrimary,
+            marginTop: 2,
+          }}
+        >
+          <span style={{ flex: 1, minWidth: 0, fontSize: 13, color: NEX.textSecondary }}>
+            {props.vaultedFriendCount === 1
+              ? "1 friend vaulted whole"
+              : `${props.vaultedFriendCount} friends vaulted whole`}
+          </span>
+          <ChevronRight size={16} strokeWidth={1.8} color={NEX.textMuted} aria-hidden />
+        </Link>
+      ) : null}
     </section>
   );
 }
