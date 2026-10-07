@@ -49,6 +49,8 @@ import {
 } from "@/lib/nex-native/crypto/encrypted-receive";
 import { sendEncryptedPeerMessage } from "@/lib/nex-native/crypto/encrypted-send";
 import { preserveAttachmentsForVaultedConversation } from "@/lib/nex-native/vault/client/attachment-preservation";
+import { lockVaultEverywhere } from "@/lib/nex-native/vault/client/lock-sweep";
+import { uploadEncryptedAttachment } from "@/lib/nex-native/crypto/encrypted-attachment-upload";
 
 // ─── types from server ──────────────────────────────────────────────
 
@@ -119,6 +121,9 @@ export function VaultChatClient(props: Props) {
   const [errorText, setErrorText] = useState<string | null>(null);
   const [draft, setDraft] = useState<string>("");
   const [sending, setSending] = useState(false);
+  const [pendingAttachment, setPendingAttachment] = useState<
+    import("@/lib/nex-native/crypto/encrypted-attachment-upload").UploadedEncryptedAttachment | null
+  >(null);
   const [unlockBusy, setUnlockBusy] = useState(false);
   const [pinInput, setPinInput] = useState("");
   const [unlockError, setUnlockError] = useState<string | null>(null);
@@ -287,9 +292,14 @@ export function VaultChatClient(props: Props) {
       void boot();
     } else if (!vault.unlocked) {
       // Discard decrypted state immediately · founder-sealed rule.
+      // B.6A · also discard any in-progress attachment preparation ·
+      // the content key the sealed uploadEncryptedAttachment held in
+      // memory becomes unusable once Vault locks because our handler
+      // no longer runs the send path.
       bootRef.current = false;
       setMessages([]);
       setDraft("");
+      setPendingAttachment(null);
       setPhase("locked");
       // Zeroise any K_c that may still be in memory from before lock.
       clearInMemoryConversationKeys();
@@ -340,7 +350,7 @@ export function VaultChatClient(props: Props) {
       if (sending) return;
       if (!vault.unlocked || phase !== "ready") return;
       const text = draft.trim();
-      if (!text) return;
+      if (!text && !pendingAttachment) return;
       setSending(true);
       try {
         const outcome = await sendEncryptedPeerMessage({
@@ -348,6 +358,7 @@ export function VaultChatClient(props: Props) {
           peerAccountId: props.peerAccountId,
           selfAccountId: props.viewerAccountId,
           plaintext: text,
+          encryptedAttachment: pendingAttachment ?? null,
         });
         if (!outcome.ok) {
           setErrorText(`Send failed (${outcome.error}).`);
@@ -357,29 +368,56 @@ export function VaultChatClient(props: Props) {
         // continues to show it.
         const insertedId = outcome.insertedIds[0] ?? crypto.randomUUID();
         const nowIso = new Date().toISOString();
+        const bubbleText = text || (pendingAttachment ? attachmentLabelFor(pendingAttachment.kind) : "");
         setMessages((prev) => [
           ...prev,
           {
             id: insertedId,
             sender_account_id: props.viewerAccountId,
             sent_at: nowIso,
-            text,
+            text: bubbleText,
             outgoing: true,
           },
         ]);
         await cacheEncryptedMessage({
           conversationId: props.conversationId,
           messageId: insertedId,
-          plaintext: new TextEncoder().encode(text),
+          plaintext: new TextEncoder().encode(bubbleText),
         }).catch(() => undefined);
         setDraft("");
+        setPendingAttachment(null);
       } catch (err) {
         setErrorText(err instanceof Error ? err.message : "Send failed.");
       } finally {
         setSending(false);
       }
     },
-    [draft, sending, vault.unlocked, phase, props],
+    [draft, sending, vault.unlocked, phase, props, pendingAttachment],
+  );
+
+  // ── attachment upload (B.6A) ──────────────────────────────────────
+  // Reuses the sealed canonical uploadEncryptedAttachment · the plain
+  // bytes never leave this browser · the ciphertext POSTs to the
+  // sealed /api/nex-native/attachment/encrypted route · the content
+  // key stays in memory and is wrapped per recipient device at send
+  // time inside sendEncryptedPeerMessage.
+  const handleAttachmentPick = useCallback(
+    async (ev: React.ChangeEvent<HTMLInputElement>) => {
+      const file = ev.target.files?.[0];
+      ev.target.value = ""; // reset the input so re-picking the same file re-fires
+      if (!file) return;
+      if (!vault.unlocked || phase !== "ready") return;
+      setErrorText(null);
+      try {
+        const uploaded = await uploadEncryptedAttachment({ file });
+        setPendingAttachment(uploaded);
+      } catch (err) {
+        setErrorText(
+          err instanceof Error ? err.message : "Attachment upload failed.",
+        );
+      }
+    },
+    [vault.unlocked, phase],
   );
 
   // ── views ──────────────────────────────────────────────────────────
@@ -460,12 +498,12 @@ export function VaultChatClient(props: Props) {
             type="button"
             data-nex-vault-chat-lock
             onClick={() => {
-              // Explicit lock · B.6 will auto-wire from vault-session.
-              // Here the user action locks + we discard decrypted
-              // state via the useEffect below (unlocked flips false).
-              import("@/lib/nex-native/vault/client/vault-session").then(
-                (m) => m.clearVmk(),
-              );
+              // B.6A · explicit lock also broadcasts to peer tabs so
+              // every open Vault surface on this origin locks
+              // atomically. The sealed clearVmk + K_c zeroise still
+              // fires locally first · the broadcast is a one-way
+              // signal with no key material.
+              lockVaultEverywhere();
             }}
             style={{
               background: "transparent",
@@ -697,50 +735,136 @@ export function VaultChatClient(props: Props) {
           WebkitBackdropFilter: "blur(12px)",
           borderTop: `1px solid ${NEX.glassBorder}`,
           display: "flex",
-          gap: 8,
-          alignItems: "center",
+          flexDirection: "column",
+          gap: 6,
         }}
       >
-        <input
-          type="text"
-          value={draft}
-          onChange={(e) => setDraft(e.target.value)}
-          placeholder={phase === "ready" ? "Message" : "Loading…"}
-          disabled={phase !== "ready"}
-          data-nex-vault-chat-input
-          style={{
-            flex: 1,
-            padding: "10px 14px",
-            borderRadius: 999,
-            border: `1px solid ${NEX.glassBorder}`,
-            background: "rgba(255,255,255,0.05)",
-            color: NEX.textPrimary,
-            fontSize: 14,
-          }}
-        />
-        <button
-          type="submit"
-          disabled={sending || phase !== "ready" || !draft.trim()}
-          data-nex-vault-chat-send
-          style={{
-            padding: "10px 16px",
-            borderRadius: 999,
-            border: "none",
-            background: NEX.accent,
-            color: "#1A1300",
-            fontSize: 13,
-            fontWeight: 600,
-            cursor:
-              sending || phase !== "ready" || !draft.trim() ? "not-allowed" : "pointer",
-            opacity: sending || phase !== "ready" || !draft.trim() ? 0.6 : 1,
-          }}
-        >
-          {sending ? "…" : "Send"}
-        </button>
+        {pendingAttachment ? (
+          <div
+            data-nex-vault-chat-pending-attachment
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 10,
+              padding: "6px 10px",
+              borderRadius: 10,
+              border: `1px solid ${NEX.glassBorder}`,
+              background: "rgba(255,255,255,0.04)",
+              fontSize: 12,
+              color: NEX.textSecondary,
+            }}
+          >
+            <span style={{ flex: 1 }}>
+              Encrypted {pendingAttachment.kind} ready to send
+              ({Math.ceil(pendingAttachment.sizeBytes / 1024)} KB)
+            </span>
+            <button
+              type="button"
+              onClick={() => setPendingAttachment(null)}
+              data-nex-vault-chat-attachment-remove
+              style={{
+                background: "transparent",
+                border: "none",
+                color: NEX.textMuted,
+                cursor: "pointer",
+                fontSize: 12,
+              }}
+            >
+              Remove
+            </button>
+          </div>
+        ) : null}
+        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+          <label
+            data-nex-vault-chat-attach-label
+            htmlFor="nex-vault-chat-file-input"
+            style={{
+              padding: "10px 12px",
+              borderRadius: 999,
+              border: `1px solid ${NEX.glassBorder}`,
+              background: "rgba(255,255,255,0.03)",
+              color: NEX.textSecondary,
+              fontSize: 14,
+              cursor: phase === "ready" ? "pointer" : "not-allowed",
+              userSelect: "none",
+            }}
+          >
+            +
+          </label>
+          <input
+            id="nex-vault-chat-file-input"
+            type="file"
+            accept="image/*,video/*,audio/*"
+            onChange={handleAttachmentPick}
+            disabled={phase !== "ready"}
+            data-nex-vault-chat-file-input
+            style={{ display: "none" }}
+          />
+          <input
+            type="text"
+            value={draft}
+            onChange={(e) => setDraft(e.target.value)}
+            placeholder={phase === "ready" ? "Message" : "Loading…"}
+            disabled={phase !== "ready"}
+            data-nex-vault-chat-input
+            style={{
+              flex: 1,
+              padding: "10px 14px",
+              borderRadius: 999,
+              border: `1px solid ${NEX.glassBorder}`,
+              background: "rgba(255,255,255,0.05)",
+              color: NEX.textPrimary,
+              fontSize: 14,
+            }}
+          />
+          <button
+            type="submit"
+            disabled={
+              sending ||
+              phase !== "ready" ||
+              (!draft.trim() && !pendingAttachment)
+            }
+            data-nex-vault-chat-send
+            style={{
+              padding: "10px 16px",
+              borderRadius: 999,
+              border: "none",
+              background: NEX.accent,
+              color: "#1A1300",
+              fontSize: 13,
+              fontWeight: 600,
+              cursor:
+                sending ||
+                phase !== "ready" ||
+                (!draft.trim() && !pendingAttachment)
+                  ? "not-allowed"
+                  : "pointer",
+              opacity:
+                sending ||
+                phase !== "ready" ||
+                (!draft.trim() && !pendingAttachment)
+                  ? 0.6
+                  : 1,
+            }}
+          >
+            {sending ? "…" : "Send"}
+          </button>
+        </div>
       </form>
 
       {/* preserve router prop (unused in current render but required by useRouter import) */}
       {typeof router === "object" ? null : null}
     </div>
   );
+}
+
+function attachmentLabelFor(kind: "image" | "video" | "audio"): string {
+  switch (kind) {
+    case "image":
+      return "📷 Photo";
+    case "video":
+      return "🎬 Video";
+    case "audio":
+      return "🎤 Voice note";
+  }
 }

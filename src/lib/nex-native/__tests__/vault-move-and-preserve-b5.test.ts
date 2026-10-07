@@ -374,11 +374,11 @@ describe("B.5 · scope + commercial guards", () => {
     expect(fs.existsSync(f)).toBe(false);
   });
 
-  test("no new auto-lock-sweep subscription module (B.6 scope)", () => {
-    const f = path.join(
-      REPO_ROOT,
-      "src/lib/nex-native/vault/client/lock-sweep.ts",
-    );
-    expect(fs.existsSync(f)).toBe(false);
-  });
+  // The "no lock-sweep module" guard was B.5-time forward-looking.
+  // B.6A (commit b6a) is explicitly authorised to build that module.
+  // The B.6A deterministic suite enforces the new boundary (lock
+  // signal carries NO key material · receiver only calls sealed
+  // clearVmk + clearInMemoryConversationKeys · no re-implementation
+  // of vault-session or K_c storage). Guard removed to avoid colliding
+  // with sealed B.6A scope.
 });

@@ -37,6 +37,35 @@ function revalidateAfterVaultChange(): void {
   revalidatePath("/nex-native/vault/home/chats");
 }
 
+/**
+ * B.6A · list the vaulted friend account IDs for the authenticated
+ * viewer. Used by the sealed universal incoming-call hub to decide
+ * whether to hide the peer identity when Vault is locked.
+ *
+ * Returns the account ids as opaque strings · reveals NO Vault
+ * content (no last-message, no attachment names, no peer display
+ * name). Owner-scoped · routes through the sealed vault-entry-
+ * service and the authenticated session.
+ */
+export async function listVaultedFriendIdsForViewerAction(): Promise<
+  { ok: true; friendIds: string[] } | { ok: false; reason: string }
+> {
+  try {
+    const me = await viewerAccountIdOrRedirect();
+    const friends = await vaultEntryService.listVaultedFriendIdsForAccount(me);
+    const convs = await vaultEntryService.listVaultedConversationsForAccount(me);
+    // Include both friend-vault targets AND conversation-vault peer
+    // ids · the hub applies the "hide peer identity" rule when the
+    // caller is a vaulted-friend OR a vaulted-conversation peer, so
+    // this one list covers both signal sources.
+    const set = new Set<string>(friends);
+    for (const v of convs) set.add(v.peerAccountId);
+    return { ok: true, friendIds: [...set] };
+  } catch (err) {
+    return { ok: false, reason: (err as Error).message };
+  }
+}
+
 export async function moveConversationToVaultAction(
   conversationId: string,
 ): Promise<{ ok: true } | { ok: false; reason: string }> {

@@ -23,6 +23,12 @@ import {
   type IncomingCallRing,
 } from "@/lib/nex-native/realtime/incoming-calls";
 import { createRingtone, type Ringtone } from "@/lib/nex-native/calls/ringtone";
+// B.6A · Vault call-privacy presentation. The sealed universal call
+// transport is NOT modified · only the display label gates on vault
+// state so a locked Vault never reveals that the incoming caller is
+// a vaulted peer.
+import { useVaultSession } from "@/lib/nex-native/vault/client/vault-session";
+import { listVaultedFriendIdsForViewerAction } from "./vault/_actions";
 
 const RING_TIMEOUT_MS = 45_000;
 
@@ -101,6 +107,37 @@ export function IncomingCallHub(props: IncomingCallHubProps): React.JSX.Element 
     return () => { ringtoneRef.current?.stop(); };
   }, []);
 
+  // B.6A · load Alice's vaulted friend / conversation peer IDs so we
+  // can hide the caller identity when (a) Vault is locked AND (b) the
+  // caller is a vaulted peer. Fetched once on mount via the sealed
+  // server action · the list is non-secret (it's Alice's own vault
+  // state) and we never derive a secret from it.
+  const [vaultedPeerIds, setVaultedPeerIds] = React.useState<Set<string>>(
+    () => new Set(),
+  );
+  React.useEffect(() => {
+    if (props.disabled) return;
+    let cancelled = false;
+    void listVaultedFriendIdsForViewerAction().then((r) => {
+      if (cancelled) return;
+      if (r.ok) setVaultedPeerIds(new Set(r.friendIds));
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [props.disabled]);
+
+  const vaultSession = useVaultSession();
+  // When Vault is locked AND the caller is a vaulted peer, replace the
+  // peer identity with a generic label everywhere it appears in the
+  // call UI. Call transport is untouched · this is purely display.
+  const callerIsVaulted =
+    active !== null && vaultedPeerIds.has(active.callerAccountId);
+  const hidePeerIdentity = callerIsVaulted && !vaultSession.unlocked;
+  const displayedCallerName = hidePeerIdentity
+    ? "NEX call"
+    : active?.callerDisplayName ?? "";
+
   if (props.disabled) return null;
   if (!active) return null;
 
@@ -143,7 +180,8 @@ export function IncomingCallHub(props: IncomingCallHubProps): React.JSX.Element 
     <div
       role="dialog"
       aria-modal="true"
-      aria-label={`Incoming ${active.media} call from ${active.callerDisplayName}`}
+      aria-label={`Incoming ${active.media} call from ${displayedCallerName}`}
+      data-nex-call-hub-privacy-hidden={hidePeerIdentity ? "true" : "false"}
       style={{
         position: "fixed",
         top: "calc(env(safe-area-inset-top, 0) + 16px)",
@@ -195,7 +233,7 @@ export function IncomingCallHub(props: IncomingCallHubProps): React.JSX.Element 
           Incoming {active.media === "video" ? "video" : "voice"} call
         </div>
         <div style={{ fontSize: 15, fontWeight: 700 }}>
-          {active.callerDisplayName}
+          {displayedCallerName}
         </div>
       </div>
       <div style={{ display: "flex", gap: 8, flexShrink: 0 }}>
