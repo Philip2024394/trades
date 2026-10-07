@@ -159,6 +159,12 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   }
 
   // Issue signed download URL for the legacy bytes.
+  // createSignedDownloadUrl returns the URL as a bare string (not an
+  // envelope). An earlier draft of this route accessed `.url` on it,
+  // which yielded undefined and silently dropped `download_url` from
+  // the serialized response · client then aborted with
+  // "incomplete_start_response" and no migration bytes moved. Caught by
+  // the 2026-10-07 A.6 Playwright proof.
   const signed = await createSignedDownloadUrl(session.account.id, fileId);
   if (!signed) {
     return NextResponse.json(
@@ -171,7 +177,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     ok: true,
     migration_state: file.migration_state,
     attempt_id: attemptId,
-    download_url: signed.url,
+    download_url: signed,
     file: {
       id: file.id,
       byte_size: file.byte_size,

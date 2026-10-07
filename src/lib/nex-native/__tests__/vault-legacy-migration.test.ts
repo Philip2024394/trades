@@ -676,4 +676,43 @@ describe("A.6 architecture guards", () => {
       expect(code).not.toMatch(/createHash\s*\(\s*["']sha(-?256)["']/i);
     });
   }
+
+  // 2026-10-07 A.6 Playwright regression · the start route must pass
+  // the signed URL through to download_url as a bare string, since
+  // createSignedDownloadUrl returns Promise<string | null>. An earlier
+  // draft accessed `.url` on it, which yielded undefined and silently
+  // dropped the field from the response · client then aborted with
+  // "incomplete_start_response".
+  test("A.6 start route · download_url pass-through matches createSignedDownloadUrl's bare-string contract", async () => {
+    const fs = await import("node:fs");
+    const path = await import("node:path");
+    const routeRaw = fs.readFileSync(
+      path.resolve(
+        __dirname,
+        "../../../..",
+        "src/app/api/nex-native/vault/migration/start/route.ts",
+      ),
+      "utf8",
+    );
+    const routeCode = stripComments(routeRaw);
+    // Must assign the bare `signed` identifier (string result)
+    expect(routeCode).toMatch(/download_url:\s*signed\b(?!\s*\.)/);
+    // Must NOT access any property (.url, .href, ...) on the string.
+    expect(routeCode).not.toMatch(/download_url:\s*signed\.\w+/);
+
+    // Upstream contract · pin createSignedDownloadUrl's return type so a
+    // future refactor from `Promise<string | null>` to `Promise<{url}|null>`
+    // would re-break the route and must come with a route update.
+    const serviceRaw = fs.readFileSync(
+      path.resolve(
+        __dirname,
+        "../../../..",
+        "src/lib/nex-native/vault-file-service.ts",
+      ),
+      "utf8",
+    );
+    expect(serviceRaw).toMatch(
+      /export\s+async\s+function\s+createSignedDownloadUrl[\s\S]{0,400}?:\s*Promise<\s*string\s*\|\s*null\s*>/,
+    );
+  });
 });
