@@ -51,6 +51,14 @@ import { sendEncryptedPeerMessage } from "@/lib/nex-native/crypto/encrypted-send
 import { preserveAttachmentsForVaultedConversation } from "@/lib/nex-native/vault/client/attachment-preservation";
 import { lockVaultEverywhere } from "@/lib/nex-native/vault/client/lock-sweep";
 import { uploadEncryptedAttachment } from "@/lib/nex-native/crypto/encrypted-attachment-upload";
+// R1 · universal live-messaging consumer · same transport as normal
+// chat. Opened ONLY while Vault is unlocked AND the Vault chat has
+// finished its initial boot. On arrival, fetch new rows via the sealed
+// /api/nex-native/peer-message/since endpoint, decrypt via the sealed
+// Bridge 76 decryptEncryptedRows, cache under K_c via the sealed B.3
+// cacheEncryptedMessage, append to React state. No new transport, no
+// new encryption, no new cache.
+import { openMessageEventsChannel } from "@/lib/nex-native/realtime/message-events";
 
 // ─── types from server ──────────────────────────────────────────────
 
@@ -419,6 +427,182 @@ export function VaultChatClient(props: Props) {
     },
     [vault.unlocked, phase],
   );
+
+  // ── R1 · universal live-messaging consumer ─────────────────────────
+  // Keep a ref to the current rendered messages so catchUpSince can
+  // read the correct watermark + dedup against the live state. Using
+  // a ref (not a dep) means catchUpSince is stable across re-renders
+  // while still seeing the most-recent sent_at + id set at fetch
+  // time. This is important because boot() replaces the messages
+  // array (on lock → unlock the UI resets to initialMessages, which
+  // is the correct behaviour) · any stale ref-based watermark from a
+  // previous arrival append would then skip rows that have since been
+  // dropped from state.
+  const messagesRef = useRef<DisplayMessage[]>([]);
+  useEffect(() => {
+    messagesRef.current = messages;
+  }, [messages]);
+
+  // Pure fetch-since + decrypt + append path. Shared by (a) arrival
+  // handler, (b) onSubscribed reconnect, (c) visibilitychange visible.
+  const catchUpSince = useCallback(async () => {
+    if (!vault.unlocked) return;
+    if (phase !== "ready") return;
+    try {
+      // Watermark = max sent_at across what is CURRENTLY rendered.
+      // After a lock → unlock cycle, boot() resets messages back to
+      // initialMessages (the plaintext-blind server render for this
+      // page load), so the watermark naturally drops back to the
+      // pre-lock max · any messages that arrived while locked are
+      // then correctly treated as newer and fetched.
+      let sinceIso = "1970-01-01T00:00:00.000Z";
+      for (const m of messagesRef.current) {
+        if (m.sent_at > sinceIso) sinceIso = m.sent_at;
+      }
+      // Dedup set = ids already in state. Fan-out siblings sharing a
+      // message_group_id all carry different `id`s · dedup by id
+      // against rendered state means we don't double-render our own
+      // row and we don't lose siblings addressed to other devices
+      // (those are filtered during decrypt by `if (!text) continue`).
+      const seenIds = new Set<string>();
+      for (const m of messagesRef.current) seenIds.add(m.id);
+
+      const url = `/api/nex-native/peer-message/since?conversation_id=${encodeURIComponent(
+        props.conversationId,
+      )}&since_iso=${encodeURIComponent(sinceIso)}&limit=50`;
+      const resp = await fetch(url, { credentials: "same-origin" });
+      if (!resp.ok) return;
+      const json = (await resp.json()) as {
+        ok: boolean;
+        messages?: InitialMessage[];
+      };
+      if (!json.ok || !json.messages || json.messages.length === 0) return;
+
+      const freshRows = json.messages.filter((m) => !seenIds.has(m.id));
+      if (freshRows.length === 0) return;
+
+      // Decrypt via the sealed Bridge 76 path · identical to boot().
+      const encryptedRows: EncryptedRowInput[] = [];
+      for (const m of freshRows) {
+        if (
+          m.encrypted &&
+          m.ciphertext_b64 &&
+          m.nonce_b64 &&
+          m.sender_public_key &&
+          m.sender_device_id &&
+          m.recipient_device_id
+        ) {
+          encryptedRows.push({
+            id: m.id,
+            senderAccountId: m.sender_account_id,
+            senderDeviceId: m.sender_device_id,
+            senderPublicKey: m.sender_public_key,
+            recipientDeviceId: m.recipient_device_id,
+            ciphertextB64: m.ciphertext_b64,
+            nonceB64: m.nonce_b64,
+          });
+        }
+      }
+      let decrypted: DecryptResult[] = [];
+      if (encryptedRows.length > 0) {
+        decrypted = await decryptEncryptedRows(encryptedRows);
+      }
+      const decryptMap = new Map<string, string>();
+      for (const d of decrypted) {
+        if (d.ok) decryptMap.set(d.id, d.plaintext);
+      }
+
+      // Cache decrypted plaintext under K_c in B.3 IDB (identical to
+      // boot) · idempotent at row level.
+      for (const [messageId, plaintext] of decryptMap) {
+        await cacheEncryptedMessage({
+          conversationId: props.conversationId,
+          messageId,
+          plaintext: new TextEncoder().encode(plaintext),
+        }).catch(() => undefined);
+      }
+
+      // Build new DisplayMessage rows and append to state. The next
+      // trigger's watermark is derived from the final messages array
+      // via messagesRef (synced in a useEffect above), so there's no
+      // explicit watermark bookkeeping to do here.
+      const appended: DisplayMessage[] = [];
+      for (const m of freshRows) {
+        if (m.deleted_for_everyone) continue;
+        const text =
+          decryptMap.get(m.id) ?? (!m.encrypted ? m.body : "");
+        if (!text) continue;
+        appended.push({
+          id: m.id,
+          sender_account_id: m.sender_account_id,
+          sent_at: m.sent_at,
+          text,
+          outgoing: m.sender_account_id === props.viewerAccountId,
+        });
+      }
+      if (appended.length === 0) return;
+
+      setMessages((prev) => {
+        // One final guard against racing double-renders · never
+        // insert the same id twice.
+        const have = new Set(prev.map((p) => p.id));
+        const merged = [...prev];
+        for (const row of appended) {
+          if (!have.has(row.id)) merged.push(row);
+        }
+        merged.sort((a, b) =>
+          a.sent_at < b.sent_at ? -1 : a.sent_at > b.sent_at ? 1 : 0,
+        );
+        return merged;
+      });
+    } catch {
+      /* reconciliation is best-effort · next trigger will retry */
+    }
+  }, [
+    props.conversationId,
+    props.viewerAccountId,
+    vault.unlocked,
+    phase,
+  ]);
+
+  // Subscription lifecycle · opens ONLY when unlocked AND ready. On
+  // lock, the cleanup closes the channel + the sealed B.6A lock
+  // transition useEffect clears decrypted state. A locked Vault never
+  // subscribes, never fetches, never decrypts.
+  useEffect(() => {
+    if (!vault.unlocked) return;
+    if (phase !== "ready") return;
+
+    const channel = openMessageEventsChannel({
+      conversationId: props.conversationId,
+      selfAccountId: props.viewerAccountId,
+      onPeerMessageArrival: () => {
+        void catchUpSince();
+      },
+      // On every (re)subscribe · including the first mount SUBSCRIBED
+      // transition · run one catch-up fetch. This handles reconnects
+      // after a brief WebSocket drop without any polling.
+      onSubscribed: () => {
+        void catchUpSince();
+      },
+    });
+
+    const onVisibility = () => {
+      if (document.visibilityState === "visible") void catchUpSince();
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+
+    return () => {
+      document.removeEventListener("visibilitychange", onVisibility);
+      void channel.close();
+    };
+  }, [
+    vault.unlocked,
+    phase,
+    props.conversationId,
+    props.viewerAccountId,
+    catchUpSince,
+  ]);
 
   // ── views ──────────────────────────────────────────────────────────
 

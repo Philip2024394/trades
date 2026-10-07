@@ -20,6 +20,10 @@ import {
   sendEncryptedPeerMessages,
   type EncryptedPeerMessageInsert,
 } from "@/lib/nex-native/peer-message-service";
+// R1 · universal live-messaging arrival nudge. Fire-and-forget AFTER
+// the canonical DB write succeeds · broadcast failure MUST NOT flip
+// a successful send into a failed send.
+import { emitMessageArrival } from "@/lib/nex-native/realtime/message-arrival";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -106,6 +110,15 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   try {
     const ids = await sendEncryptedPeerMessages(inserts);
+    // R1 · emit exactly ONE logical arrival · the Bridge 76 fan-out
+    // produced N physical rows that share this message_group_id ·
+    // subscribers dedup by the group id so one event is enough and
+    // one is correct. Fire-and-forget · never await errors.
+    void emitMessageArrival({
+      conversationId: inserts[0]!.conversation_id,
+      messageGroupId: body.message_group_id,
+      sentAtIso: new Date().toISOString(),
+    });
     return NextResponse.json({ ok: true, ids });
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);

@@ -22,6 +22,11 @@ import {
 import * as conversationService from "@/lib/nex-native/conversation-service";
 import * as peerConversationService from "@/lib/nex-native/peer-conversation-service";
 import * as peerMessageService from "@/lib/nex-native/peer-message-service";
+// R1 · universal live-messaging arrival nudge · fire-and-forget after
+// the canonical DB write succeeds. See
+// src/lib/nex-native/realtime/message-arrival.ts for the strict
+// payload contract (conversation_id, message_group_id, sent_at only).
+import { emitMessageArrival } from "@/lib/nex-native/realtime/message-arrival";
 import * as sellerResponsivenessService from "@/lib/nex-native/seller-responsiveness-service";
 import { getThemeStickerBySlug } from "@/lib/nex-native/theme-sticker-service";
 import {
@@ -501,13 +506,23 @@ export async function sendPeerMessageAction(
     peerAccountId,
   );
 
-  await peerMessageService.sendPeerMessage({
+  const insertedRow = await peerMessageService.sendPeerMessage({
     conversation_id: conversation.id,
     sender_account_id: session.account.id,
     body,
     reply_to_id: replyToId,
     attachment_url: attachmentUrl,
     attachment_type: attachmentType,
+  });
+
+  // R1 · universal live-messaging arrival nudge. Plaintext send has no
+  // Bridge 76 fan-out · the message_group_id for dedup purposes is
+  // the row's own id. Fire-and-forget · a broadcast failure MUST NOT
+  // flip this successful send into a failed send.
+  void emitMessageArrival({
+    conversationId: conversation.id,
+    messageGroupId: insertedRow.id,
+    sentAtIso: insertedRow.sent_at,
   });
 
   // Bridge 13 · every send bumps the sender's shop activity so the
