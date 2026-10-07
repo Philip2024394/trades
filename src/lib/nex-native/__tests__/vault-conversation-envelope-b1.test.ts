@@ -346,14 +346,13 @@ describe("B.1 · migration 143 · doctrine comments", () => {
 // ---------------------------------------------------------------------------
 
 describe("B.1 · scope guards · nothing outside the migration should move", () => {
-  test("no new API route directory under src/app/api/nex-native/vault/chat/", () => {
-    const chatApiDir = path.resolve(
-      __dirname,
-      "../../../..",
-      "src/app/api/nex-native/vault/chat",
-    );
-    expect(fs.existsSync(chatApiDir)).toBe(false);
-  });
+  // The "no /vault/chat/ directory" guard was B.1-time forward-looking.
+  // B.2 (commit b2) is explicitly authorised to build that directory
+  // (envelope mint/list/revoke/rotate + attachment/preserve). The B.2
+  // test suite in vault-conversation-envelope-routes-b2.test.ts enforces
+  // the overbuild rule going forward: only the 4 envelope route dirs
+  // and the single preserve route are permitted. B.1 no longer asserts
+  // on the directory's absence (would collide with sealed B.2 scope).
 
   test("no new client crypto file under src/lib/nex-native/vault/client/conversation-cache.ts", () => {
     const clientFile = path.resolve(
