@@ -48,6 +48,7 @@ import {
   type EncryptedRowInput,
 } from "@/lib/nex-native/crypto/encrypted-receive";
 import { sendEncryptedPeerMessage } from "@/lib/nex-native/crypto/encrypted-send";
+import { preserveAttachmentsForVaultedConversation } from "@/lib/nex-native/vault/client/attachment-preservation";
 
 // ─── types from server ──────────────────────────────────────────────
 
@@ -253,6 +254,26 @@ export function VaultChatClient(props: Props) {
       );
       setMessages(ordered);
       setPhase("ready");
+
+      // Policy X (B.5) · future-attachment auto-preservation.
+      // Scan every attachment-bearing message in the server-fetched
+      // history and ask the sealed B.2 /attachment/preserve route to
+      // persist it into Vault. The route is idempotent per source_
+      // message_id so repeat runs skip already-preserved rows cheaply.
+      // Fires fire-and-forget · failures do not break the chat UI
+      // (the preservation batch returns an honest per-row result but
+      // we don't block render on it · the brief authorises this as
+      // long as we don't claim total success when some failed · the
+      // call-site is deliberately non-fatal).
+      const candidates = props.initialMessages
+        .filter((m) => !!m.attachment_url && !m.deleted_for_everyone)
+        .map((m) => ({
+          conversationId: props.conversationId,
+          messageId: m.id,
+        }));
+      if (candidates.length > 0) {
+        void preserveAttachmentsForVaultedConversation(candidates);
+      }
     } catch (err) {
       setErrorText(err instanceof Error ? err.message : "Vault chat failed to load.");
       setPhase("error");
