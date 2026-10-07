@@ -7,12 +7,13 @@
 import Link from "next/link";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
 import { resolveServerLocale, tFor } from "@/lib/nex/i18n/server";
 import type { I18nKey } from "@/lib/nex/i18n/keys";
 import { resolveVaultDoorwaySlug } from "../home/_resolve-theme";
 import { NEX, GLASS, GLASS_CHIP } from "../home/_palette";
+import { VaultShellHeader } from "../_vault-shell-header";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -75,12 +76,13 @@ export default async function VaultSettingsPage() {
             zIndex: 0,
           }}
         />
-        <SettingsHeader t={t} />
+        <VaultShellHeader t={t} />
+        <SettingsTitleBlock t={t} />
         <main
           id="main"
           style={{
             position: "relative",
-            padding: "16px 16px 32px",
+            padding: "0 16px 32px",
             maxWidth: 480,
             margin: "0 auto",
             zIndex: 1,
@@ -164,73 +166,40 @@ export default async function VaultSettingsPage() {
   );
 }
 
-function SettingsHeader({ t }: { t: (k: I18nKey) => string }) {
+function SettingsTitleBlock({ t }: { t: (k: I18nKey) => string }) {
   return (
-    <header
-      data-nex-vault-settings-header
+    <section
+      data-nex-vault-settings-title-block
       style={{
-        position: "sticky",
-        top: 0,
-        zIndex: 10,
-        padding: "14px 16px 12px",
-        background: "rgba(6, 4, 10, 0.72)",
-        backdropFilter: NEX.backdropBlur,
-        WebkitBackdropFilter: NEX.backdropBlur,
-        borderBottom: `1px solid ${NEX.glassBorder}`,
+        position: "relative",
+        zIndex: 1,
+        maxWidth: 480,
+        margin: "0 auto",
+        padding: "4px 20px 12px",
       }}
     >
-      <div
+      <h1
+        data-nex-vault-settings-title
         style={{
-          maxWidth: 480,
-          margin: "0 auto",
-          display: "flex",
-          alignItems: "center",
-          gap: 12,
+          margin: 0,
+          fontSize: 22,
+          fontWeight: 600,
+          letterSpacing: "0.005em",
+          color: NEX.textPrimary,
         }}
       >
-        <Link
-          href="/nex-native/vault/home"
-          aria-label={t("vault.settings.header.backLabel")}
-          data-nex-vault-settings-back
-          style={{
-            ...GLASS_CHIP,
-            width: 38,
-            height: 38,
-            borderRadius: 999,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            color: NEX.textPrimary,
-            flexShrink: 0,
-          }}
-        >
-          <ChevronLeft size={18} strokeWidth={1.8} aria-hidden />
-        </Link>
-        <div style={{ display: "flex", flexDirection: "column", minWidth: 0 }}>
-          <h1
-            data-nex-vault-settings-title
-            style={{
-              margin: 0,
-              fontSize: 15,
-              fontWeight: 600,
-              letterSpacing: "0.005em",
-              color: NEX.textPrimary,
-            }}
-          >
-            {t("vault.settings.header.title")}
-          </h1>
-          <p
-            style={{
-              margin: "2px 0 0",
-              fontSize: 11.5,
-              color: NEX.textSecondary,
-              letterSpacing: "0.005em",
-            }}
-          >
-            {t("vault.settings.header.subtitle")}
-          </p>
-        </div>
-      </div>
-    </header>
+        {t("vault.settings.header.title")}
+      </h1>
+      <p
+        style={{
+          margin: "4px 0 0",
+          fontSize: 13,
+          color: NEX.textSecondary,
+          letterSpacing: "0.005em",
+        }}
+      >
+        {t("vault.settings.header.subtitle")}
+      </p>
+    </section>
   );
 }

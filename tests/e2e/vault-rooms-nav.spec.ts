@@ -189,9 +189,9 @@ test.describe("Vault settings · honest controls only", () => {
     expect(body).toContain("account authentication");
   });
 
-  test("back arrow returns to Vault home", async ({ page }) => {
+  test("shell header Home icon returns to Vault home", async ({ page }) => {
     await page.goto(SETTINGS);
-    await page.locator("[data-nex-vault-settings-back]").click();
+    await page.locator("[data-nex-vault-shell-home]").first().click();
     await expect(page).toHaveURL(/\/nex-native\/vault\/home$/, {
       timeout: 10000,
     });

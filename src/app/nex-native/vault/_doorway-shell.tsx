@@ -134,6 +134,22 @@ export function DoorwayShell({ skin, deviceId }: DoorwayShellProps) {
               Forgot your PIN? Use recovery passphrase.
             </a>
           </div>
+
+          <div style={{ marginTop: 10 }}>
+            <a
+              href="/nex-native/home"
+              data-nex-vault-sign-out
+              style={{
+                display: "inline-block",
+                color: skin.text.secondary,
+                fontSize: 13,
+                textDecoration: "underline",
+                opacity: 0.7,
+              }}
+            >
+              Sign out of Vault · return to NEX
+            </a>
+          </div>
         </div>
       </main>
     </>

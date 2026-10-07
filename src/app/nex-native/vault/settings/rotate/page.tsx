@@ -2,10 +2,14 @@
 //
 // Vault Phase A · Commit A.5 · rotate Vault keys surface.
 
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
 import { nexSupabaseAdmin } from "@/lib/nex-native/supabase-admin";
+import { resolveServerLocale, tFor } from "@/lib/nex/i18n/server";
 import { SKIN_NEX } from "../../_doorway-skin";
+import { VaultShellHeader } from "../../_vault-shell-header";
+import { NEX } from "../../home/_palette";
 import { RotateClient } from "./_rotate-client";
 
 export const runtime = "nodejs";
@@ -18,7 +22,9 @@ export default async function VaultRotatePage() {
   }
   const { data: setup } = await nexSupabaseAdmin
     .from("nex_vault_setup")
-    .select("vmk_generation, pin_mode, pin_salt, pin_argon_params, recovery_configured_at, recovery_salt, recovery_argon_params")
+    .select(
+      "vmk_generation, pin_mode, pin_salt, pin_argon_params, recovery_configured_at, recovery_salt, recovery_argon_params",
+    )
     .eq("account_id", session.account.id)
     .maybeSingle();
   if (!setup) {
@@ -39,11 +45,7 @@ export default async function VaultRotatePage() {
     if (typeof v === "string") {
       return v.startsWith("\\x") ? v.slice(2) : v;
     }
-    if (
-      typeof v === "object" &&
-      v !== null &&
-      "toString" in v
-    ) {
+    if (typeof v === "object" && v !== null && "toString" in v) {
       try {
         return (v as { toString: (fmt: string) => string }).toString("hex");
       } catch {
@@ -53,18 +55,34 @@ export default async function VaultRotatePage() {
     return "";
   }
 
+  const headerBag = await headers();
+  const locale = resolveServerLocale({
+    accountLocale: (session.account.locale as string | null) ?? null,
+    acceptLanguage: headerBag.get("accept-language"),
+  });
+  const t = tFor(locale);
+
   return (
-    <RotateClient
-      skin={SKIN_NEX}
-      currentGeneration={typedSetup.vmk_generation}
-      pinMode={typedSetup.pin_mode}
-      pinSaltHex={byteaToHex(typedSetup.pin_salt)}
-      pinArgonParams={typedSetup.pin_argon_params}
-      recoveryConfigured={typedSetup.recovery_configured_at !== null}
-      recoverySaltHex={
-        typedSetup.recovery_salt ? byteaToHex(typedSetup.recovery_salt) : null
-      }
-      recoveryArgonParams={typedSetup.recovery_argon_params}
-    />
+    <div
+      data-nex-vault-sub-shell
+      style={{
+        minHeight: "100dvh",
+        background: NEX.bg,
+      }}
+    >
+      <VaultShellHeader t={t} />
+      <RotateClient
+        skin={SKIN_NEX}
+        currentGeneration={typedSetup.vmk_generation}
+        pinMode={typedSetup.pin_mode}
+        pinSaltHex={byteaToHex(typedSetup.pin_salt)}
+        pinArgonParams={typedSetup.pin_argon_params}
+        recoveryConfigured={typedSetup.recovery_configured_at !== null}
+        recoverySaltHex={
+          typedSetup.recovery_salt ? byteaToHex(typedSetup.recovery_salt) : null
+        }
+        recoveryArgonParams={typedSetup.recovery_argon_params}
+      />
+    </div>
   );
 }

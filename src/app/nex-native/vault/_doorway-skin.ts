@@ -48,6 +48,12 @@ export interface VaultDoorwaySkin {
   };
 }
 
+// Master-pass follow-up 2026-10-07 · NEX doorway skin is now colour-
+// aligned with the NEX palette (navy base + NEX orange brand + NEX
+// cyan protection accents). The orange hue is the NEX wordmark
+// orange (#FF7200), not the warmer Vault-only #FF8A2A. PIN cells
+// use the cyan secure accent so the locked doorway reads as a
+// protection surface. The doorway background PNG stays untouched.
 export const SKIN_NEX: VaultDoorwaySkin = {
   slug: "nex",
   label: "NEX Vault",
@@ -55,27 +61,27 @@ export const SKIN_NEX: VaultDoorwaySkin = {
     "Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
   contentAnchor: "bottom",
   bg: {
-    base: "#07070A",
+    base: "#020914",
     radialOverlay: undefined,
     imageUrl: "/nex-native/vault/nex-doorway.png",
     imageBlend: "normal",
     imageOpacity: 1,
   },
   text: {
-    primary: "#F7EFE4",
-    secondary: "#C9B99E",
-    brandChip: "#FF8A2A",
+    primary: "#F2F5F8",
+    secondary: "#7D9BC0",
+    brandChip: "#FF7200",
   },
   cells: {
-    bg: "rgba(10, 7, 4, 0.72)",
-    border: "rgba(255, 138, 42, 0.55)",
-    borderMuted: "rgba(255, 138, 42, 0.22)",
-    activeGlow: "rgba(255, 138, 42, 0.18)",
-    filled: "#FFD4A8",
+    bg: "rgba(3, 16, 29, 0.72)",
+    border: "rgba(0, 175, 255, 0.55)",
+    borderMuted: "rgba(0, 175, 255, 0.22)",
+    activeGlow: "rgba(0, 175, 255, 0.18)",
+    filled: "#C9E6FF",
   },
   feedback: {
-    orange: "#FF8A2A",
-    muted: "#C9B99E",
+    orange: "#FF7200",
+    muted: "#7D9BC0",
   },
 };
 

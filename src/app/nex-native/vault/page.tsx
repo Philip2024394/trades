@@ -17,11 +17,15 @@
 // the sealed resolveVaultStateForSession. The client component takes
 // over for interactive crypto.
 
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
 import { nexSupabaseAdmin } from "@/lib/nex-native/supabase-admin";
+import { resolveServerLocale, tFor } from "@/lib/nex/i18n/server";
 import { SKIN_NEX } from "./_doorway-skin";
 import { VaultLockedBootstrap } from "./_vault-locked-bootstrap";
+import { VaultShellHeader } from "./_vault-shell-header";
+import { NEX } from "./home/_palette";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -47,7 +51,27 @@ export default async function VaultEntryPage() {
     redirect("/nex-native/vault/setup");
   }
 
-  // Render the locked shell (bootstrap wraps PinEntryClient with the
-  // device_id resolved from the browser's IndexedDB key).
-  return <VaultLockedBootstrap skin={SKIN_NEX} />;
+  const headerBag = await headers();
+  const locale = resolveServerLocale({
+    accountLocale: (session.account.locale as string | null) ?? null,
+    acceptLanguage: headerBag.get("accept-language"),
+  });
+  const t = tFor(locale);
+
+  // Render the locked shell with the shared NEX-styled header above
+  // the PIN-entry bootstrap. The header's Home icon returns to the
+  // NEX home surface (Vault is still locked; no vault/home yet) and
+  // the Settings icon leads to Vault settings.
+  return (
+    <div
+      data-nex-vault-entry
+      style={{
+        minHeight: "100dvh",
+        background: NEX.bg,
+      }}
+    >
+      <VaultShellHeader t={t} homeHref="/nex-native/home" />
+      <VaultLockedBootstrap skin={SKIN_NEX} />
+    </div>
+  );
 }

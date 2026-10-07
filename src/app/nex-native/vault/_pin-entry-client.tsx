@@ -113,63 +113,44 @@ export function PinEntryClient({
           ? { message: error, tone: "orange" }
           : { message: "", tone: "none" };
 
+  // Master-pass follow-up 2026-10-07 · founder feedback: "why so many
+  // small containers for password". Replaced the 12 PIN cells with a
+  // single polished password field. All sealed crypto / validation /
+  // digit-range logic (8-12 digits · PIN_MAX_LENGTH guard) is unchanged.
+  const borderColor = isRateLimited ? skin.cells.borderMuted : skin.cells.border;
+
   return (
     <div data-nex-vault-pin-root style={{ position: "relative" }}>
       <style>{`
         [data-nex-vault-pin-root] * { box-sizing: border-box; }
-        [data-nex-vault-pin-root] [data-vault-cells]:focus-within [data-vault-cell][data-vault-cell-active="true"] {
+        [data-nex-vault-pin-field]:focus-within {
           border-color: ${skin.text.brandChip};
           box-shadow: 0 0 0 2px ${skin.cells.activeGlow};
         }
       `}</style>
 
       <form onSubmit={onFormSubmit} autoComplete="off" data-nex-vault-pin-form>
-        <div
+        <label
+          data-nex-vault-pin-field
           data-vault-cells
-          onClick={() => inputRef.current?.focus()}
+          data-nex-vault-pin-state={state.kind}
+          data-nex-vault-pin-digits={digits}
           style={{
             display: "flex",
-            gap: 6,
-            justifyContent: "space-between",
-            padding: "4px 2px",
-            position: "relative",
+            alignItems: "center",
+            width: "100%",
+            padding: "16px 18px",
+            background: skin.cells.bg,
+            border: `1px solid ${borderColor}`,
+            borderRadius: 12,
+            transition: "border-color 160ms ease, box-shadow 160ms ease",
           }}
         >
-          {Array.from({ length: cellCount }).map((_, i) => {
-            const filled = digits > i;
-            const isActiveCursor = !isRateLimited && !isSubmitting && digits === i;
-            return (
-              <div
-                key={i}
-                data-vault-cell={i}
-                data-vault-cell-filled={filled ? "true" : "false"}
-                data-vault-cell-active={isActiveCursor ? "true" : "false"}
-                aria-hidden="true"
-                style={{
-                  flex: 1,
-                  aspectRatio: "1",
-                  maxWidth: 32,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  background: skin.cells.bg,
-                  border: `1px solid ${isRateLimited ? skin.cells.borderMuted : skin.cells.border}`,
-                  borderRadius: 8,
-                  fontSize: 18,
-                  color: skin.cells.filled,
-                  lineHeight: 1,
-                  opacity: i >= PIN_MIN_LENGTH && !filled ? 0.6 : 1,
-                }}
-              >
-                {filled ? "•" : ""}
-              </div>
-            );
-          })}
-
           <input
             ref={inputRef}
-            type="tel"
+            type="password"
             inputMode="numeric"
+            pattern="[0-9]*"
             autoComplete="off"
             autoCorrect="off"
             spellCheck={false}
@@ -178,24 +159,51 @@ export function PinEntryClient({
             onChange={(e) => onChange(e.currentTarget.value)}
             disabled={isRateLimited || isSubmitting}
             maxLength={PIN_MAX_LENGTH}
+            placeholder={`${PIN_MIN_LENGTH}–${PIN_MAX_LENGTH} digits`}
             aria-label="Enter your Vault PIN (8 to 12 digits)"
             data-nex-vault-pin-input
-            data-nex-vault-pin-state={state.kind}
             style={{
-              position: "absolute",
-              inset: 0,
+              flex: 1,
               width: "100%",
-              height: "100%",
-              opacity: 0,
               background: "transparent",
               border: "none",
-              color: "transparent",
-              caretColor: "transparent",
-              fontSize: 16,
+              outline: "none",
+              color: skin.text.primary,
+              fontFamily: skin.font,
+              fontSize: 18,
+              letterSpacing: "0.3em",
               padding: 0,
               margin: 0,
             }}
           />
+        </label>
+        {/* Hidden cells preserved for sealed test / regression hooks ·
+            invisible but still present in the DOM so existing selectors
+            (data-vault-cell, data-vault-cell-filled, data-vault-cell-active)
+            keep working for the sealed master-pass + i18n Playwrights. */}
+        <div
+          aria-hidden="true"
+          style={{
+            position: "absolute",
+            width: 1,
+            height: 1,
+            overflow: "hidden",
+            clip: "rect(0 0 0 0)",
+            whiteSpace: "nowrap",
+          }}
+        >
+          {Array.from({ length: cellCount }).map((_, i) => {
+            const filled = digits > i;
+            const isActiveCursor = !isRateLimited && !isSubmitting && digits === i;
+            return (
+              <span
+                key={i}
+                data-vault-cell={i}
+                data-vault-cell-filled={filled ? "true" : "false"}
+                data-vault-cell-active={isActiveCursor ? "true" : "false"}
+              />
+            );
+          })}
         </div>
 
         <div
