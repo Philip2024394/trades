@@ -14,7 +14,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { redirect } from "next/navigation";
-import { ChevronRight, Lock, Settings } from "lucide-react";
+import { ChevronRight, Lock, Settings, Users } from "lucide-react";
 import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
 import { nexSupabaseAdmin } from "@/lib/nex-native/supabase-admin";
 import * as vaultEntryService from "@/lib/nex-native/vault-entry-service";
@@ -152,6 +152,7 @@ export default async function VaultWorkspaceHomePage() {
             rows={vaultedChatsRows}
             vaultedFriendCount={vaultedFriendIds.length}
           />
+          <ContactsEntryTile />
           <VaultQuickActions />
           <FileCategoriesList />
         </main>
@@ -510,6 +511,90 @@ function VaultedChatsSection(props: {
           <ChevronRight size={16} strokeWidth={1.8} color={NEX.textMuted} aria-hidden />
         </Link>
       ) : null}
+    </section>
+  );
+}
+
+/** Vault Home · Contacts navigation tile. First-class entry at the
+ *  same level as Chats + Settings · routes to the sealed Vault
+ *  Contacts page which reuses the existing NEX friends system (zero
+ *  duplicate contacts, zero duplicate conversation). */
+function ContactsEntryTile() {
+  return (
+    <section
+      data-nex-vault-contacts-entry
+      aria-label="Vault contacts"
+      style={{ marginTop: 24 }}
+    >
+      <h2
+        data-nex-vault-contacts-entry-title
+        style={{
+          fontSize: 11,
+          letterSpacing: "0.22em",
+          textTransform: "uppercase",
+          color: NEX.accent,
+          fontWeight: 700,
+          margin: "0 2px 10px",
+        }}
+      >
+        Contacts
+      </h2>
+      <Link
+        href="/nex-native/vault/home/contacts"
+        data-nex-vault-contacts-entry-link
+        style={{
+          ...GLASS,
+          display: "flex",
+          alignItems: "center",
+          gap: 14,
+          padding: "14px 16px",
+          borderRadius: 18,
+          minHeight: 64,
+          color: NEX.textPrimary,
+        }}
+      >
+        <span
+          aria-hidden
+          style={{
+            width: 44,
+            height: 44,
+            borderRadius: 999,
+            background: NEX.accentSoft,
+            color: NEX.accent,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexShrink: 0,
+            border: `1px solid ${NEX.accentStrong}`,
+          }}
+        >
+          <Users size={20} strokeWidth={1.8} aria-hidden />
+        </span>
+        <span style={{ flex: 1, minWidth: 0 }}>
+          <span
+            style={{
+              display: "block",
+              fontSize: 15,
+              fontWeight: 600,
+              color: NEX.textPrimary,
+            }}
+          >
+            Your contacts
+          </span>
+          <span
+            style={{
+              display: "block",
+              marginTop: 2,
+              fontSize: 12.5,
+              color: NEX.textSecondary,
+              lineHeight: 1.3,
+            }}
+          >
+            Open a conversation · move one into Vault · keep the same chat.
+          </span>
+        </span>
+        <ChevronRight size={18} strokeWidth={1.8} color={NEX.textMuted} aria-hidden />
+      </Link>
     </section>
   );
 }
