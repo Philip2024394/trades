@@ -68,6 +68,15 @@ export const SETTINGS_GROUPS: readonly SettingsGroupDef[] = [
     label: "Your NEX",
     rows: [
       {
+        key: "nex-socials",
+        href: "/nex-native/nex-socials",
+        emoji: "🌃",
+        title: "NEX Socials",
+        subtitle:
+          "Business openings · new friends · dating · nightlife partners · everyone around you",
+        highlighted: true,
+      },
+      {
         key: "chat-world",
         href: "/nex-native/chat-themes-library",
         emoji: "🌊",

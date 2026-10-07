@@ -25,6 +25,12 @@ interface DiscoverShellProps {
 }
 
 export function DiscoverShell(_props: DiscoverShellProps = {}) {
+  // Master-pass follow-up 2026-10-07 · founder direction: NEX Socials
+  // (floating profiles) is a night-life surface. The night-life hero
+  // paints the full viewport behind the floating cards + the status
+  // + title strip. A dark top-to-bottom gradient keeps the title
+  // text legible against the artwork. Falls back to deep NEX navy
+  // (background-color beneath) if the PNG fails to load.
   const containerStyle: CSSProperties = {
     // Full viewport, always. Pinned via fixed inset:0 so no parent
     // layout background (cream, founder image, scrollbar gutter,
@@ -34,7 +40,14 @@ export function DiscoverShell(_props: DiscoverShellProps = {}) {
     right: 0,
     bottom: 0,
     left: 0,
-    backgroundColor: "#0a0a0e",
+    backgroundColor: "#020914",
+    backgroundImage: [
+      "linear-gradient(180deg, rgba(2,9,20,0.45) 0%, rgba(2,9,20,0.20) 40%, rgba(2,9,20,0.70) 100%)",
+      "url(\"/nex-socials/night-life-background.png\")",
+    ].join(", "),
+    backgroundSize: "cover, cover",
+    backgroundPosition: "center center, center center",
+    backgroundRepeat: "no-repeat, no-repeat",
   };
 
   return (
