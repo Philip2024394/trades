@@ -22,6 +22,7 @@
 import { describe, test, expect, beforeAll, vi } from "vitest";
 import * as fs from "node:fs";
 import * as path from "node:path";
+import { EN_PACK } from "@/lib/nex/i18n/packs/en";
 
 // Stub supabase-admin so the dynamic import of vault-persistence-service
 // inside the SSRF section doesn't bootstrap the real client (which
@@ -325,33 +326,43 @@ describe("D · vault-entry-service calls persistence on move + remove", () => {
 // ─── E · honest-limits disclaimer sealed ────────────────────────────
 
 describe("E · vault/settings honest-limits disclaimer (updated for A.3b)", () => {
+  // Phase B.7 P4 · the vault/settings disclaimer copy was migrated
+  // to the universal NEX i18n registry · the sealed English wording
+  // now lives in `src/lib/nex/i18n/packs/en.ts` under the
+  // `vault.settings.honestLimits.*` keys. These tests continue to
+  // enforce the exact wording · we now source it from the EN pack.
+  // The Vault settings page source is still asserted to reference
+  // these keys so a future migration cannot drop them silently.
+  const para1 = EN_PACK["vault.settings.honestLimits.para1"];
+  const para2 = EN_PACK["vault.settings.honestLimits.para2"];
+  const para3 = EN_PACK["vault.settings.honestLimits.para3"];
+
   test("disclaimer tells the user the Vault key is created on their device", () => {
-    expect(vaultSettings).toContain("Vault key is created on your device");
+    expect(para1).toContain("Vault key is created on your device");
+    expect(vaultSettings).toContain("vault.settings.honestLimits.para1");
   });
 
   test("disclaimer asserts NEX cannot read the key / unlock Vault", () => {
-    // JSX source line-wraps between whitespace; collapse before match.
-    const collapsed = vaultSettings.replace(/\s+/g, " ");
-    expect(collapsed).toContain("NEX cannot read your Vault key");
+    expect(para1).toContain("NEX cannot read your Vault key");
   });
 
   test("disclaimer carries the cross-device / phase boundary note", () => {
-    const collapsed = vaultSettings.replace(/\s+/g, " ");
-    expect(collapsed).toContain(
+    expect(para2).toContain(
       "Cross-device authorisation and recovery arrive with the next sealed phases",
     );
-    expect(collapsed).toContain("phase boundary, not a regression");
+    expect(para2).toContain("phase boundary, not a regression");
+    expect(vaultSettings).toContain("vault.settings.honestLimits.para2");
   });
 
   test("disclaimer documents password-reset auto-lock (design §G.1)", () => {
-    expect(vaultSettings).toContain("Password reset or account recovery");
-    expect(vaultSettings).toContain("automatically locks Vault");
-    expect(vaultSettings).toContain(
-      "Your Vault content is preserved",
-    );
+    expect(para3).toContain("Password reset or account recovery");
+    expect(para3).toContain("automatically locks Vault");
+    expect(para3).toContain("Your Vault content is preserved");
+    expect(vaultSettings).toContain("vault.settings.honestLimits.para3");
   });
 
   test("disclaimer no longer calls PIN a prototype (A.3b ships real PIN)", () => {
+    expect(para1 + para2 + para3).not.toContain("prototype");
     expect(vaultSettings).not.toContain("prototype");
   });
 });

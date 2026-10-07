@@ -155,8 +155,11 @@ describe("B.4 · lock gating · locked state exposes no plaintext", () => {
 
   test("renders a visible locked shell state", () => {
     expect(client).toMatch(/data-nex-vault-chat-state="locked"/);
-    expect(client).toMatch(/Vault is locked/);
-    expect(client).toMatch(/Unlock Vault/);
+    // Phase B.7 P4 · locked-shell strings now come from the universal
+    // NEX i18n registry · we assert that the sealed B.4 client
+    // references the expected keys.
+    expect(client).toMatch(/vault\.chat\.locked\.title/);
+    expect(client).toMatch(/vault\.chat\.locked\.unlockBtn/);
   });
 
   test("message bubbles render ONLY when phase is 'ready'", () => {

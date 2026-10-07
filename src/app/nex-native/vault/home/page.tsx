@@ -13,8 +13,11 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { ChevronRight, Lock, Settings, Users } from "lucide-react";
+import { resolveServerLocale, tFor } from "@/lib/nex/i18n/server";
+import type { I18nKey } from "@/lib/nex/i18n/keys";
 import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
 import { nexSupabaseAdmin } from "@/lib/nex-native/supabase-admin";
 import * as vaultEntryService from "@/lib/nex-native/vault-entry-service";
@@ -39,19 +42,19 @@ export const dynamic = "force-dynamic";
 
 interface FileCategory {
   key: string;
-  label: string;
-  blurb: string;
+  labelKey: I18nKey;
+  blurbKey: I18nKey;
   icon: React.ReactNode;
   href: string;
 }
 
 const FILE_CATEGORIES: FileCategory[] = [
-  { key: "documents", label: "Documents",       blurb: "Contracts, manuals, reports…",       icon: <IconDocument  />, href: "/nex-native/vault/home/documents" },
-  { key: "photos",    label: "Photos",          blurb: "Site photos, designs, reference…",   icon: <IconImage     />, href: "/nex-native/vault/home/photos" },
-  { key: "videos",    label: "Videos",          blurb: "Site videos, training, walkthroughs…", icon: <IconVideo    />, href: "/nex-native/vault/home/videos" },
-  { key: "plans",     label: "Plans & Drawings", blurb: "PDFs, CAD, technical drawings…",      icon: <IconBlueprint />, href: "/nex-native/vault/home/plans" },
-  { key: "important", label: "Important",        blurb: "Contracts, certificates, credentials…", icon: <IconLock    />, href: "/nex-native/vault/home/important" },
-  { key: "archived",  label: "Archived",         blurb: "Older files, backups…",               icon: <IconArchive  />, href: "/nex-native/vault/home/archived" },
+  { key: "documents", labelKey: "vault.home.cat.documents.label", blurbKey: "vault.home.cat.documents.blurb", icon: <IconDocument  />, href: "/nex-native/vault/home/documents" },
+  { key: "photos",    labelKey: "vault.home.cat.photos.label",    blurbKey: "vault.home.cat.photos.blurb",    icon: <IconImage     />, href: "/nex-native/vault/home/photos" },
+  { key: "videos",    labelKey: "vault.home.cat.videos.label",    blurbKey: "vault.home.cat.videos.blurb",    icon: <IconVideo     />, href: "/nex-native/vault/home/videos" },
+  { key: "plans",     labelKey: "vault.home.cat.plans.label",     blurbKey: "vault.home.cat.plans.blurb",     icon: <IconBlueprint />, href: "/nex-native/vault/home/plans" },
+  { key: "important", labelKey: "vault.home.cat.important.label", blurbKey: "vault.home.cat.important.blurb", icon: <IconLock      />, href: "/nex-native/vault/home/important" },
+  { key: "archived",  labelKey: "vault.home.cat.archived.label",  blurbKey: "vault.home.cat.archived.blurb",  icon: <IconArchive   />, href: "/nex-native/vault/home/archived" },
 ];
 
 export default async function VaultWorkspaceHomePage() {
@@ -76,6 +79,14 @@ export default async function VaultWorkspaceHomePage() {
 
   const chatTheme = (session.account.chat_theme as string | null) ?? null;
   const doorwaySlug = mapChatThemeToDoorwaySlug(chatTheme);
+
+  // Phase B.7 · Vault surfaces consume the universal NEX i18n pipe.
+  const headerBag = await headers();
+  const locale = resolveServerLocale({
+    accountLocale: (session.account.locale as string | null) ?? null,
+    acceptLanguage: headerBag.get("accept-language"),
+  });
+  const t = tFor(locale);
 
   // B.4 follow-up (2026-10-07) · the Vaulted Chats section replaces
   // the Phase-A ChatsFriendsCard doorway so each row navigates
@@ -135,7 +146,7 @@ export default async function VaultWorkspaceHomePage() {
             zIndex: 0,
           }}
         />
-        <HomeHeader />
+        <HomeHeader t={t} />
         <main
           id="main"
           style={{
@@ -147,21 +158,22 @@ export default async function VaultWorkspaceHomePage() {
           }}
         >
           <MigrationRunner />
-          <Hero />
+          <Hero t={t} />
           <VaultedChatsSection
             rows={vaultedChatsRows}
             vaultedFriendCount={vaultedFriendIds.length}
+            t={t}
           />
-          <ContactsEntryTile />
+          <ContactsEntryTile t={t} />
           <VaultQuickActions />
-          <FileCategoriesList />
+          <FileCategoriesList t={t} />
         </main>
       </div>
     </>
   );
 }
 
-function HomeHeader() {
+function HomeHeader({ t }: { t: (k: I18nKey) => string }) {
   return (
     <header
       data-nex-vault-home-header
@@ -188,11 +200,11 @@ function HomeHeader() {
       >
         <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
           <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
-            <span style={{ fontSize: 14, fontWeight: 700, letterSpacing: "0.14em", color: NEX.accent }}>NEX</span>
-            <span style={{ fontSize: 14, fontWeight: 600, letterSpacing: "0.18em", color: NEX.textPrimary }}>VAULT</span>
+            <span style={{ fontSize: 14, fontWeight: 700, letterSpacing: "0.14em", color: NEX.accent }}>{t("vault.home.brandNex")}</span>
+            <span style={{ fontSize: 14, fontWeight: 600, letterSpacing: "0.18em", color: NEX.textPrimary }}>{t("vault.home.brandVault")}</span>
           </div>
           <p style={{ margin: 0, fontSize: 11.5, color: NEX.textSecondary, letterSpacing: "0.005em" }}>
-            Your important files. Secure. Always with you.
+            {t("vault.home.tagline")}
           </p>
         </div>
 
@@ -200,7 +212,7 @@ function HomeHeader() {
           <LockVaultNowButton />
           <Link
             href="/nex-native/vault/settings"
-            aria-label="Vault settings"
+            aria-label={t("vault.home.settingsLinkLabel")}
             data-nex-vault-settings-link
             style={{
               ...GLASS_CHIP,
@@ -221,11 +233,11 @@ function HomeHeader() {
   );
 }
 
-function Hero() {
+function Hero({ t }: { t: (k: I18nKey) => string }) {
   return (
     <section
       data-nex-vault-hero
-      aria-label="NEX Vault hero"
+      aria-label={t("vault.home.heroEyebrow")}
       style={{
         marginTop: 18,
         borderRadius: 24,
@@ -274,7 +286,7 @@ function Hero() {
             fontWeight: 700,
           }}
         >
-          NEX Vault
+          {t("vault.home.heroEyebrow")}
         </p>
         <p
           style={{
@@ -285,7 +297,7 @@ function Hero() {
             maxWidth: 320,
           }}
         >
-          Secure your documents, photos and important files.
+          {t("vault.home.heroBody")}
         </p>
       </div>
     </section>
@@ -300,7 +312,9 @@ function VaultedChatsSection(props: {
     handle: string | null;
   }>;
   vaultedFriendCount: number;
+  t: (k: I18nKey) => string;
 }) {
+  const { t } = props;
   // Section header
   const header = (
     <h2
@@ -314,7 +328,7 @@ function VaultedChatsSection(props: {
         margin: "0 2px 10px",
       }}
     >
-      Chats
+      {t("vault.home.chats.sectionTitle")}
     </h2>
   );
 
@@ -326,7 +340,7 @@ function VaultedChatsSection(props: {
       <section
         data-nex-vault-chats-section
         data-nex-vault-chats-empty="true"
-        aria-label="Your Vault chats"
+        aria-label={t("vault.home.chats.sectionTitle")}
         style={{ marginTop: 20 }}
       >
         {header}
@@ -367,7 +381,7 @@ function VaultedChatsSection(props: {
                 color: NEX.textPrimary,
               }}
             >
-              Your Vault is empty
+              {t("vault.home.chats.empty.title")}
             </p>
             <p
               style={{
@@ -377,7 +391,7 @@ function VaultedChatsSection(props: {
                 lineHeight: 1.35,
               }}
             >
-              Move a chat into Vault to keep it protected here.
+              {t("vault.home.chats.empty.body")}
             </p>
           </div>
         </div>
@@ -389,7 +403,7 @@ function VaultedChatsSection(props: {
     <section
       data-nex-vault-chats-section
       data-nex-vault-chats-empty="false"
-      aria-label="Your Vault chats"
+      aria-label={t("vault.home.chats.sectionTitle")}
       style={{
         marginTop: 20,
         display: "flex",
@@ -458,7 +472,7 @@ function VaultedChatsSection(props: {
                 textOverflow: "ellipsis",
               }}
             >
-              {r.handle ?? "Protected on this device"}
+              {r.handle ?? t("vault.home.chatRow.handleFallback")}
             </span>
           </span>
           <span
@@ -480,7 +494,7 @@ function VaultedChatsSection(props: {
             }}
           >
             <Lock size={11} strokeWidth={2} />
-            VAULT
+            {t("vault.contacts.vaultBadge")}
           </span>
           <ChevronRight size={18} strokeWidth={1.8} color={NEX.textMuted} aria-hidden />
         </Link>
@@ -505,8 +519,11 @@ function VaultedChatsSection(props: {
         >
           <span style={{ flex: 1, minWidth: 0, fontSize: 13, color: NEX.textSecondary }}>
             {props.vaultedFriendCount === 1
-              ? "1 friend vaulted whole"
-              : `${props.vaultedFriendCount} friends vaulted whole`}
+              ? t("vault.home.friendsVaulted.one")
+              : t("vault.home.friendsVaulted.many").replace(
+                  "{count}",
+                  String(props.vaultedFriendCount),
+                )}
           </span>
           <ChevronRight size={16} strokeWidth={1.8} color={NEX.textMuted} aria-hidden />
         </Link>
@@ -519,11 +536,11 @@ function VaultedChatsSection(props: {
  *  same level as Chats + Settings · routes to the sealed Vault
  *  Contacts page which reuses the existing NEX friends system (zero
  *  duplicate contacts, zero duplicate conversation). */
-function ContactsEntryTile() {
+function ContactsEntryTile({ t }: { t: (k: I18nKey) => string }) {
   return (
     <section
       data-nex-vault-contacts-entry
-      aria-label="Vault contacts"
+      aria-label={t("vault.home.contacts.sectionTitle")}
       style={{ marginTop: 24 }}
     >
       <h2
@@ -537,7 +554,7 @@ function ContactsEntryTile() {
           margin: "0 2px 10px",
         }}
       >
-        Contacts
+        {t("vault.home.contacts.sectionTitle")}
       </h2>
       <Link
         href="/nex-native/vault/home/contacts"
@@ -579,7 +596,7 @@ function ContactsEntryTile() {
               color: NEX.textPrimary,
             }}
           >
-            Your contacts
+            {t("vault.home.contacts.rowTitle")}
           </span>
           <span
             style={{
@@ -590,7 +607,7 @@ function ContactsEntryTile() {
               lineHeight: 1.3,
             }}
           >
-            Open a conversation · move one into Vault · keep the same chat.
+            {t("vault.home.contacts.rowBlurb")}
           </span>
         </span>
         <ChevronRight size={18} strokeWidth={1.8} color={NEX.textMuted} aria-hidden />
@@ -599,7 +616,7 @@ function ContactsEntryTile() {
   );
 }
 
-function FileCategoriesList() {
+function FileCategoriesList({ t }: { t: (k: I18nKey) => string }) {
   return (
     <section
       data-nex-vault-categories
@@ -653,7 +670,7 @@ function FileCategoriesList() {
                 color: NEX.textPrimary,
               }}
             >
-              {c.label}
+              {t(c.labelKey)}
             </span>
             <span
               style={{
@@ -664,7 +681,7 @@ function FileCategoriesList() {
                 lineHeight: 1.3,
               }}
             >
-              {c.blurb}
+              {t(c.blurbKey)}
             </span>
           </span>
           <ChevronRight size={18} strokeWidth={1.8} color={NEX.textMuted} aria-hidden />

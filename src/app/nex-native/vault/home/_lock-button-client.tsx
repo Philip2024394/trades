@@ -13,8 +13,10 @@ import { useState } from "react";
 import { Lock } from "lucide-react";
 import { lockVault } from "@/lib/nex-native/vault/client/unlock-orchestrator";
 import { useVaultSession } from "@/lib/nex-native/vault/client/vault-session";
+import { useT } from "@/lib/nex/i18n/I18nProvider";
 
 export function LockVaultNowButton() {
+  const t = useT();
   const router = useRouter();
   const session = useVaultSession();
   const [busy, setBusy] = useState(false);
@@ -33,7 +35,7 @@ export function LockVaultNowButton() {
       data-nex-vault-lock-now
       onClick={onLock}
       disabled={busy}
-      aria-label="Lock Vault Now"
+      aria-label={t("vault.home.lockBtn.unlocked")}
       style={{
         display: "inline-flex",
         alignItems: "center",
@@ -50,7 +52,11 @@ export function LockVaultNowButton() {
       }}
     >
       <Lock size={14} />
-      <span>{session.unlocked ? "Lock Vault Now" : "Vault locked"}</span>
+      <span>
+        {session.unlocked
+          ? t("vault.home.lockBtn.unlocked")
+          : t("vault.home.lockBtn.locked")}
+      </span>
     </button>
   );
 }

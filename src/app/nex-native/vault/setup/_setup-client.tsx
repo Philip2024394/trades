@@ -17,6 +17,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { VaultDoorwaySkin } from "../_doorway-skin";
+import { useT } from "@/lib/nex/i18n/I18nProvider";
+import type { I18nKey } from "@/lib/nex/i18n/keys";
 import {
   ensureDeviceKey,
   publicKeyBase64,
@@ -33,6 +35,7 @@ type Step = "welcome" | "choose" | "pin" | "passphrase" | "working" | "error";
 type Mode = "pin" | "passphrase";
 
 export function SetupClient({ skin }: { skin: VaultDoorwaySkin }) {
+  const t = useT();
   const router = useRouter();
   const [deviceId, setDeviceId] = useState<string | null>(null);
   const [step, setStep] = useState<Step>("welcome");
@@ -92,19 +95,22 @@ export function SetupClient({ skin }: { skin: VaultDoorwaySkin }) {
   }
 
   function humaniseError(code: string): string {
-    switch (code) {
-      case "already_configured":
-        return "Vault is already set up on this account.";
-      case "device_not_registered":
-        return "This device could not register with Vault. Please refresh and try again.";
-      case "device_revoked":
-        return "This device has been revoked. Sign in on another device.";
-      case "setup_insert_failed":
-      case "envelope_insert_failed":
-        return "Vault setup could not be saved. Please try again.";
-      default:
-        return "Something went wrong. Please try again.";
-    }
+    const key: I18nKey = (() => {
+      switch (code) {
+        case "already_configured":
+          return "vault.setup.error.alreadyConfigured";
+        case "device_not_registered":
+          return "vault.setup.error.deviceNotRegistered";
+        case "device_revoked":
+          return "vault.setup.error.deviceRevoked";
+        case "setup_insert_failed":
+        case "envelope_insert_failed":
+          return "vault.setup.error.saveFailed";
+        default:
+          return "vault.setup.error.generic";
+      }
+    })();
+    return t(key);
   }
 
   const Container = ({ children }: { children: React.ReactNode }) => (
@@ -139,7 +145,7 @@ export function SetupClient({ skin }: { skin: VaultDoorwaySkin }) {
             textAlign: "center",
           }}
         >
-          NEX VAULT
+          {t("vault.setup.brandChip")}
         </p>
         <h1
           data-nex-vault-headline
@@ -151,7 +157,7 @@ export function SetupClient({ skin }: { skin: VaultDoorwaySkin }) {
             lineHeight: 1.3,
           }}
         >
-          Protect your Vault
+          {t("vault.setup.welcome.title")}
         </h1>
         <p
           style={{
@@ -162,8 +168,7 @@ export function SetupClient({ skin }: { skin: VaultDoorwaySkin }) {
             textAlign: "center",
           }}
         >
-          Your Vault key is created on your device. NEX cannot read your
-          protected Vault content.
+          {t("vault.setup.welcome.body")}
         </p>
         <button
           type="button"
@@ -172,7 +177,9 @@ export function SetupClient({ skin }: { skin: VaultDoorwaySkin }) {
           disabled={!deviceId}
           style={buttonStyle(skin, !!deviceId)}
         >
-          {deviceId ? "Set up Vault" : "Preparing…"}
+          {deviceId
+            ? t("vault.setup.welcome.ctaReady")
+            : t("vault.setup.welcome.ctaPreparing")}
         </button>
       </Container>
     );
@@ -182,7 +189,7 @@ export function SetupClient({ skin }: { skin: VaultDoorwaySkin }) {
     return (
       <Container>
         <h1 style={{ margin: "0 0 16px", fontSize: 22, textAlign: "center" }}>
-          How do you want to unlock Vault?
+          {t("vault.setup.choose.title")}
         </h1>
         <div style={{ display: "grid", gap: 12, margin: "24px 0" }}>
           <button
@@ -196,7 +203,9 @@ export function SetupClient({ skin }: { skin: VaultDoorwaySkin }) {
             }}
             style={optionStyle(skin)}
           >
-            <strong style={{ fontSize: 15 }}>Use a PIN</strong>
+            <strong style={{ fontSize: 15 }}>
+              {t("vault.setup.choose.pin.title")}
+            </strong>
             <span
               style={{
                 display: "block",
@@ -205,7 +214,7 @@ export function SetupClient({ skin }: { skin: VaultDoorwaySkin }) {
                 color: skin.text.secondary,
               }}
             >
-              8–12 digits · fast to type on mobile
+              {t("vault.setup.choose.pin.blurb")}
             </span>
           </button>
           <button
@@ -219,7 +228,9 @@ export function SetupClient({ skin }: { skin: VaultDoorwaySkin }) {
             }}
             style={optionStyle(skin)}
           >
-            <strong style={{ fontSize: 15 }}>Use a passphrase</strong>
+            <strong style={{ fontSize: 15 }}>
+              {t("vault.setup.choose.passphrase.title")}
+            </strong>
             <span
               style={{
                 display: "block",
@@ -228,7 +239,7 @@ export function SetupClient({ skin }: { skin: VaultDoorwaySkin }) {
                 color: skin.text.secondary,
               }}
             >
-              20+ characters · strongest protection
+              {t("vault.setup.choose.passphrase.blurb")}
             </span>
           </button>
         </div>
@@ -241,7 +252,7 @@ export function SetupClient({ skin }: { skin: VaultDoorwaySkin }) {
     return (
       <Container>
         <h1 style={{ margin: "0 0 12px", fontSize: 22, textAlign: "center" }}>
-          {isPin ? "Choose your PIN" : "Choose your passphrase"}
+          {isPin ? t("vault.setup.pin.title") : t("vault.setup.passphrase.title")}
         </h1>
         <p
           style={{
@@ -252,8 +263,13 @@ export function SetupClient({ skin }: { skin: VaultDoorwaySkin }) {
           }}
         >
           {isPin
-            ? `${PIN_MIN_LENGTH}–${PIN_MAX_LENGTH} digits. Keep it memorable.`
-            : `${PASSPHRASE_MIN_LENGTH} or more characters.`}
+            ? t("vault.setup.pin.rangeHintTemplate")
+                .replace("{min}", String(PIN_MIN_LENGTH))
+                .replace("{max}", String(PIN_MAX_LENGTH))
+            : t("vault.setup.passphrase.rangeHintTemplate").replace(
+                "{min}",
+                String(PASSPHRASE_MIN_LENGTH),
+              )}
         </p>
         <form
           onSubmit={(e) => {
@@ -275,7 +291,11 @@ export function SetupClient({ skin }: { skin: VaultDoorwaySkin }) {
                   : e.currentTarget.value,
               )
             }
-            placeholder={isPin ? "PIN" : "Passphrase"}
+            placeholder={
+              isPin
+                ? t("vault.setup.pin.placeholder")
+                : t("vault.setup.passphrase.placeholder")
+            }
             style={inputStyle(skin)}
           />
           <input
@@ -291,7 +311,11 @@ export function SetupClient({ skin }: { skin: VaultDoorwaySkin }) {
                   : e.currentTarget.value,
               )
             }
-            placeholder={isPin ? "Confirm PIN" : "Confirm passphrase"}
+            placeholder={
+              isPin
+                ? t("vault.setup.pin.confirmPlaceholder")
+                : t("vault.setup.passphrase.confirmPlaceholder")
+            }
             style={inputStyle(skin)}
           />
           {error && (
@@ -317,7 +341,9 @@ export function SetupClient({ skin }: { skin: VaultDoorwaySkin }) {
                 textAlign: "center",
               }}
             >
-              {isPin ? "PINs don't match." : "Passphrases don't match."}
+              {isPin
+                ? t("vault.setup.pin.mismatch")
+                : t("vault.setup.passphrase.mismatch")}
             </p>
           )}
           <button
@@ -326,7 +352,7 @@ export function SetupClient({ skin }: { skin: VaultDoorwaySkin }) {
             disabled={!canSubmit}
             style={buttonStyle(skin, canSubmit)}
           >
-            Create Vault
+            {t("vault.setup.createCta")}
           </button>
           <button
             type="button"
@@ -345,7 +371,7 @@ export function SetupClient({ skin }: { skin: VaultDoorwaySkin }) {
               cursor: "pointer",
             }}
           >
-            Back
+            {t("vault.setup.backBtn")}
           </button>
         </form>
       </Container>
@@ -359,7 +385,7 @@ export function SetupClient({ skin }: { skin: VaultDoorwaySkin }) {
           data-nex-vault-setup-working
           style={{ textAlign: "center", color: skin.text.secondary }}
         >
-          Creating your Vault on this device…
+          {t("vault.setup.workingMessage")}
         </p>
       </Container>
     );
@@ -368,7 +394,7 @@ export function SetupClient({ skin }: { skin: VaultDoorwaySkin }) {
   return (
     <Container>
       <p data-nex-vault-setup-error style={{ color: skin.feedback.orange }}>
-        {error ?? "Vault setup failed."}
+        {error ?? t("vault.setup.errorBannerDefault")}
       </p>
     </Container>
   );

@@ -11,6 +11,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { VaultDoorwaySkin } from "../../_doorway-skin";
+import { useLang } from "@/lib/nex/i18n/I18nProvider";
+import { formatDate } from "@/lib/nex/i18n/format";
 import { ensureDeviceKey } from "@/lib/nex-native/crypto/device-key";
 import {
   authoriseDevice,
@@ -24,6 +26,7 @@ type ActionBusyKind = "authorise" | "revoke" | "step_up" | null;
 
 export function DevicesClient({ skin }: { skin: VaultDoorwaySkin }) {
   const router = useRouter();
+  const { lang } = useLang();
   const vault = useVaultSession();
   const [currentDeviceId, setCurrentDeviceId] = useState<string | null>(null);
   const [devices, setDevices] = useState<VaultDeviceSummary[] | null>(null);
@@ -273,7 +276,7 @@ export function DevicesClient({ skin }: { skin: VaultDoorwaySkin }) {
                       }}
                     >
                       {statusLabel(d.vault_status)} · last active{" "}
-                      {new Date(d.last_seen_at).toLocaleDateString()}
+                      {formatDate(d.last_seen_at, lang)}
                     </p>
                   </div>
                   <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>

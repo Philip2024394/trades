@@ -20,8 +20,8 @@
 "use client";
 
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { type Lang, DEFAULT_LANG, resolveClientLang, writeClientLang } from "./lang";
-import { PACKS } from "./supported-locales";
+import { type Lang, DEFAULT_LANG, writeClientLang } from "./lang";
+import { PACKS, narrowToSupportedLang } from "./supported-locales";
 import { EN_PACK } from "./packs/en";
 import type { I18nKey } from "./keys";
 
@@ -47,8 +47,22 @@ export function I18nProvider({
   const [lang, setLangState] = useState<Lang>(initialLang ?? DEFAULT_LANG);
 
   useEffect(() => {
-    const clientLang = resolveClientLang();
-    if (clientLang !== lang) setLangState(clientLang);
+    // Only override the server-provided initialLang when the client
+    // has an EXPLICIT preference · URL `?lang=` beats everything,
+    // then localStorage. Falling through to DEFAULT_LANG here would
+    // trample a correctly-resolved server initialLang (e.g. account
+    // locale "en" being overwritten by DEFAULT_LANG "id" because the
+    // user never visited the sign-on prefix picker).
+    if (typeof window === "undefined") return;
+    let next: Lang | null = null;
+    try {
+      const url = new URL(window.location.href);
+      next = narrowToSupportedLang(url.searchParams.get("lang"));
+      if (!next) {
+        next = narrowToSupportedLang(window.localStorage.getItem("nex_user_lang"));
+      }
+    } catch { /* private mode · ignore */ }
+    if (next && next !== lang) setLangState(next);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

@@ -38,7 +38,10 @@ const CONTACTS_CLIENT = "src/app/nex-native/vault/home/contacts/_contacts-client
 describe("Vault Contacts · Vault Home navigation", () => {
   it("Vault Home mounts the Contacts entry tile", () => {
     const src = read(VAULT_HOME);
-    expect(src).toMatch(/<ContactsEntryTile\s*\/>/);
+    // Phase B.7 P4 · tile accepts a `t` prop from the server-side
+    // locale resolver so the Vault Home surface renders through the
+    // universal NEX i18n pipe.
+    expect(src).toMatch(/<ContactsEntryTile\s+t=\{t\}\s*\/>/);
     expect(src).toMatch(/function\s+ContactsEntryTile\s*\(/);
   });
 
@@ -89,12 +92,21 @@ describe("Vault Contacts · reuses existing NEX systems", () => {
     expect(src).toMatch(/peerConversationService\.findPeerConversation\s*\(/);
   });
 
-  it("Contacts page uses the sealed vault-entry-service for Vault membership", () => {
+  it("Contacts page uses the sealed vault-entry-service for Vault membership on BOTH axes", () => {
+    // Bug-fix 2026-10-07 · the page must consult both the
+    // conversation-vault branch AND the friend-vault branch · a
+    // contact whose friendship is friend-vaulted (but whose
+    // conversation was never conversation-vaulted) must still render
+    // as "in Vault".
     const src = read(CONTACTS_PAGE);
     expect(src).toMatch(
       /from\s+["']@\/lib\/nex-native\/vault-entry-service["']/,
     );
     expect(src).toMatch(/vaultEntryService\.listVaultedConversationIds\s*\(/);
+    expect(src).toMatch(/vaultEntryService\.listVaultedFriendIds\s*\(/);
+    // The `isVaulted` field is set from EITHER axis.
+    expect(src).toMatch(/vaultedConvIds\.has/);
+    expect(src).toMatch(/vaultedFriendIds\.has/);
   });
 
   it("no Vault-specific contact / friend / relationship table is introduced", () => {
@@ -190,9 +202,138 @@ describe("Vault Contacts · route semantics per state", () => {
     expect(src).toMatch(/data-nex-vault-contact-state="no-conversation"/);
   });
 
-  it("vaulted branch is reached when isVaulted && conversationId exists", () => {
+  it("vaulted branch is reached when isVaulted (either conversation OR friend axis)", () => {
     const src = read(CONTACTS_CLIENT);
-    expect(src).toMatch(/row\.isVaulted\s*&&\s*vaultedTarget/);
+    expect(src).toMatch(/if\s*\(\s*row\.isVaulted\s*\)/);
+  });
+});
+
+// ────────────────────────────────────────────────────────────────────
+// Section D2 · Vaulted-row action sheet (Move / Delete / Block)
+// ────────────────────────────────────────────────────────────────────
+
+const ACTION_SHEET =
+  "src/app/nex-native/vault/home/contacts/_vault-contact-action-sheet.tsx";
+
+describe("Vault Contacts · vaulted-row action sheet", () => {
+  it("the action sheet file exists", () => {
+    expect(exists(ACTION_SHEET)).toBe(true);
+  });
+
+  it("the three vaulted actions are present with distinct data-attributes", () => {
+    const src = read(ACTION_SHEET);
+    expect(src).toMatch(/data-nex-vault-contact-action="move-out"/);
+    expect(src).toMatch(/data-nex-vault-contact-action="delete"/);
+    expect(src).toMatch(/data-nex-vault-contact-action="block"/);
+  });
+
+  it("Move + Delete route through the sealed remove-* server actions (zero new backend)", () => {
+    const src = read(ACTION_SHEET);
+    expect(src).toMatch(
+      /from\s+["']\.\.\/\.\.\/_actions["']/,
+    );
+    expect(src).toMatch(/removeConversationFromVaultAction/);
+    expect(src).toMatch(/removeFriendFromVaultAction/);
+    // No new client-side conversation / vault-entry mutation.
+    expect(src).not.toMatch(/nex_vault_entry.*(insert|delete)/);
+    expect(src).not.toMatch(/nex_peer_conversation.*insert/);
+  });
+
+  it("Block routes through the sealed blockAccountAction (FormData shape)", () => {
+    const src = read(ACTION_SHEET);
+    expect(src).toMatch(
+      /from\s+["']\.\.\/\.\.\/\.\.\/_actions["']/,
+    );
+    expect(src).toMatch(/blockAccountAction/);
+    // Posted as hidden form with the sealed `other_account_id` key.
+    expect(src).toMatch(/name="other_account_id"/);
+  });
+
+  it("Delete uses the SAME backend path as Move (founder decision 2026-10-07)", () => {
+    const src = read(ACTION_SHEET);
+    // Both Move and Delete call the single `runMoveOrDelete` closure
+    // which fires the sealed remove-actions. Delete differs ONLY in
+    // the confirmation copy · never the backend path.
+    expect(src).toMatch(/const\s+runMoveOrDelete\s*=\s*useCallback/);
+  });
+
+  it("the sheet never reads nex_peer_message (locked-Vault safety preserved)", () => {
+    const src = read(ACTION_SHEET);
+    const codeOnly = src
+      .replace(/\/\*[\s\S]*?\*\//g, "")
+      .replace(/\/\/[^\n]*/g, "");
+    expect(codeOnly).not.toMatch(/nex_peer_message/);
+    expect(codeOnly).not.toMatch(/ciphertext/);
+    expect(codeOnly).not.toMatch(/attachment_url/);
+    expect(codeOnly).not.toMatch(/\bVMK\b/);
+    expect(codeOnly).not.toMatch(/\bK_c\b/);
+  });
+
+  it("the vaulted row in _contacts-client.tsx wraps its Link in the action sheet", () => {
+    const src = read(CONTACTS_CLIENT);
+    expect(src).toMatch(/<VaultContactActionSheet\b/);
+  });
+});
+
+// ────────────────────────────────────────────────────────────────────
+// Section D3 · Richer card data · peer-visibility policy caps
+// ────────────────────────────────────────────────────────────────────
+
+describe("Vault Contacts · richer card data & peer-visibility policy", () => {
+  it("VaultContactRow surfaces approxCountry + lastSeenRelative", () => {
+    const src = read(CONTACTS_CLIENT);
+    expect(src).toMatch(/approxCountry:\s*string\s*\|\s*null/);
+    expect(src).toMatch(/lastSeenRelative:\s*string\s*\|\s*null/);
+  });
+
+  it("the server page fetches peer sessions via nex_session (approx_country + last_seen_at only)", () => {
+    const src = read(CONTACTS_PAGE);
+    expect(src).toMatch(/\.from\(["']nex_session["']\)/);
+    // Only the three allowed fields are selected.
+    expect(src).toMatch(
+      /\.select\(["']account_id,\s*approx_country,\s*last_seen_at["']\)/,
+    );
+    // No forbidden fields appear in the select list.
+    const selectMatch = src.match(/\.select\(["']([^"']+)["']\)/);
+    expect(selectMatch).toBeTruthy();
+    const selectText = selectMatch?.[1] ?? "";
+    for (const forbidden of [
+      "ip_address",
+      "approx_city",
+      "user_agent",
+      "device_label",
+    ]) {
+      expect(
+        selectText.includes(forbidden),
+        `peer-visibility surface must not select '${forbidden}'`,
+      ).toBe(false);
+    }
+  });
+
+  it("peer sessions are restricted to live (revoked_at is null) sessions", () => {
+    const src = read(CONTACTS_PAGE);
+    expect(src).toMatch(/\.is\(["']revoked_at["'],\s*null\)/);
+  });
+
+  it("last-seen is rendered as a RELATIVE phrase · the exact timestamp never reaches the client row", () => {
+    const page = read(CONTACTS_PAGE);
+    const client = read(CONTACTS_CLIENT);
+    // Server uses Phase B.7 formatRelativeFrom to produce the string.
+    expect(page).toMatch(/formatRelativeFrom\s*\(/);
+    // Client row surface shows the relative string · no toLocaleString
+    // call on the sub-line in the client file.
+    const clientCodeOnly = client
+      .replace(/\/\*[\s\S]*?\*\//g, "")
+      .replace(/\/\/[^\n]*/g, "");
+    expect(clientCodeOnly).not.toMatch(/toLocaleString|toLocaleDateString|toLocaleTimeString/);
+  });
+
+  it("country is capped at the 2-letter ISO code · no city, no address", () => {
+    const client = read(CONTACTS_CLIENT);
+    // The sub-line renderer uses `approxCountry` only · no reference
+    // to city or address.
+    expect(client).not.toMatch(/approx_city|address_line/);
+    expect(client).toMatch(/formatCountryCode/);
   });
 });
 

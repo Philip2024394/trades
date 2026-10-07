@@ -22,8 +22,10 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { ChevronLeft, ChevronRight, Lock, Search } from "lucide-react";
+import { useT } from "@/lib/nex/i18n/I18nProvider";
 import { NEX, GLASS, GLASS_CHIP } from "../_palette";
 import { MoveToVaultAffordance } from "../../_move-to-vault-affordance";
+import { VaultContactActionSheet } from "./_vault-contact-action-sheet";
 
 export interface VaultContactRow {
   friendId: string;
@@ -35,9 +37,20 @@ export interface VaultContactRow {
    *  surface · a null here routes to the sealed chat path which
    *  only inserts a row on the first actual send. */
   conversationId: string | null;
-  /** True iff the canonical conversation is in the viewer's Vault.
-   *  Pure metadata · no message content is read to compute it. */
+  /** True iff EITHER the canonical conversation OR the friendship
+   *  itself is in the viewer's Vault (bug-fix 2026-10-07 · recognises
+   *  friend-vault entries). Pure metadata · no message content is
+   *  read to compute it. */
   isVaulted: boolean;
+  /** Phase 1 Security · peer's most-recent live-session
+   *  approx_country · 2-letter ISO code or null if never signed in
+   *  from a tracked session. Peer-visibility policy sealed 2026-10-07
+   *  limits exposure to country level (NOT city). */
+  approxCountry: string | null;
+  /** Phase B.7 formatRelativeFrom(peer.last_seen_at, locale) · a
+   *  locale-aware RELATIVE phrase (never an exact timestamp). Null
+   *  when the peer has no tracked session. */
+  lastSeenRelative: string | null;
 }
 
 interface Props {
@@ -46,6 +59,7 @@ interface Props {
 }
 
 export function VaultContactsClient({ rows }: Props) {
+  const t = useT();
   const [query, setQuery] = useState("");
   const normalisedQuery = query.trim().toLowerCase();
   const filteredRows = useMemo(() => {
@@ -96,18 +110,18 @@ export function VaultContactsClient({ rows }: Props) {
 
         {rows.length === 0 ? (
           <EmptyState
-            heading="No contacts yet"
-            body="Add a friend on NEX and they'll appear here. Vault stays in sync with your NEX contacts automatically."
+            heading={t("vault.contacts.empty.noneTitle")}
+            body={t("vault.contacts.empty.noneBody")}
           />
         ) : filteredRows.length === 0 ? (
           <EmptyState
-            heading="No contact matches"
-            body="Try a shorter search · the whole list stays available when you clear the field."
+            heading={t("vault.contacts.empty.noMatchTitle")}
+            body={t("vault.contacts.empty.noMatchBody")}
           />
         ) : (
           <section
             data-nex-vault-contacts-list
-            aria-label="Vault contacts"
+            aria-label={t("vault.contacts.listAriaLabel")}
             style={{
               marginTop: 14,
               display: "flex",
@@ -126,6 +140,7 @@ export function VaultContactsClient({ rows }: Props) {
 }
 
 function ContactsHeader() {
+  const t = useT();
   return (
     <header
       data-nex-vault-contacts-header
@@ -151,7 +166,7 @@ function ContactsHeader() {
       >
         <Link
           href="/nex-native/vault/home"
-          aria-label="Back to Vault Home"
+          aria-label={t("vault.contacts.header.backLabel")}
           data-nex-vault-contacts-back
           style={{
             ...GLASS_CHIP,
@@ -178,7 +193,7 @@ function ContactsHeader() {
               color: NEX.textPrimary,
             }}
           >
-            Contacts
+            {t("vault.contacts.header.title")}
           </h1>
           <p
             style={{
@@ -188,7 +203,7 @@ function ContactsHeader() {
               letterSpacing: "0.005em",
             }}
           >
-            Your NEX contacts · tap to open or move into Vault.
+            {t("vault.contacts.header.subtitle")}
           </p>
         </div>
       </div>
@@ -203,6 +218,7 @@ function SearchField({
   value: string;
   onChange: (next: string) => void;
 }) {
+  const t = useT();
   return (
     <label
       data-nex-vault-contacts-search
@@ -220,10 +236,10 @@ function SearchField({
       <input
         type="search"
         inputMode="search"
-        placeholder="Search contacts…"
+        placeholder={t("vault.contacts.search.placeholder")}
         value={value}
         onChange={(e) => onChange(e.currentTarget.value)}
-        aria-label="Search contacts"
+        aria-label={t("vault.contacts.search.ariaLabel")}
         data-nex-vault-contacts-search-input
         style={{
           flex: 1,
@@ -247,32 +263,57 @@ function ContactRowView({ row }: { row: VaultContactRow }) {
     : null;
   const normalChatTarget = `/nex-native/chat/peer/${row.friendId}`;
 
-  // Vaulted conversation · open the sealed B.4 Vault chat. The B.4
-  // page enforces unlock before any plaintext renders.
-  if (row.isVaulted && vaultedTarget) {
+  // Vaulted contact · the row is wrapped in the new Vault-contact
+  // action sheet which exposes Move-from-Vault / Delete-from-Vault /
+  // Block through long-press · right-click · 3-dot chip. Tapping
+  // the row still opens the sealed B.4 Vault chat (which enforces
+  // unlock) if there is a conversation · otherwise it links to the
+  // sealed /chat/peer path (which falls back to normal chat because
+  // the vault entry is friend-only). The row body carries the
+  // sealed data-attributes used by the deterministic + Playwright
+  // suites so existing invariants hold.
+  if (row.isVaulted) {
+    const chatHref = vaultedTarget ?? normalChatTarget;
+    // Whether the FRIENDSHIP is in Vault (vs just the conversation).
+    // The server derives isVaulted from either axis · the client
+    // can distinguish by whether a conversation id was resolved AND
+    // the conversation-vault branch applies. In practice the sheet
+    // calls both remove-actions · each is idempotent · so we pass
+    // isFriendVaulted=true conservatively when there is no
+    // conversation id (that's the only path where friend-vault must
+    // apply) · and when there IS a conversation id we also pass true
+    // because the user may have vaulted the friend AND the chat.
+    const isFriendVaulted = true;
     return (
-      <Link
-        href={vaultedTarget}
-        data-nex-vault-contact
-        data-nex-vault-contact-state="vaulted"
-        data-nex-vault-contact-friend-id={row.friendId}
-        data-nex-vault-contact-conversation-id={row.conversationId ?? ""}
-        style={{
-          ...GLASS,
-          display: "flex",
-          alignItems: "center",
-          gap: 14,
-          padding: "14px 16px",
-          borderRadius: 18,
-          minHeight: 64,
-          color: NEX.textPrimary,
-        }}
+      <VaultContactActionSheet
+        friendId={row.friendId}
+        friendName={row.displayName}
+        conversationId={row.conversationId}
+        isFriendVaulted={isFriendVaulted}
       >
-        <ContactAvatar row={row} />
-        <ContactIdentity row={row} />
-        <VaultBadge />
-        <ChevronRight size={18} strokeWidth={1.8} color={NEX.textMuted} aria-hidden />
-      </Link>
+        <Link
+          href={chatHref}
+          data-nex-vault-contact
+          data-nex-vault-contact-state="vaulted"
+          data-nex-vault-contact-friend-id={row.friendId}
+          data-nex-vault-contact-conversation-id={row.conversationId ?? ""}
+          style={{
+            ...GLASS,
+            display: "flex",
+            alignItems: "center",
+            gap: 14,
+            padding: "14px 16px",
+            borderRadius: 18,
+            minHeight: 64,
+            color: NEX.textPrimary,
+          }}
+        >
+          <ContactAvatar row={row} />
+          <ContactIdentity row={row} />
+          <VaultBadge />
+          <ChevronRight size={18} strokeWidth={1.8} color={NEX.textMuted} aria-hidden />
+        </Link>
+      </VaultContactActionSheet>
     );
   }
 
@@ -371,6 +412,28 @@ function ContactAvatar({ row }: { row: VaultContactRow }) {
 }
 
 function ContactIdentity({ row }: { row: VaultContactRow }) {
+  const t = useT();
+  // Build the second line from the data we're authorised to expose:
+  // handle · approx country · relative last-seen. Each piece is
+  // dropped silently when its source is null · the line never
+  // reveals exact timestamps, cities, IPs, UAs, or device labels.
+  const subLineParts: string[] = [];
+  if (row.handle) subLineParts.push(row.handle);
+  if (row.approxCountry) {
+    subLineParts.push(formatCountryCode(row.approxCountry));
+  }
+  if (row.lastSeenRelative) {
+    subLineParts.push(
+      t("vault.contacts.row.seenPrefixTemplate").replace(
+        "{relative}",
+        row.lastSeenRelative,
+      ),
+    );
+  }
+  const subLine =
+    subLineParts.length > 0
+      ? subLineParts.join(" · ")
+      : t("vault.contacts.row.defaultHandle");
   return (
     <span style={{ flex: 1, minWidth: 0 }}>
       <span
@@ -387,6 +450,7 @@ function ContactIdentity({ row }: { row: VaultContactRow }) {
         {row.displayName}
       </span>
       <span
+        data-nex-vault-contact-subline
         style={{
           display: "block",
           marginTop: 2,
@@ -398,13 +462,29 @@ function ContactIdentity({ row }: { row: VaultContactRow }) {
           textOverflow: "ellipsis",
         }}
       >
-        {row.handle ?? "NEX contact"}
+        {subLine}
       </span>
     </span>
   );
 }
 
+/** Render a 2-letter ISO country code as a flag emoji followed by
+ *  the uppercase code. Peer-visibility policy caps country output
+ *  at this level · we never render city, IP, UA, or exact timestamp
+ *  on this surface. */
+function formatCountryCode(code: string): string {
+  const trimmed = code.trim();
+  if (trimmed.length !== 2) return trimmed.toUpperCase();
+  const upper = trimmed.toUpperCase();
+  const A = 0x1f1e6; // regional indicator symbol letter A
+  const flag =
+    String.fromCodePoint(A + (upper.charCodeAt(0) - 65)) +
+    String.fromCodePoint(A + (upper.charCodeAt(1) - 65));
+  return `${flag} ${upper}`;
+}
+
 function VaultBadge() {
+  const t = useT();
   return (
     <span
       aria-hidden
@@ -425,7 +505,7 @@ function VaultBadge() {
       }}
     >
       <Lock size={11} strokeWidth={2} />
-      VAULT
+      {t("vault.contacts.vaultBadge")}
     </span>
   );
 }

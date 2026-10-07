@@ -31,6 +31,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ChevronLeft, Lock } from "lucide-react";
+import { useT } from "@/lib/nex/i18n/I18nProvider";
 import { useVaultSession } from "@/lib/nex-native/vault/client/vault-session";
 import {
   cacheEncryptedMessage,
@@ -119,6 +120,7 @@ interface DisplayMessage {
 // ---------------------------------------------------------------------------
 
 export function VaultChatClient(props: Props) {
+  const t = useT();
   const vault = useVaultSession();
   const router = useRouter();
 
@@ -168,7 +170,12 @@ export function VaultChatClient(props: Props) {
             setPhase("locked");
             return;
           } else {
-            setErrorText(`Could not set up this conversation (${prov.error}).`);
+            setErrorText(
+              t("vault.chat.setupError.conversationFailedTemplate").replace(
+                "{error}",
+                String(prov.error),
+              ),
+            );
             setPhase("error");
             return;
           }
@@ -288,7 +295,7 @@ export function VaultChatClient(props: Props) {
         void preserveAttachmentsForVaultedConversation(candidates);
       }
     } catch (err) {
-      setErrorText(err instanceof Error ? err.message : "Vault chat failed to load.");
+      setErrorText(err instanceof Error ? err.message : t("vault.chat.setupError.loadFailed"));
       setPhase("error");
     }
   }, [props.conversationId, props.initialMessages, props.viewerAccountId]);
@@ -338,12 +345,12 @@ export function VaultChatClient(props: Props) {
           deviceId: dk.deviceId,
         });
         if (!r.ok) {
-          setUnlockError(r.error ?? "Unlock failed.");
+          setUnlockError(r.error ?? t("vault.chat.ready.errorFallback"));
           return;
         }
         setPinInput("");
       } catch (err) {
-        setUnlockError(err instanceof Error ? err.message : "Unlock failed.");
+        setUnlockError(err instanceof Error ? err.message : t("vault.chat.ready.errorFallback"));
       } finally {
         setUnlockBusy(false);
       }
@@ -369,14 +376,21 @@ export function VaultChatClient(props: Props) {
           encryptedAttachment: pendingAttachment ?? null,
         });
         if (!outcome.ok) {
-          setErrorText(`Send failed (${outcome.error}).`);
+          setErrorText(
+            t("vault.chat.sendError.failedTemplate").replace(
+              "{error}",
+              String(outcome.error),
+            ),
+          );
           return;
         }
         // Optimistic local append · cache under K_c too so lock+reload
         // continues to show it.
         const insertedId = outcome.insertedIds[0] ?? crypto.randomUUID();
         const nowIso = new Date().toISOString();
-        const bubbleText = text || (pendingAttachment ? attachmentLabelFor(pendingAttachment.kind) : "");
+        const bubbleText =
+          text ||
+          (pendingAttachment ? attachmentLabelFor(pendingAttachment.kind, t) : "");
         setMessages((prev) => [
           ...prev,
           {
@@ -395,7 +409,7 @@ export function VaultChatClient(props: Props) {
         setDraft("");
         setPendingAttachment(null);
       } catch (err) {
-        setErrorText(err instanceof Error ? err.message : "Send failed.");
+        setErrorText(err instanceof Error ? err.message : t("vault.chat.sendError.generic"));
       } finally {
         setSending(false);
       }
@@ -421,7 +435,7 @@ export function VaultChatClient(props: Props) {
         setPendingAttachment(uploaded);
       } catch (err) {
         setErrorText(
-          err instanceof Error ? err.message : "Attachment upload failed.",
+          err instanceof Error ? err.message : t("vault.chat.attachmentError"),
         );
       }
     },
@@ -629,7 +643,7 @@ export function VaultChatClient(props: Props) {
       >
         <Link
           href="/nex-native/vault/home/chats"
-          aria-label="Back to Vault chats"
+          aria-label={t("vault.chat.header.backLabel")}
           data-nex-vault-chat-back
           style={{
             display: "inline-flex",
@@ -670,11 +684,13 @@ export function VaultChatClient(props: Props) {
                 marginLeft: 4,
               }}
             >
-              VAULT
+              {t("vault.chat.header.vaultBadge")}
             </span>
           </div>
           <div style={{ fontSize: 11, color: NEX.textMuted }}>
-            {vault.unlocked ? "Protected on this device" : "Locked"}
+            {vault.unlocked
+              ? t("vault.chat.header.subtitleProtected")
+              : t("vault.chat.header.subtitleLocked")}
           </div>
         </div>
         {vault.unlocked ? (
@@ -702,7 +718,7 @@ export function VaultChatClient(props: Props) {
               cursor: "pointer",
             }}
           >
-            <Lock size={12} strokeWidth={1.8} /> Lock Vault
+            <Lock size={12} strokeWidth={1.8} /> {t("vault.chat.header.lockBtn")}
           </button>
         ) : null}
       </header>
@@ -761,7 +777,7 @@ export function VaultChatClient(props: Props) {
               color: NEX.textPrimary,
             }}
           >
-            Vault is locked
+            {t("vault.chat.locked.title")}
           </h1>
           <p
             style={{
@@ -771,8 +787,7 @@ export function VaultChatClient(props: Props) {
               maxWidth: 360,
             }}
           >
-            Unlock Vault to view this conversation. Your messages stay encrypted
-            on this device while Vault is locked.
+            {t("vault.chat.locked.body")}
           </p>
 
           <form
@@ -791,7 +806,7 @@ export function VaultChatClient(props: Props) {
               type="password"
               inputMode="numeric"
               autoComplete="off"
-              placeholder="Enter PIN"
+              placeholder={t("vault.chat.locked.pinPlaceholder")}
               value={pinInput}
               onChange={(e) => setPinInput(e.target.value)}
               data-nex-vault-chat-unlock-input
@@ -823,7 +838,9 @@ export function VaultChatClient(props: Props) {
                 opacity: unlockBusy || pinInput.length < 8 ? 0.6 : 1,
               }}
             >
-              {unlockBusy ? "Unlocking…" : "Unlock Vault"}
+              {unlockBusy
+                ? t("vault.chat.locked.unlockingBtn")
+                : t("vault.chat.locked.unlockBtn")}
             </button>
             {unlockError ? (
               <div
@@ -866,7 +883,7 @@ export function VaultChatClient(props: Props) {
       >
         {phase === "loading" ? (
           <div style={{ color: NEX.textMuted, fontSize: 12, textAlign: "center", marginTop: 24 }}>
-            Loading encrypted conversation…
+            {t("vault.chat.ready.loading")}
           </div>
         ) : null}
         {phase === "error" ? (
@@ -874,7 +891,7 @@ export function VaultChatClient(props: Props) {
             data-nex-vault-chat-error
             style={{ color: "#ffa07a", fontSize: 12, textAlign: "center", marginTop: 24 }}
           >
-            {errorText ?? "Something went wrong."}
+            {errorText ?? t("vault.chat.ready.errorFallback")}
           </div>
         ) : null}
         {phase === "ready" && messages.length === 0 ? (
@@ -882,7 +899,7 @@ export function VaultChatClient(props: Props) {
             data-nex-vault-chat-empty
             style={{ color: NEX.textMuted, fontSize: 12, textAlign: "center", marginTop: 24 }}
           >
-            No messages yet. Say hello.
+            {t("vault.chat.ready.emptyBody")}
           </div>
         ) : null}
         {messages.map((m) => (
@@ -939,8 +956,19 @@ export function VaultChatClient(props: Props) {
             }}
           >
             <span style={{ flex: 1 }}>
-              Encrypted {pendingAttachment.kind} ready to send
-              ({Math.ceil(pendingAttachment.sizeBytes / 1024)} KB)
+              {t("vault.chat.composer.pendingAttachmentReadyTemplate")
+                .replace(
+                  "{kind}",
+                  pendingAttachment.kind === "image"
+                    ? t("vault.chat.attachment.wordImage")
+                    : pendingAttachment.kind === "video"
+                      ? t("vault.chat.attachment.wordVideo")
+                      : t("vault.chat.attachment.wordAudio"),
+                )
+                .replace(
+                  "{kb}",
+                  String(Math.ceil(pendingAttachment.sizeBytes / 1024)),
+                )}
             </span>
             <button
               type="button"
@@ -954,7 +982,7 @@ export function VaultChatClient(props: Props) {
                 fontSize: 12,
               }}
             >
-              Remove
+              {t("vault.chat.composer.attachmentRemove")}
             </button>
           </div>
         ) : null}
@@ -988,7 +1016,11 @@ export function VaultChatClient(props: Props) {
             type="text"
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
-            placeholder={phase === "ready" ? "Message" : "Loading…"}
+            placeholder={
+              phase === "ready"
+                ? t("vault.chat.composer.textPlaceholder")
+                : t("vault.chat.composer.textPlaceholderLoading")
+            }
             disabled={phase !== "ready"}
             data-nex-vault-chat-input
             style={{
@@ -1031,7 +1063,9 @@ export function VaultChatClient(props: Props) {
                   : 1,
             }}
           >
-            {sending ? "…" : "Send"}
+            {sending
+              ? t("vault.chat.composer.sendBtnBusy")
+              : t("vault.chat.composer.sendBtn")}
           </button>
         </div>
       </form>
@@ -1042,13 +1076,16 @@ export function VaultChatClient(props: Props) {
   );
 }
 
-function attachmentLabelFor(kind: "image" | "video" | "audio"): string {
+function attachmentLabelFor(
+  kind: "image" | "video" | "audio",
+  t: (key: Parameters<ReturnType<typeof useT>>[0]) => string,
+): string {
   switch (kind) {
     case "image":
-      return "📷 Photo";
+      return t("vault.chat.attachment.labelImage");
     case "video":
-      return "🎬 Video";
+      return t("vault.chat.attachment.labelVideo");
     case "audio":
-      return "🎤 Voice note";
+      return t("vault.chat.attachment.labelAudio");
   }
 }

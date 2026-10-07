@@ -5,8 +5,12 @@
 // (founder decision D4 · 2026-10-03).
 
 import Link from "next/link";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
+import { resolveServerLocale, tFor } from "@/lib/nex/i18n/server";
+import type { I18nKey } from "@/lib/nex/i18n/keys";
 import { resolveVaultDoorwaySlug } from "../home/_resolve-theme";
 import { NEX, GLASS, GLASS_CHIP } from "../home/_palette";
 
@@ -15,60 +19,20 @@ export const dynamic = "force-dynamic";
 
 interface SettingsRow {
   key: string;
-  title: string;
-  description: string;
+  titleKey: I18nKey;
+  bodyKey: I18nKey;
   href: string;
   external?: boolean;
 }
 
 const ROWS: SettingsRow[] = [
-  {
-    key: "door-theme",
-    title: "Change your door theme",
-    description:
-      "The visual world you see when you unlock Vault. The inside of the Vault stays consistent across all themes.",
-    href: "/nex-native/chat-themes-library",
-  },
-  {
-    key: "lock-vault",
-    title: "Lock Vault",
-    description:
-      "Return to the PIN entry doorway. Your rooms close until you unlock again.",
-    href: "/nex-native/vault",
-  },
-  {
-    key: "vault-devices",
-    title: "Vault devices",
-    description:
-      "Manage which devices can unlock your Vault. Add another device or revoke an existing one.",
-    href: "/nex-native/vault/settings/devices",
-  },
-  {
-    key: "vault-recovery",
-    title: "Recovery passphrase",
-    description:
-      "Set a passphrase so you can recover Vault if you lose access to every device. NEX cannot read your passphrase.",
-    href: "/nex-native/vault/settings/recovery",
-  },
-  {
-    key: "vault-rotate",
-    title: "Rotate Vault keys",
-    description:
-      "Create a brand-new Vault key on this device. Any other devices (including revoked ones) lose access to Vault's current contents.",
-    href: "/nex-native/vault/settings/rotate",
-  },
-  {
-    key: "back-to-nex",
-    title: "Return to NEX",
-    description: "Leave Vault and go back to your main NEX surfaces.",
-    href: "/nex-native/home",
-  },
-  {
-    key: "terms",
-    title: "About Vault",
-    description: "What Vault does, what it does not do, and the honest limits.",
-    href: "/nex-native/about/terms",
-  },
+  { key: "door-theme",    titleKey: "vault.settings.doorTheme.title",  bodyKey: "vault.settings.doorTheme.body",  href: "/nex-native/chat-themes-library" },
+  { key: "lock-vault",    titleKey: "vault.settings.lockVault.title",  bodyKey: "vault.settings.lockVault.body",  href: "/nex-native/vault" },
+  { key: "vault-devices", titleKey: "vault.settings.devices.title",    bodyKey: "vault.settings.devices.body",    href: "/nex-native/vault/settings/devices" },
+  { key: "vault-recovery",titleKey: "vault.settings.recovery.title",   bodyKey: "vault.settings.recovery.body",   href: "/nex-native/vault/settings/recovery" },
+  { key: "vault-rotate",  titleKey: "vault.settings.rotate.title",     bodyKey: "vault.settings.rotate.body",     href: "/nex-native/vault/settings/rotate" },
+  { key: "back-to-nex",   titleKey: "vault.settings.backToNex.title",  bodyKey: "vault.settings.backToNex.body",  href: "/nex-native/home" },
+  { key: "terms",         titleKey: "vault.settings.about.title",      bodyKey: "vault.settings.about.body",      href: "/nex-native/about/terms" },
 ];
 
 export default async function VaultSettingsPage() {
@@ -76,6 +40,13 @@ export default async function VaultSettingsPage() {
   if (!themeSlug) {
     redirect("/nex-native/sign-in?next=/nex-native/vault/settings");
   }
+  const session = await resolveNexAppSessionFromContext();
+  const headerBag = await headers();
+  const locale = resolveServerLocale({
+    accountLocale: (session?.account.locale as string | null) ?? null,
+    acceptLanguage: headerBag.get("accept-language"),
+  });
+  const t = tFor(locale);
   return (
     <>
       <style>{`
@@ -104,7 +75,7 @@ export default async function VaultSettingsPage() {
             zIndex: 0,
           }}
         />
-        <SettingsHeader />
+        <SettingsHeader t={t} />
         <main
           id="main"
           style={{
@@ -148,7 +119,7 @@ export default async function VaultSettingsPage() {
                       color: NEX.textPrimary,
                     }}
                   >
-                    {r.title}
+                    {t(r.titleKey)}
                   </span>
                   <span
                     style={{
@@ -159,7 +130,7 @@ export default async function VaultSettingsPage() {
                       lineHeight: 1.4,
                     }}
                   >
-                    {r.description}
+                    {t(r.bodyKey)}
                   </span>
                 </span>
                 <ChevronRight size={18} strokeWidth={1.8} color={NEX.textMuted} aria-hidden style={{ marginTop: 2 }} />
@@ -181,27 +152,11 @@ export default async function VaultSettingsPage() {
             }}
           >
             <p style={{ margin: 0, color: NEX.textSecondary, fontWeight: 600 }}>
-              What this Vault is today
+              {t("vault.settings.honestLimits.title")}
             </p>
-            <p style={{ margin: "6px 0 0" }}>
-              Your Vault key is created on your device the first time you set
-              Vault up. NEX stores only the encrypted key material. NEX cannot
-              read your Vault key or unlock Vault on your behalf.
-            </p>
-            <p style={{ margin: "10px 0 0" }}>
-              If your device loses its local keys (for example clearing
-              browser storage or signing in on a new device without first
-              authorising it), Vault will need to be unlocked again on that
-              device. Cross-device authorisation and recovery arrive with the
-              next sealed phases. This is a known phase boundary, not a
-              regression.
-            </p>
-            <p style={{ margin: "10px 0 0" }}>
-              Password reset or account recovery automatically locks Vault on
-              every device so you must re-enter your PIN or passphrase
-              before Vault opens again. Your Vault content is preserved;
-              only the unlocked state is cleared.
-            </p>
+            <p style={{ margin: "6px 0 0" }}>{t("vault.settings.honestLimits.para1")}</p>
+            <p style={{ margin: "10px 0 0" }}>{t("vault.settings.honestLimits.para2")}</p>
+            <p style={{ margin: "10px 0 0" }}>{t("vault.settings.honestLimits.para3")}</p>
           </section>
         </main>
       </div>
@@ -209,7 +164,7 @@ export default async function VaultSettingsPage() {
   );
 }
 
-function SettingsHeader() {
+function SettingsHeader({ t }: { t: (k: I18nKey) => string }) {
   return (
     <header
       data-nex-vault-settings-header
@@ -235,7 +190,7 @@ function SettingsHeader() {
       >
         <Link
           href="/nex-native/vault/home"
-          aria-label="Back"
+          aria-label={t("vault.settings.header.backLabel")}
           data-nex-vault-settings-back
           style={{
             ...GLASS_CHIP,
@@ -262,7 +217,7 @@ function SettingsHeader() {
               color: NEX.textPrimary,
             }}
           >
-            Vault settings
+            {t("vault.settings.header.title")}
           </h1>
           <p
             style={{
@@ -272,7 +227,7 @@ function SettingsHeader() {
               letterSpacing: "0.005em",
             }}
           >
-            Only genuinely implemented controls.
+            {t("vault.settings.header.subtitle")}
           </p>
         </div>
       </div>
