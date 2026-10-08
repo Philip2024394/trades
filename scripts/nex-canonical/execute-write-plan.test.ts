@@ -71,6 +71,11 @@ function insertRow(
     wikidata_qid: null,
     city: null,
     district: null,
+    // Migration 178 fields · default null in the test base so existing
+    // tests continue to exercise the sparse-row path.
+    street_line: null,
+    neighbourhood: null,
+    address: null,
     coordinates: null,
   };
   return { ...base, ...overrides };
@@ -372,7 +377,7 @@ describe("compileWritePlan · structure", () => {
 // ═════════════════════════════════════════════════════════════════════
 
 describe("compileWritePlan · parameter layout", () => {
-  test("insert_new write stage · 29 params in documented order", () => {
+  test("insert_new write stage · 32 params in documented order (post-178 + address jsonb)", () => {
     const plan = insertPlan({
       entity_type: "food",
       country: "ID",
@@ -384,21 +389,42 @@ describe("compileWritePlan · parameter layout", () => {
       wikidata_qid: "Q1",
       city: "Bandung",
       district: "D",
+      street_line: "73, Jalan Braga",
+      neighbourhood: "Braga",
+      address: { line1: "73, Jalan Braga", postal_code: null },
       coordinates: { lat: -6.9, lng: 107.6 },
     });
     const c = compileWritePlan(plan);
     const write = c.stages.find((s) => s.label === "write")!;
-    expect(write.params.length).toBe(29);
-    expect(write.params[0]).toBe("food"); // entity_type
-    expect(write.params[1]).toBe("ID");   // country
-    expect(write.params[2]).toBe("Test Name"); // name_canonical
-    expect(write.params[3]).toEqual(["alt1", "alt2"]); // aliases
-    expect(write.params[6]).toBe("node/42"); // osm_id
-    expect(write.params[10]).toBe(-6.9);  // coord_lat
-    expect(write.params[11]).toBe(107.6); // coord_lng
-    expect(write.params[12]).toBe(EVIDENCE_SCHEMA_VERSION); // schema_version
-    expect(write.params[20]).toBe("NO_MATCH"); // resolver_verdict_kind
-    expect(write.params[21]).toBeNull(); // resolver_target_id
+    // Post-178 + address wiring:
+    //   $11=street_line, $12=neighbourhood, $13=address (jsonb),
+    //   $14=coord_lat, $15=coord_lng; evidence params shifted +1.
+    expect(write.params.length).toBe(32);
+    expect(write.params[0]).toBe("food"); // $1 entity_type
+    expect(write.params[1]).toBe("ID");   // $2 country
+    expect(write.params[2]).toBe("Test Name"); // $3 name_canonical
+    expect(write.params[3]).toEqual(["alt1", "alt2"]); // $4 aliases
+    expect(write.params[6]).toBe("node/42"); // $7 osm_id
+    expect(write.params[10]).toBe("73, Jalan Braga"); // $11 street_line
+    expect(write.params[11]).toBe("Braga"); // $12 neighbourhood
+    // $13 address · stringified json (SQL casts via $13::jsonb)
+    expect(write.params[12]).toBe(
+      JSON.stringify({ line1: "73, Jalan Braga", postal_code: null }),
+    );
+    expect(write.params[13]).toBe(-6.9);  // $14 coord_lat
+    expect(write.params[14]).toBe(107.6); // $15 coord_lng
+    expect(write.params[15]).toBe(EVIDENCE_SCHEMA_VERSION); // $16 schema_version
+    expect(write.params[23]).toBe("NO_MATCH"); // $24 resolver_verdict_kind
+    expect(write.params[24]).toBeNull(); // $25 resolver_target_id
+  });
+
+  test("insert_new write stage · address null sends SQL NULL (not stringified 'null')", () => {
+    const plan = insertPlan({ address: null });
+    const c = compileWritePlan(plan);
+    const write = c.stages.find((s) => s.label === "write")!;
+    // $13 address · null stays SQL NULL (JS null · the pg driver maps
+    // JS null → SQL NULL; the ::jsonb cast on NULL is still NULL).
+    expect(write.params[12]).toBeNull();
   });
 
   test("merge_match write stage · 18 params · canonical_business_id = target", () => {
@@ -416,8 +442,9 @@ describe("compileWritePlan · parameter layout", () => {
     const plan = insertPlan({ coordinates: null });
     const c = compileWritePlan(plan);
     const write = c.stages.find((s) => s.label === "write")!;
-    expect(write.params[10]).toBeNull();
-    expect(write.params[11]).toBeNull();
+    // Post-178 + address wiring: lat/lng at $14/$15 → indices 13/14.
+    expect(write.params[13]).toBeNull();
+    expect(write.params[14]).toBeNull();
   });
 
   test("OSM precheck · params carry country then osm_id", () => {

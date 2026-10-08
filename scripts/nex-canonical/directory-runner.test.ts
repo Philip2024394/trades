@@ -70,6 +70,11 @@ function cand(id: string, overrides: Partial<Candidate> = {}): Candidate {
       wikidata_qid: null,
       city: "Bandung",
       district: null,
+      // Migration 178 fields · null on this helper so existing tests
+      // continue to exercise the sparse-row shape.
+      street_line: null,
+      neighbourhood: null,
+      address: null,
       coordinates: { lat: -6.9, lng: 107.6 },
     },
     legacy_source: {
@@ -174,6 +179,19 @@ function createInMemoryDirectoryDb(): {
           seq++;
           const canonicalId = `canon-${seq}`;
           const evidenceId = `ev-${seq}`;
+          // Post-178 + address wiring (see execute-write-plan.ts):
+          //   $11=street_line, $12=neighbourhood, $13=address jsonb
+          //   (sent as JSON string or null), $14/$15=coord lat/lng.
+          //   Evidence params shift to $16..$32 (indices 15..31).
+          //
+          // The mock stores the address as the parsed object so the
+          // readback compare path exercises the same shape it would
+          // see from the pg driver returning jsonb.
+          const rawAddress = params[12];
+          const parsedAddress =
+            typeof rawAddress === "string"
+              ? JSON.parse(rawAddress)
+              : (rawAddress ?? null);
           canonical.set(canonicalId, {
             canonical_business_id: canonicalId,
             entity_type: params[0],
@@ -187,27 +205,30 @@ function createInMemoryDirectoryDb(): {
             wikidata_qid: params[7],
             city: params[8],
             district: params[9],
+            street_line: params[10],
+            neighbourhood: params[11],
+            address: parsedAddress,
           });
           evidence.set(evidenceId, {
             evidence_id: evidenceId,
             canonical_business_id: canonicalId,
-            schema_version: params[12],
-            candidate_id: params[13],
-            candidate_integrity_hash: params[14],
-            decision_record_id: params[15],
-            review_package_id: params[16],
-            legacy_source_table: params[17],
-            legacy_source_ref: params[18],
-            legacy_source_internal_id: params[19],
-            resolver_verdict_kind: params[20],
-            resolver_target_id: params[21],
-            resolver_score: params[22],
-            observation_generator: params[23],
-            observation_run_id: params[24],
-            observation_generated_at: params[25],
-            observation_decision_timestamp: params[26],
-            observation_founder_id: params[27],
-            source_id: params[28],
+            schema_version: params[15],
+            candidate_id: params[16],
+            candidate_integrity_hash: params[17],
+            decision_record_id: params[18],
+            review_package_id: params[19],
+            legacy_source_table: params[20],
+            legacy_source_ref: params[21],
+            legacy_source_internal_id: params[22],
+            resolver_verdict_kind: params[23],
+            resolver_target_id: params[24],
+            resolver_score: params[25],
+            observation_generator: params[26],
+            observation_run_id: params[27],
+            observation_generated_at: params[28],
+            observation_decision_timestamp: params[29],
+            observation_founder_id: params[30],
+            source_id: params[31],
           });
           return {
             rows: [{ evidence_id: evidenceId, canonical_business_id: canonicalId }] as unknown as readonly T[],
@@ -1032,6 +1053,9 @@ describe("runDirectoryCountry · per-candidate isolation", () => {
         wikidata_qid: null,
         city: null,
         district: null,
+        street_line: null,
+        neighbourhood: null,
+        address: null,
         coordinates: null, // no medium signal → abstained(insufficient_signal)
       },
     };

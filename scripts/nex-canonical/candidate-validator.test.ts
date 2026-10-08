@@ -36,6 +36,11 @@ function makeValidCandidate(): Record<string, unknown> {
       wikidata_qid: null,
       city: "Bandung",
       district: "Cihampelas",
+      // Migration 178 fields · default null in the shared fixture so
+      // existing happy-path tests exercise the sparse-row shape.
+      street_line: null,
+      neighbourhood: null,
+      address: null,
       coordinates: { lat: -6.9, lng: 107.6 },
     },
     legacy_source: {
@@ -119,6 +124,101 @@ describe("validateCandidate · happy path", () => {
     (c.identity as Record<string, unknown>).aliases = [];
     c.caveats = [];
     expect(() => validateCandidate(c)).not.toThrow();
+  });
+});
+
+// ═════════════════════════════════════════════════════════════════════
+// §1b · address jsonb · sealed { line1, postal_code } | null
+// ═════════════════════════════════════════════════════════════════════
+
+describe("validateCandidate · address jsonb (sealed doctrine shape)", () => {
+  test("accepts address = null (honest absence)", () => {
+    const c = makeValidCandidate();
+    (c.identity as Record<string, unknown>).address = null;
+    const v = validateCandidate(c);
+    expect(v.identity.address).toBeNull();
+  });
+
+  test("accepts address with populated line1 and null postal_code (legacy food-business shape)", () => {
+    const c = makeValidCandidate();
+    (c.identity as Record<string, unknown>).address = {
+      line1: "73, Jalan Braga",
+      postal_code: null,
+    };
+    const v = validateCandidate(c);
+    expect(v.identity.address).toEqual({
+      line1: "73, Jalan Braga",
+      postal_code: null,
+    });
+  });
+
+  test("accepts address with both line1 and postal_code populated", () => {
+    const c = makeValidCandidate();
+    (c.identity as Record<string, unknown>).address = {
+      line1: "138, Raya Kerobokan",
+      postal_code: "80361",
+    };
+    const v = validateCandidate(c);
+    expect(v.identity.address).toEqual({
+      line1: "138, Raya Kerobokan",
+      postal_code: "80361",
+    });
+  });
+
+  test("accepts address with both keys null (object permitted even if contents are null)", () => {
+    const c = makeValidCandidate();
+    (c.identity as Record<string, unknown>).address = {
+      line1: null,
+      postal_code: null,
+    };
+    const v = validateCandidate(c);
+    expect(v.identity.address).toEqual({ line1: null, postal_code: null });
+  });
+
+  test("rejects address missing line1 key (sealed shape · all keys required)", () => {
+    const c = makeValidCandidate();
+    (c.identity as Record<string, unknown>).address = { postal_code: null };
+    expect(() => validateCandidate(c)).toThrow(CandidateShapeError);
+  });
+
+  test("rejects address missing postal_code key", () => {
+    const c = makeValidCandidate();
+    (c.identity as Record<string, unknown>).address = { line1: "x" };
+    expect(() => validateCandidate(c)).toThrow(CandidateShapeError);
+  });
+
+  test("rejects address with unknown extra key (sealed shape · no new keys)", () => {
+    const c = makeValidCandidate();
+    (c.identity as Record<string, unknown>).address = {
+      line1: "x",
+      postal_code: null,
+      city: "x", // not permitted · address has only line1 + postal_code
+    };
+    expect(() => validateCandidate(c)).toThrow(CandidateShapeError);
+  });
+
+  test("rejects address as a plain string (not the sealed object shape)", () => {
+    const c = makeValidCandidate();
+    (c.identity as Record<string, unknown>).address = "73, Jalan Braga";
+    expect(() => validateCandidate(c)).toThrow(CandidateShapeError);
+  });
+
+  test("rejects line1 as a number (type must be string | null)", () => {
+    const c = makeValidCandidate();
+    (c.identity as Record<string, unknown>).address = {
+      line1: 42,
+      postal_code: null,
+    };
+    expect(() => validateCandidate(c)).toThrow(CandidateShapeError);
+  });
+
+  test("error path for malformed address pinpoints the exact key", () => {
+    const c = makeValidCandidate();
+    (c.identity as Record<string, unknown>).address = {
+      line1: null,
+      postal_code: 123,
+    };
+    expect(() => validateCandidate(c)).toThrow(/postal_code/);
   });
 });
 

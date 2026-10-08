@@ -102,7 +102,20 @@ const IDENTITY_KEYS: ReadonlySet<string> = new Set([
   "wikidata_qid",
   "city",
   "district",
+  // Migration 178 · location-granularity wave.
+  "street_line",
+  "neighbourhood",
+  "address",
   "coordinates",
+]);
+
+/** Sealed shape of `Candidate.identity.address` per
+ *  docs/doctrine/nex-business-canonical-seed-cohort-and-eval-corpus-design-2026-10-08.md
+ *  line 116. The two keys are the only permitted keys · additional
+ *  keys reject · the whole value may be null. */
+const CANONICAL_ADDRESS_KEYS: ReadonlySet<string> = new Set([
+  "line1",
+  "postal_code",
 ]);
 
 const LEGACY_SOURCE_KEYS: ReadonlySet<string> = new Set([
@@ -405,9 +418,43 @@ function validateIdentity(
       `${path}.district`,
       assertHasField(path, obj, "district"),
     ),
+    street_line: assertStringOrNull(
+      `${path}.street_line`,
+      assertHasField(path, obj, "street_line"),
+    ),
+    neighbourhood: assertStringOrNull(
+      `${path}.neighbourhood`,
+      assertHasField(path, obj, "neighbourhood"),
+    ),
+    address: validateCanonicalAddress(
+      `${path}.address`,
+      assertHasField(path, obj, "address"),
+    ),
     coordinates: validateCoordinates(
       `${path}.coordinates`,
       assertHasField(path, obj, "coordinates"),
+    ),
+  };
+}
+
+/** Pure · validate a Candidate.identity.address against the sealed
+ *  { line1: string | null, postal_code: string | null } | null shape.
+ *  Null-at-whole is permitted. Unknown keys are rejected (sealed shape).
+ *  Each permitted key must be string | null. */
+function validateCanonicalAddress(
+  path: string,
+  v: unknown,
+): { line1: string | null; postal_code: string | null } | null {
+  if (v === null) return null;
+  const obj = assertObject(path, v, CANONICAL_ADDRESS_KEYS);
+  return {
+    line1: assertStringOrNull(
+      `${path}.line1`,
+      assertHasField(path, obj, "line1"),
+    ),
+    postal_code: assertStringOrNull(
+      `${path}.postal_code`,
+      assertHasField(path, obj, "postal_code"),
     ),
   };
 }

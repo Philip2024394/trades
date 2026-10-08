@@ -96,6 +96,16 @@ export const SYNTHETIC_FIRST_WRITE_CANDIDATE: Candidate = Object.freeze({
     wikidata_qid: null,
     city: "SYNTHETIC-CITY",
     district: null,
+    // Migration 178 fields · explicitly null on the synthetic fixture.
+    // The fixture is deliberately sparse · this proves the location-
+    // granularity wave does not accidentally require either field to
+    // produce a canonical row.
+    street_line: null,
+    neighbourhood: null,
+    // Canonical address jsonb (sealed doctrine shape) · null on the
+    // synthetic fixture so the proof row carries no address claim.
+    // Future enrichment waves populate this from real source rows.
+    address: null,
     // Coordinates present so the Candidate carries one medium signal;
     // keeps the fixture compatible with resolver gating semantics even
     // though the first-write path bypasses the resolver.

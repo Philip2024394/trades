@@ -162,6 +162,20 @@ export interface DirectoryCanonicalRow {
   readonly wikidata_qid: string | null;          // Q[0-9]+ enforced by CHECK
   readonly city: string | null;
   readonly district: string | null;
+  /** Migration 178 · location-granularity wave. Dedicated structured
+   *  street-line column. Preserved verbatim from source · never
+   *  concatenated or inferred. */
+  readonly street_line: string | null;
+  /** Migration 178 · finer-grained location unit below district. */
+  readonly neighbourhood: string | null;
+  /** Canonical address · maps to `nex.business_canonical.address jsonb`
+   *  (migration 167). Sealed shape:
+   *    { line1: string | null, postal_code: string | null } | null
+   *  Preserved verbatim · the service does NOT parse, split, or infer. */
+  readonly address: {
+    readonly line1: string | null;
+    readonly postal_code: string | null;
+  } | null;
   readonly coordinates: DirectoryCoordinates | null;
   readonly category_ids: readonly string[];     // default '{}' · public taxonomy slot
   readonly services_products: unknown | null;   // jsonb · per entity_type · null today
@@ -211,6 +225,17 @@ export interface DirectoryListingVM {
   readonly country: string;
   readonly city: string | null;
   readonly district: string | null;
+  /** Migration 178 · dedicated street-line field from the canonical
+   *  row. Rendered by the Directory detail page's Location section
+   *  when present. Never fabricated. */
+  readonly streetLine: string | null;
+  /** Migration 178 · neighbourhood granularity below district. */
+  readonly neighbourhood: string | null;
+  /** Canonical address (sealed shape) · passed verbatim from the row. */
+  readonly address: {
+    readonly line1: string | null;
+    readonly postal_code: string | null;
+  } | null;
   readonly coordinates: DirectoryCoordinates | null;
 
   readonly phoneE164: string | null;

@@ -93,6 +93,18 @@ interface RawFoodRow {
   readonly website: string | null;
   readonly source: string | null;
   readonly source_reference: string | null;
+  /** Dedicated structured street-line column on nex.food_business.
+   *  Preserved verbatim · the adapter does NOT infer this from the
+   *  free-text `address` column. Added as a projected field by the
+   *  location-granularity wave (migration 178). */
+  readonly street_line: string | null;
+  /** Finer-grained location unit below district. Preserved verbatim. */
+  readonly neighbourhood: string | null;
+  /** Genuine source country · nex.food_business.country is NOT NULL
+   *  (every row has a value). The adapter now reads this instead of
+   *  hardcoding "ID"; the LEGACY_FOOD_COUNTRY constant remains as a
+   *  defensive fallback for unexpected null / blank values. */
+  readonly country: string | null;
 }
 
 // ═════════════════════════════════════════════════════════════════════
@@ -165,11 +177,19 @@ export function projectFoodBusinessRow(
   // Website apex: strip protocol + leading www. Null if parse fails.
   const website_apex = extractWebsiteApex(row.website);
 
+  // Country: read from the genuine source column (NOT NULL per
+  // nex.food_business schema). Fallback to LEGACY_FOOD_COUNTRY only
+  // if the source somehow returns a blank value · the DB CHECK
+  // prevents nulls so this fallback is defensive, not routine.
+  const source_country =
+    row.country && row.country.trim().length > 0
+      ? row.country.trim()
+      : LEGACY_FOOD_COUNTRY;
   const candidate: Candidate = {
     candidate_id,
     status: "pending_founder_review",
     entity_type: LEGACY_FOOD_ENTITY_TYPE,
-    country: LEGACY_FOOD_COUNTRY,
+    country: source_country,
     identity: {
       name_canonical: row.business_name.trim(),
       aliases: [],
@@ -179,6 +199,19 @@ export function projectFoodBusinessRow(
       wikidata_qid: null,
       city: row.city?.trim() || null,
       district: row.district?.trim() || null,
+      // Verbatim pass-through from source · trimmed only (no case
+      // normalisation, no concatenation). Missing stays missing.
+      street_line: row.street_line?.trim() || null,
+      neighbourhood: row.neighbourhood?.trim() || null,
+      // Canonical address jsonb per sealed doctrine shape
+      // { line1: string | null, postal_code: string | null } | null.
+      // nex.food_business.address is free-text · it becomes line1
+      // verbatim (trimmed). nex.food_business has NO postal-code
+      // column · postal_code stays null. The whole object is null
+      // when the source has no address at all · honest absence.
+      address: row.address?.trim()
+        ? { line1: row.address.trim(), postal_code: null }
+        : null,
       coordinates,
     },
     legacy_source: {
@@ -288,7 +321,8 @@ export function createLegacyFoodBusinessSource(
         const sql = `SELECT internal_id, public_listing_ref, business_name,
                             category, address, city, district,
                             coordinates_lng, coordinates_lat,
-                            phone, website, source, source_reference
+                            phone, website, source, source_reference,
+                            street_line, neighbourhood, country
                      FROM nex.food_business
                      ${whereClause}`;
         const params = isFoodCursor(cursor)

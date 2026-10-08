@@ -281,38 +281,44 @@ FOR UPDATE`,
  *    $8  wikidata_qid
  *    $9  city
  *    $10 district
- *    $11 coord_lat (double precision · may be NULL)
- *    $12 coord_lng (double precision · may be NULL)
- *    $13 schema_version (evidence)
- *    $14 candidate_id
- *    $15 candidate_integrity_hash
- *    $16 decision_record_id
- *    $17 review_package_id
- *    $18 legacy_source_table
- *    $19 legacy_source_ref
- *    $20 legacy_source_internal_id
- *    $21 resolver_verdict_kind (always 'NO_MATCH' for insert_new)
- *    $22 resolver_target_id (always NULL for insert_new)
- *    $23 resolver_score
- *    $24 observation_generator
- *    $25 observation_run_id
- *    $26 observation_generated_at
- *    $27 observation_decision_timestamp
- *    $28 observation_founder_id
- *    $29 source_id
+ *    $11 street_line (added by migration 178)
+ *    $12 neighbourhood (added by migration 178)
+ *    $13 address (jsonb · pre-existing column from migration 167 ·
+ *                 shape per sealed doctrine: { line1, postal_code } | null)
+ *    $14 coord_lat (double precision · may be NULL)
+ *    $15 coord_lng (double precision · may be NULL)
+ *    $16 schema_version (evidence)
+ *    $17 candidate_id
+ *    $18 candidate_integrity_hash
+ *    $19 decision_record_id
+ *    $20 review_package_id
+ *    $21 legacy_source_table
+ *    $22 legacy_source_ref
+ *    $23 legacy_source_internal_id
+ *    $24 resolver_verdict_kind (always 'NO_MATCH' for insert_new)
+ *    $25 resolver_target_id (always NULL for insert_new)
+ *    $26 resolver_score
+ *    $27 observation_generator
+ *    $28 observation_run_id
+ *    $29 observation_generated_at
+ *    $30 observation_decision_timestamp
+ *    $31 observation_founder_id
+ *    $32 source_id
  */
 function buildCompoundInsertSql(): string {
   return `WITH ic AS (
   INSERT INTO nex.business_canonical (
     entity_type, country, lifecycle_state, name_canonical, aliases,
     phone_e164, website_apex, osm_id, wikidata_qid, city, district,
+    street_line, neighbourhood, address,
     coordinates
   ) VALUES (
     $1, $2, 'DISCOVERED', $3, $4,
     $5, $6, $7, $8, $9, $10,
-    CASE WHEN $11::double precision IS NULL OR $12::double precision IS NULL
+    $11, $12, $13::jsonb,
+    CASE WHEN $14::double precision IS NULL OR $15::double precision IS NULL
          THEN NULL
-         ELSE ST_SetSRID(ST_MakePoint($12, $11), 4326)::geography END
+         ELSE ST_SetSRID(ST_MakePoint($15, $14), 4326)::geography END
   )
   RETURNING canonical_business_id
 )
@@ -325,12 +331,12 @@ INSERT INTO nex.business_evidence (
   observation_decision_timestamp, observation_founder_id, source_id
 )
 SELECT
-  ic.canonical_business_id, $13, $14,
-  $15, $16, $17,
+  ic.canonical_business_id, $16, $17,
   $18, $19, $20,
   $21, $22, $23,
   $24, $25, $26,
-  $27, $28, $29
+  $27, $28, $29,
+  $30, $31, $32
 FROM ic
 RETURNING evidence_id, canonical_business_id`;
 }
@@ -350,25 +356,30 @@ function buildCompoundInsertParams(
     row.wikidata_qid,                         // $8
     row.city,                                 // $9
     row.district,                             // $10
-    row.coordinates ? row.coordinates.lat : null, // $11
-    row.coordinates ? row.coordinates.lng : null, // $12
-    evidence.schema_version,                  // $13
-    evidence.candidate_id,                    // $14
-    evidence.candidate_integrity_hash,        // $15
-    evidence.decision_record_id,              // $16
-    evidence.review_package_id,               // $17
-    evidence.legacy_source.table,             // $18
-    evidence.legacy_source.ref,               // $19
-    evidence.legacy_source.internal_id,       // $20
-    evidence.resolver_verdict_summary.kind,   // $21 'NO_MATCH'
-    evidence.resolver_verdict_summary.target_canonical_business_id, // $22 null
-    evidence.resolver_verdict_summary.score,  // $23
-    evidence.observation_provenance.generator, // $24
-    evidence.observation_provenance.generation_run_id, // $25
-    evidence.observation_provenance.generated_at, // $26
-    evidence.observation_provenance.decision_timestamp, // $27
-    evidence.observation_provenance.founder_id, // $28
-    evidence.source_id,                       // $29
+    row.street_line,                          // $11 (migration 178)
+    row.neighbourhood,                        // $12 (migration 178)
+    // $13 address jsonb · stringify the sealed-shape object or send
+    // NULL. SQL cast `$13::jsonb` parses the text. Null stays SQL NULL.
+    row.address === null ? null : JSON.stringify(row.address),
+    row.coordinates ? row.coordinates.lat : null, // $14
+    row.coordinates ? row.coordinates.lng : null, // $15
+    evidence.schema_version,                  // $16
+    evidence.candidate_id,                    // $17
+    evidence.candidate_integrity_hash,        // $18
+    evidence.decision_record_id,              // $19
+    evidence.review_package_id,               // $20
+    evidence.legacy_source.table,             // $21
+    evidence.legacy_source.ref,               // $22
+    evidence.legacy_source.internal_id,       // $23
+    evidence.resolver_verdict_summary.kind,   // $24 'NO_MATCH'
+    evidence.resolver_verdict_summary.target_canonical_business_id, // $25 null
+    evidence.resolver_verdict_summary.score,  // $26
+    evidence.observation_provenance.generator, // $27
+    evidence.observation_provenance.generation_run_id, // $28
+    evidence.observation_provenance.generated_at, // $29
+    evidence.observation_provenance.decision_timestamp, // $30
+    evidence.observation_provenance.founder_id, // $31
+    evidence.source_id,                       // $32
   ];
 }
 

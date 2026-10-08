@@ -185,8 +185,10 @@ export interface GetCanonicalBusinessOutcome {
 export const SELECT_COLUMNS =
   "canonical_business_id, entity_type, country, lifecycle_state, " +
   "name_canonical, name_norm, aliases, phone_e164, website_apex, " +
-  "osm_id, wikidata_qid, city, district, category_ids, " +
-  "services_products, supersedes_business_id, superseded_by_business_id, " +
+  "osm_id, wikidata_qid, city, district, street_line, neighbourhood, " +
+  "address, " +
+  "category_ids, services_products, " +
+  "supersedes_business_id, superseded_by_business_id, " +
   "last_verified_at, " +
   "ST_Y(coordinates::geometry) AS coordinates_lat, " +
   "ST_X(coordinates::geometry) AS coordinates_lng";
@@ -205,6 +207,19 @@ interface RawCanonicalRow {
   wikidata_qid: string | null;
   city: string | null;
   district: string | null;
+  /** Migration 178 · dedicated street-line text column. */
+  street_line: string | null;
+  /** Migration 178 · neighbourhood text column. */
+  neighbourhood: string | null;
+  /** address jsonb (migration 167) · pg driver returns jsonb as a
+   *  parsed object or null · the sealed shape is enforced upstream by
+   *  validateCanonicalAddress in the ingestion harness. Defensive
+   *  nullish-with-unknown here to tolerate any legacy pre-sealed
+   *  rows (none should exist today). */
+  address: {
+    line1: string | null;
+    postal_code: string | null;
+  } | null;
   category_ids: string[] | null;
   services_products: unknown;
   supersedes_business_id: string | null;
@@ -271,6 +286,9 @@ export function adaptRawCanonicalRow(
     wikidata_qid: raw.wikidata_qid,
     city: raw.city,
     district: raw.district,
+    street_line: raw.street_line,
+    neighbourhood: raw.neighbourhood,
+    address: raw.address,
     coordinates,
     category_ids: raw.category_ids ?? [],
     services_products: raw.services_products ?? null,

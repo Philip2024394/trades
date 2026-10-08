@@ -184,6 +184,19 @@ export interface InsertCanonicalRow {
   readonly wikidata_qid: string | null;
   readonly city: string | null;
   readonly district: string | null;
+  /** Added by migration 178 · location-granularity wave. Preserved
+   *  verbatim from the Candidate's identity · the write path does not
+   *  concatenate or infer these values. */
+  readonly street_line: string | null;
+  readonly neighbourhood: string | null;
+  /** Canonical address · maps to `nex.business_canonical.address jsonb`
+   *  (migration 167). Sealed shape per the doctrine. Preserved
+   *  verbatim from Candidate.identity.address · the write path does
+   *  not parse, split, or infer. */
+  readonly address: {
+    readonly line1: string | null;
+    readonly postal_code: string | null;
+  } | null;
   readonly coordinates: { readonly lat: number; readonly lng: number } | null;
 }
 
@@ -629,6 +642,9 @@ export function precheckHandoff(
     wikidata_qid: candidate.identity.wikidata_qid,
     city: candidate.identity.city,
     district: candidate.identity.district,
+    street_line: candidate.identity.street_line,
+    neighbourhood: candidate.identity.neighbourhood,
+    address: candidate.identity.address,
     coordinates: candidate.identity.coordinates,
   };
 

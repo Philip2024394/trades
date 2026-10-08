@@ -1,0 +1,75 @@
+-- 178_nex_business_canonical_rich_location.sql
+--
+-- NEX Directory Canonical Spine · additive location-granularity wave.
+-- Adds two nullable text columns to nex.business_canonical to carry
+-- genuine source location structure the sealed pipeline currently
+-- drops:
+--
+--   street_line    · structured street line when the source carries
+--                    it as a separate field (OSM 'addr:street' + house
+--                    number pattern); dedicated text column, verbatim
+--                    from source. Not derived from any other field.
+--   neighbourhood  · finer-grained unit below district (OSM
+--                    'addr:suburb' / 'addr:hamlet' / local district
+--                    variants); dedicated text column.
+--
+-- Both NULL-able. Missing data stays missing. No DEFAULT. No CHECK
+-- beyond `text` type.
+--
+-- WHAT THIS MIGRATION DELIBERATELY DOES NOT TOUCH
+--   · address (pre-existing jsonb column from migration 167) ·
+--     the jsonb shape is not documented in 167's header and this
+--     migration refuses to invent one. A separate architecture
+--     decision is required before the free-text source `address`
+--     column (24.4% coverage on nex.food_business) can be carried
+--     into canonical.address. Until then, the free-text source
+--     address remains dropped at the Candidate boundary.
+--   · country (pre-existing column) · the adapter wave updates
+--     Candidate.country to read `nex.food_business.country` instead
+--     of hardcoded "ID" (behavioural change in the adapter, no
+--     schema change here).
+--   · category_ids (B wave · not authorised)
+--   · nex.business_media (C wave · migration 173 · not authorised)
+--
+-- IDEMPOTENT · additive · safe on a populated DB · no backfill, no
+-- data mutation. Pre-existing rows (including the one synthetic
+-- proof row 452568d4-3dab-4064-a0fa-2b9297f2ae3b) end up with NULL
+-- on each new column, which is the honest state (we did not
+-- retroactively enrich them).
+--
+-- ROLLBACK
+--   ALTER TABLE nex.business_canonical
+--     DROP COLUMN IF EXISTS neighbourhood,
+--     DROP COLUMN IF EXISTS street_line;
+--
+-- SAFE ON POPULATED DB
+--   Yes. ADD COLUMN IF NOT EXISTS is non-blocking on Postgres 11+
+--   when the new column is NULL-able with no DEFAULT. No lock
+--   contention beyond the fast catalog update.
+--
+-- DOWNSTREAM (same wave)
+--   · sealed Candidate.identity gains street_line + neighbourhood
+--   · sealed legacy-food-business adapter projects source.street_line
+--     and source.neighbourhood (previously dropped), AND reads
+--     source.country instead of the hardcoded "ID"
+--   · sealed canonical-handoff InsertCanonicalRow carries the fields
+--   · sealed execute-write-plan writes the fields into
+--     nex.business_canonical
+--   · DirectoryListingVM gains the fields
+--   · Directory detail page Location section renders them when present
+--
+-- SCOPE BOUNDARY
+--   This migration does NOT touch:
+--     · nex.business_evidence
+--     · nex.business_media (unauthored)
+--     · nex.source_registry
+--     · category_ids (B wave)
+--     · address jsonb (requires separate shape ADR)
+--     · any Supabase migration
+--     · any cross-DB FK
+
+ALTER TABLE nex.business_canonical
+  ADD COLUMN IF NOT EXISTS street_line text NULL,
+  ADD COLUMN IF NOT EXISTS neighbourhood text NULL;
+
+-- End of migration 178.

@@ -69,6 +69,11 @@ function insertRow(overrides: Partial<InsertCanonicalRow> = {}): InsertCanonical
     wikidata_qid: null,
     city: "Bandung",
     district: null,
+    // Migration 178 + address wiring · null in the shared fixture so
+    // the sparse-row readback assertions continue to hold.
+    street_line: null,
+    neighbourhood: null,
+    address: null,
     coordinates: null,
   };
   return { ...base, ...overrides };
@@ -162,6 +167,10 @@ describe("buildFieldComparisons", () => {
       wikidata_qid: null,
       city: "Bandung",
       district: null,
+      // Migration 178 + address wiring · mirror the sparse plan.row.
+      street_line: null,
+      neighbourhood: null,
+      address: null,
     };
     const evidenceRow = {
       evidence_id: "ev-1",
@@ -315,6 +324,10 @@ describe("verifyFirstWriteReadback", () => {
         wikidata_qid: null,
         city: "Bandung",
         district: null,
+        // Migration 178 + address wiring · mirror the sparse plan.row.
+        street_line: null,
+        neighbourhood: null,
+        address: null,
       },
       evidenceRow: {
         evidence_id: "ev-1",
@@ -396,6 +409,10 @@ describe("verifyFirstWriteReadback", () => {
         wikidata_qid: null,
         city: "Bandung",
         district: null,
+        // Migration 178 + address wiring · mirror the sparse plan.row.
+        street_line: null,
+        neighbourhood: null,
+        address: null,
       },
       evidenceRow: {
         evidence_id: "ev-1",

@@ -178,6 +178,19 @@ export function buildFieldComparisons(
     push(out, "canonical.wikidata_qid", row.wikidata_qid, canonicalRow?.wikidata_qid);
     push(out, "canonical.city", row.city, canonicalRow?.city);
     push(out, "canonical.district", row.district, canonicalRow?.district);
+    // Migration 178 · location-granularity fields.
+    push(out, "canonical.street_line", row.street_line, canonicalRow?.street_line);
+    push(out, "canonical.neighbourhood", row.neighbourhood, canonicalRow?.neighbourhood);
+    // Address jsonb · pg driver returns jsonb as a parsed object or
+    // null. Compare with the nested-equality helper that handles null
+    // + object-with-two-keys shape.
+    push(
+      out,
+      "canonical.address",
+      row.address,
+      canonicalRow?.address,
+      addressEqual,
+    );
   } else {
     // merge_match · evidence.canonical_business_id should equal target
     push(out, "evidence.canonical_business_id", plan.target_canonical_business_id, evidenceRow?.canonical_business_id);
@@ -200,6 +213,33 @@ function defaultEqual(a: unknown, b: unknown): boolean {
   if (a === null && (b === null || b === undefined)) return true;
   if (b === null && a === undefined) return true;
   return a === b;
+}
+
+/** Pure · compare two canonical-address values. The sealed shape is
+ *  { line1: string | null, postal_code: string | null } | null · the
+ *  comparator checks null-at-whole, then key-by-key with defaultEqual
+ *  semantics (null ↔ undefined are treated as equal to tolerate the pg
+ *  driver's optional-field surfacing). */
+function addressEqual(a: unknown, b: unknown): boolean {
+  if (a === null && (b === null || b === undefined)) return true;
+  if (b === null && a === undefined) return true;
+  if (a === null || b === null) return false;
+  if (!isPlainObjectLocal(a) || !isPlainObjectLocal(b)) return false;
+  const ao = a as { line1?: unknown; postal_code?: unknown };
+  const bo = b as { line1?: unknown; postal_code?: unknown };
+  return (
+    defaultEqual(ao.line1 ?? null, bo.line1 ?? null) &&
+    defaultEqual(ao.postal_code ?? null, bo.postal_code ?? null)
+  );
+}
+
+function isPlainObjectLocal(v: unknown): v is Record<string, unknown> {
+  return (
+    typeof v === "object" &&
+    v !== null &&
+    !Array.isArray(v) &&
+    Object.getPrototypeOf(v) === Object.prototype
+  );
 }
 
 function numericEqual(a: unknown, b: unknown): boolean {
@@ -252,8 +292,9 @@ export async function verifyFirstWriteReadback(
     const canonicalRes = await session.query<Record<string, unknown>>(
       `SELECT canonical_business_id, entity_type, country, lifecycle_state,
               name_canonical, name_norm, aliases, phone_e164, website_apex,
-              osm_id, wikidata_qid, city, district, supersedes_business_id,
-              superseded_by_business_id
+              osm_id, wikidata_qid, city, district,
+              street_line, neighbourhood, address,
+              supersedes_business_id, superseded_by_business_id
        FROM nex.business_canonical
        WHERE canonical_business_id = $1`,
       [args.canonical_business_id],

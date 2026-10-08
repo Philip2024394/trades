@@ -83,6 +83,9 @@ export function projectDirectoryListing(
     country: row.country,
     city: row.city,
     district: row.district,
+    streetLine: row.street_line,
+    neighbourhood: row.neighbourhood,
+    address: row.address,
     coordinates: row.coordinates,
 
     phoneE164: row.phone_e164,

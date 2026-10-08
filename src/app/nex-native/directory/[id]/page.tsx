@@ -510,30 +510,137 @@ function CategoriesSection(props: {
 function LocationSection(props: {
   readonly listing: DirectoryListingVM;
 }): React.ReactElement | null {
-  const { city, district, country, coordinates } = props.listing;
-  const parts: string[] = [];
-  if (district !== null && district.length > 0) parts.push(district);
-  if (city !== null && city.length > 0) parts.push(city);
-  if (country.length > 0) parts.push(country);
-  // The section renders when ANY location signal is present:
-  // text parts (district/city/country) OR coordinates (so the
-  // distance chip has something to compute against). The distance
-  // chip itself handles both honest states (known / unconfirmed).
-  const hasTextParts = parts.length > 0;
+  const {
+    city,
+    district,
+    country,
+    streetLine,
+    neighbourhood,
+    address,
+    coordinates,
+  } = props.listing;
+
+  // Each location field is rendered independently when present ·
+  // honoring the no-concatenation rule. We do NOT fabricate a full
+  // address by stitching together partial fields from the source.
+  const addressLine1HasValue =
+    address !== null &&
+    address.line1 !== null &&
+    address.line1.trim().length > 0;
+  const addressPostalHasValue =
+    address !== null &&
+    address.postal_code !== null &&
+    address.postal_code.trim().length > 0;
+  const streetLineHasValue =
+    streetLine !== null && streetLine.trim().length > 0;
+  const neighbourhoodHasValue =
+    neighbourhood !== null && neighbourhood.trim().length > 0;
+  const districtHasValue = district !== null && district.length > 0;
+  const cityHasValue = city !== null && city.length > 0;
+  const countryHasValue = country.length > 0;
+
+  // Area line (district / city / country) composed deterministically
+  // in that order with " · " separators · each component is a real
+  // field from the canonical row.
+  const areaParts: string[] = [];
+  if (districtHasValue) areaParts.push(district!);
+  if (cityHasValue) areaParts.push(city!);
+  if (countryHasValue) areaParts.push(country);
+  const hasAreaLine = areaParts.length > 0;
+
+  const hasAnyText =
+    addressLine1HasValue ||
+    addressPostalHasValue ||
+    streetLineHasValue ||
+    neighbourhoodHasValue ||
+    hasAreaLine;
   const hasCoords = coordinates !== null;
-  if (!hasTextParts && !hasCoords) return null;
+  if (!hasAnyText && !hasCoords) return null;
+
+  // Rendered order top → bottom (bold → muted):
+  //   address.line1 (free-text address from source)
+  //   street_line   (dedicated structured street column)
+  //   neighbourhood
+  //   area (district · city · country)
+  //   postal_code (small chip below area · only when populated)
+  //   distance chip
+  // Each line hides when its backing field is empty · no concatenation.
+  const topLinePresent = addressLine1HasValue;
+  const secondLinePresent = !topLinePresent && streetLineHasValue;
+
   return (
     <SectionBlock title="Location" dataAttr="location">
-      {hasTextParts ? (
+      {addressLine1HasValue ? (
         <p
+          data-nex-directory-detail-location-line="address-line1"
           style={{
             margin: 0,
+            color: NEX.text,
+            fontSize: 14,
+            fontWeight: 500,
+            lineHeight: 1.5,
+          }}
+        >
+          {address!.line1}
+        </p>
+      ) : null}
+      {streetLineHasValue ? (
+        <p
+          data-nex-directory-detail-location-line="street"
+          style={{
+            margin: topLinePresent ? "4px 0 0 0" : 0,
+            color: topLinePresent ? NEX.textDim : NEX.text,
+            fontSize: 14,
+            fontWeight: topLinePresent ? 400 : 500,
+            lineHeight: 1.5,
+          }}
+        >
+          {streetLine}
+        </p>
+      ) : null}
+      {neighbourhoodHasValue ? (
+        <p
+          data-nex-directory-detail-location-line="neighbourhood"
+          style={{
+            margin:
+              topLinePresent || secondLinePresent ? "4px 0 0 0" : 0,
+            color: NEX.textDim,
+            fontSize: 13,
+            lineHeight: 1.5,
+          }}
+        >
+          {neighbourhood}
+        </p>
+      ) : null}
+      {hasAreaLine ? (
+        <p
+          data-nex-directory-detail-location-line="area"
+          style={{
+            margin:
+              addressLine1HasValue ||
+              streetLineHasValue ||
+              neighbourhoodHasValue
+                ? "4px 0 0 0"
+                : 0,
             color: NEX.textDim,
             fontSize: 14,
             lineHeight: 1.5,
           }}
         >
-          {parts.join(" · ")}
+          {areaParts.join(" · ")}
+        </p>
+      ) : null}
+      {addressPostalHasValue ? (
+        <p
+          data-nex-directory-detail-location-line="postal_code"
+          style={{
+            margin: "4px 0 0 0",
+            color: NEX.textMuted,
+            fontSize: 12.5,
+            lineHeight: 1.5,
+          }}
+        >
+          Postal code: {address!.postal_code}
         </p>
       ) : null}
       <DetailDistanceChip listingCoords={coordinates} />

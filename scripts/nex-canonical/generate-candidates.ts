@@ -143,6 +143,30 @@ export interface Candidate {
     wikidata_qid: string | null;
     city: string | null;
     district: string | null;
+    /** Finer-grained location unit below district (OSM 'addr:suburb' /
+     *  'addr:hamlet' / local district variants). Preserved verbatim from
+     *  the source · the adapter does NOT concatenate or infer this
+     *  value. Added by migration 178 (location-granularity wave). */
+    neighbourhood: string | null;
+    /** Structured street line when the source carries it as a separate
+     *  field (OSM 'addr:street' + house number pattern). Preserved
+     *  verbatim · not derived from a free-text address. Added by
+     *  migration 178. */
+    street_line: string | null;
+    /** Canonical address · maps to `nex.business_canonical.address jsonb`
+     *  (migration 167). Sealed shape per
+     *  docs/doctrine/nex-business-canonical-seed-cohort-and-eval-corpus-design-2026-10-08.md
+     *  line 116:
+     *    { line1: string | null, postal_code: string | null } | null
+     *  The whole object is `null` when the source has no address · the
+     *  adapter does NOT parse, split, or infer postal codes · line1
+     *  preserves the source value verbatim (trimmed). postal_code is
+     *  only populated when a dedicated postal-code field exists in the
+     *  source (the current legacy source has none, so it is always null). */
+    address: {
+      readonly line1: string | null;
+      readonly postal_code: string | null;
+    } | null;
     coordinates: { lat: number; lng: number } | null;
   };
   legacy_source: {
