@@ -262,3 +262,9 @@ data/nex-lab/wikidata-cache/
 # MaxMind GeoLite2 databases · provisioned per machine by ops, never
 # committed. Monthly refresh cadence · size ~70MB. See deploy/maxmind/README.md.
 deploy/maxmind/*.mmdb
+
+# NEX Canonical · runtime file-backed state for the sealed Directory
+# Engine. Pending-review queue, decision log, checkpoint log · all
+# append-only JSONL · per-machine state regenerated/extended by each
+# ingestion run. Not source of truth.
+data/nex-canonical/*.jsonl
