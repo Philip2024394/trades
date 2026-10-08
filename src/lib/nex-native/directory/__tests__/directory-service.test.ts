@@ -6,61 +6,76 @@
 //   · adaptRawCanonicalRow handles every nullable-column permutation
 //   · adaptRawCanonicalRow rejects malformed enum values (returns null)
 //   · listDirectory composes projector + resolver correctly
-//   · systemReady=false when supabase returns an error
-//   · systemReady=false when the schema is unavailable
+//   · systemReady=false when NEX_POSTGRES_URL is unset (withClient null)
+//   · systemReady=false when the pg driver throws
+//   · credential-shaped substrings are redacted from diagnostics
 //   · fetchOwnerClaimsByCanonicalId returns an empty map (stub)
-//   · the service doesn't leak server-only runtime (static grep)
+//   · buildCanonicalSql produces correctly parameterised SELECTs
+//   · directory-service.ts uses the NEX_POSTGRES_URL read path (static)
 //
-// This file does NOT make real network calls. The supabase client is
-// mocked at module boundary via vi.mock.
+// This file does NOT make real network calls. The `@/lib/nex/db`
+// withClient helper is mocked at module boundary via vi.mock.
 
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 
-// ─── Mock nexSupabaseAdmin to intercept all .schema().from() chains ──
+// ─── Mock @/lib/nex/db to intercept withClient ────────────────────────
 //
-// The service module imports nexSupabaseAdmin from
-// `../supabase-admin`. We mock that path so no real client is
-// instantiated during tests. The mock exposes a `__setResponse(fn)`
-// helper for per-test configuration.
-let currentResponse: () => Promise<{
-  data: unknown[] | null;
-  error: { code?: string; message: string } | null;
-}> = async () => ({ data: [], error: null });
+// The service module imports `withClient` from `@/lib/nex/db`. We
+// mock that path so no real pool / pg driver is instantiated during
+// tests. The mock supports three behaviours set per-test via
+// `currentBehavior`:
+//
+//   { kind: "ok" }     · the callback runs against a stub client
+//                         whose .query returns `result`
+//   { kind: "throws" } · the stub client's .query throws
+//   { kind: "null" }   · withClient itself returns null (as it does
+//                         when NEX_POSTGRES_URL is unset)
+//
+// The stub records the last SQL + params it saw so tests can assert
+// on the query shape delivered to the driver.
 
-vi.mock("@/lib/nex-native/supabase-admin", () => {
-  const mockBuilder = {
-    schema() {
-      return mockBuilder;
-    },
-    from() {
-      return mockBuilder;
-    },
-    select() {
-      return mockBuilder;
-    },
-    eq() {
-      return mockBuilder;
-    },
-    in() {
-      return mockBuilder;
-    },
-    ilike() {
-      return mockBuilder;
-    },
-    range() {
-      return currentResponse();
-    },
-  };
-  return {
-    nexSupabaseAdmin: mockBuilder,
-    nexSupabaseProjectRef: () => "test",
-  };
-});
+type MockQueryResult = {
+  rows: readonly unknown[];
+  rowCount: number | null;
+};
+
+type MockBehavior =
+  | { kind: "ok"; result: MockQueryResult }
+  | { kind: "throws"; error: Error }
+  | { kind: "null" };
+
+let currentBehavior: MockBehavior = {
+  kind: "ok",
+  result: { rows: [], rowCount: 0 },
+};
+
+let lastQuery: { sql: string; params: readonly unknown[] } | null = null;
+
+vi.mock("@/lib/nex/db", () => ({
+  withClient: async <T>(
+    fn: (c: {
+      query: (sql: string, params?: unknown[]) => Promise<MockQueryResult>;
+    }) => Promise<T>,
+  ): Promise<T | null> => {
+    if (currentBehavior.kind === "null") return null;
+    const client = {
+      query: async (sql: string, params?: unknown[]) => {
+        lastQuery = { sql, params: params ?? [] };
+        if (currentBehavior.kind === "throws") throw currentBehavior.error;
+        return currentBehavior.result;
+      },
+    };
+    return fn(client);
+  },
+}));
 
 import {
   CANONICAL_TABLE,
   CANONICAL_SCHEMA,
   DEFAULT_LIMIT,
+  SELECT_COLUMNS,
   SURFACED_LIFECYCLE_STATES,
   _internal,
   adaptRawCanonicalRow,
@@ -100,6 +115,17 @@ describe("directory-service · sealed constants", () => {
       "DORMANT",
     ];
     expect([...SURFACED_LIFECYCLE_STATES].sort()).toEqual([...expected].sort());
+  });
+
+  it("SELECT_COLUMNS lists the sealed read columns and omits coordinates", () => {
+    expect(SELECT_COLUMNS).toContain("canonical_business_id");
+    expect(SELECT_COLUMNS).toContain("entity_type");
+    expect(SELECT_COLUMNS).toContain("country");
+    expect(SELECT_COLUMNS).toContain("lifecycle_state");
+    expect(SELECT_COLUMNS).toContain("name_canonical");
+    expect(SELECT_COLUMNS).toContain("name_norm");
+    expect(SELECT_COLUMNS).toContain("last_verified_at");
+    expect(SELECT_COLUMNS).not.toContain("coordinates");
   });
 });
 
@@ -253,20 +279,22 @@ describe("adaptRawCanonicalRow · defensive enum rejection", () => {
 });
 
 // ═════════════════════════════════════════════════════════════════════
-// §4 · listDirectory · query behaviour
+// §4 · listDirectory · behaviour
 // ═════════════════════════════════════════════════════════════════════
 
 beforeEach(() => {
-  currentResponse = async () => ({ data: [], error: null });
+  currentBehavior = { kind: "ok", result: { rows: [], rowCount: 0 } };
+  lastQuery = null;
 });
 
 afterEach(() => {
-  currentResponse = async () => ({ data: [], error: null });
+  currentBehavior = { kind: "ok", result: { rows: [], rowCount: 0 } };
+  lastQuery = null;
 });
 
 describe("listDirectory · empty result", () => {
   it("returns systemReady=true with an empty results list when the DB returns 0 rows", async () => {
-    currentResponse = async () => ({ data: [], error: null });
+    currentBehavior = { kind: "ok", result: { rows: [], rowCount: 0 } };
     const outcome = await listDirectory({ country: "ID" });
     expect(outcome.systemReady).toBe(true);
     expect(outcome.results).toEqual([]);
@@ -274,66 +302,109 @@ describe("listDirectory · empty result", () => {
   });
 });
 
-describe("listDirectory · unavailable systems", () => {
-  it("returns systemReady=false when the DB errors (schema not exposed)", async () => {
-    currentResponse = async () => ({
-      data: null,
-      error: { code: "PGRST106", message: "The schema must be one of..." },
-    });
+describe("listDirectory · NEX_POSTGRES_URL unset", () => {
+  it("returns systemReady=false with an honest diagnostic when withClient returns null", async () => {
+    currentBehavior = { kind: "null" };
     const outcome = await listDirectory({ country: "ID" });
     expect(outcome.systemReady).toBe(false);
     expect(outcome.results).toEqual([]);
     expect(outcome.diagnostic).not.toBe(null);
-    expect(outcome.diagnostic!).toContain("PGRST106");
+    expect(outcome.diagnostic!).toContain("NEX_POSTGRES_URL");
   });
 
-  it("returns systemReady=false when the DB errors (table not found)", async () => {
-    currentResponse = async () => ({
-      data: null,
-      error: { code: "42P01", message: "relation does not exist" },
-    });
+  it("does not invoke the pg client when withClient returns null", async () => {
+    currentBehavior = { kind: "null" };
+    await listDirectory({ country: "ID" });
+    expect(lastQuery).toBe(null);
+  });
+});
+
+describe("listDirectory · unavailable systems", () => {
+  it("returns systemReady=false when the pg client throws (relation does not exist)", async () => {
+    currentBehavior = {
+      kind: "throws",
+      error: new Error('relation "nex.business_canonical" does not exist'),
+    };
     const outcome = await listDirectory({ country: "ID" });
     expect(outcome.systemReady).toBe(false);
-    expect(outcome.diagnostic!).toContain("42P01");
+    expect(outcome.results).toEqual([]);
+    expect(outcome.diagnostic).not.toBe(null);
+    expect(outcome.diagnostic!).toContain("relation");
   });
 
-  it("returns systemReady=false on an unexpected throw (network error)", async () => {
-    currentResponse = async () => {
-      throw new Error("ECONNREFUSED");
+  it("returns systemReady=false when the schema does not exist", async () => {
+    currentBehavior = {
+      kind: "throws",
+      error: new Error('schema "nex" does not exist'),
+    };
+    const outcome = await listDirectory({ country: "ID" });
+    expect(outcome.systemReady).toBe(false);
+    expect(outcome.diagnostic!).toContain("schema");
+  });
+
+  it("returns systemReady=false on connect refused", async () => {
+    currentBehavior = {
+      kind: "throws",
+      error: new Error("ECONNREFUSED 127.0.0.1:5433"),
     };
     const outcome = await listDirectory({ country: "ID" });
     expect(outcome.systemReady).toBe(false);
     expect(outcome.diagnostic!).toContain("ECONNREFUSED");
   });
 
+  it("returns systemReady=false on authentication failure", async () => {
+    currentBehavior = {
+      kind: "throws",
+      error: new Error('password authentication failed for user "nex"'),
+    };
+    const outcome = await listDirectory({ country: "ID" });
+    expect(outcome.systemReady).toBe(false);
+    expect(outcome.diagnostic!).toContain("authentication");
+  });
+
   it("never fabricates a result on failure", async () => {
-    currentResponse = async () => ({
-      data: null,
-      error: { code: "AUTH", message: "jwt expired" },
-    });
+    currentBehavior = {
+      kind: "throws",
+      error: new Error("any pg error"),
+    };
     const outcome = await listDirectory({ country: "ID" });
     expect(outcome.results).toEqual([]);
+  });
+
+  it("redacts credential-shaped substrings from the diagnostic", async () => {
+    currentBehavior = {
+      kind: "throws",
+      error: new Error(
+        "connection failed: postgres://nex:secretpass@db.example.com:5432/nex",
+      ),
+    };
+    const outcome = await listDirectory({ country: "ID" });
+    expect(outcome.diagnostic!).toContain("[redacted]");
+    expect(outcome.diagnostic!).not.toContain("secretpass");
   });
 });
 
 describe("listDirectory · populated results", () => {
   it("projects canonical rows → VMs and resolves destinations", async () => {
-    currentResponse = async () => ({
-      data: [
-        {
-          ...completeRaw(),
-          canonical_business_id: "11111111-1111-4111-8111-111111111111",
-          lifecycle_state: "DISCOVERED",
-        },
-        {
-          ...completeRaw(),
-          canonical_business_id: "22222222-2222-4222-8222-222222222222",
-          entity_type: "professional",
-          lifecycle_state: "DISCOVERED",
-        },
-      ],
-      error: null,
-    });
+    currentBehavior = {
+      kind: "ok",
+      result: {
+        rows: [
+          {
+            ...completeRaw(),
+            canonical_business_id: "11111111-1111-4111-8111-111111111111",
+            lifecycle_state: "DISCOVERED",
+          },
+          {
+            ...completeRaw(),
+            canonical_business_id: "22222222-2222-4222-8222-222222222222",
+            entity_type: "professional",
+            lifecycle_state: "DISCOVERED",
+          },
+        ],
+        rowCount: 2,
+      },
+    };
     const outcome = await listDirectory({ country: "ID" });
     expect(outcome.systemReady).toBe(true);
     expect(outcome.results.length).toBe(2);
@@ -344,13 +415,16 @@ describe("listDirectory · populated results", () => {
   });
 
   it("filters rows whose enum values are outside the sealed sets", async () => {
-    currentResponse = async () => ({
-      data: [
-        { ...completeRaw(), entity_type: "spaceship" },
-        { ...completeRaw() },
-      ],
-      error: null,
-    });
+    currentBehavior = {
+      kind: "ok",
+      result: {
+        rows: [
+          { ...completeRaw(), entity_type: "spaceship" },
+          { ...completeRaw() },
+        ],
+        rowCount: 2,
+      },
+    };
     const outcome = await listDirectory({ country: "ID" });
     expect(outcome.results.length).toBe(1);
   });
@@ -361,16 +435,63 @@ describe("listDirectory · populated results", () => {
       "44444444-4444-4444-8444-444444444444",
       "55555555-5555-4555-8555-555555555555",
     ];
-    currentResponse = async () => ({
-      data: ids.map((id) => ({
-        ...completeRaw(),
-        canonical_business_id: id,
-        lifecycle_state: "DISCOVERED",
-      })),
-      error: null,
-    });
+    currentBehavior = {
+      kind: "ok",
+      result: {
+        rows: ids.map((id) => ({
+          ...completeRaw(),
+          canonical_business_id: id,
+          lifecycle_state: "DISCOVERED",
+        })),
+        rowCount: 3,
+      },
+    };
     const outcome = await listDirectory({ country: "ID" });
-    expect(outcome.results.map((r) => r.listing.canonicalBusinessId)).toEqual(ids);
+    expect(outcome.results.map((r) => r.listing.canonicalBusinessId)).toEqual(
+      ids,
+    );
+  });
+});
+
+// ═════════════════════════════════════════════════════════════════════
+// §4b · listDirectory · query shape delivered to pg driver
+// ═════════════════════════════════════════════════════════════════════
+
+describe("listDirectory · query shape delivered to pg driver", () => {
+  it("sends the schema-qualified table name (nex.business_canonical)", async () => {
+    await listDirectory({ country: "ID" });
+    expect(lastQuery).not.toBe(null);
+    expect(lastQuery!.sql).toContain("FROM nex.business_canonical");
+  });
+
+  it("binds country, lifecycle array, limit, offset as parameters (no interpolation)", async () => {
+    await listDirectory({ country: "ID", limit: 50, offset: 100 });
+    expect(lastQuery!.params[0]).toBe("ID");
+    expect(lastQuery!.params[1]).toEqual([...SURFACED_LIFECYCLE_STATES]);
+    expect(lastQuery!.params[lastQuery!.params.length - 2]).toBe(50);
+    expect(lastQuery!.params[lastQuery!.params.length - 1]).toBe(100);
+    expect(lastQuery!.sql).not.toContain("'ID'");
+    expect(lastQuery!.sql).toMatch(/\bLIMIT\s+\$\d+\s+OFFSET\s+\$\d+/);
+    const placeholders = lastQuery!.sql.match(/\$\d+/g) ?? [];
+    expect(placeholders.length).toBeGreaterThanOrEqual(4);
+  });
+
+  it("adds entity_type ANY($N::text[]) when classification narrows the entity set", async () => {
+    await listDirectory({ country: "ID", classification: "business" });
+    expect(lastQuery!.sql).toContain("entity_type = ANY($3::text[])");
+    expect(Array.isArray(lastQuery!.params[2])).toBe(true);
+  });
+
+  it("adds name_norm ILIKE $N with %q% bounding when q is non-empty", async () => {
+    await listDirectory({ country: "ID", q: "warung" });
+    expect(lastQuery!.sql).toContain("name_norm ILIKE");
+    expect(lastQuery!.params).toContain("%warung%");
+  });
+
+  it("omits optional clauses when the corresponding input is unset", async () => {
+    await listDirectory({ country: "ID" });
+    expect(lastQuery!.sql).not.toContain("entity_type = ANY");
+    expect(lastQuery!.sql).not.toContain("ILIKE");
   });
 });
 
@@ -378,7 +499,7 @@ describe("listDirectory · populated results", () => {
 // §5 · fetchOwnerClaimsByCanonicalId stub
 // ═════════════════════════════════════════════════════════════════════
 
-describe("fetchOwnerClaimsByCanonicalId · deferred migration stub", () => {
+describe("fetchOwnerClaimsByCanonicalId · deferred cross-DB stub", () => {
   it("returns an empty map for any input (no fabrication)", async () => {
     const map = await fetchOwnerClaimsByCanonicalId([
       "11111111-1111-4111-8111-111111111111",
@@ -443,12 +564,267 @@ describe("_internal · sealed-set guards", () => {
 
 describe("listDirectory · determinism", () => {
   it("same mocked DB response yields byte-stable results across invocations", async () => {
-    currentResponse = async () => ({
-      data: [completeRaw()],
-      error: null,
-    });
+    currentBehavior = {
+      kind: "ok",
+      result: { rows: [completeRaw()], rowCount: 1 },
+    };
     const a = await listDirectory({ country: "ID" });
     const b = await listDirectory({ country: "ID" });
     expect(JSON.stringify(a)).toBe(JSON.stringify(b));
+  });
+});
+
+// ═════════════════════════════════════════════════════════════════════
+// §8 · _internal.buildCanonicalSql · pure parameterised builder
+// ═════════════════════════════════════════════════════════════════════
+
+describe("_internal.buildCanonicalSql · pure builder", () => {
+  it("minimum inputs produce 4 params + schema-qualified SELECT", () => {
+    const { sql, params } = _internal.buildCanonicalSql({
+      country: "ID",
+      q: null,
+      entityTypes: null,
+      limit: 24,
+      offset: 0,
+    });
+    expect(params.length).toBe(4);
+    expect(params[0]).toBe("ID");
+    expect(params[1]).toEqual([...SURFACED_LIFECYCLE_STATES]);
+    expect(params[2]).toBe(24);
+    expect(params[3]).toBe(0);
+    expect(sql).toContain("FROM nex.business_canonical");
+    expect(sql).toContain("country = $1");
+    expect(sql).toContain("lifecycle_state = ANY($2::text[])");
+    expect(sql).toContain("LIMIT $3 OFFSET $4");
+    expect(sql).not.toContain("entity_type = ANY");
+    expect(sql).not.toContain("ILIKE");
+  });
+
+  it("entityTypes supplied adds entity_type = ANY($3::text[]) and shifts limit/offset", () => {
+    const { sql, params } = _internal.buildCanonicalSql({
+      country: "ID",
+      q: null,
+      entityTypes: ["food", "accommodation"],
+      limit: 24,
+      offset: 0,
+    });
+    expect(params.length).toBe(5);
+    expect(params[2]).toEqual(["food", "accommodation"]);
+    expect(sql).toContain("entity_type = ANY($3::text[])");
+    expect(sql).toContain("LIMIT $4 OFFSET $5");
+  });
+
+  it("empty entityTypes array is treated as no filter", () => {
+    const { sql, params } = _internal.buildCanonicalSql({
+      country: "ID",
+      q: null,
+      entityTypes: [],
+      limit: 24,
+      offset: 0,
+    });
+    expect(params.length).toBe(4);
+    expect(sql).not.toContain("entity_type = ANY");
+  });
+
+  it("q supplied adds name_norm ILIKE $N with %q% bounding", () => {
+    const { sql, params } = _internal.buildCanonicalSql({
+      country: "ID",
+      q: "warung",
+      entityTypes: null,
+      limit: 24,
+      offset: 0,
+    });
+    expect(params.length).toBe(5);
+    expect(params[2]).toBe("%warung%");
+    expect(sql).toContain("name_norm ILIKE $3");
+    expect(sql).toContain("LIMIT $4 OFFSET $5");
+  });
+
+  it("both entityTypes and q produce 6 params in strict left-to-right order", () => {
+    const { sql, params } = _internal.buildCanonicalSql({
+      country: "ID",
+      q: "siti",
+      entityTypes: ["food"],
+      limit: 10,
+      offset: 20,
+    });
+    expect(params.length).toBe(6);
+    expect(params[0]).toBe("ID");
+    expect(params[1]).toEqual([...SURFACED_LIFECYCLE_STATES]);
+    expect(params[2]).toEqual(["food"]);
+    expect(params[3]).toBe("%siti%");
+    expect(params[4]).toBe(10);
+    expect(params[5]).toBe(20);
+    expect(sql).toContain("entity_type = ANY($3::text[])");
+    expect(sql).toContain("name_norm ILIKE $4");
+    expect(sql).toContain("LIMIT $5 OFFSET $6");
+  });
+
+  it("SELECT_COLUMNS appear verbatim in the SQL", () => {
+    const { sql } = _internal.buildCanonicalSql({
+      country: "ID",
+      q: null,
+      entityTypes: null,
+      limit: 24,
+      offset: 0,
+    });
+    expect(sql).toContain("canonical_business_id");
+    expect(sql).toContain("entity_type");
+    expect(sql).toContain("name_canonical");
+    expect(sql).toContain("last_verified_at");
+  });
+
+  it("user search text is never string-interpolated into SQL (injection guard)", () => {
+    const { sql, params } = _internal.buildCanonicalSql({
+      country: "ID",
+      q: "'; DROP TABLE users; --",
+      entityTypes: null,
+      limit: 24,
+      offset: 0,
+    });
+    expect(sql).not.toContain("DROP TABLE");
+    expect(sql).not.toContain("'; DROP");
+    // The payload is bound as a param, bracketed by % (ILIKE pattern).
+    expect(params).toContain("%'; DROP TABLE users; --%");
+  });
+
+  it("country value is never string-interpolated into SQL (injection guard)", () => {
+    const { sql, params } = _internal.buildCanonicalSql({
+      country: "' OR 1=1 --",
+      q: null,
+      entityTypes: null,
+      limit: 24,
+      offset: 0,
+    });
+    expect(sql).not.toContain("OR 1=1");
+    expect(params[0]).toBe("' OR 1=1 --");
+  });
+
+  it("limit / offset are bound as parameters, never interpolated", () => {
+    const { sql, params } = _internal.buildCanonicalSql({
+      country: "ID",
+      q: null,
+      entityTypes: null,
+      limit: 999,
+      offset: 7777,
+    });
+    expect(sql).not.toContain("999");
+    expect(sql).not.toContain("7777");
+    expect(params).toContain(999);
+    expect(params).toContain(7777);
+  });
+
+  it("is pure / deterministic across invocations", () => {
+    const a = _internal.buildCanonicalSql({
+      country: "ID",
+      q: "warung",
+      entityTypes: ["food"],
+      limit: 10,
+      offset: 0,
+    });
+    const b = _internal.buildCanonicalSql({
+      country: "ID",
+      q: "warung",
+      entityTypes: ["food"],
+      limit: 10,
+      offset: 0,
+    });
+    expect(a.sql).toBe(b.sql);
+    expect(a.params).toEqual(b.params);
+  });
+});
+
+// ═════════════════════════════════════════════════════════════════════
+// §9 · _internal.sanitiseError · credential redaction
+// ═════════════════════════════════════════════════════════════════════
+
+describe("_internal.sanitiseError · credential redaction", () => {
+  it("redacts a postgres URL with embedded credentials", () => {
+    const out = _internal.sanitiseError(
+      "boom: postgres://nex:topsecret@db.example.com:5432/nex failed",
+    );
+    expect(out).toContain("[redacted]");
+    expect(out).not.toContain("topsecret");
+  });
+
+  it("redacts password= fragments (quoted and bare)", () => {
+    const out1 = _internal.sanitiseError('conn: password="hunter2" rejected');
+    expect(out1).not.toContain("hunter2");
+    const out2 = _internal.sanitiseError("conn: password=hunter2 rejected");
+    expect(out2).not.toContain("hunter2");
+  });
+
+  it("passes through innocuous text unchanged", () => {
+    const msg = "relation does not exist";
+    expect(_internal.sanitiseError(msg)).toBe(msg);
+  });
+});
+
+// ═════════════════════════════════════════════════════════════════════
+// §10 · Architectural read-path lock (static grep against directory-service.ts)
+// ═════════════════════════════════════════════════════════════════════
+
+describe("directory-service.ts · architectural read path (static grep)", () => {
+  const SERVICE_PATH = resolve(__dirname, "..", "directory-service.ts");
+
+  function stripComments(src: string): string {
+    // Strip line comments FIRST (so a `/*` appearing inside a `//` line
+    // does not get mistaken for the start of a block comment), then
+    // strip block comments.
+    const noLine = src
+      .split("\n")
+      .map((l) => l.replace(/\/\/.*$/, ""))
+      .join("\n");
+    return noLine.replace(/\/\*[\s\S]*?\*\//g, "");
+  }
+
+  function sourceOutsideComments(): string {
+    return stripComments(readFileSync(SERVICE_PATH, "utf8"));
+  }
+
+  it("imports withClient from @/lib/nex/db", () => {
+    const src = sourceOutsideComments();
+    expect(src).toMatch(
+      /import\s*\{\s*withClient[^}]*\}\s*from\s*["']@\/lib\/nex\/db["']/,
+    );
+  });
+
+  it("does not import nexSupabaseAdmin (code, not comments)", () => {
+    const src = sourceOutsideComments();
+    expect(src).not.toContain("nexSupabaseAdmin");
+  });
+
+  it("does not call .schema('nex') or .schema(\"nex\")", () => {
+    const src = sourceOutsideComments();
+    expect(src).not.toMatch(/\.schema\s*\(\s*['"]nex['"]\s*\)/);
+  });
+
+  it("does not import the pg package directly", () => {
+    const src = sourceOutsideComments();
+    expect(src).not.toMatch(/from\s*["']pg["']/);
+  });
+
+  it("does not import from scripts/", () => {
+    const src = sourceOutsideComments();
+    expect(src).not.toMatch(/from\s*["'][^"']*scripts\//);
+  });
+
+  it("references nex.business_canonical as a schema-qualified table", () => {
+    const src = sourceOutsideComments();
+    expect(src).toContain("nex.business_canonical");
+  });
+
+  it("contains no literal connection string, host, or port", () => {
+    const src = sourceOutsideComments();
+    expect(src).not.toMatch(/postgres(?:ql)?:\/\//);
+    expect(src).not.toMatch(/\blocalhost\b/);
+    expect(src).not.toMatch(/\b127\.0\.0\.1\b/);
+    expect(src).not.toMatch(/:\s*5432\b/);
+    expect(src).not.toMatch(/:\s*5433\b/);
+  });
+
+  it("does not read process.env.NEX_POSTGRES_URL directly (must route through withClient / shared config)", () => {
+    const src = sourceOutsideComments();
+    expect(src).not.toContain("process.env.NEX_POSTGRES_URL");
   });
 });

@@ -8,12 +8,10 @@
 //   · The composer that calls Phase B's projector and Phase C's
 //     resolver to produce (VM, destination) tuples ready for the
 //     Phase A UI.
-//   · The honest-empty-state source. If the sealed `nex` schema is
-//     not yet exposed via PostgREST (expected until the deployment
-//     window authorises migrations 166/167/170 to be applied against
-//     live), or if the table literally has 0 rows (the current
-//     state as of this build), this module returns an empty
-//     result WITHOUT fabricating anything.
+//   · The honest-empty-state source. If the NEX Canonical PostgreSQL
+//     is not configured (NEX_POSTGRES_URL unset), unreachable, or
+//     the table has 0 rows, this module returns an empty result
+//     WITHOUT fabricating anything.
 //
 // What this module is NOT
 //   · Not a writer. All DB access is SELECT. No INSERT / UPDATE /
@@ -27,31 +25,36 @@
 //   · Not a client module. `import "server-only"` guards against
 //     accidental client-side imports.
 //
-// Current reality (Phase A build time)
-//   · `nex.business_canonical` has 0 rows (sealed in the pipeline
-//     memory as of 2026-10-08 · the authored migrations have NOT
-//     been applied to live Supabase ijvqdvsvwtwxzcqmoqit, so the
-//     table may not exist on the live project either).
-//   · The `nex` schema may not be in PostgREST's `db-schemas` config
-//     yet. The service handles both "schema missing" and "table
-//     missing" by returning an empty result honestly, letting the
-//     UI render its empty state. No crash. No fabricated row.
-//   · The owner-link lookup is a stub returning `null` for every
-//     row. Migration 169 (legacy FK backfill) + the Supabase-side
-//     `nex_business.canonical_business_id` mirror are deferred;
-//     until they land, no row carries an owner claim.
+// Current reality (Phase A build time, post-AUTH-4 rewire)
+//   · `nex.business_canonical` has 0 rows and may not yet exist on
+//     the target database. The sealed migrations 166/167/170 under
+//     `deploy/postgres/init/` are the authoritative DDL; they are
+//     applied via `npm run nex:apply-storage-schema` against the
+//     NEX_POSTGRES_URL target (see AUTH-2 / AUTH-3).
+//   · When NEX_POSTGRES_URL is unset, the shared `withClient` helper
+//     returns `null`; this service surfaces that as
+//     `systemReady: false` with an honest diagnostic.
+//   · When the pg driver throws (table does not exist, schema not
+//     yet applied, connect refused, authentication failed), the
+//     service also returns `systemReady: false` with a redacted
+//     diagnostic. The UI renders the "being prepared" state.
+//   · The owner-link lookup is a stub returning no claims. The real
+//     implementation must span two physical databases (Supabase
+//     `public.nex_business` + NEX Canonical `nex.business_canonical`)
+//     and PostgreSQL has no cross-database FK. Owner-link resolution
+//     is deferred to a dedicated ADR.
 //
 // Future wave hook points (post-authorisation)
 //   · When migration 173 lands, swap in a real media resolver that
 //     fetches primary images per canonical row.
-//   · When migrations 169 + the Supabase mirror land, swap in a
-//     real owner-link lookup via a batched Supabase query.
+//   · When the cross-database owner-link ADR lands, swap in a real
+//     `fetchOwnerClaimsByCanonicalId` body.
 //   · When migration 175 lands, consider reading
 //     `nex.business_directory_v` instead of the raw canonical table
 //     for taxonomy + attribution signals already baked in.
 
 import "server-only";
-import { nexSupabaseAdmin } from "../supabase-admin";
+import { withClient } from "@/lib/nex/db";
 import { projectDirectoryListings } from "./project-canonical-row";
 import { resolveDirectoryDestinations } from "./resolve-destination";
 import type {
@@ -79,7 +82,8 @@ import {
 
 /** The sealed canonical table that Phase A reads from. */
 export const CANONICAL_TABLE = "business_canonical" as const;
-/** The sealed schema name. Requires PostgREST exposure (see header). */
+/** The sealed schema name. The service reads
+ *  `nex.business_canonical` directly over the pg driver. */
 export const CANONICAL_SCHEMA = "nex" as const;
 
 /** Maximum rows returned per call. Phase A UI paginates via `offset`. */
@@ -136,16 +140,16 @@ export interface ListDirectoryOutcome {
 }
 
 // ═════════════════════════════════════════════════════════════════════
-// §3 · Row-shape adaptation · PostgREST → DirectoryCanonicalRow
+// §3 · Row-shape adaptation · pg row → DirectoryCanonicalRow
 // ═════════════════════════════════════════════════════════════════════
 
 /** The subset of columns the service SELECTs. Deliberately omits
- *  `coordinates` (PostGIS geography) · PostgREST cannot return a
- *  geography column as structured { lat, lng } without an RPC. A
- *  future wave will add a geography-aware view / RPC; until then,
- *  the Directory shows no map pin / no distance (honest — exactly
- *  what the founder authorised). */
-const SELECT_COLUMNS =
+ *  `coordinates` (PostGIS geography) · the raw pg driver cannot return
+ *  a geography column as structured { lat, lng } without an explicit
+ *  ST_X / ST_Y SELECT shape. A future wave will add geography-aware
+ *  columns; until then, the Directory shows no map pin / no distance
+ *  (honest — exactly what the founder authorised). */
+export const SELECT_COLUMNS =
   "canonical_business_id, entity_type, country, lifecycle_state, " +
   "name_canonical, name_norm, aliases, phone_e164, website_apex, " +
   "osm_id, wikidata_qid, city, district, category_ids, " +
@@ -173,7 +177,7 @@ interface RawCanonicalRow {
   last_verified_at: string | null;
 }
 
-/** Adapt one Supabase row into the Phase B input shape. Pure. Deterministic.
+/** Adapt one pg row into the Phase B input shape. Pure. Deterministic.
  *  Preserves nullability honestly · DB CHECKs guarantee the string
  *  values conform to their respective enums, but we defensively drop
  *  any row whose enum values are outside the sealed sets (returns
@@ -235,21 +239,17 @@ function isSealedLifecycleState(v: string): v is LifecycleState {
  * Fetch the owner claim (business slug or user profile handle) for a
  * batch of canonical rows.
  *
- * STUB until migration 169 (legacy FK backfill) and the Supabase-side
- * `nex_business.canonical_business_id` mirror are authorised and
- * applied. Returns an empty map; every row resolves with no claim.
+ * STUB. Returns an empty map; every row resolves with no claim.
  *
- * When the FK lands, this becomes a batched Supabase query:
+ * The real implementation must span two physical databases:
  *
- *   SELECT canonical_business_id, slug
- *   FROM nex_business
- *   WHERE canonical_business_id = ANY($1)
+ *   nex_business            → Supabase ijvqdvsvwtwxzcqmoqit (public.*)
+ *   nex.business_canonical  → NEX Canonical PostgreSQL (nex.*)
  *
- *   + the equivalent against nex_account joined via
- *   nex_account_profile for person classifications.
- *
+ * PostgreSQL has no cross-database FK. The owner-link resolution
+ * strategy therefore needs its own ADR before this stub becomes real.
  * The service's return shape stays the same; only this function body
- * changes.
+ * changes when that ADR lands.
  */
 export async function fetchOwnerClaimsByCanonicalId(
   _canonicalIds: readonly string[],
@@ -262,7 +262,7 @@ export async function fetchOwnerClaimsByCanonicalId(
 // §5 · The sealed query builder
 // ═════════════════════════════════════════════════════════════════════
 
-interface SupabaseQueryInputs {
+interface CanonicalQueryInputs {
   readonly country: string;
   readonly q: string | null;
   readonly entityTypes: readonly EntityType[] | null;
@@ -270,28 +270,71 @@ interface SupabaseQueryInputs {
   readonly offset: number;
 }
 
-/** Build the Supabase query against nex.business_canonical. One
- *  authoritative place for the filter composition. Pure assembler ·
- *  no network, no clock, no randomness. */
-function buildCanonicalQuery(inputs: SupabaseQueryInputs) {
-  // The schema call is non-null-asserted via the service-only
-  // supabase client — nexSupabaseAdmin is always defined.
-  let q = nexSupabaseAdmin
-    .schema(CANONICAL_SCHEMA)
-    .from(CANONICAL_TABLE)
-    .select(SELECT_COLUMNS, { count: "exact" })
-    .eq("country", inputs.country)
-    .in("lifecycle_state", [...SURFACED_LIFECYCLE_STATES]);
+export interface BuiltCanonicalSql {
+  readonly sql: string;
+  readonly params: readonly unknown[];
+}
+
+/** Build the parameterised SELECT against nex.business_canonical.
+ *  Pure · deterministic · no network, no clock, no randomness.
+ *
+ *  User-controlled values (country, q, entityTypes elements, limit,
+ *  offset) are NEVER string-interpolated into the SQL text. They are
+ *  bound as positional parameters, left-to-right as the WHERE clauses
+ *  are appended. The LIMIT and OFFSET parameters are always appended
+ *  last so their positions shift with the optional filters.
+ *
+ *  Column identifiers come from the sealed `SELECT_COLUMNS` constant.
+ *  The table reference `nex.business_canonical` is a hard-coded
+ *  schema-qualified identifier · parameters cannot be identifiers. */
+export function buildCanonicalSql(
+  inputs: CanonicalQueryInputs,
+): BuiltCanonicalSql {
+  const whereClauses: string[] = [
+    "country = $1",
+    "lifecycle_state = ANY($2::text[])",
+  ];
+  const params: unknown[] = [
+    inputs.country,
+    [...SURFACED_LIFECYCLE_STATES],
+  ];
   if (inputs.entityTypes !== null && inputs.entityTypes.length > 0) {
-    q = q.in("entity_type", [...inputs.entityTypes]);
+    params.push([...inputs.entityTypes]);
+    whereClauses.push(`entity_type = ANY($${params.length}::text[])`);
   }
   if (inputs.q !== null && inputs.q.length > 0) {
     // Case-insensitive LIKE against name_norm. Trigram index speeds
     // this; we keep the surface simple (no full-text query DSL in
     // Phase A). Aliases search is deferred to a later wave.
-    q = q.ilike("name_norm", `%${inputs.q}%`);
+    params.push(`%${inputs.q}%`);
+    whereClauses.push(`name_norm ILIKE $${params.length}`);
   }
-  return q.range(inputs.offset, inputs.offset + inputs.limit - 1);
+  params.push(inputs.limit);
+  const limitIdx = params.length;
+  params.push(inputs.offset);
+  const offsetIdx = params.length;
+  const sql =
+    `SELECT ${SELECT_COLUMNS} ` +
+    `FROM nex.business_canonical ` +
+    `WHERE ${whereClauses.join(" AND ")} ` +
+    `LIMIT $${limitIdx} OFFSET $${offsetIdx}`;
+  return { sql, params };
+}
+
+/** Minimal credential-safe redactor for diagnostic strings. Strips
+ *  connection URLs and password=... fragments before a pg error
+ *  surfaces through the service's diagnostic field. Belt-and-braces ·
+ *  the pg driver rarely echoes credentials in error text, but errors
+ *  in the wild sometimes do. */
+function sanitiseError(message: string): string {
+  let out = message;
+  out = out.replace(
+    /postgres(?:ql)?:\/\/[^:]*:[^@]*@[^\s'"]+/gi,
+    "postgres://[redacted]",
+  );
+  out = out.replace(/password\s*=\s*['"][^'"]*['"]/gi, "password=[redacted]");
+  out = out.replace(/password\s*=\s*\S+/gi, "password=[redacted]");
+  return out;
 }
 
 // ═════════════════════════════════════════════════════════════════════
@@ -301,15 +344,16 @@ function buildCanonicalQuery(inputs: SupabaseQueryInputs) {
 /**
  * List Directory listings + their destinations for a given country.
  *
- * Reads nex.business_canonical. Projects via Phase B. Resolves via
- * Phase C. Never fabricates.
+ * Reads nex.business_canonical via the shared NEX Postgres pool
+ * (`withClient` from `@/lib/nex/db`). Projects via Phase B. Resolves
+ * via Phase C. Never fabricates.
  *
  * Returns an "outcome" that discriminates:
  *   · `systemReady: true`  → the DB was reached. `results` is the
  *                            honest answer (possibly empty).
- *   · `systemReady: false` → the DB could not be reached (schema or
- *                            table missing, auth failure, network
- *                            error, env missing). `results` is [].
+ *   · `systemReady: false` → the DB could not be reached (URL unset,
+ *                            schema or table missing, auth failure,
+ *                            network error). `results` is [].
  *                            The UI renders a "being prepared" state.
  */
 export async function listDirectory(
@@ -325,7 +369,7 @@ export async function listDirectory(
           ? PLACE_ENTITY_TYPES
           : null;
 
-  const query = buildCanonicalQuery({
+  const { sql, params } = buildCanonicalSql({
     country: args.country,
     q: args.q && args.q.length > 0 ? args.q : null,
     entityTypes,
@@ -336,17 +380,24 @@ export async function listDirectory(
   let rows: RawCanonicalRow[] = [];
   let systemReady = true;
   let diagnostic: string | null = null;
+
   try {
-    const { data, error } = await query;
-    if (error !== null) {
+    const queryResult = await withClient(async (client) => {
+      return client.query(sql, params as unknown[]);
+    });
+    if (queryResult === null) {
+      // withClient returns null when NEX_POSTGRES_URL is unset / empty.
+      // This is the honest "not configured" state. The UI renders
+      // "being prepared" — no fabrication.
       systemReady = false;
-      diagnostic = `directory-service: supabase error ${error.code ?? "unknown"} · ${error.message}`;
+      diagnostic = "directory-service: NEX_POSTGRES_URL not set";
     } else {
-      rows = (data ?? []) as RawCanonicalRow[];
+      rows = (queryResult.rows ?? []) as unknown as RawCanonicalRow[];
     }
   } catch (err) {
     systemReady = false;
-    diagnostic = `directory-service: unexpected error · ${err instanceof Error ? err.message : String(err)}`;
+    const message = err instanceof Error ? err.message : String(err);
+    diagnostic = `directory-service: pg error · ${sanitiseError(message)}`;
   }
 
   if (!systemReady) {
@@ -392,16 +443,18 @@ const EMPTY_MEDIA_MAP: ReadonlyMap<string, DirectoryListingMedia> = new Map();
 // ═════════════════════════════════════════════════════════════════════
 
 /**
- * Expose the row adapter + sealed-set guards for unit tests. The
- * service's live query is covered by integration tests that run
- * against a mocked Supabase; the pure helpers are covered here.
+ * Expose the row adapter, sealed-set guards, and the pure SQL builder
+ * for unit tests. The service's live query is covered by integration
+ * tests that run against a mocked `withClient`; the pure helpers are
+ * covered here.
  */
 export const _internal = {
   adaptRawCanonicalRow,
   isSealedEntityType,
   isSealedLifecycleState,
   SEALED_LIFECYCLE_STATES,
-  buildCanonicalQuery,
+  buildCanonicalSql,
+  sanitiseError,
 };
 
 // ═════════════════════════════════════════════════════════════════════
