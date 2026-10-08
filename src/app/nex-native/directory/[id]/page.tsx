@@ -48,6 +48,7 @@ import { NexPageHeader } from "../../_page-header";
 import { NoImage } from "../_no-image";
 import { buildDirectoryDetailPath } from "../_routes";
 import { isVerifiedLifecycle } from "../_verified";
+import { DetailDistanceChip } from "./_detail-distance";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -509,24 +510,33 @@ function CategoriesSection(props: {
 function LocationSection(props: {
   readonly listing: DirectoryListingVM;
 }): React.ReactElement | null {
-  const { city, district, country } = props.listing;
+  const { city, district, country, coordinates } = props.listing;
   const parts: string[] = [];
   if (district !== null && district.length > 0) parts.push(district);
   if (city !== null && city.length > 0) parts.push(city);
   if (country.length > 0) parts.push(country);
-  if (parts.length === 0) return null;
+  // The section renders when ANY location signal is present:
+  // text parts (district/city/country) OR coordinates (so the
+  // distance chip has something to compute against). The distance
+  // chip itself handles both honest states (known / unconfirmed).
+  const hasTextParts = parts.length > 0;
+  const hasCoords = coordinates !== null;
+  if (!hasTextParts && !hasCoords) return null;
   return (
     <SectionBlock title="Location" dataAttr="location">
-      <p
-        style={{
-          margin: 0,
-          color: NEX.textDim,
-          fontSize: 14,
-          lineHeight: 1.5,
-        }}
-      >
-        {parts.join(" · ")}
-      </p>
+      {hasTextParts ? (
+        <p
+          style={{
+            margin: 0,
+            color: NEX.textDim,
+            fontSize: 14,
+            lineHeight: 1.5,
+          }}
+        >
+          {parts.join(" · ")}
+        </p>
+      ) : null}
+      <DetailDistanceChip listingCoords={coordinates} />
     </SectionBlock>
   );
 }

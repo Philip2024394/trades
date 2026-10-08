@@ -169,18 +169,27 @@ export interface GetCanonicalBusinessOutcome {
 // §3 · Row-shape adaptation · pg row → DirectoryCanonicalRow
 // ═════════════════════════════════════════════════════════════════════
 
-/** The subset of columns the service SELECTs. Deliberately omits
- *  `coordinates` (PostGIS geography) · the raw pg driver cannot return
- *  a geography column as structured { lat, lng } without an explicit
- *  ST_X / ST_Y SELECT shape. A future wave will add geography-aware
- *  columns; until then, the Directory shows no map pin / no distance
- *  (honest — exactly what the founder authorised). */
+/** The subset of columns the service SELECTs.
+ *
+ *  Coordinates are projected via `ST_Y(coordinates::geometry)` /
+ *  `ST_X(coordinates::geometry)` because the raw pg driver cannot
+ *  return a PostGIS `geography(POINT, 4326)` column directly as
+ *  structured { lat, lng }. PostGIS's ST_X / ST_Y are defined over
+ *  geometry (not geography); the `::geometry` cast is a cheap
+ *  coordinate-space conversion that preserves the stored lat/lng.
+ *  ST_X returns longitude (geometry X axis), ST_Y returns latitude
+ *  (geometry Y axis). The adapter below converts the pair into
+ *  `DirectoryCoordinates | null`. When the underlying column is NULL,
+ *  both ST calls return NULL and the adapter yields `coordinates: null`
+ *  — honest, no fabricated location. */
 export const SELECT_COLUMNS =
   "canonical_business_id, entity_type, country, lifecycle_state, " +
   "name_canonical, name_norm, aliases, phone_e164, website_apex, " +
   "osm_id, wikidata_qid, city, district, category_ids, " +
   "services_products, supersedes_business_id, superseded_by_business_id, " +
-  "last_verified_at";
+  "last_verified_at, " +
+  "ST_Y(coordinates::geometry) AS coordinates_lat, " +
+  "ST_X(coordinates::geometry) AS coordinates_lng";
 
 interface RawCanonicalRow {
   canonical_business_id: string;
@@ -201,6 +210,35 @@ interface RawCanonicalRow {
   supersedes_business_id: string | null;
   superseded_by_business_id: string | null;
   last_verified_at: string | null;
+  /** The pg driver returns PostgreSQL numeric columns as strings by
+   *  default. ST_Y / ST_X results come back as string or number
+   *  depending on pg driver type-parser configuration · the adapter
+   *  parses defensively via `parseCoord`. */
+  coordinates_lat: string | number | null;
+  coordinates_lng: string | number | null;
+}
+
+/** Parse one half of a coordinate pair from a raw pg value into a
+ *  bounded number, or null when the value is missing / malformed /
+ *  out of range. Pure. Returns null on any uncertainty — the
+ *  Directory's no-fabrication contract demands that missing or
+ *  suspect location data stay missing. */
+function parseCoord(
+  value: string | number | null,
+  min: number,
+  max: number,
+): number | null {
+  if (value === null || value === undefined) return null;
+  // Empty string is an absence, not the valid coordinate 0.
+  // `Number("")` is `0`, which would silently pass the finiteness and
+  // range checks below and place a listing at (0,0) · the equator /
+  // prime meridian ("Null Island"). The no-fabrication contract
+  // demands we reject it as missing data.
+  if (typeof value === "string" && value.trim().length === 0) return null;
+  const n = typeof value === "number" ? value : Number(value);
+  if (!Number.isFinite(n)) return null;
+  if (n < min || n > max) return null;
+  return n;
 }
 
 /** Adapt one pg row into the Phase B input shape. Pure. Deterministic.
@@ -213,6 +251,13 @@ export function adaptRawCanonicalRow(
 ): DirectoryCanonicalRow | null {
   if (!isSealedEntityType(raw.entity_type)) return null;
   if (!isSealedLifecycleState(raw.lifecycle_state)) return null;
+  // Coordinates: both halves must be present and in-range for the pair
+  // to produce a non-null DirectoryCoordinates. Either side being null
+  // or out-of-bounds yields `coordinates: null` honestly · no partial
+  // coordinate, no city-centre fallback, no fabricated location.
+  const lat = parseCoord(raw.coordinates_lat, -90, 90);
+  const lng = parseCoord(raw.coordinates_lng, -180, 180);
+  const coordinates = lat !== null && lng !== null ? { lat, lng } : null;
   return {
     canonical_business_id: raw.canonical_business_id,
     entity_type: raw.entity_type,
@@ -226,7 +271,7 @@ export function adaptRawCanonicalRow(
     wikidata_qid: raw.wikidata_qid,
     city: raw.city,
     district: raw.district,
-    coordinates: null,
+    coordinates,
     category_ids: raw.category_ids ?? [],
     services_products: raw.services_products ?? null,
     supersedes_business_id: raw.supersedes_business_id,
@@ -608,6 +653,7 @@ export const _internal = {
   buildCanonicalSql,
   sanitiseError,
   isUuidShape,
+  parseCoord,
 };
 
 // ═════════════════════════════════════════════════════════════════════

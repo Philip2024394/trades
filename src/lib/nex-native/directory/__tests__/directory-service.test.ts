@@ -132,7 +132,7 @@ describe("directory-service · sealed constants", () => {
     expect([...SURFACED_LIFECYCLE_STATES].sort()).toEqual([...expected].sort());
   });
 
-  it("SELECT_COLUMNS lists the sealed read columns and omits coordinates", () => {
+  it("SELECT_COLUMNS lists the sealed read columns and projects coordinates via ST_Y / ST_X", () => {
     expect(SELECT_COLUMNS).toContain("canonical_business_id");
     expect(SELECT_COLUMNS).toContain("entity_type");
     expect(SELECT_COLUMNS).toContain("country");
@@ -140,7 +140,15 @@ describe("directory-service · sealed constants", () => {
     expect(SELECT_COLUMNS).toContain("name_canonical");
     expect(SELECT_COLUMNS).toContain("name_norm");
     expect(SELECT_COLUMNS).toContain("last_verified_at");
-    expect(SELECT_COLUMNS).not.toContain("coordinates");
+    // Coordinates are projected via PostGIS accessors · ST_Y is latitude
+    // (geometry Y axis), ST_X is longitude (geometry X axis). The raw
+    // `coordinates` column name must NOT appear outside those accessors.
+    expect(SELECT_COLUMNS).toContain(
+      "ST_Y(coordinates::geometry) AS coordinates_lat",
+    );
+    expect(SELECT_COLUMNS).toContain(
+      "ST_X(coordinates::geometry) AS coordinates_lng",
+    );
   });
 });
 
@@ -168,6 +176,10 @@ function completeRaw() {
     supersedes_business_id: null,
     superseded_by_business_id: null,
     last_verified_at: "2026-10-07T00:00:00Z",
+    // ST_Y / ST_X values come back from pg as string or number
+    // depending on driver type-parser config. Tests exercise both.
+    coordinates_lat: -7.797068,
+    coordinates_lng: 110.370529,
   };
 }
 
@@ -182,9 +194,19 @@ describe("adaptRawCanonicalRow · complete row", () => {
     expect(row!.lifecycle_state).toBe("VERIFIED");
   });
 
-  it("coordinates is null (service does not SELECT geography · documented gap)", () => {
+  it("coordinates is populated via ST_Y / ST_X when both halves are present", () => {
     const row = adaptRawCanonicalRow(completeRaw());
-    expect(row!.coordinates).toBe(null);
+    expect(row!.coordinates).toEqual({ lat: -7.797068, lng: 110.370529 });
+  });
+
+  it("coordinates handles pg's string numeric return (driver returns numeric as string)", () => {
+    const raw = {
+      ...completeRaw(),
+      coordinates_lat: "-7.797068",
+      coordinates_lng: "110.370529",
+    };
+    const row = adaptRawCanonicalRow(raw);
+    expect(row!.coordinates).toEqual({ lat: -7.797068, lng: 110.370529 });
   });
 
   it("services_products passes through as unknown payload", () => {
@@ -236,6 +258,94 @@ describe("adaptRawCanonicalRow · nullable handling", () => {
     expect(row!.supersedes_business_id).toBe(null);
     expect(row!.superseded_by_business_id).toBe(null);
     expect(row!.last_verified_at).toBe(null);
+  });
+});
+
+// ═════════════════════════════════════════════════════════════════════
+// §2b · adaptRawCanonicalRow · coordinate pair handling
+// ═════════════════════════════════════════════════════════════════════
+
+describe("adaptRawCanonicalRow · coordinate parsing", () => {
+  it("yields null when both halves are null (no PostGIS point)", () => {
+    const raw = {
+      ...completeRaw(),
+      coordinates_lat: null,
+      coordinates_lng: null,
+    };
+    const row = adaptRawCanonicalRow(raw);
+    expect(row!.coordinates).toBe(null);
+  });
+
+  it("yields null when only lat is null (never a partial coordinate)", () => {
+    const raw = { ...completeRaw(), coordinates_lat: null };
+    const row = adaptRawCanonicalRow(raw);
+    expect(row!.coordinates).toBe(null);
+  });
+
+  it("yields null when only lng is null (never a partial coordinate)", () => {
+    const raw = { ...completeRaw(), coordinates_lng: null };
+    const row = adaptRawCanonicalRow(raw);
+    expect(row!.coordinates).toBe(null);
+  });
+
+  it("yields null when lat is out of WGS84 range (-90..90)", () => {
+    const raw = { ...completeRaw(), coordinates_lat: 95 };
+    const row = adaptRawCanonicalRow(raw);
+    expect(row!.coordinates).toBe(null);
+  });
+
+  it("yields null when lng is out of WGS84 range (-180..180)", () => {
+    const raw = { ...completeRaw(), coordinates_lng: 200 };
+    const row = adaptRawCanonicalRow(raw);
+    expect(row!.coordinates).toBe(null);
+  });
+
+  it("yields null when either half is a non-numeric string", () => {
+    const raw1 = { ...completeRaw(), coordinates_lat: "not-a-number" };
+    expect(adaptRawCanonicalRow(raw1)!.coordinates).toBe(null);
+    const raw2 = { ...completeRaw(), coordinates_lng: "NaN" };
+    expect(adaptRawCanonicalRow(raw2)!.coordinates).toBe(null);
+  });
+
+  it("accepts WGS84 boundary values (±90 lat, ±180 lng)", () => {
+    const north = adaptRawCanonicalRow({
+      ...completeRaw(),
+      coordinates_lat: 90,
+      coordinates_lng: 180,
+    });
+    expect(north!.coordinates).toEqual({ lat: 90, lng: 180 });
+    const south = adaptRawCanonicalRow({
+      ...completeRaw(),
+      coordinates_lat: -90,
+      coordinates_lng: -180,
+    });
+    expect(south!.coordinates).toEqual({ lat: -90, lng: -180 });
+  });
+});
+
+describe("_internal.parseCoord · pure parser", () => {
+  it("returns null for null / undefined / empty", () => {
+    expect(_internal.parseCoord(null, -90, 90)).toBe(null);
+    expect(_internal.parseCoord(undefined as unknown as null, -90, 90)).toBe(null);
+  });
+
+  it("parses numeric and string forms identically", () => {
+    expect(_internal.parseCoord(-7.797068, -90, 90)).toBe(-7.797068);
+    expect(_internal.parseCoord("-7.797068", -90, 90)).toBe(-7.797068);
+  });
+
+  it("rejects out-of-range values honestly (no clamp)", () => {
+    expect(_internal.parseCoord(91, -90, 90)).toBe(null);
+    expect(_internal.parseCoord(-91, -90, 90)).toBe(null);
+    expect(_internal.parseCoord(181, -180, 180)).toBe(null);
+    expect(_internal.parseCoord(-181, -180, 180)).toBe(null);
+  });
+
+  it("rejects NaN, Infinity, malformed strings", () => {
+    expect(_internal.parseCoord(Number.NaN, -90, 90)).toBe(null);
+    expect(_internal.parseCoord(Number.POSITIVE_INFINITY, -90, 90)).toBe(null);
+    expect(_internal.parseCoord("hello", -90, 90)).toBe(null);
+    expect(_internal.parseCoord("", -90, 90)).toBe(null);
   });
 });
 

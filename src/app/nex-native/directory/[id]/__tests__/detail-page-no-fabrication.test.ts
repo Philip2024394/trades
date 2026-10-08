@@ -270,6 +270,55 @@ describe("detail page · Verified chip is gated on lifecycle, not evidence", () 
 });
 
 // ═════════════════════════════════════════════════════════════════════
+// §7c · Distance chip discipline · standard feature, honest fallback
+// ═════════════════════════════════════════════════════════════════════
+
+describe("detail page · distance is a standard feature with honest fallback", () => {
+  it("imports the detail distance chip client component", () => {
+    expect(stripped()).toMatch(
+      /import\s*\{\s*DetailDistanceChip\s*\}\s*from\s*["']\.\/_detail-distance["']/,
+    );
+  });
+
+  it("renders the distance chip inside the Location section", () => {
+    const s = stripped();
+    expect(s).toContain("<DetailDistanceChip listingCoords={coordinates} />");
+  });
+
+  it("the detail-distance module itself is a client component", () => {
+    const sibling = readFileSync(
+      join(PAGE_DIR, "_detail-distance.tsx"),
+      "utf8",
+    );
+    expect(sibling).toMatch(/^\s*["']use client["']/m);
+  });
+
+  it("the detail-distance module uses no fabrication (semantic grep, code only)", () => {
+    const sibling = readFileSync(
+      join(PAGE_DIR, "_detail-distance.tsx"),
+      "utf8",
+    );
+    // The "Location Unconfirmed" literal must appear as runtime copy ·
+    // the raw file (including comments) is where it lives.
+    expect(sibling).toContain("Location Unconfirmed");
+    // Fabrication smells are checked AFTER comment stripping so our
+    // own prose about "no city-centre fallback" does not trip the
+    // assertion.
+    const codeOnly = stripComments(sibling).toLowerCase();
+    expect(codeOnly).not.toContain("city centre");
+    expect(codeOnly).not.toContain("city-centre");
+    expect(codeOnly).not.toContain("ip-based");
+    expect(codeOnly).not.toContain("approximate distance");
+    expect(codeOnly).not.toContain("estimated distance");
+    // No forbidden Indonesian city-literal fallbacks either · a
+    // fabricated distance would need a hard-coded reference point.
+    for (const city of ["Yogyakarta", "Jakarta", "Bali", "Denpasar"]) {
+      expect(stripComments(sibling)).not.toContain(city);
+    }
+  });
+});
+
+// ═════════════════════════════════════════════════════════════════════
 // §8 · Primary interaction area discipline
 // ═════════════════════════════════════════════════════════════════════
 

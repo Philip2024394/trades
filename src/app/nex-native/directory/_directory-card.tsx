@@ -91,6 +91,15 @@ export function DirectoryCard(props: DirectoryCardProps): React.ReactElement {
 
   const distanceKm = haversineKmOrNull(userCoords, listing.coordinates);
   const distanceLabel = distanceKm === null ? null : formatKmDistance(distanceKm);
+  // "Distance from me" is a standard card feature. When either side's
+  // coordinates are missing (user has not granted geolocation yet, or
+  // the canonical listing has no coordinates) the chip renders
+  // "Location Unconfirmed" · an honest status label, not a fabricated
+  // distance.
+  const distanceChipLabel =
+    distanceLabel !== null ? distanceLabel : "Location Unconfirmed";
+  const distanceChipKind: "known" | "unconfirmed" =
+    distanceLabel !== null ? "known" : "unconfirmed";
   const place = joinPlace(listing.city, listing.district);
 
   // Keywords = aliases (variants of the name the user might search).
@@ -164,22 +173,32 @@ export function DirectoryCard(props: DirectoryCardProps): React.ReactElement {
           >
             {CLASSIFICATION_LABEL[listing.classification]}
           </span>
-          {distanceLabel !== null ? (
-            <span
-              data-nex-directory-card-chip="distance"
-              style={{
-                fontSize: 11,
-                fontWeight: 600,
-                color: PALETTE.textDim,
-                padding: "2px 8px",
-                borderRadius: 999,
-                border: `1px solid ${PALETTE.borderSoft}`,
-                background: PALETTE.surfaceHi,
-              }}
-            >
-              {distanceLabel}
-            </span>
-          ) : null}
+          <span
+            data-nex-directory-card-chip="distance"
+            data-nex-directory-card-distance-kind={distanceChipKind}
+            aria-label={
+              distanceChipKind === "known"
+                ? `${distanceChipLabel} away`
+                : "Distance from you is unavailable because location has not been shared or this listing has no coordinates"
+            }
+            style={{
+              fontSize: 11,
+              fontWeight: 600,
+              color:
+                distanceChipKind === "known"
+                  ? PALETTE.textDim
+                  : PALETTE.textSoft,
+              padding: "2px 8px",
+              borderRadius: 999,
+              border: `1px solid ${PALETTE.borderSoft}`,
+              background:
+                distanceChipKind === "known"
+                  ? PALETTE.surfaceHi
+                  : "transparent",
+            }}
+          >
+            {distanceChipLabel}
+          </span>
         </div>
         <h3
           data-nex-directory-card-name
