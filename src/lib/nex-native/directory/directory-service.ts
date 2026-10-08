@@ -139,6 +139,32 @@ export interface ListDirectoryOutcome {
   readonly diagnostic: string | null;
 }
 
+/**
+ * The outcome of a single-row Directory lookup by canonical_business_id.
+ * Three discriminable states:
+ *   · systemReady false            → DB unreachable (preparing state)
+ *   · systemReady true, result null → row not found / invalid id
+ *                                      (page should 404)
+ *   · systemReady true, result set  → listing + destination + evidence
+ *                                      presence flag ready to render
+ */
+export interface DirectoryDetailResult {
+  readonly listing: DirectoryListingVM;
+  readonly destination: DirectoryDestination;
+  /** True iff at least one row exists in nex.business_evidence linked
+   *  to this canonical_business_id. The UI uses this to render a small
+   *  "Verified listing" indicator. Evidence row internals are NOT
+   *  exposed to the visitor — the detail page shows only that
+   *  provenance exists, not what the provenance says. */
+  readonly hasEvidence: boolean;
+}
+
+export interface GetCanonicalBusinessOutcome {
+  readonly result: DirectoryDetailResult | null;
+  readonly systemReady: boolean;
+  readonly diagnostic: string | null;
+}
+
 // ═════════════════════════════════════════════════════════════════════
 // §3 · Row-shape adaptation · pg row → DirectoryCanonicalRow
 // ═════════════════════════════════════════════════════════════════════
@@ -439,6 +465,132 @@ export async function listDirectory(
 const EMPTY_MEDIA_MAP: ReadonlyMap<string, DirectoryListingMedia> = new Map();
 
 // ═════════════════════════════════════════════════════════════════════
+// §6b · getCanonicalBusinessById · single-row read for the detail page
+// ═════════════════════════════════════════════════════════════════════
+
+/** Defensive UUID shape guard. The Postgres driver would reject a
+ *  malformed uuid parameter with an error, but failing fast here
+ *  returns a clean 404 for obvious junk ids (bots probing routes,
+ *  typos in URLs) without opening a connection. The regex intentionally
+ *  accepts any valid UUID shape · it does NOT enforce the v4 variant
+ *  nibble because older canonical rows may have been generated with
+ *  a different v. Pure. */
+export function isUuidShape(v: string): boolean {
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
+    v,
+  );
+}
+
+/**
+ * Fetch one canonical row by id, project via Phase B, resolve via
+ * Phase C, and check whether a corresponding evidence row exists.
+ *
+ * Three outcomes:
+ *   · systemReady false              → DB unreachable (preparing)
+ *   · systemReady true, result null  → not found / invalid id (404)
+ *   · systemReady true, result set   → ready to render on the detail page
+ *
+ * Evidence is read as a presence check only (`SELECT 1 ... LIMIT 1`).
+ * Evidence internals are NOT exposed to the visitor; the detail page
+ * surfaces only a "Verified listing" indicator derived from
+ * `hasEvidence === true`. Evidence provenance is operational state.
+ *
+ * The SELECT reuses `SELECT_COLUMNS` byte-identically with
+ * `listDirectory` so the row adaptation stays consistent.
+ */
+export async function getCanonicalBusinessById(
+  canonicalBusinessId: string,
+): Promise<GetCanonicalBusinessOutcome> {
+  // Fail fast on obvious junk ids. Returns "not found" (404), not an error.
+  if (!isUuidShape(canonicalBusinessId)) {
+    return { result: null, systemReady: true, diagnostic: null };
+  }
+
+  const canonicalSql =
+    `SELECT ${SELECT_COLUMNS} ` +
+    `FROM nex.business_canonical ` +
+    `WHERE canonical_business_id = $1 ` +
+    `LIMIT 1`;
+  const evidenceSql =
+    `SELECT 1 AS present ` +
+    `FROM nex.business_evidence ` +
+    `WHERE canonical_business_id = $1 ` +
+    `LIMIT 1`;
+
+  let rawRow: RawCanonicalRow | null = null;
+  let hasEvidence = false;
+  let systemReady = true;
+  let diagnostic: string | null = null;
+
+  try {
+    const outcome = await withClient(async (client) => {
+      const canonicalRes = await client.query(canonicalSql, [
+        canonicalBusinessId,
+      ]);
+      if (canonicalRes.rows.length === 0) {
+        return { row: null, hasEvidence: false };
+      }
+      const evidenceRes = await client.query(evidenceSql, [
+        canonicalBusinessId,
+      ]);
+      return {
+        row: canonicalRes.rows[0] as unknown as RawCanonicalRow,
+        hasEvidence: evidenceRes.rows.length > 0,
+      };
+    });
+    if (outcome === null) {
+      systemReady = false;
+      diagnostic = "directory-service: NEX_POSTGRES_URL not set";
+    } else {
+      rawRow = outcome.row;
+      hasEvidence = outcome.hasEvidence;
+    }
+  } catch (err) {
+    systemReady = false;
+    const message = err instanceof Error ? err.message : String(err);
+    diagnostic = `directory-service: pg error · ${sanitiseError(message)}`;
+  }
+
+  if (!systemReady) {
+    return { result: null, systemReady, diagnostic };
+  }
+  if (rawRow === null) {
+    // Row not found. The caller renders a 404 ("Listing not found")
+    // state without fabricating a placeholder listing.
+    return { result: null, systemReady: true, diagnostic: null };
+  }
+
+  const adapted = adaptRawCanonicalRow(rawRow);
+  if (adapted === null) {
+    // Row exists but its enum values are outside the sealed sets.
+    // Treat as not-found rather than render a defective listing.
+    return { result: null, systemReady: true, diagnostic: null };
+  }
+
+  const listings = projectDirectoryListings({
+    rows: [adapted],
+    mediaByCanonicalId: EMPTY_MEDIA_MAP,
+  });
+  const claims = await fetchOwnerClaimsByCanonicalId([
+    adapted.canonical_business_id,
+  ]);
+  const destinations = resolveDirectoryDestinations({
+    listings,
+    claimsByCanonicalId: claims,
+  });
+
+  return {
+    result: {
+      listing: listings[0],
+      destination: destinations[0],
+      hasEvidence,
+    },
+    systemReady: true,
+    diagnostic: null,
+  };
+}
+
+// ═════════════════════════════════════════════════════════════════════
 // §7 · Pure helpers exported for tests
 // ═════════════════════════════════════════════════════════════════════
 
@@ -455,6 +607,7 @@ export const _internal = {
   SEALED_LIFECYCLE_STATES,
   buildCanonicalSql,
   sanitiseError,
+  isUuidShape,
 };
 
 // ═════════════════════════════════════════════════════════════════════

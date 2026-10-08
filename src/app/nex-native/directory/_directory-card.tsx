@@ -24,13 +24,16 @@
 // Destination behaviours (sealed by Phase C discriminated union)
 //   nex_business              → full-card <Link> → /nex-native/{slug}
 //   nex_user_profile          → full-card <Link> → /nex-native/u/{handle}
-//   claim_available           → non-clickable · elegant "owners can
-//                               claim this listing" affordance ·
-//                               no claim route exists yet, so we do
-//                               NOT fabricate one
-//   place_detail              → non-clickable · "Directory detail
-//                               coming" chip · integration gap
-//                               reported in Phase A completion
+//   claim_available           → full-card <Link> → /nex-native/directory/{id}
+//                               (Directory-side detail page · no "Unclaimed"
+//                               label shown to visitors · ownership state
+//                               is preserved internally via
+//                               data-nex-directory-card-destination-kind
+//                               for future NEX Marketing / acquisition work)
+//   place_detail              → full-card <Link> → /nex-native/directory/{id}
+//                               (same Directory-side detail page · place
+//                               entities are not claimable; the detail
+//                               page shows read-only canonical content)
 //   redirect_to_canonical     → should not reach the card (service
 //                               layer is responsible for re-resolving
 //                               the chain · the server component
@@ -50,6 +53,7 @@ import type {
 } from "@/lib/nex-native/directory";
 import { formatKmDistance, haversineKmOrNull } from "./_distance";
 import { NoImage } from "./_no-image";
+import { buildDirectoryDetailPath } from "./_routes";
 
 const PALETTE = {
   surface: "#0E1526",
@@ -95,14 +99,17 @@ export function DirectoryCard(props: DirectoryCardProps): React.ReactElement {
   const keywords = listing.aliases.filter((a) => a.trim().length > 0);
   const categories = listing.categoryIds.filter((c) => c.trim().length > 0);
 
-  const isLinkable =
-    destination.kind === "nex_business" || destination.kind === "nex_user_profile";
-  const href =
-    destination.kind === "nex_business"
-      ? destination.path
-      : destination.kind === "nex_user_profile"
-        ? destination.path
-        : null;
+  // Every destination kind that reaches the card (page.tsx pre-filters
+  // redirect_to_canonical + unresolved) now routes somewhere real:
+  //   nex_business      → owner's existing /nex-native/{slug}
+  //   nex_user_profile  → owner's existing /nex-native/u/{handle}
+  //   claim_available   → Directory-side /nex-native/directory/{id}
+  //   place_detail      → Directory-side /nex-native/directory/{id}
+  // "Unclaimed" / ownership-status labels are deliberately NOT exposed
+  // to the visitor; that state is preserved internally via
+  // `data-nex-directory-card-destination-kind` for future acquisition work.
+  const href = buildHref(destination);
+  const isLinkable = href !== null;
   const actionLabel = buildActionLabel(destination);
 
   const body = (
@@ -330,7 +337,19 @@ function CardAction(props: {
   readonly actionLabel: string;
 }): React.ReactElement | null {
   const { destination, actionLabel } = props;
-  if (destination.kind === "nex_business" || destination.kind === "nex_user_profile") {
+  // Visitor-facing action is a uniform inline chevron for every real
+  // destination kind. The label varies with the destination kind
+  // (see buildActionLabel) but the ownership state is NEVER exposed
+  // to the visitor as copy — the Directory does not say "Unclaimed",
+  // does not say "coming soon", does not expose any internal state.
+  // Internal state remains in data-nex-directory-card-destination-kind
+  // on the <article> for future acquisition / Marketing work.
+  if (
+    destination.kind === "nex_business" ||
+    destination.kind === "nex_user_profile" ||
+    destination.kind === "claim_available" ||
+    destination.kind === "place_detail"
+  ) {
     return (
       <div
         data-nex-directory-card-action="link"
@@ -349,52 +368,8 @@ function CardAction(props: {
       </div>
     );
   }
-  if (destination.kind === "claim_available") {
-    return (
-      <div
-        data-nex-directory-card-action="claim-available"
-        style={{
-          marginTop: 4,
-          color: PALETTE.cyan,
-          fontSize: 12,
-          fontWeight: 600,
-          padding: "4px 10px",
-          borderRadius: 999,
-          border: `1px solid ${PALETTE.cyan}`,
-          background: PALETTE.cyanFaint,
-          alignSelf: "flex-start",
-          display: "inline-flex",
-          alignItems: "center",
-          gap: 6,
-        }}
-      >
-        <OwnerClaimGlyph />
-        Unclaimed · owners can claim this listing
-      </div>
-    );
-  }
-  if (destination.kind === "place_detail") {
-    return (
-      <div
-        data-nex-directory-card-action="place-detail"
-        style={{
-          marginTop: 4,
-          color: PALETTE.textMuted,
-          fontSize: 12,
-          fontWeight: 500,
-          padding: "4px 10px",
-          borderRadius: 999,
-          border: `1px solid ${PALETTE.borderSoft}`,
-          background: PALETTE.surfaceHi,
-          alignSelf: "flex-start",
-        }}
-      >
-        Directory detail · coming later
-      </div>
-    );
-  }
-  // Pre-filtered redirect/unresolved should never reach here;
-  // defence in depth returns null (no action).
+  // Pre-filtered redirect_to_canonical / unresolved should never reach
+  // the card; defence in depth returns null (no action).
   return null;
 }
 
@@ -416,24 +391,6 @@ function ArrowGlyph(): React.ReactElement {
   );
 }
 
-function OwnerClaimGlyph(): React.ReactElement {
-  return (
-    <svg
-      width={12}
-      height={12}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2.2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d="M12 2l3 7h7l-5.6 4.4L18.3 21 12 16.9 5.7 21l1.9-7.6L2 9h7z" />
-    </svg>
-  );
-}
-
 // ═════════════════════════════════════════════════════════════════════
 // §3 · Pure helpers
 // ═════════════════════════════════════════════════════════════════════
@@ -448,10 +405,32 @@ function joinPlace(
   return parts.length === 0 ? null : parts.join(" · ");
 }
 
+/** Build the full-card href for every renderable destination kind.
+ *  Returns null for destinations that should never reach the card
+ *  (redirect_to_canonical / unresolved · pre-filtered in page.tsx).
+ *
+ *  Owner-claimed destinations route to their existing NEX cover /
+ *  profile. Everything else routes to the Directory-side detail page.
+ *  No destination kind is a dead card. */
+function buildHref(destination: DirectoryDestination): string | null {
+  if (destination.kind === "nex_business") return destination.path;
+  if (destination.kind === "nex_user_profile") return destination.path;
+  if (destination.kind === "claim_available") {
+    return buildDirectoryDetailPath(destination.canonicalBusinessId);
+  }
+  if (destination.kind === "place_detail") {
+    return buildDirectoryDetailPath(destination.canonicalBusinessId);
+  }
+  return null;
+}
+
+/** Visitor-facing action label. Does NOT expose ownership state.
+ *  claim_available and place_detail both read "View details" so a
+ *  visitor sees the Directory as one coherent discovery surface. */
 function buildActionLabel(destination: DirectoryDestination): string {
   if (destination.kind === "nex_business") return "Open on NEX";
   if (destination.kind === "nex_user_profile") return "View profile";
-  if (destination.kind === "claim_available") return "Claim";
-  if (destination.kind === "place_detail") return "View place";
+  if (destination.kind === "claim_available") return "View details";
+  if (destination.kind === "place_detail") return "View details";
   return "";
 }

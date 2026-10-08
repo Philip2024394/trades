@@ -43,6 +43,11 @@ type MockQueryResult = {
 
 type MockBehavior =
   | { kind: "ok"; result: MockQueryResult }
+  | {
+      kind: "ok_split";
+      canonical: MockQueryResult;
+      evidence: MockQueryResult;
+    }
   | { kind: "throws"; error: Error }
   | { kind: "null" };
 
@@ -52,6 +57,7 @@ let currentBehavior: MockBehavior = {
 };
 
 let lastQuery: { sql: string; params: readonly unknown[] } | null = null;
+let queryLog: Array<{ sql: string; params: readonly unknown[] }> = [];
 
 vi.mock("@/lib/nex/db", () => ({
   withClient: async <T>(
@@ -62,8 +68,16 @@ vi.mock("@/lib/nex/db", () => ({
     if (currentBehavior.kind === "null") return null;
     const client = {
       query: async (sql: string, params?: unknown[]) => {
-        lastQuery = { sql, params: params ?? [] };
+        const entry = { sql, params: params ?? [] };
+        lastQuery = entry;
+        queryLog.push(entry);
         if (currentBehavior.kind === "throws") throw currentBehavior.error;
+        if (currentBehavior.kind === "ok_split") {
+          if (sql.includes("FROM nex.business_evidence")) {
+            return currentBehavior.evidence;
+          }
+          return currentBehavior.canonical;
+        }
         return currentBehavior.result;
       },
     };
@@ -80,6 +94,7 @@ import {
   _internal,
   adaptRawCanonicalRow,
   fetchOwnerClaimsByCanonicalId,
+  getCanonicalBusinessById,
   listDirectory,
 } from "../directory-service";
 
@@ -285,11 +300,13 @@ describe("adaptRawCanonicalRow · defensive enum rejection", () => {
 beforeEach(() => {
   currentBehavior = { kind: "ok", result: { rows: [], rowCount: 0 } };
   lastQuery = null;
+  queryLog = [];
 });
 
 afterEach(() => {
   currentBehavior = { kind: "ok", result: { rows: [], rowCount: 0 } };
   lastQuery = null;
+  queryLog = [];
 });
 
 describe("listDirectory · empty result", () => {
@@ -757,6 +774,220 @@ describe("_internal.sanitiseError · credential redaction", () => {
   it("passes through innocuous text unchanged", () => {
     const msg = "relation does not exist";
     expect(_internal.sanitiseError(msg)).toBe(msg);
+  });
+});
+
+// ═════════════════════════════════════════════════════════════════════
+// §9b · _internal.isUuidShape · fast 404 guard
+// ═════════════════════════════════════════════════════════════════════
+
+describe("_internal.isUuidShape · pure UUID shape guard", () => {
+  it("accepts canonical lowercase UUID", () => {
+    expect(
+      _internal.isUuidShape("452568d4-3dab-4064-a0fa-2b9297f2ae3b"),
+    ).toBe(true);
+  });
+
+  it("accepts uppercase hex", () => {
+    expect(
+      _internal.isUuidShape("452568D4-3DAB-4064-A0FA-2B9297F2AE3B"),
+    ).toBe(true);
+  });
+
+  it("rejects empty string, short strings, and garbage", () => {
+    expect(_internal.isUuidShape("")).toBe(false);
+    expect(_internal.isUuidShape("not-a-uuid")).toBe(false);
+    expect(_internal.isUuidShape("452568d4-3dab-4064-a0fa")).toBe(false);
+    expect(_internal.isUuidShape("452568d4-3dab-4064-a0fa-2b9297f2ae3bXX")).toBe(
+      false,
+    );
+  });
+
+  it("rejects injection-shaped payloads (defensive)", () => {
+    expect(_internal.isUuidShape("'; DROP TABLE users; --")).toBe(false);
+    expect(_internal.isUuidShape("../../../etc/passwd")).toBe(false);
+    expect(_internal.isUuidShape("1 OR 1=1")).toBe(false);
+  });
+});
+
+// ═════════════════════════════════════════════════════════════════════
+// §9c · getCanonicalBusinessById · single-row detail read
+// ═════════════════════════════════════════════════════════════════════
+
+const SAMPLE_UUID = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
+
+describe("getCanonicalBusinessById · malformed id", () => {
+  it("returns result=null, systemReady=true, without opening a DB session", async () => {
+    currentBehavior = {
+      kind: "throws",
+      error: new Error("mock should not be called for malformed id"),
+    };
+    const outcome = await getCanonicalBusinessById("not-a-uuid");
+    expect(outcome.systemReady).toBe(true);
+    expect(outcome.result).toBe(null);
+    expect(outcome.diagnostic).toBe(null);
+    expect(lastQuery).toBe(null); // no DB call made
+  });
+
+  it("returns result=null for empty id", async () => {
+    currentBehavior = {
+      kind: "throws",
+      error: new Error("should not be called"),
+    };
+    const outcome = await getCanonicalBusinessById("");
+    expect(outcome.result).toBe(null);
+    expect(lastQuery).toBe(null);
+  });
+});
+
+describe("getCanonicalBusinessById · row missing", () => {
+  it("returns result=null, systemReady=true when the canonical row is not found", async () => {
+    currentBehavior = {
+      kind: "ok_split",
+      canonical: { rows: [], rowCount: 0 },
+      evidence: { rows: [], rowCount: 0 },
+    };
+    const outcome = await getCanonicalBusinessById(SAMPLE_UUID);
+    expect(outcome.systemReady).toBe(true);
+    expect(outcome.result).toBe(null);
+    expect(outcome.diagnostic).toBe(null);
+  });
+
+  it("only queries canonical table when row is missing (does not probe evidence)", async () => {
+    currentBehavior = {
+      kind: "ok_split",
+      canonical: { rows: [], rowCount: 0 },
+      evidence: { rows: [], rowCount: 0 },
+    };
+    await getCanonicalBusinessById(SAMPLE_UUID);
+    expect(queryLog.length).toBe(1);
+    expect(queryLog[0].sql).toContain("FROM nex.business_canonical");
+  });
+});
+
+describe("getCanonicalBusinessById · row present", () => {
+  it("returns listing + destination + hasEvidence=true when both rows exist", async () => {
+    currentBehavior = {
+      kind: "ok_split",
+      canonical: {
+        rows: [{ ...completeRaw(), canonical_business_id: SAMPLE_UUID }],
+        rowCount: 1,
+      },
+      evidence: { rows: [{ present: 1 }], rowCount: 1 },
+    };
+    const outcome = await getCanonicalBusinessById(SAMPLE_UUID);
+    expect(outcome.systemReady).toBe(true);
+    expect(outcome.result).not.toBe(null);
+    expect(outcome.result!.listing.canonicalBusinessId).toBe(SAMPLE_UUID);
+    expect(outcome.result!.hasEvidence).toBe(true);
+    expect(outcome.result!.destination).toBeDefined();
+  });
+
+  it("returns hasEvidence=false when evidence row is absent", async () => {
+    currentBehavior = {
+      kind: "ok_split",
+      canonical: {
+        rows: [{ ...completeRaw(), canonical_business_id: SAMPLE_UUID }],
+        rowCount: 1,
+      },
+      evidence: { rows: [], rowCount: 0 },
+    };
+    const outcome = await getCanonicalBusinessById(SAMPLE_UUID);
+    expect(outcome.result).not.toBe(null);
+    expect(outcome.result!.hasEvidence).toBe(false);
+  });
+
+  it("queries canonical first, then evidence (strict order)", async () => {
+    currentBehavior = {
+      kind: "ok_split",
+      canonical: {
+        rows: [{ ...completeRaw(), canonical_business_id: SAMPLE_UUID }],
+        rowCount: 1,
+      },
+      evidence: { rows: [], rowCount: 0 },
+    };
+    await getCanonicalBusinessById(SAMPLE_UUID);
+    expect(queryLog.length).toBe(2);
+    expect(queryLog[0].sql).toContain("FROM nex.business_canonical");
+    expect(queryLog[0].sql).toContain("WHERE canonical_business_id = $1");
+    expect(queryLog[0].params[0]).toBe(SAMPLE_UUID);
+    expect(queryLog[1].sql).toContain("FROM nex.business_evidence");
+    expect(queryLog[1].sql).toContain("WHERE canonical_business_id = $1");
+    expect(queryLog[1].params[0]).toBe(SAMPLE_UUID);
+  });
+
+  it("reuses the sealed SELECT_COLUMNS for the canonical query", async () => {
+    currentBehavior = {
+      kind: "ok_split",
+      canonical: {
+        rows: [{ ...completeRaw(), canonical_business_id: SAMPLE_UUID }],
+        rowCount: 1,
+      },
+      evidence: { rows: [], rowCount: 0 },
+    };
+    await getCanonicalBusinessById(SAMPLE_UUID);
+    expect(queryLog[0].sql).toContain(SELECT_COLUMNS);
+  });
+
+  it("drops rows with unsealed enum values (defensive)", async () => {
+    currentBehavior = {
+      kind: "ok_split",
+      canonical: {
+        rows: [
+          {
+            ...completeRaw(),
+            canonical_business_id: SAMPLE_UUID,
+            entity_type: "spaceship",
+          },
+        ],
+        rowCount: 1,
+      },
+      evidence: { rows: [{ present: 1 }], rowCount: 1 },
+    };
+    const outcome = await getCanonicalBusinessById(SAMPLE_UUID);
+    expect(outcome.result).toBe(null);
+  });
+});
+
+describe("getCanonicalBusinessById · unavailable DB", () => {
+  it("returns systemReady=false when withClient returns null (URL unset)", async () => {
+    currentBehavior = { kind: "null" };
+    const outcome = await getCanonicalBusinessById(SAMPLE_UUID);
+    expect(outcome.systemReady).toBe(false);
+    expect(outcome.result).toBe(null);
+    expect(outcome.diagnostic!).toContain("NEX_POSTGRES_URL");
+  });
+
+  it("returns systemReady=false when the pg client throws", async () => {
+    currentBehavior = {
+      kind: "throws",
+      error: new Error('relation "nex.business_canonical" does not exist'),
+    };
+    const outcome = await getCanonicalBusinessById(SAMPLE_UUID);
+    expect(outcome.systemReady).toBe(false);
+    expect(outcome.result).toBe(null);
+    expect(outcome.diagnostic!).toContain("relation");
+  });
+
+  it("redacts credentials in the diagnostic", async () => {
+    currentBehavior = {
+      kind: "throws",
+      error: new Error(
+        "boom · postgres://u:secretpass@db.example.com:5432/x",
+      ),
+    };
+    const outcome = await getCanonicalBusinessById(SAMPLE_UUID);
+    expect(outcome.diagnostic!).toContain("[redacted]");
+    expect(outcome.diagnostic!).not.toContain("secretpass");
+  });
+
+  it("never fabricates a result on failure", async () => {
+    currentBehavior = {
+      kind: "throws",
+      error: new Error("any failure"),
+    };
+    const outcome = await getCanonicalBusinessById(SAMPLE_UUID);
+    expect(outcome.result).toBe(null);
   });
 });
 

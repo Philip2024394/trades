@@ -200,17 +200,34 @@ describe("Phase A · UI hard-coded URL discipline", () => {
 // §5 · Dead-end-destination discipline
 // ═════════════════════════════════════════════════════════════════════
 
-describe("Phase A · no dead-end clickable destinations", () => {
-  it("_directory-card.tsx only wraps in <Link> when destination.kind is nex_business or nex_user_profile", () => {
+describe("Phase A · universal clickable destinations · no dead-end cards", () => {
+  it("_directory-card.tsx references every reachable Phase C destination kind in its routing", () => {
     const src = stripComments(read("_directory-card.tsx"));
-    // The isLinkable guard must mention both nex_business and
-    // nex_user_profile. No other destination kind may be in the
-    // isLinkable predicate.
-    expect(src).toMatch(/nex_business.*nex_user_profile|nex_user_profile.*nex_business/);
-    // claim_available / place_detail must not be rendered as links
-    // (they appear in the file but inside non-link branches).
+    expect(src).toContain('"nex_business"');
+    expect(src).toContain('"nex_user_profile"');
     expect(src).toContain('"claim_available"');
     expect(src).toContain('"place_detail"');
+  });
+
+  it("_directory-card.tsx imports buildDirectoryDetailPath for the Directory-side detail route", () => {
+    const src = stripComments(read("_directory-card.tsx"));
+    expect(src).toContain("buildDirectoryDetailPath");
+  });
+
+  it("_directory-card.tsx does not expose 'Unclaimed' or ownership-status copy to visitors", () => {
+    const src = stripComments(read("_directory-card.tsx"));
+    // "Unclaimed" as a visitor-facing word must not appear in rendered
+    // code. Internal state is preserved via
+    // `data-nex-directory-card-destination-kind` on the <article>.
+    expect(src).not.toMatch(/\bUnclaimed\b/);
+    expect(src.toLowerCase()).not.toContain("claim this listing");
+  });
+
+  it("_directory-card.tsx does not render dead-button or coming-soon copy", () => {
+    const src = stripComments(read("_directory-card.tsx"));
+    expect(src.toLowerCase()).not.toContain("coming soon");
+    expect(src.toLowerCase()).not.toContain("coming later");
+    expect(src.toLowerCase()).not.toContain("coming-soon");
   });
 
   it("page.tsx pre-filters redirect_to_canonical + unresolved from render", () => {
