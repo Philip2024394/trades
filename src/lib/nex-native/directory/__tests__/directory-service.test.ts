@@ -89,8 +89,8 @@ import {
   CANONICAL_TABLE,
   CANONICAL_SCHEMA,
   DEFAULT_LIMIT,
+  DIRECTORY_PUBLICATION_VIEW,
   SELECT_COLUMNS,
-  SURFACED_LIFECYCLE_STATES,
   _internal,
   adaptRawCanonicalRow,
   fetchOwnerClaimsByCanonicalId,
@@ -116,20 +116,11 @@ describe("directory-service · sealed constants", () => {
     expect(Number.isInteger(DEFAULT_LIMIT)).toBe(true);
   });
 
-  it("SURFACED_LIFECYCLE_STATES excludes SUPERSEDED", () => {
-    expect(SURFACED_LIFECYCLE_STATES).not.toContain("SUPERSEDED");
-  });
-
-  it("SURFACED_LIFECYCLE_STATES includes all 6 user-facing states", () => {
-    const expected = [
-      "DISCOVERED",
-      "ENRICHED",
-      "VERIFIED",
-      "OWNER_CLAIMED",
-      "OWNER_VERIFIED",
-      "DORMANT",
-    ];
-    expect([...SURFACED_LIFECYCLE_STATES].sort()).toEqual([...expected].sort());
+  it("DIRECTORY_PUBLICATION_VIEW is 'business_directory_v' (the sealed publication gate · migration 175)", () => {
+    // DP-1 + DP-2 · lifecycle filtering + source-permission filtering
+    // live inside the view, not in TypeScript. The service only names
+    // the view · it never carries a parallel TypeScript predicate.
+    expect(DIRECTORY_PUBLICATION_VIEW).toBe("business_directory_v");
   });
 
   it("SELECT_COLUMNS lists the sealed read columns and projects coordinates via ST_Y / ST_X", () => {
@@ -585,28 +576,42 @@ describe("listDirectory · populated results", () => {
 // ═════════════════════════════════════════════════════════════════════
 
 describe("listDirectory · query shape delivered to pg driver", () => {
-  it("sends the schema-qualified table name (nex.business_canonical)", async () => {
+  it("sends the schema-qualified publication view (nex.business_directory_v)", async () => {
     await listDirectory({ country: "ID" });
     expect(lastQuery).not.toBe(null);
-    expect(lastQuery!.sql).toContain("FROM nex.business_canonical");
+    expect(lastQuery!.sql).toContain("FROM nex.business_directory_v");
   });
 
-  it("binds country, lifecycle array, limit, offset as parameters (no interpolation)", async () => {
+  it("does NOT read directly from nex.business_canonical for visitor rendering", async () => {
+    // The whole point of DP-1 + DP-2 · if this ever becomes false,
+    // the publication gate has been bypassed somewhere upstream.
+    await listDirectory({ country: "ID" });
+    expect(lastQuery!.sql).not.toContain("FROM nex.business_canonical");
+  });
+
+  it("does NOT carry a parallel TypeScript lifecycle filter (view enforces it)", async () => {
+    await listDirectory({ country: "ID" });
+    expect(lastQuery!.sql).not.toContain("lifecycle_state = ANY");
+    expect(lastQuery!.sql).not.toMatch(/\blifecycle_state\s+IN\s*\(/i);
+  });
+
+  it("binds country, (optional filters), limit, offset as parameters · no interpolation", async () => {
     await listDirectory({ country: "ID", limit: 50, offset: 100 });
     expect(lastQuery!.params[0]).toBe("ID");
-    expect(lastQuery!.params[1]).toEqual([...SURFACED_LIFECYCLE_STATES]);
-    expect(lastQuery!.params[lastQuery!.params.length - 2]).toBe(50);
-    expect(lastQuery!.params[lastQuery!.params.length - 1]).toBe(100);
+    // After DP-2 · params[1..n-2] carry only visitor-chosen filters
+    // (entity_type / q) which are both unset here. Only country,
+    // limit, offset remain.
+    expect(lastQuery!.params.length).toBe(3);
+    expect(lastQuery!.params[1]).toBe(50);
+    expect(lastQuery!.params[2]).toBe(100);
     expect(lastQuery!.sql).not.toContain("'ID'");
     expect(lastQuery!.sql).toMatch(/\bLIMIT\s+\$\d+\s+OFFSET\s+\$\d+/);
-    const placeholders = lastQuery!.sql.match(/\$\d+/g) ?? [];
-    expect(placeholders.length).toBeGreaterThanOrEqual(4);
   });
 
   it("adds entity_type ANY($N::text[]) when classification narrows the entity set", async () => {
     await listDirectory({ country: "ID", classification: "business" });
-    expect(lastQuery!.sql).toContain("entity_type = ANY($3::text[])");
-    expect(Array.isArray(lastQuery!.params[2])).toBe(true);
+    expect(lastQuery!.sql).toContain("entity_type = ANY($2::text[])");
+    expect(Array.isArray(lastQuery!.params[1])).toBe(true);
   });
 
   it("adds name_norm ILIKE $N with %q% bounding when q is non-empty", async () => {
@@ -706,7 +711,7 @@ describe("listDirectory · determinism", () => {
 // ═════════════════════════════════════════════════════════════════════
 
 describe("_internal.buildCanonicalSql · pure builder", () => {
-  it("minimum inputs produce 4 params + schema-qualified SELECT", () => {
+  it("minimum inputs produce 3 params + SELECT FROM the publication view", () => {
     const { sql, params } = _internal.buildCanonicalSql({
       country: "ID",
       q: null,
@@ -714,20 +719,20 @@ describe("_internal.buildCanonicalSql · pure builder", () => {
       limit: 24,
       offset: 0,
     });
-    expect(params.length).toBe(4);
+    expect(params.length).toBe(3);
     expect(params[0]).toBe("ID");
-    expect(params[1]).toEqual([...SURFACED_LIFECYCLE_STATES]);
-    expect(params[2]).toBe(24);
-    expect(params[3]).toBe(0);
-    expect(sql).toContain("FROM nex.business_canonical");
+    expect(params[1]).toBe(24);
+    expect(params[2]).toBe(0);
+    expect(sql).toContain("FROM nex.business_directory_v");
+    expect(sql).not.toContain("FROM nex.business_canonical");
     expect(sql).toContain("country = $1");
-    expect(sql).toContain("lifecycle_state = ANY($2::text[])");
-    expect(sql).toContain("LIMIT $3 OFFSET $4");
+    expect(sql).not.toContain("lifecycle_state = ANY");
+    expect(sql).toContain("LIMIT $2 OFFSET $3");
     expect(sql).not.toContain("entity_type = ANY");
     expect(sql).not.toContain("ILIKE");
   });
 
-  it("entityTypes supplied adds entity_type = ANY($3::text[]) and shifts limit/offset", () => {
+  it("entityTypes supplied adds entity_type = ANY($2::text[]) and shifts limit/offset", () => {
     const { sql, params } = _internal.buildCanonicalSql({
       country: "ID",
       q: null,
@@ -735,10 +740,10 @@ describe("_internal.buildCanonicalSql · pure builder", () => {
       limit: 24,
       offset: 0,
     });
-    expect(params.length).toBe(5);
-    expect(params[2]).toEqual(["food", "accommodation"]);
-    expect(sql).toContain("entity_type = ANY($3::text[])");
-    expect(sql).toContain("LIMIT $4 OFFSET $5");
+    expect(params.length).toBe(4);
+    expect(params[1]).toEqual(["food", "accommodation"]);
+    expect(sql).toContain("entity_type = ANY($2::text[])");
+    expect(sql).toContain("LIMIT $3 OFFSET $4");
   });
 
   it("empty entityTypes array is treated as no filter", () => {
@@ -749,7 +754,7 @@ describe("_internal.buildCanonicalSql · pure builder", () => {
       limit: 24,
       offset: 0,
     });
-    expect(params.length).toBe(4);
+    expect(params.length).toBe(3);
     expect(sql).not.toContain("entity_type = ANY");
   });
 
@@ -761,13 +766,13 @@ describe("_internal.buildCanonicalSql · pure builder", () => {
       limit: 24,
       offset: 0,
     });
-    expect(params.length).toBe(5);
-    expect(params[2]).toBe("%warung%");
-    expect(sql).toContain("name_norm ILIKE $3");
-    expect(sql).toContain("LIMIT $4 OFFSET $5");
+    expect(params.length).toBe(4);
+    expect(params[1]).toBe("%warung%");
+    expect(sql).toContain("name_norm ILIKE $2");
+    expect(sql).toContain("LIMIT $3 OFFSET $4");
   });
 
-  it("both entityTypes and q produce 6 params in strict left-to-right order", () => {
+  it("both entityTypes and q produce 5 params in strict left-to-right order", () => {
     const { sql, params } = _internal.buildCanonicalSql({
       country: "ID",
       q: "siti",
@@ -775,16 +780,15 @@ describe("_internal.buildCanonicalSql · pure builder", () => {
       limit: 10,
       offset: 20,
     });
-    expect(params.length).toBe(6);
+    expect(params.length).toBe(5);
     expect(params[0]).toBe("ID");
-    expect(params[1]).toEqual([...SURFACED_LIFECYCLE_STATES]);
-    expect(params[2]).toEqual(["food"]);
-    expect(params[3]).toBe("%siti%");
-    expect(params[4]).toBe(10);
-    expect(params[5]).toBe(20);
-    expect(sql).toContain("entity_type = ANY($3::text[])");
-    expect(sql).toContain("name_norm ILIKE $4");
-    expect(sql).toContain("LIMIT $5 OFFSET $6");
+    expect(params[1]).toEqual(["food"]);
+    expect(params[2]).toBe("%siti%");
+    expect(params[3]).toBe(10);
+    expect(params[4]).toBe(20);
+    expect(sql).toContain("entity_type = ANY($2::text[])");
+    expect(sql).toContain("name_norm ILIKE $3");
+    expect(sql).toContain("LIMIT $4 OFFSET $5");
   });
 
   it("SELECT_COLUMNS appear verbatim in the SQL", () => {
@@ -971,7 +975,7 @@ describe("getCanonicalBusinessById · row missing", () => {
     };
     await getCanonicalBusinessById(SAMPLE_UUID);
     expect(queryLog.length).toBe(1);
-    expect(queryLog[0].sql).toContain("FROM nex.business_canonical");
+    expect(queryLog[0].sql).toContain("FROM nex.business_directory_v");
   });
 });
 
@@ -1018,7 +1022,7 @@ describe("getCanonicalBusinessById · row present", () => {
     };
     await getCanonicalBusinessById(SAMPLE_UUID);
     expect(queryLog.length).toBe(2);
-    expect(queryLog[0].sql).toContain("FROM nex.business_canonical");
+    expect(queryLog[0].sql).toContain("FROM nex.business_directory_v");
     expect(queryLog[0].sql).toContain("WHERE canonical_business_id = $1");
     expect(queryLog[0].params[0]).toBe(SAMPLE_UUID);
     expect(queryLog[1].sql).toContain("FROM nex.business_evidence");
@@ -1150,9 +1154,12 @@ describe("directory-service.ts · architectural read path (static grep)", () => 
     expect(src).not.toMatch(/from\s*["'][^"']*scripts\//);
   });
 
-  it("references nex.business_canonical as a schema-qualified table", () => {
+  it("references nex.business_directory_v as the schema-qualified publication view used by visitor reads", () => {
     const src = sourceOutsideComments();
-    expect(src).toContain("nex.business_canonical");
+    expect(src).toContain("business_directory_v");
+    // The sealed service composes its FROM via `nex.${DIRECTORY_PUBLICATION_VIEW}`,
+    // so the resulting runtime SQL still contains `nex.business_directory_v`.
+    // Static grep accepts either the composed form or a literal match.
   });
 
   it("contains no literal connection string, host, or port", () => {

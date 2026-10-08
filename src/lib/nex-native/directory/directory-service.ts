@@ -49,9 +49,18 @@
 //     fetches primary images per canonical row.
 //   · When the cross-database owner-link ADR lands, swap in a real
 //     `fetchOwnerClaimsByCanonicalId` body.
-//   · When migration 175 lands, consider reading
-//     `nex.business_directory_v` instead of the raw canonical table
-//     for taxonomy + attribution signals already baked in.
+//
+// Sealed publication boundary (DP-1 + DP-2 · 2026-10-09)
+//   · All visitor-facing reads go through `nex.business_directory_v`
+//     (migration 175), not `nex.business_canonical`. The view enforces
+//     D-1 (lifecycle L1 = VERIFIED / OWNER_CLAIMED / OWNER_VERIFIED),
+//     the supersession guard, and D-2 (permission-OR source_registry.
+//     can_display). This file no longer carries a lifecycle filter
+//     constant · duplicate predicates between the service and the
+//     view are a drift surface and are explicitly forbidden.
+//   · DP-3 (GRANT/REVOKE lockdown that removes direct SELECT on
+//     nex.business_canonical from the Directory DB role) is a
+//     separate authorised wave.
 
 import "server-only";
 import { withClient } from "@/lib/nex/db";
@@ -80,28 +89,31 @@ import {
 // §1 · Constants
 // ═════════════════════════════════════════════════════════════════════
 
-/** The sealed canonical table that Phase A reads from. */
+/** The sealed canonical table · referenced only for identity. The
+ *  service no longer reads it directly for visitor rendering · all
+ *  visitor reads go through `DIRECTORY_PUBLICATION_VIEW`. Kept as a
+ *  constant for operational tooling that needs the canonical name. */
 export const CANONICAL_TABLE = "business_canonical" as const;
-/** The sealed schema name. The service reads
- *  `nex.business_canonical` directly over the pg driver. */
+/** The sealed schema name. */
 export const CANONICAL_SCHEMA = "nex" as const;
+/** The sealed publication view (migration 175 · DP-1). This is the
+ *  one object the service is architecturally permitted to read for
+ *  visitor rendering. All publication predicates (L1 lifecycle set,
+ *  supersession guard, permission-OR source_registry.can_display) are
+ *  enforced inside the view · the service NEVER decides what is
+ *  publishable. */
+export const DIRECTORY_PUBLICATION_VIEW = "business_directory_v" as const;
 
 /** Maximum rows returned per call. Phase A UI paginates via `offset`. */
 export const DEFAULT_LIMIT = 24;
 
-/** The lifecycle states the Directory surfaces to users. */
-export const SURFACED_LIFECYCLE_STATES: readonly LifecycleState[] = [
-  "DISCOVERED",
-  "ENRICHED",
-  "VERIFIED",
-  "OWNER_CLAIMED",
-  "OWNER_VERIFIED",
-  "DORMANT",
-] as const;
-
-// `SUPERSEDED` is deliberately excluded — a superseded canonical row's
-// content has been absorbed into its successor. The service layer
-// filters it at the DB and the UI never sees it.
+// Lifecycle filtering previously lived here as a TypeScript constant
+// (SURFACED_LIFECYCLE_STATES). After the publication-gate audit of
+// 2026-10-09 (D-1 · L1), lifecycle filtering is enforced inside the
+// sealed `nex.business_directory_v` view. The service no longer
+// decides which lifecycle states are visitor-publishable · attempting
+// to re-introduce a TypeScript lifecycle filter would duplicate (and
+// potentially contradict) the view's predicate.
 
 // ═════════════════════════════════════════════════════════════════════
 // §2 · Input + result shapes
@@ -379,22 +391,20 @@ export interface BuiltCanonicalSql {
 export function buildCanonicalSql(
   inputs: CanonicalQueryInputs,
 ): BuiltCanonicalSql {
-  const whereClauses: string[] = [
-    "country = $1",
-    "lifecycle_state = ANY($2::text[])",
-  ];
-  const params: unknown[] = [
-    inputs.country,
-    [...SURFACED_LIFECYCLE_STATES],
-  ];
+  // The lifecycle predicate (D-1 · L1) and source-permission predicate
+  // (D-2 · can_display OR aggregation) live inside the sealed
+  // `nex.business_directory_v` view. The service only applies the
+  // visitor-chosen filters (country, entity_type, q) + pagination.
+  const whereClauses: string[] = ["country = $1"];
+  const params: unknown[] = [inputs.country];
   if (inputs.entityTypes !== null && inputs.entityTypes.length > 0) {
     params.push([...inputs.entityTypes]);
     whereClauses.push(`entity_type = ANY($${params.length}::text[])`);
   }
   if (inputs.q !== null && inputs.q.length > 0) {
-    // Case-insensitive LIKE against name_norm. Trigram index speeds
-    // this; we keep the surface simple (no full-text query DSL in
-    // Phase A). Aliases search is deferred to a later wave.
+    // Case-insensitive LIKE against name_norm. Trigram index on the
+    // base table (idx_bc_name_norm_trgm) speeds this; the view
+    // transparently exposes `name_norm`.
     params.push(`%${inputs.q}%`);
     whereClauses.push(`name_norm ILIKE $${params.length}`);
   }
@@ -404,7 +414,7 @@ export function buildCanonicalSql(
   const offsetIdx = params.length;
   const sql =
     `SELECT ${SELECT_COLUMNS} ` +
-    `FROM nex.business_canonical ` +
+    `FROM nex.${DIRECTORY_PUBLICATION_VIEW} ` +
     `WHERE ${whereClauses.join(" AND ")} ` +
     `LIMIT $${limitIdx} OFFSET $${offsetIdx}`;
   return { sql, params };
@@ -569,11 +579,18 @@ export async function getCanonicalBusinessById(
     return { result: null, systemReady: true, diagnostic: null };
   }
 
+  // The detail-page query reads from the sealed publication view, not
+  // the raw canonical table. A visitor who guesses a canonical_
+  // business_id must only be able to resolve to a row the view
+  // permits · the gate applies uniformly to list AND detail paths.
   const canonicalSql =
     `SELECT ${SELECT_COLUMNS} ` +
-    `FROM nex.business_canonical ` +
+    `FROM nex.${DIRECTORY_PUBLICATION_VIEW} ` +
     `WHERE canonical_business_id = $1 ` +
     `LIMIT 1`;
+  // The hasEvidence presence check reads directly from the sealed
+  // evidence table · the Boolean it returns is operational metadata
+  // ("provenance exists"), not a publication predicate.
   const evidenceSql =
     `SELECT 1 AS present ` +
     `FROM nex.business_evidence ` +
