@@ -268,3 +268,53 @@ deploy/maxmind/*.mmdb
 # append-only JSONL · per-machine state regenerated/extended by each
 # ingestion run. Not source of truth.
 data/nex-canonical/*.jsonl
+
+# ----------------------------------------------------------------------
+# 2026-10-09 · Pre-59k-pipeline tree hygiene
+# ----------------------------------------------------------------------
+# Large non-source artefacts and per-session scratch that must never
+# enter git. These accumulate during training / evidence runs / audits
+# / dev sessions and are regenerable from authoritative sources.
+
+# Training corpora, model weights, image sandboxes (regenerated on demand)
+data/nex-training-corpus/
+/models/
+data/nex-create-banners-sandbox/
+data/nex-visual-proving/
+data/nex-security/
+
+# Phase 4a / NEX1 verification evidence (per-run, immutable archives
+# that belong in object storage, not in-tree)
+data/phase-4a-evidence/
+data/phase-4a-p0-preparation/
+data/phase-4a-final-review/
+data/phase-4a-viewport-fill/
+data/nex1-intelligence-verification-*/
+data/nex-verified-discovery-proof/
+data/nex-coding-team/
+data/nex1-experiment-*/
+data/nex-native-migration/
+
+# NEX1 integration runs · per-run temp mts files
+_nex1_integration_run_*.mts
+
+# Preservation evidence bundles (per CLAUDE.md: evidence, not code)
+preservation-staging/
+
+# Session scratch: live dev tmp, audit scratch, Playwright outputs,
+# test screenshots, stale backups, root-level ad-hoc report MDs, root
+# vault PNG/PDF proofs.
+tmp-live/
+.audit-generalisation/
+playwright-report/
+test-results/
+tests/e2e-screenshots/
+*.pre-wave3.2.bak
+/vault-*.png
+/vault-*.pdf
+/NEX-*.md
+/g3-*-run-*.log
+/dev-server.log
+/dev-server-*.log
+/nex-vault-doorway.png
+/vault-rc-output/
