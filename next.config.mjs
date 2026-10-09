@@ -27,10 +27,44 @@ const nextConfig = {
   //     causing "Cannot find module 'tesseract.js/src/worker-script/node/index.js'"
   //     and an unrecoverable uncaughtException in a spawned worker. Keeping
   //     tesseract.js external lets it resolve its own worker at the real path.
-  serverExternalPackages: ["unzipper", "tesseract.js"],
+  //   · ffmpeg-static — ships a native ffmpeg binary (~70MB) and relies on
+  //     __dirname / require.resolve to locate it. Same bundling-breaks-paths
+  //     class of issue as tesseract.js above. Only used by server-side video
+  //     compose (src/lib/siteEditor/videoCompose.ts).
+  //   · ffprobe-static — same story (native ffprobe binary) · used by a
+  //     server route.ts (src/app/api/site/editor/video/upload/route.ts) so
+  //     without externalisation it was being pulled directly into the server
+  //     bundle · adds measurable compile+bundle time per build.
+  //
+  // NOT externalised here: onnxruntime-web. It is a browser/wasm package
+  // consumed by src/lib/backgroundRemoval/worker.ts (a Web Worker · see the
+  // `/// <reference lib="webworker" />` at line 1 of that file).
+  // serverExternalPackages does not affect client bundles or workers, so
+  // adding it would do nothing. Browser-side onnxruntime-web bundling is a
+  // separate concern tracked outside this file.
+  serverExternalPackages: ["unzipper", "tesseract.js", "ffmpeg-static", "ffprobe-static"],
+
+  // Next 16.2.9 experimental flags · verified present in
+  // node_modules/next/dist/server/config-schema.js lines 352-353.
+  // turbopackFileSystemCacheForBuild = persists Turbopack's module graph +
+  // compile artefacts between builds. Dramatically reduces cold-build time
+  // when the module graph is stable between deploys. Zero behavioural change
+  // when the cache is cold (first build after clean checkout) — only wins on
+  // warm rebuilds.
+  experimental: {
+    turbopackFileSystemCacheForBuild: true,
+  },
+
   images: {
     remotePatterns: [
+      // Legacy xratedtrade.com era Supabase project · retained for images
+      // already stored at this host.
       { protocol: "https", hostname: "msdonkkechxzgagyguoe.supabase.co" },
+      // NEX Project B · the current NEX_PUBLIC_NEX_SUPABASE_URL target
+      // (ijvqdvsvwtwxzcqmoqit.supabase.co). Explicit host · NOT a wildcard
+      // "**.supabase.co" because a wildcard would let any third-party
+      // Supabase project proxy images through our next/image optimiser.
+      { protocol: "https", hostname: "ijvqdvsvwtwxzcqmoqit.supabase.co" },
       { protocol: "https", hostname: "ik.imagekit.io" }
     ]
   },
