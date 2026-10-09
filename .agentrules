@@ -1,0 +1,105 @@
+# NEX Coding Team · repo-level agent rules
+# Read automatically by any agent (Claude Code sub-agents, NEX1, MAI supervision)
+# operating on this repository. These rules are LAYERED with `CLAUDE.md` product
+# constitution — this file is the operational contract; CLAUDE.md is the product
+# constitution. If they disagree, CLAUDE.md wins.
+
+## Governance invariants (never violated)
+
+- `V3_ENGINE_REGISTRY` is `Object.freeze({})`. Do NOT register.
+- The M-1 migration file (`supabase/migrations/20260915180000_nex_visual_structural_lock_architecture.sql`) is frozen historical evidence. Do NOT amend. Add NEW migrations only.
+- Historical wave receipts under `data/nex-visual-proving/` are append-only. Never mutate an existing receipt to change its verdict retroactively (Historical Wave Receipt Immutability Doctrine).
+- Doctrine memories under `.claude/projects/**/memory/feedback_nex_*.md` are the durable operational rules · **read them**, **respect them**, **never mutate them without Founder direction**.
+- The four-level truth taxonomy applies to every artefact: `[FACT]` / `[DECISION]` / `[HYPOTHESIS]` / `[PROPOSAL]`.
+- The Anti-Bullshit Doctrine applies: never pad · never repeat architecture with different words · never invent implementation readiness · never blur taxonomy.
+
+## Role-based file access
+
+The Coding Team's role permissions (`src/lib/nex-coding-team/permissions.ts`) are enforced by the runtime's `safeWrite`. Never bypass it.
+
+- **PM** writes only `data/nex-coding-team/runs/*/ticket.md`.
+- **Architect** writes only `data/nex-coding-team/runs/*/spec.md`.
+- **Builder** writes application code (`src/`, `scripts/`, `supabase/`) — NEVER tests.
+- **Tester** writes only tests — NEVER application code.
+- **Debugger** writes application code — NEVER tests · NEVER application code outside the failing scope.
+- **Reviewer**, **Forensics**, **SecOps**, **Types Guard**, **Migration Reviewer**, **Accessibility Reviewer**, **Contract Reviewer**, **Telemetry** write ONLY their own artefact under `data/nex-coding-team/runs/*/`.
+- **Integrator** is the ONLY agent that runs `git commit` / `git push`. No `--no-verify`. No force-push to `main`.
+- **Technical Writer** writes only docs (`docs/`, `README.md`, `CHANGELOG.md`, `src/**/README.md`).
+
+## Testing framework
+
+- Vitest (`npx vitest run`) is the canonical test runner.
+- Tests live under `src/**/__tests__/*.test.ts` or `src/**/*.test.ts`.
+- Every test must assert specific values. `expect(x).toBeDefined()` is banned.
+- Adversarial cases required for every public API: null / undefined / empty / boundary / unicode / injection.
+- Determinism required: seeded generators, frozen time, no filesystem-order-dependent tests.
+
+## TypeScript rigor
+
+- `strict: true` per `tsconfig.json`.
+- No `any` without a justified `// eslint-disable-next-line` comment referencing why.
+- No `@ts-ignore` / `@ts-expect-error` without a ticket reference.
+- Public exports carry full type signatures — no `Record<string, any>` on API boundaries.
+- `tsc --noEmit` must pass on every stage transition.
+
+## UI conventions (per `CLAUDE.md`)
+
+- 13px text floor on donut/dashboard apps · 12px WCAG floor elsewhere.
+- No em dashes in hero copy.
+- No AI-star / Sparkles icons (star icons in review chips are fine — they mean rating).
+- Yellow for accents + CTAs on the packages page. Dark green `#166534` for CTAs elsewhere. `#10B981` reserved for in-stock indicator.
+- `object-contain` for merchant / product / service / machine images. `object-cover` only for full-bleed hero banners.
+
+## Commit conventions
+
+- Conventional Commits: `type(scope): summary`.
+- `type` ∈ {`feat` `fix` `refactor` `docs` `test` `chore` `perf` `build` `ci` `style`}.
+- Body describes WHY, not what.
+- Every commit includes `Refs: run_id=<id>, ticket=<title>` footer.
+- BREAKING CHANGE footer mandatory for API-breaking changes.
+
+## Dependencies
+
+- Do NOT `pip install` or `npm install` new packages without explicit spec authority.
+- Package additions require Founder-facing justification (Forensics evaluates licence, last-release, CVE status).
+- No cloud-only or SaaS-dependent packages introduced without a spec explicitly authorising them.
+
+## Disk & resource discipline
+
+- Runtime respects a per-run resource budget: no artefact > 1 MB unless spec justifies (images/large data).
+- Test-runner has 5-minute timeout by default. Longer only with spec authority.
+- Debugger loop capped at 5 cycles. Reviewer cycle capped at 3.
+
+## Escalation triggers
+
+Halt the pipeline and request Founder input when:
+- PM produces `clarifying_questions_for_founder` list non-empty.
+- Architect encounters `open_questions` it cannot resolve.
+- Migration Reviewer marks a change destructive (DROP, ALTER-DROP, DATA migration).
+- SecOps marks a finding CRITICAL.
+- Forensics FLAGS a stale/vulnerable dependency.
+- Debugger exhausts 5 cycles without green tests.
+- Reviewer cycles 3× without approval.
+- Any protected file mutation attempted.
+
+## Anti-bullshit rules (universal)
+
+- No filler prose. Every section produces a decision / interface / invariant / rejected alternative / evidence / unresolved question / test requirement / implementation gate / explicit non-goal.
+- No fabricated confidence values.
+- No pretending a partial completion is a success.
+- REJECTED at any gate is a legitimate outcome; the objective is truth, not throughput.
+
+## Founder-standard acceptance
+
+A change ships only when:
+1. Spec exists and matches the ticket.
+2. Code implements the spec exactly.
+3. Tests cover every acceptance criterion + every declared edge case + ≥3 adversarial cases per public API.
+4. `tsc --noEmit` clean.
+5. `vitest run` green.
+6. Reviewer + Forensics + SecOps + (Types Guard | Migration Reviewer | Accessibility Reviewer | Contract Reviewer) as applicable APPROVE.
+7. Integrator commits with Conventional Commits + rollback command recorded.
+8. Technical Writer updates docs.
+9. Telemetry catches nothing in T+24h (or run is closed with STABLE verdict).
+
+Nothing less. Nothing skipped.
