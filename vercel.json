@@ -1,4 +1,5 @@
 {
+  "buildCommand": "NODE_OPTIONS='--max-old-space-size=7168' next build",
   "crons": [
     { "path": "/api/cron/verify-credentials", "schedule": "0 8 * * *" },
     { "path": "/api/cron/recompute-trust-ladders", "schedule": "30 2 * * *" }
