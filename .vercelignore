@@ -1,0 +1,75 @@
+# NEX · Vercel deployment ignore list · 2026-10-09
+#
+# What NOT to upload to Vercel's build infra.
+# Vercel builds with Node, imports from src/, needs src/, public/,
+# next.config.mjs, package.json, lockfile, tsconfig.json, and
+# vercel.json. Everything else below is local-only.
+
+# ─── Local-only artefacts (never deploy) ──────────────────────────────
+.next/
+.cache/
+.turbo/
+.vercel/
+.git/
+.github/
+coverage/
+logs/
+tmp/
+tmp-*/
+*.log
+
+# ─── Heavy local data (14.9 GB · model weights, harvests, backups) ────
+data/
+models/
+
+# ─── Database / infra scripts (apply manually, don't deploy) ──────────
+deploy/
+nex-supabase/
+db/
+
+# ─── Documentation (not needed at runtime) ────────────────────────────
+docs/
+*.md
+!README.md
+
+# ─── Tests + fixtures (169 MB · dev-only) ─────────────────────────────
+tests/
+**/*.test.ts
+**/*.test.tsx
+**/*.test.mjs
+**/*.test.js
+**/__tests__/
+**/__mocks__/
+vitest.config*.ts
+vitest.config*.mts
+
+# ─── Scripts (CLI tools, workers, migrations · deploy via separate ops)
+# Keep lightweight API-adjacent helpers; exclude heavy harvesters,
+# training pipelines, and one-off scripts.
+scripts/
+
+# ─── Knowledge corpus (21 MB, local-only training artefacts) ──────────
+knowledge/
+
+# ─── Visual engine weights specifically (even outside data/) ──────────
+**/hf-cache/
+**/*.safetensors
+**/*.bin
+**/*.pth
+**/*.pt
+**/*.onnx
+**/*.gguf
+**/pretrained.zip
+
+# ─── Backup dumps (never deploy) ──────────────────────────────────────
+**/*.dump
+**/*.sql.gz
+**/backfill-*.sql
+
+# ─── Audit / preservation / linked worktree bundles ───────────────────
+nex-preservation/
+trades-harvest-deploy/
+
+# ─── Lockfile backup files ────────────────────────────────────────────
+*.lock.bak
+*.lockfile.bak

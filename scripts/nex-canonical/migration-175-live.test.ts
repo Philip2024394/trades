@@ -91,13 +91,20 @@ async function insertFixtureSource(
   c: Client,
   slug: string,
   can_display: boolean,
+  /** attribution_template · defaults to a non-blank test fixture
+   *  string so the sealed migration-180 CHECK (ck_sr_attribution_
+   *  template_present) accepts any (can_display=TRUE, attribution_
+   *  required=TRUE, template=<non-blank>) row. Passing null is only
+   *  safe when can_display=FALSE. */
+  attribution_template: string | null = "test fixture attribution",
 ): Promise<string> {
   await c.query(
     `INSERT INTO nex.source_registry (
-       source_id, source_type, display_name, can_display
-     ) VALUES ($1, $2, $3, $4)
+       source_id, source_type, display_name, can_display,
+       attribution_template
+     ) VALUES ($1, $2, $3, $4, $5)
      ON CONFLICT (source_id) DO NOTHING`,
-    [slug, "directory_import", `Test fixture · ${slug}`, can_display],
+    [slug, "directory_import", `Test fixture · ${slug}`, can_display, attribution_template],
   );
   return slug;
 }

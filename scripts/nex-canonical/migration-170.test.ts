@@ -216,7 +216,12 @@ describe("migration 170 · scope boundaries", () => {
     expect(bytes).toBe(19017);
   });
 
-  test("migration 169 does NOT exist · deferred by founder decision", () => {
-    expect(fs.existsSync(MIG_169_PATH)).toBe(false);
+  test("migration 169 exists · authored in Phase-1 build wave (2026-10-09)", () => {
+    // Previously deferred by founder decision; authored in the Phase-1
+    // spine build wave authorised 2026-10-09. See migration-169.test.ts
+    // for the structural assertions on 169 itself. This test only
+    // records the scope-boundary that 170 (business_evidence) does not
+    // itself drag in the 169 legacy-FK columns.
+    expect(fs.existsSync(MIG_169_PATH)).toBe(true);
   });
 });
