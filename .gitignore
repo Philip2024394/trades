@@ -270,6 +270,15 @@ deploy/maxmind/*.mmdb
 data/nex-canonical/*.jsonl
 
 # ----------------------------------------------------------------------
+# 2026-10-09 · Secret files that live under data/nex-storage/ must NEVER
+# be committed. Both files are founder-authored per-machine secrets
+# (agent runtime keys · founder dev key). History grep confirms 0 prior
+# commits; this entry keeps it that way across future `git add -A`.
+# ----------------------------------------------------------------------
+data/nex-storage/.agent-runtime-keys.json
+data/nex-storage/.founder-dev.key
+
+# ----------------------------------------------------------------------
 # 2026-10-09 · Pre-59k-pipeline tree hygiene
 # ----------------------------------------------------------------------
 # Large non-source artefacts and per-session scratch that must never
