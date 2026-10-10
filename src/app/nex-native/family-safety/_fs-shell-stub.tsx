@@ -36,7 +36,8 @@ export function LocalFamilySafetyShell({
 }: LocalFamilySafetyShellProps): React.JSX.Element {
   return (
     <div
-      data-nex-family-safety-shell="fs2-local-stub"
+      data-nex-family-safety-shell="true"
+      data-nex-family-safety-shell-source="fs2-local-stub"
       style={{
         minHeight: "100vh",
         background: P.bg,

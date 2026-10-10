@@ -308,6 +308,7 @@ export default async function FamilySafetyHomePage() {
             key={c.key}
             href={c.href}
             prefetch={false}
+            data-testid={`nex-family-safety-home-${c.key}-cta`}
             data-nex-family-safety-home-cta={c.key}
             data-nex-family-safety-home-cta-enabled={c.enabled ? "true" : "false"}
             style={{
