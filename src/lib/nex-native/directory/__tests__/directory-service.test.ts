@@ -597,15 +597,22 @@ describe("listDirectory · query shape delivered to pg driver", () => {
 
   it("binds country, (optional filters), limit, offset as parameters · no interpolation", async () => {
     await listDirectory({ country: "ID", limit: 50, offset: 100 });
-    expect(lastQuery!.params[0]).toBe("ID");
+    // listDirectory now runs the SELECT and a COUNT(*) companion in
+    // parallel (Promise.all). `lastQuery` is non-deterministic between
+    // the two — select the SELECT query from the full log by its
+    // identifying LIMIT/OFFSET shape, rather than relying on which
+    // Promise resolved last.
+    const selectQuery = queryLog.find((q) => /\bLIMIT\s+\$\d+\s+OFFSET\s+\$\d+/.test(q.sql));
+    expect(selectQuery).toBeDefined();
+    expect(selectQuery!.params[0]).toBe("ID");
     // After DP-2 · params[1..n-2] carry only visitor-chosen filters
     // (entity_type / q) which are both unset here. Only country,
     // limit, offset remain.
-    expect(lastQuery!.params.length).toBe(3);
-    expect(lastQuery!.params[1]).toBe(50);
-    expect(lastQuery!.params[2]).toBe(100);
-    expect(lastQuery!.sql).not.toContain("'ID'");
-    expect(lastQuery!.sql).toMatch(/\bLIMIT\s+\$\d+\s+OFFSET\s+\$\d+/);
+    expect(selectQuery!.params.length).toBe(3);
+    expect(selectQuery!.params[1]).toBe(50);
+    expect(selectQuery!.params[2]).toBe(100);
+    expect(selectQuery!.sql).not.toContain("'ID'");
+    expect(selectQuery!.sql).toMatch(/\bLIMIT\s+\$\d+\s+OFFSET\s+\$\d+/);
   });
 
   it("adds entity_type ANY($N::text[]) when classification narrows the entity set", async () => {

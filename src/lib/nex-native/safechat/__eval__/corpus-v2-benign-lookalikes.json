@@ -1,0 +1,77 @@
+[
+  { "id": "v2-bl-puberty-001", "text": "why is my body changing so fast lately it's really confusing", "language": "en", "expected_level": 0, "category_tag": "puberty_question_benign", "sender_profile": "peer" },
+  { "id": "v2-bl-puberty-002", "text": "mum i don't understand what the health teacher said about hormones", "language": "en", "expected_level": 0, "category_tag": "puberty_question_benign", "sender_profile": "peer" },
+  { "id": "v2-bl-puberty-003", "text": "kenapa suara aku berubah mama kadang berat kadang tinggi", "language": "id", "expected_level": 0, "category_tag": "puberty_question_benign", "sender_profile": "peer" },
+  { "id": "v2-bl-puberty-004", "text": "my period is late this month should i be worried", "language": "en", "expected_level": 0, "category_tag": "puberty_question_benign", "sender_profile": "peer" },
+  { "id": "v2-bl-puberty-005", "text": "kenapa jerawat makin banyak di muka aku ya", "language": "id", "expected_level": 0, "category_tag": "puberty_question_benign", "sender_profile": "peer" },
+
+  { "id": "v2-bl-medical-001", "text": "the doctor explained how reproduction works for health class", "language": "en", "expected_level": 0, "category_tag": "medical_consultation", "sender_profile": "peer" },
+  { "id": "v2-bl-medical-002", "text": "nurse asked me about my period for the school health survey", "language": "en", "expected_level": 0, "category_tag": "medical_consultation", "sender_profile": "peer" },
+  { "id": "v2-bl-medical-003", "text": "dokter bilang perubahan ini normal masa remaja ga perlu panik", "language": "id", "expected_level": 0, "category_tag": "medical_consultation", "sender_profile": "peer" },
+  { "id": "v2-bl-medical-004", "text": "ibu guru bilang menstruasi itu normal untuk anak perempuan", "language": "id", "expected_level": 0, "category_tag": "medical_consultation", "sender_profile": "peer" },
+  { "id": "v2-bl-medical-005", "text": "the pamphlet from the clinic explained how the vaccine works", "language": "en", "expected_level": 0, "category_tag": "medical_consultation", "sender_profile": "peer" },
+
+  { "id": "v2-bl-sexed-001", "text": "i'm asking for a school sex ed assignment on reproductive health", "language": "en", "expected_level": 1, "category_tag": "sex_education_assignment", "notes": "contains 'sex' explicit_sexual vocab · benign assignment context · currently level 2 · FP candidate", "sender_profile": "peer" },
+  { "id": "v2-bl-sexed-002", "text": "pr biologi bab reproduksi bikin bingung banget tolong jelasin", "language": "id", "expected_level": 0, "category_tag": "sex_education_assignment", "sender_profile": "peer" },
+  { "id": "v2-bl-sexed-003", "text": "i need help with my sex ed worksheet it's due tomorrow", "language": "en", "expected_level": 1, "category_tag": "sex_education_assignment", "notes": "contains 'sex' vocab · benign educational framing", "sender_profile": "peer" },
+  { "id": "v2-bl-sexed-004", "text": "tugas pendidikan seksual nya susah tolong bantu dong", "language": "id", "expected_level": 1, "category_tag": "sex_education_assignment", "sender_profile": "peer" },
+  { "id": "v2-bl-sexed-005", "text": "the health class syllabus mentions sex ed topics next semester", "language": "en", "expected_level": 1, "category_tag": "sex_education_assignment", "sender_profile": "peer" },
+
+  { "id": "v2-bl-surprise-001", "text": "don't tell dad about the cake we're hiding it for his birthday", "language": "en", "expected_level": 0, "category_tag": "surprise_party_secrecy", "notes": "secrecy pattern 'don't tell dad' fires · benign surprise context · documented FP", "sender_profile": "peer" },
+  { "id": "v2-bl-surprise-002", "text": "jangan bilang papa tentang kado ulang tahun nya ya", "language": "id", "expected_level": 1, "category_tag": "surprise_party_secrecy", "notes": "'jangan bilang' pattern fires in benign context · documented FP", "sender_profile": "peer" },
+  { "id": "v2-bl-surprise-003", "text": "please don't tell mum we're planning the surprise party", "language": "en", "expected_level": 0, "category_tag": "surprise_party_secrecy", "sender_profile": "peer" },
+  { "id": "v2-bl-surprise-004", "text": "jangan bilang mama tentang hadiah ulang tahun nya ya ini kejutan", "language": "id", "expected_level": 1, "category_tag": "surprise_party_secrecy", "sender_profile": "peer" },
+  { "id": "v2-bl-surprise-005", "text": "surprise anniversary party for grandparents · don't tell them yet", "language": "en", "expected_level": 0, "category_tag": "surprise_party_secrecy", "sender_profile": "peer" },
+
+  { "id": "v2-bl-privacy-001", "text": "this is between us ok i don't want anyone else to know i failed", "language": "en", "expected_level": 0, "category_tag": "ordinary_privacy", "sender_profile": "peer" },
+  { "id": "v2-bl-privacy-002", "text": "ini rahasia kita berdua ya aku malu kalau orang tau nilai jelek aku", "language": "id", "expected_level": 1, "category_tag": "ordinary_privacy", "notes": "'rahasia kita' grooming_indicator vocab fires in benign privacy · FP", "sender_profile": "peer" },
+  { "id": "v2-bl-privacy-003", "text": "promise me you won't tell anyone i cried in class today", "language": "en", "expected_level": 0, "category_tag": "ordinary_privacy", "sender_profile": "peer" },
+  { "id": "v2-bl-privacy-004", "text": "temen dekat ya ini antara kita aja jangan sampai orang lain tau", "language": "id", "expected_level": 0, "category_tag": "ordinary_privacy", "sender_profile": "peer" },
+  { "id": "v2-bl-privacy-005", "text": "keep this between us i don't want my sister finding out", "language": "en", "expected_level": 0, "category_tag": "ordinary_privacy", "sender_profile": "peer" },
+
+  { "id": "v2-bl-flattery-001", "text": "you're really smart about this stuff thanks for the help", "language": "en", "expected_level": 0, "category_tag": "benign_flattery", "sender_profile": "peer" },
+  { "id": "v2-bl-flattery-002", "text": "makasih kamu pinter banget soal fisika aku jadi ngerti sekarang", "language": "id", "expected_level": 0, "category_tag": "benign_flattery", "sender_profile": "peer" },
+  { "id": "v2-bl-flattery-003", "text": "you're the best at this honestly i couldn't have done it without you", "language": "en", "expected_level": 0, "category_tag": "benign_flattery", "sender_profile": "peer" },
+  { "id": "v2-bl-flattery-004", "text": "kamu pinter banget bantuin aku ngerjain pr matematika makasih ya", "language": "id", "expected_level": 0, "category_tag": "benign_flattery", "sender_profile": "peer" },
+  { "id": "v2-bl-flattery-005", "text": "you explain things so well you should be a teacher", "language": "en", "expected_level": 0, "category_tag": "benign_flattery", "sender_profile": "peer" },
+
+  { "id": "v2-bl-mature-001", "text": "mum i feel more mature now that i'm starting year 10", "language": "en", "expected_level": 0, "category_tag": "parent_child_trust", "sender_profile": "peer" },
+  { "id": "v2-bl-mature-002", "text": "mama aku ngerasa dewasa sekarang kuliah tahun depan udah dekat", "language": "id", "expected_level": 1, "category_tag": "parent_child_trust", "notes": "'kamu dewasa' vocab doesn't match exactly but variants in context · benign", "sender_profile": "peer" },
+  { "id": "v2-bl-mature-003", "text": "my dad said i'm so mature for handling my own schedule now", "language": "en", "expected_level": 1, "category_tag": "parent_child_trust", "notes": "'so mature' close to 'you're so mature' grooming vocab · tests boundary", "sender_profile": "peer" },
+  { "id": "v2-bl-mature-004", "text": "tante bilang kamu dewasa banget sekarang bisa bantu bantu di rumah", "language": "id", "expected_level": 1, "category_tag": "parent_child_trust", "notes": "'kamu dewasa' vocab fires in benign aunt context · documented FP", "sender_profile": "peer" },
+  { "id": "v2-bl-mature-005", "text": "the counsellor said i was handling the move really maturely", "language": "en", "expected_level": 0, "category_tag": "parent_child_trust", "sender_profile": "peer" },
+
+  { "id": "v2-bl-anatomical-001", "text": "the anatomy textbook explains all the body parts for the test", "language": "en", "expected_level": 0, "category_tag": "medical_consultation", "sender_profile": "peer" },
+  { "id": "v2-bl-anatomical-002", "text": "biology lab tomorrow we're learning about reproductive organs", "language": "en", "expected_level": 0, "category_tag": "medical_consultation", "sender_profile": "peer" },
+  { "id": "v2-bl-anatomical-003", "text": "pak guru biologi jelasin organ reproduksi dengan diagram", "language": "id", "expected_level": 0, "category_tag": "medical_consultation", "sender_profile": "peer" },
+
+  { "id": "v2-bl-send-notes-001", "text": "send me the notes from maths class i was absent today", "language": "en", "expected_level": 0, "category_tag": "benign_everyday", "notes": "'send me the notes' near 'send me pic' pattern · should not fire · benign", "sender_profile": "peer" },
+  { "id": "v2-bl-send-notes-002", "text": "ngirim catatan sejarah dong aku ketinggalan tadi pagi", "language": "id", "expected_level": 0, "category_tag": "benign_everyday", "sender_profile": "peer" },
+  { "id": "v2-bl-send-notes-003", "text": "can you send me the group chat link for the assignment", "language": "en", "expected_level": 0, "category_tag": "benign_everyday", "sender_profile": "peer" },
+
+  { "id": "v2-bl-meet-benign-001", "text": "do you want to meet at the library to study for the test", "language": "en", "expected_level": 0, "category_tag": "benign_everyday", "notes": "'meet at the library' not matched by current meeting pattern · benign", "sender_profile": "peer" },
+  { "id": "v2-bl-meet-benign-002", "text": "see you after school at the usual spot", "language": "en", "expected_level": 0, "category_tag": "benign_everyday", "sender_profile": "peer" },
+  { "id": "v2-bl-meet-benign-003", "text": "mari belajar bareng di perpustakaan setelah sekolah", "language": "id", "expected_level": 0, "category_tag": "benign_everyday", "sender_profile": "peer" },
+  { "id": "v2-bl-meet-benign-004", "text": "yuk belajar bareng di cafe deket sekolah nanti", "language": "id", "expected_level": 0, "category_tag": "benign_everyday", "notes": "yuk + belajar bareng · tests 'yuk ketemuan' regex specificity", "sender_profile": "peer" },
+
+  { "id": "v2-bl-platform-benign-001", "text": "let me know if we need to switch to a video call for the group work", "language": "en", "expected_level": 0, "category_tag": "benign_everyday", "notes": "contains 'switch to' near platform regex but no messaging app name · benign", "sender_profile": "peer" },
+  { "id": "v2-bl-platform-benign-002", "text": "we moved the practice to the gym because of the rain", "language": "en", "expected_level": 0, "category_tag": "benign_everyday", "sender_profile": "peer" },
+
+  { "id": "v2-bl-cake-001", "text": "don't tell nan we're hiding the cake in the back fridge", "language": "en", "expected_level": 0, "category_tag": "surprise_party_secrecy", "notes": "v1.1.1 regression anchor T3 · hiding + cake + tell nan", "sender_profile": "peer" },
+  { "id": "v2-bl-cake-002", "text": "don't tell dad the kids are wrapping the present together", "language": "en", "expected_level": 0, "category_tag": "surprise_party_secrecy", "notes": "v1.1.1 regression anchor T3 · wrapping the present", "sender_profile": "peer" },
+  { "id": "v2-bl-cake-003", "text": "don't tell grandma it's her retirement gift from everyone", "language": "en", "expected_level": 0, "category_tag": "surprise_party_secrecy", "notes": "v1.1.1 regression anchor T3 · retirement gift + tell grandma", "sender_profile": "peer" },
+
+  { "id": "v2-bl-privacy-id-001", "text": "jangan bilang mama ya ini urusan pribadi aku aja", "language": "id", "expected_level": 0, "category_tag": "ordinary_privacy", "notes": "v1.1.1 regression anchor T4 · urusan pribadi variant", "sender_profile": "peer" },
+  { "id": "v2-bl-privacy-id-002", "text": "ini antara kita saja ya, aku malu kalo orang tau", "language": "id", "expected_level": 0, "category_tag": "ordinary_privacy", "notes": "v1.1.1 regression anchor T4 · antara kita saja", "sender_profile": "peer" },
+  { "id": "v2-bl-privacy-id-003", "text": "jangan bilang papa nilai ujian aku jelek banget", "language": "id", "expected_level": 0, "category_tag": "ordinary_privacy", "notes": "v1.1.1 regression anchor T4 · nilai ujian variant", "sender_profile": "peer" },
+  { "id": "v2-bl-privacy-id-004", "text": "jangan sebar ya, aku masih pribadi aja soal ini", "language": "id", "expected_level": 0, "category_tag": "ordinary_privacy", "notes": "v1.1.1 regression anchor T4 · jangan sebar + pribadi aja", "sender_profile": "peer" },
+  { "id": "v2-bl-privacy-id-005", "text": "jangan diomongin dulu ya aku lagi mikir mau cerita atau nggak", "language": "id", "expected_level": 0, "category_tag": "ordinary_privacy", "notes": "v1.1.1 regression anchor T4 · jangan diomongin", "sender_profile": "peer" },
+
+  { "id": "v2-bl-med-sex-ed-001", "text": "the sex ed teacher explained how to say no to pressure in the lesson", "language": "en", "expected_level": 1, "category_tag": "sex_education_assignment", "notes": "v1.1.1 expansion · sex-ed with consent context", "sender_profile": "peer" },
+  { "id": "v2-bl-med-sex-ed-002", "text": "biology lab tomorrow we're reviewing anatomy for the quiz", "language": "en", "expected_level": 0, "category_tag": "medical_consultation", "notes": "v1.1.1 expansion · anatomy classwork", "sender_profile": "peer" },
+  { "id": "v2-bl-puberty-004", "text": "the counsellor says body changes at this age are completely normal", "language": "en", "expected_level": 0, "category_tag": "puberty_question_benign", "notes": "v1.1.1 expansion · counsellor reassurance", "sender_profile": "peer" },
+  { "id": "v2-bl-puberty-005", "text": "guru BK bilang perubahan tubuh di usia remaja itu normal kok", "language": "id", "expected_level": 0, "category_tag": "puberty_question_benign", "notes": "v1.1.1 expansion · ID counsellor reassurance", "sender_profile": "peer" },
+
+  { "id": "v2-bl-peer-support-001", "text": "if you want to talk about it i'm here no pressure take your time", "language": "en", "expected_level": 0, "category_tag": "benign_everyday", "notes": "v1.1.1 expansion · peer-support conversation", "sender_profile": "peer" },
+  { "id": "v2-bl-peer-support-002", "text": "kalo kamu mau cerita aku siap dengerin kok jangan dipendem sendiri", "language": "id", "expected_level": 0, "category_tag": "benign_everyday", "notes": "v1.1.1 expansion · ID peer-support conversation", "sender_profile": "peer" }
+]

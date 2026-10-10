@@ -54,6 +54,19 @@ export interface CreateClaimArgs {
   readonly connectionString: string;
 }
 
+/** Reason codes surfaced by `planCreateClaim` (pure claim-logic). The
+ *  sealed `CreateClaimResult` discriminates on `{ok:false; reason: R}`
+ *  for exactly the five validator refusals below. We extract them as a
+ *  named type so the service-level union is unambiguously parenthesised
+ *  (the old `A extends B ? R : never | "x" | "y"` form parses as
+ *  `A extends B ? R : (never | "x" | "y")` which breaks the surface).
+ *
+ *  `Extract<CreateClaimResult, {ok:false}>["reason"]` works where the
+ *  conditional-`infer R` form would be swallowed by the distributive
+ *  conditional + union-operator precedence trap. */
+type PlanCreateClaimReason =
+  Extract<CreateClaimResult, { ok: false }>["reason"];
+
 export type CreateClaimServiceResult =
   | {
       readonly ok: true;
@@ -64,7 +77,7 @@ export type CreateClaimServiceResult =
   | {
       readonly ok: false;
       readonly reason:
-        | CreateClaimResult extends { ok: false; reason: infer R } ? R : never
+        | PlanCreateClaimReason
         | "db_insert_failed"
         | "canonical_not_found";
       readonly detail?: string;

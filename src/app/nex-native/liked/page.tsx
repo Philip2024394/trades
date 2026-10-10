@@ -66,7 +66,6 @@ export default async function LikedPage({
     redirect("/nex-native/sign-in?next=/nex-native/liked");
   }
 
-  const sp = await searchParams;
   const bundles = await likedProductService.listLikedForViewer(
     session.account.id,
   );

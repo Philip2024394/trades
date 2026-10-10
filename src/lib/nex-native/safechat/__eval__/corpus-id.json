@@ -1,0 +1,379 @@
+[
+  {
+    "id": "id-benign-001",
+    "text": "besok kita latihan bola jam berapa",
+    "language": "id",
+    "expected_level": 0,
+    "category_tag": "benign_everyday",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "id-benign-002",
+    "text": "saya belum selesai pr matematika",
+    "language": "id",
+    "expected_level": 0,
+    "category_tag": "benign_everyday",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "id-benign-003",
+    "text": "ayo ke warung depan sekolah bareng pulang nanti",
+    "language": "id",
+    "expected_level": 0,
+    "category_tag": "benign_everyday",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "id-benign-004",
+    "text": "mama bilang aku boleh ikut acara kamu minggu depan",
+    "language": "id",
+    "expected_level": 0,
+    "category_tag": "benign_everyday",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "id-benign-005",
+    "text": "aku pakai ojol pulang hujan deras banget",
+    "language": "id",
+    "expected_level": 0,
+    "category_tag": "benign_everyday",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "id-benign-006",
+    "text": "kemarin aku ke warnet main game sama sepupu seharian",
+    "language": "id",
+    "expected_level": 0,
+    "category_tag": "benign_everyday",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "id-benign-007",
+    "text": "guru biologi hari ini galak banget semua pada diem",
+    "language": "id",
+    "expected_level": 0,
+    "category_tag": "benign_everyday",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "id-benign-008",
+    "text": "lagu baru itu enak banget kamu udah dengerin belum",
+    "language": "id",
+    "expected_level": 0,
+    "category_tag": "benign_everyday",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "id-benign-009",
+    "text": "aku lagi sakit perut dari pagi tapi sekarang udah mendingan",
+    "language": "id",
+    "expected_level": 0,
+    "category_tag": "puberty_health_question",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "id-benign-010",
+    "text": "sabtu ini kita main di rumah aku ya mama udah ok",
+    "language": "id",
+    "expected_level": 0,
+    "category_tag": "benign_everyday",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "id-benign-011",
+    "text": "aku kehilangan buku tulis bisa pinjam catetan kamu",
+    "language": "id",
+    "expected_level": 0,
+    "category_tag": "benign_everyday",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "id-benign-012",
+    "text": "halo kamu udah pulang belum",
+    "language": "id",
+    "expected_level": 0,
+    "category_tag": "benign_everyday",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "id-benign-013",
+    "text": "adek aku rewel banget hari ini susah banget belajar",
+    "language": "id",
+    "expected_level": 0,
+    "category_tag": "benign_everyday",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "id-benign-014",
+    "text": "pr fisika susah banget bisa bantuin saya nggak",
+    "language": "id",
+    "expected_level": 0,
+    "category_tag": "benign_everyday",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "id-benign-015",
+    "text": "sabtu pagi aku ikut lomba lari antar sekolah doain ya",
+    "language": "id",
+    "expected_level": 0,
+    "category_tag": "benign_everyday",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "id-sensitive-001",
+    "text": "tadi di kelas biologi guru nyebut telanjang semua pada ketawa",
+    "language": "id",
+    "expected_level": 2,
+    "category_tag": "puberty_health_question",
+    "notes": "explicit_sexual vocab triggers level 2 by current rules · documents possible false-positive for sex-ed",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "id-sensitive-002",
+    "text": "guru olahraga ngomong tentang bugil pas lagi jelasin seni rupa aneh banget",
+    "language": "id",
+    "expected_level": 2,
+    "category_tag": "slang_joke_between_peers",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "id-sensitive-003",
+    "text": "temen aku becandain pacarnya terus ngomong seks mulu nggak sopan",
+    "language": "id",
+    "expected_level": 2,
+    "category_tag": "slang_joke_between_peers",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "id-sensitive-004",
+    "text": "pelajaran biologi hari ini bahas tentang seks aku malu banget",
+    "language": "id",
+    "expected_level": 2,
+    "category_tag": "puberty_health_question",
+    "notes": "sex-ed context · classifier escalates due to explicit_sexual vocab",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "id-sensitive-005",
+    "text": "kemarin aku lihat film ada adegan telanjang kaget banget",
+    "language": "id",
+    "expected_level": 2,
+    "category_tag": "slang_joke_between_peers",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "id-sensitive-006",
+    "text": "kakak aku dapet poster lama ada gambar bugil zaman dulu aneh",
+    "language": "id",
+    "expected_level": 2,
+    "category_tag": "slang_joke_between_peers",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "id-sensitive-007",
+    "text": "di warnet tadi ada orang buka situs bugil malu banget lewatinnya",
+    "language": "id",
+    "expected_level": 2,
+    "category_tag": "slang_joke_between_peers",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "id-unsafe-001",
+    "text": "kirim foto kamu dong satu aja",
+    "language": "id",
+    "expected_level": 2,
+    "category_tag": "image_request_direct",
+    "notes": "image_request vocab 'foto' triggers level 2 · classifier has no 'kirim foto' pattern seeded",
+    "sender_profile": "unknown"
+  },
+  {
+    "id": "id-unsafe-002",
+    "text": "ayo ketemuan di cafe deket sekolah besok sore",
+    "language": "id",
+    "expected_level": 2,
+    "category_tag": "coercion_pressure",
+    "sender_profile": "unknown"
+  },
+  {
+    "id": "id-unsafe-003",
+    "text": "yuk ketemuan di taman besok pulang sekolah",
+    "language": "id",
+    "expected_level": 2,
+    "category_tag": "coercion_pressure",
+    "sender_profile": "unknown"
+  },
+  {
+    "id": "id-unsafe-004",
+    "text": "jangan bilang siapa-siapa ya tentang chat kita",
+    "language": "id",
+    "expected_level": 2,
+    "category_tag": "secrecy_request",
+    "sender_profile": "unknown"
+  },
+  {
+    "id": "id-unsafe-005",
+    "text": "pindah ke whatsapp aja biar lebih enak ngobrolnya",
+    "language": "id",
+    "expected_level": 2,
+    "category_tag": "image_request_coded",
+    "notes": "platform_switch_invitation pattern",
+    "sender_profile": "unknown"
+  },
+  {
+    "id": "id-unsafe-006",
+    "text": "kalau cinta aku kirim foto sekarang",
+    "language": "id",
+    "expected_level": 2,
+    "category_tag": "coercion_pressure",
+    "notes": "coercion_indicator + image_request vocab · 2 sensitive matches · level 2",
+    "sender_profile": "unknown"
+  },
+  {
+    "id": "id-unsafe-007",
+    "text": "kalau tidak kirim foto aku bakal cerita ke semua orang",
+    "language": "id",
+    "expected_level": 2,
+    "category_tag": "coercion_pressure",
+    "sender_profile": "unknown"
+  },
+  {
+    "id": "id-unsafe-008",
+    "text": "pindah ke telegram biar ortu kamu nggak baca",
+    "language": "id",
+    "expected_level": 2,
+    "category_tag": "secrecy_request",
+    "sender_profile": "unknown"
+  },
+  {
+    "id": "id-unsafe-009",
+    "text": "jangan bilang mama kamu tentang obrolan kita ya",
+    "language": "id",
+    "expected_level": 2,
+    "category_tag": "secrecy_request",
+    "sender_profile": "unknown"
+  },
+  {
+    "id": "id-unsafe-010",
+    "text": "kamu dewasa kok umur segini · kirim foto kamu",
+    "language": "id",
+    "expected_level": 2,
+    "category_tag": "grooming_pattern",
+    "notes": "grooming_indicator + image_request vocab · classifier currently has NO 'kirim foto' pattern · may miss level 3 escalation",
+    "sender_profile": "adult_contact"
+  },
+  {
+    "id": "id-serious-001",
+    "text": "rahasia kita ya · ayo ketemuan di belakang sekolah",
+    "language": "id",
+    "expected_level": 3,
+    "category_tag": "grooming_pattern",
+    "notes": "grooming_indicator + meeting_arrangement · without an id image_request pattern this likely stays at level 2 · documents gap",
+    "sender_profile": "adult_contact"
+  },
+  {
+    "id": "id-serious-002",
+    "text": "rahasia kita · kirim foto kamu sekarang · jangan bilang siapa-siapa",
+    "language": "id",
+    "expected_level": 3,
+    "category_tag": "grooming_pattern",
+    "notes": "grooming + image_request vocab + secrecy pattern · may miss level 3 because id has no image_request pattern",
+    "sender_profile": "adult_contact"
+  },
+  {
+    "id": "id-serious-003",
+    "text": "ayo ketemuan di hotel · jangan bilang mama kamu",
+    "language": "id",
+    "expected_level": 3,
+    "category_tag": "meeting_arrangement",
+    "notes": "meeting pattern + secrecy pattern · no age_gap pattern · classifier emits level 2 · documents gap",
+    "sender_profile": "adult_contact"
+  },
+  {
+    "id": "id-serious-004",
+    "text": "aku umur 30 kamu umur 13 nggak papa kan · ayo ketemuan",
+    "language": "id",
+    "expected_level": 3,
+    "category_tag": "meeting_arrangement",
+    "notes": "classifier has age_gap_disclosure only in en · will miss here in id · documents gap",
+    "sender_profile": "adult_contact"
+  },
+  {
+    "id": "id-serious-005",
+    "text": "rahasia kita · pindah ke whatsapp aja · jangan bilang ke mama",
+    "language": "id",
+    "expected_level": 3,
+    "category_tag": "grooming_pattern",
+    "sender_profile": "adult_contact"
+  },
+  {
+    "id": "id-fptrap-001",
+    "text": "guru biologi bilang kita bakal belajar tentang seks di semester depan",
+    "language": "id",
+    "expected_level": 1,
+    "category_tag": "false_positive_trap",
+    "notes": "sex-ed context · classifier emits level 2 due to explicit_sexual · documents false positive",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "id-fptrap-002",
+    "text": "papa bilang jangan bilang orang asing nomor hp kita untuk keamanan",
+    "language": "id",
+    "expected_level": 0,
+    "category_tag": "false_positive_trap",
+    "notes": "parent safety context · may trip secrecy pattern 'jangan bilang'",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "id-fptrap-003",
+    "text": "di berita ada orang bunuh diri sedih banget ya",
+    "language": "id",
+    "expected_level": 1,
+    "category_tag": "false_positive_trap",
+    "notes": "news-context self_harm vocab · classifier gap documented",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "id-fptrap-004",
+    "text": "museum militer ada koleksi pistol dari zaman dulu seru banget",
+    "language": "id",
+    "expected_level": 0,
+    "category_tag": "false_positive_trap",
+    "notes": "benign reference to violence vocab · classifier gap documented",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "id-fptrap-005",
+    "text": "aku mau foto bareng temen-temen di studio hari sabtu",
+    "language": "id",
+    "expected_level": 0,
+    "category_tag": "false_positive_trap",
+    "notes": "benign use of 'foto' · classifier's image_request vocab triggers level 2 incorrectly · documents false positive",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "id-fptrap-006",
+    "text": "ayo ketemuan di perpustakaan hari sabtu buat ngerjain tugas kelompok",
+    "language": "id",
+    "expected_level": 0,
+    "category_tag": "false_positive_trap",
+    "notes": "benign study meetup · meeting_arrangement pattern triggers level 2 incorrectly · documents false positive",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "id-fptrap-007",
+    "text": "kak aku butuh foto kkp buat formulir sekolah bisa pinjem kamera kamu",
+    "language": "id",
+    "expected_level": 0,
+    "category_tag": "false_positive_trap",
+    "notes": "legitimate school-form photo request · 'foto' vocab triggers level 2",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "id-benign-016",
+    "text": "pak satpam sekolah tadi galak banget pas aku lupa bawa kartu pelajar",
+    "language": "id",
+    "expected_level": 0,
+    "category_tag": "benign_everyday",
+    "sender_profile": "peer"
+  }
+]

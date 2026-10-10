@@ -1,0 +1,376 @@
+{
+  "baselineVersion": "safechat-rules-v1.0.0",
+  "revisedVersion": "safechat-rules-v1.1.0",
+  "corpusVersion": "v1",
+  "perCategoryBaseline": {
+    "benign_everyday": {
+      "total": 33,
+      "correct": 33,
+      "accuracy": 1,
+      "precision": 0,
+      "recall": 0,
+      "f1": 0
+    },
+    "slang_joke_between_peers": {
+      "total": 13,
+      "correct": 12,
+      "accuracy": 0.9231,
+      "precision": 1,
+      "recall": 0.9167,
+      "f1": 0.9565
+    },
+    "puberty_health_question": {
+      "total": 7,
+      "correct": 7,
+      "accuracy": 1,
+      "precision": 1,
+      "recall": 1,
+      "f1": 1
+    },
+    "image_request_direct": {
+      "total": 6,
+      "correct": 3,
+      "accuracy": 0.5,
+      "precision": 1,
+      "recall": 0.5,
+      "f1": 0.6667
+    },
+    "image_request_coded": {
+      "total": 7,
+      "correct": 3,
+      "accuracy": 0.4286,
+      "precision": 1,
+      "recall": 0.4286,
+      "f1": 0.6
+    },
+    "coercion_pressure": {
+      "total": 12,
+      "correct": 5,
+      "accuracy": 0.4167,
+      "precision": 1,
+      "recall": 0.4167,
+      "f1": 0.5882
+    },
+    "secrecy_request": {
+      "total": 6,
+      "correct": 0,
+      "accuracy": 0,
+      "precision": 0,
+      "recall": 0,
+      "f1": 0
+    },
+    "grooming_pattern": {
+      "total": 14,
+      "correct": 6,
+      "accuracy": 0.4286,
+      "precision": 1,
+      "recall": 0.4286,
+      "f1": 0.6
+    },
+    "meeting_arrangement": {
+      "total": 5,
+      "correct": 2,
+      "accuracy": 0.4,
+      "precision": 1,
+      "recall": 0.4,
+      "f1": 0.5714
+    },
+    "false_positive_trap": {
+      "total": 13,
+      "correct": 10,
+      "accuracy": 0.7692,
+      "precision": 1,
+      "recall": 0.75,
+      "f1": 0.8571
+    },
+    "code_switching": {
+      "total": 9,
+      "correct": 9,
+      "accuracy": 1,
+      "precision": 1,
+      "recall": 1,
+      "f1": 1
+    }
+  },
+  "perCategoryRevised": {
+    "benign_everyday": {
+      "total": 33,
+      "correct": 33,
+      "accuracy": 1,
+      "precision": 0,
+      "recall": 0,
+      "f1": 0
+    },
+    "slang_joke_between_peers": {
+      "total": 13,
+      "correct": 12,
+      "accuracy": 0.9231,
+      "precision": 1,
+      "recall": 0.9167,
+      "f1": 0.9565
+    },
+    "puberty_health_question": {
+      "total": 7,
+      "correct": 7,
+      "accuracy": 1,
+      "precision": 1,
+      "recall": 1,
+      "f1": 1
+    },
+    "image_request_direct": {
+      "total": 6,
+      "correct": 6,
+      "accuracy": 1,
+      "precision": 1,
+      "recall": 1,
+      "f1": 1
+    },
+    "image_request_coded": {
+      "total": 7,
+      "correct": 3,
+      "accuracy": 0.4286,
+      "precision": 1,
+      "recall": 0.8571,
+      "f1": 0.9231
+    },
+    "coercion_pressure": {
+      "total": 12,
+      "correct": 7,
+      "accuracy": 0.5833,
+      "precision": 1,
+      "recall": 0.75,
+      "f1": 0.8571
+    },
+    "secrecy_request": {
+      "total": 6,
+      "correct": 0,
+      "accuracy": 0,
+      "precision": 1,
+      "recall": 1,
+      "f1": 1
+    },
+    "grooming_pattern": {
+      "total": 14,
+      "correct": 10,
+      "accuracy": 0.7143,
+      "precision": 1,
+      "recall": 1,
+      "f1": 1
+    },
+    "meeting_arrangement": {
+      "total": 5,
+      "correct": 0,
+      "accuracy": 0,
+      "precision": 1,
+      "recall": 0.8,
+      "f1": 0.8889
+    },
+    "false_positive_trap": {
+      "total": 13,
+      "correct": 6,
+      "accuracy": 0.4615,
+      "precision": 0.4286,
+      "recall": 0.75,
+      "f1": 0.5455
+    },
+    "code_switching": {
+      "total": 9,
+      "correct": 9,
+      "accuracy": 1,
+      "precision": 1,
+      "recall": 1,
+      "f1": 1
+    }
+  },
+  "perCategoryDelta": {
+    "benign_everyday": {
+      "accuracyDelta": 0,
+      "precisionDelta": 0,
+      "recallDelta": 0,
+      "f1Delta": 0
+    },
+    "slang_joke_between_peers": {
+      "accuracyDelta": 0,
+      "precisionDelta": 0,
+      "recallDelta": 0,
+      "f1Delta": 0
+    },
+    "puberty_health_question": {
+      "accuracyDelta": 0,
+      "precisionDelta": 0,
+      "recallDelta": 0,
+      "f1Delta": 0
+    },
+    "image_request_direct": {
+      "accuracyDelta": 0.5,
+      "precisionDelta": 0,
+      "recallDelta": 0.5,
+      "f1Delta": 0.3333
+    },
+    "image_request_coded": {
+      "accuracyDelta": 0,
+      "precisionDelta": 0,
+      "recallDelta": 0.4285,
+      "f1Delta": 0.3231
+    },
+    "coercion_pressure": {
+      "accuracyDelta": 0.1666,
+      "precisionDelta": 0,
+      "recallDelta": 0.3333,
+      "f1Delta": 0.2689
+    },
+    "secrecy_request": {
+      "accuracyDelta": 0,
+      "precisionDelta": 1,
+      "recallDelta": 1,
+      "f1Delta": 1
+    },
+    "grooming_pattern": {
+      "accuracyDelta": 0.2857,
+      "precisionDelta": 0,
+      "recallDelta": 0.5714,
+      "f1Delta": 0.4
+    },
+    "meeting_arrangement": {
+      "accuracyDelta": -0.4,
+      "precisionDelta": 0,
+      "recallDelta": 0.4,
+      "f1Delta": 0.3175
+    },
+    "false_positive_trap": {
+      "accuracyDelta": -0.3077,
+      "precisionDelta": -0.5714,
+      "recallDelta": 0,
+      "f1Delta": -0.3116
+    },
+    "code_switching": {
+      "accuracyDelta": 0,
+      "precisionDelta": 0,
+      "recallDelta": 0,
+      "f1Delta": 0
+    }
+  },
+  "seriousRiskRecall": {
+    "baseline": {
+      "numerator": 8,
+      "denominator": 20
+    },
+    "revised": {
+      "numerator": 10,
+      "denominator": 20
+    }
+  },
+  "falsePositiveRateOnBenign": {
+    "baseline": 0,
+    "revised": 0.0784
+  },
+  "regressions": [
+    {
+      "itemId": "en-serious-003",
+      "category": "meeting_arrangement",
+      "expectedLevel": 3,
+      "baselineLevel": 3,
+      "revisedLevel": 2
+    },
+    {
+      "itemId": "en-fptrap-002",
+      "category": "false_positive_trap",
+      "expectedLevel": 0,
+      "baselineLevel": 0,
+      "revisedLevel": 1
+    },
+    {
+      "itemId": "id-fptrap-002",
+      "category": "false_positive_trap",
+      "expectedLevel": 0,
+      "baselineLevel": 0,
+      "revisedLevel": 1
+    },
+    {
+      "itemId": "id-fptrap-005",
+      "category": "false_positive_trap",
+      "expectedLevel": 0,
+      "baselineLevel": 0,
+      "revisedLevel": 2
+    },
+    {
+      "itemId": "id-fptrap-007",
+      "category": "false_positive_trap",
+      "expectedLevel": 0,
+      "baselineLevel": 0,
+      "revisedLevel": 2
+    },
+    {
+      "itemId": "mix-serious-003",
+      "category": "meeting_arrangement",
+      "expectedLevel": 3,
+      "baselineLevel": 3,
+      "revisedLevel": 2
+    }
+  ],
+  "improvements": [
+    {
+      "itemId": "en-unsafe-006",
+      "category": "image_request_direct",
+      "expectedLevel": 2,
+      "baselineLevel": 0,
+      "revisedLevel": 2
+    },
+    {
+      "itemId": "en-unsafe-011",
+      "category": "coercion_pressure",
+      "expectedLevel": 2,
+      "baselineLevel": 0,
+      "revisedLevel": 2
+    },
+    {
+      "itemId": "en-unsafe-014",
+      "category": "coercion_pressure",
+      "expectedLevel": 2,
+      "baselineLevel": 0,
+      "revisedLevel": 2
+    },
+    {
+      "itemId": "en-serious-008",
+      "category": "grooming_pattern",
+      "expectedLevel": 3,
+      "baselineLevel": 0,
+      "revisedLevel": 3
+    },
+    {
+      "itemId": "id-unsafe-001",
+      "category": "image_request_direct",
+      "expectedLevel": 2,
+      "baselineLevel": 0,
+      "revisedLevel": 2
+    },
+    {
+      "itemId": "id-serious-002",
+      "category": "grooming_pattern",
+      "expectedLevel": 3,
+      "baselineLevel": 0,
+      "revisedLevel": 3
+    },
+    {
+      "itemId": "id-serious-005",
+      "category": "grooming_pattern",
+      "expectedLevel": 3,
+      "baselineLevel": 0,
+      "revisedLevel": 3
+    },
+    {
+      "itemId": "mix-unsafe-001",
+      "category": "image_request_direct",
+      "expectedLevel": 2,
+      "baselineLevel": 0,
+      "revisedLevel": 2
+    },
+    {
+      "itemId": "mix-serious-001",
+      "category": "grooming_pattern",
+      "expectedLevel": 3,
+      "baselineLevel": 0,
+      "revisedLevel": 3
+    }
+  ]
+}

@@ -1,0 +1,113 @@
+/* NEX Native Shell — token layer per Recovery Wave 1 · sealed 2026-09-25.
+ *
+ * Root-cause fix for the "white-container" surface: /nex-native pilot
+ * was piloted without importing the /nex-app.css token stack, so pages
+ * inherited the root dark theme + default Tailwind neutrals instead of
+ * the NEX cream + background + full --nex-* variable set. This file
+ * ports the same token layer under a distinct .nex-native-root class
+ * so the two surfaces stay independent (per Founder recovery doctrine
+ * · UI Restoration 2026-09-25) while sharing values.
+ *
+ * When the unified NEX Design System lands (planned follow-up wave)
+ * both this file and /nex-app.css collapse into a shared source of
+ * truth. For now the values are intentionally duplicated so restoration
+ * ships without touching working /nex-app styles.
+ */
+.nex-native-root {
+  /* ── Structural neutrals ── */
+  --nex-neutral-0:    #FFFFFF;
+  --nex-neutral-50:   #FAFAF9;
+  --nex-neutral-100:  #F4F4F2;
+  --nex-neutral-200:  #E8E8E4;
+  --nex-neutral-300:  #D4D4CE;
+  --nex-neutral-400:  #A3A39C;
+  --nex-neutral-500:  #6E6E67;
+  --nex-neutral-700:  #3D3D38;
+  --nex-neutral-900:  #1A1A17;
+
+  /* ── Cream surface (matches /nex-app.css so hero + page blend) ── */
+  --nex-cream:        #FBF5E9;
+  --nex-cream-elev:   #FEFBF3;
+
+  /* ── NEX blue wave background · deep navy of the wallpaper photo ── */
+  --nex-blue-deep:    #0A1A2E;
+  --nex-blue-mid:     #0F2745;
+
+  /* ── App-wide background image · same source as /nex-app ── */
+  --nex-bg-image:     url("/nex/backgrounds/main-2026-09-07.jpg");
+  /* HARD RESET · 2026-09-25 · Founder-directed: the 72% cream overlay
+   * was muting the NEX blue wave background into a gray-brown-khaki
+   * haze. Dropped to a near-invisible 8% so the blue reads as blue. */
+  --nex-bg-overlay:   linear-gradient(rgba(251, 245, 233, 0.08), rgba(251, 245, 233, 0.08));
+
+  /* ── NEX accent orange (X-orange identity) ── */
+  --nex-accent-50:    #FFF7ED;
+  --nex-accent-100:   #FED7AA;
+  --nex-accent-500:   #F97316;
+  --nex-accent-600:   #EA580C;
+  --nex-accent-700:   #C2410C;
+
+  /* ── Semantic ── */
+  --nex-success-500:  #10B981;
+  --nex-warning-500:  #F59E0B;
+  --nex-error-500:    #EF4444;
+  --nex-info-500:     #3B82F6;
+
+  /* ── Shadows ── */
+  --nex-shadow-sm:  0 1px 2px 0 rgba(15, 17, 21, 0.06);
+  --nex-shadow-md:  0 4px 12px -2px rgba(15, 17, 21, 0.08), 0 2px 4px -1px rgba(15, 17, 21, 0.04);
+  --nex-shadow-lg:  0 12px 24px -6px rgba(15, 17, 21, 0.12), 0 4px 8px -2px rgba(15, 17, 21, 0.06);
+  --nex-shadow-xl:  0 24px 48px -12px rgba(15, 17, 21, 0.18), 0 8px 16px -4px rgba(15, 17, 21, 0.08);
+
+  /* ── Motion ── */
+  --nex-motion-fast:   150ms;
+  --nex-motion-medium: 250ms;
+  --nex-motion-slow:   400ms;
+  --nex-motion-hero:   600ms;
+  --nex-ease-signature: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* ── Structural surface reset ── */
+  background-color: var(--nex-cream);
+  background-image: var(--nex-bg-overlay), var(--nex-bg-image);
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  color: var(--nex-neutral-900);
+  min-height: 100vh;
+  min-height: 100dvh;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Desktop · larger viewports get the image fixed. iOS Safari doesn't
+ * reliably support background-attachment: fixed on mobile, so scope to
+ * pointer:fine (desktop / laptop). */
+@media (min-width: 768px) and (hover: hover) and (pointer: fine) {
+  .nex-native-root {
+    background-attachment: fixed;
+  }
+}
+
+/* Ensure the whole viewport under a nex-native surface reads as cream,
+ * not the root's dark theme. */
+.nex-native-root > * {
+  color: inherit;
+}
+
+/* Wave 4 · 2026-09-25 · reserve the top-right corner slot occupied by the
+ * fixed NexNativeCapabilitiesMenu button (44×44 + 16px inset = ~60px).
+ * Applies right-padding to <header> elements inside <main> so page titles
+ * and identity strings stop underlapping the floating menu. Scoped to
+ * .nex-native-root so /nex-app is unaffected. */
+.nex-native-root main > header {
+  padding-right: 56px;
+}
+/* Motion-reduced */
+@media (prefers-reduced-motion: reduce) {
+  .nex-native-root * {
+    animation-duration: 0ms !important;
+    transition-duration: 0ms !important;
+  }
+}

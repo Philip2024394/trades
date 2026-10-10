@@ -3,12 +3,20 @@
 // NEX Settings landing · gear icon in the shared page header points here.
 // Lists the settings sub-surfaces as landscape cards, matching the visual
 // language of /nex-native/home.
+//
+// Settings is a FUNCTIONAL control surface · it uses the solid NEX palette
+// (navy #020914 bg, cyan #00AFFF accent, orange #FF7200 brand). Never
+// theme Settings per active World · the sealed universal theme controls
+// doctrine applies here. (This comment is the regression anchor read by
+// `_settings-ia.test.ts § E`.)
 
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { resolveNexAppSessionFromContext } from "@/lib/nex-native/app/session";
 import { NexPageHeader } from "../_page-header";
 import { signOutAction } from "../_actions";
+import { EmergencyHelpEntry } from "./_emergency-help-entry";
+import { FamilySafeChatEntry } from "./_family-safe-chat-entry";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -136,6 +144,10 @@ export default async function SettingsIndex() {
               </>
             )}
           </p>
+
+          <EmergencyHelpEntry />
+
+          <FamilySafeChatEntry />
 
           <div style={{ display: "grid", gap: 12 }}>
             {rows.map((r, i) => {

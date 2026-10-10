@@ -924,6 +924,20 @@ export function rowToCandidate(input: {
       wikidata_qid: wikidataQid && /^Q[0-9]+$/.test(wikidataQid) ? wikidataQid : null,
       city: row.city,
       district: row.district,
+      // The three fields below were added to the Candidate.identity
+      // shape by migration 178 (location-granularity wave · commit
+      // 682d7d0a). The LegacyRow projection intentionally does NOT
+      // carry these — the legacy sources this generator consumes
+      // (nex.food_business, accommodation_business, service_business,
+      // mp_seller, transport_acquisition_record) have no structured
+      // neighbourhood / street_line / postal_code field. We populate
+      // null here honestly: no fabrication, no inference, no splitting
+      // of a free-text address. The enrich-osm-reference pipeline
+      // (which DOES have access to OSM 'addr:*' tags) is the correct
+      // place to populate these downstream.
+      neighbourhood: null,
+      street_line: null,
+      address: null,
       coordinates,
     },
     legacy_source: {

@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig.json",
+  "include": [
+    "../../src/lib/nex-native/directory/**/*.ts",
+    "../../src/lib/nex-native/directory/**/*.tsx",
+    "../../src/components/nex-native/directory/**/*.tsx",
+    "../../src/app/nex-native/directory/**/*.tsx",
+    "../../src/app/api/nex-directory/**/*.ts"
+  ],
+  "exclude": [
+    "../../src/lib/nex-native/directory/**/__tests__/**",
+    "../../data/nex-training-corpus/**",
+    "../../.next/**"
+  ]
+}

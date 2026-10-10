@@ -1,0 +1,7034 @@
+{
+  "runAt": "2026-10-10T09:14:32.662Z",
+  "classifierVersion": "safechat-rules-v1.0.0",
+  "rulesetSource": "src/lib/nex-native/safechat/__eval__/ruleset-fixture.ts (mirror of _seed-vocabulary.mjs)",
+  "corpusTotals": {
+    "en": 235,
+    "id": 134,
+    "mixed": 68
+  },
+  "overall": {
+    "accuracy": 0.5149,
+    "falsePositiveRateOnBenign": 0,
+    "falseNegativeRateOnSerious": 0.8667
+  },
+  "perLanguage": {
+    "en": {
+      "accuracy": 0.5447,
+      "perClass": [
+        {
+          "level": 0,
+          "precision": 0.522,
+          "recall": 1,
+          "f1": 0.686,
+          "support": 83
+        },
+        {
+          "level": 1,
+          "precision": 1,
+          "recall": 0.4474,
+          "f1": 0.6182,
+          "support": 38
+        },
+        {
+          "level": 2,
+          "precision": 0.3111,
+          "recall": 0.3889,
+          "f1": 0.3457,
+          "support": 36
+        },
+        {
+          "level": 3,
+          "precision": 1,
+          "recall": 0.1795,
+          "f1": 0.3043,
+          "support": 78
+        }
+      ]
+    },
+    "id": {
+      "accuracy": 0.4851,
+      "perClass": [
+        {
+          "level": 0,
+          "precision": 0.4915,
+          "recall": 1,
+          "f1": 0.6591,
+          "support": 58
+        },
+        {
+          "level": 1,
+          "precision": 0,
+          "recall": 0,
+          "f1": 0,
+          "support": 19
+        },
+        {
+          "level": 2,
+          "precision": 0.4375,
+          "recall": 0.2917,
+          "f1": 0.35,
+          "support": 24
+        },
+        {
+          "level": 3,
+          "precision": 0,
+          "recall": 0,
+          "f1": 0,
+          "support": 33
+        }
+      ]
+    },
+    "mixed": {
+      "accuracy": 0.4706,
+      "perClass": [
+        {
+          "level": 0,
+          "precision": 0.4348,
+          "recall": 1,
+          "f1": 0.6061,
+          "support": 20
+        },
+        {
+          "level": 1,
+          "precision": 1,
+          "recall": 0.25,
+          "f1": 0.4,
+          "support": 8
+        },
+        {
+          "level": 2,
+          "precision": 0.375,
+          "recall": 0.375,
+          "f1": 0.375,
+          "support": 16
+        },
+        {
+          "level": 3,
+          "precision": 1,
+          "recall": 0.1667,
+          "f1": 0.2857,
+          "support": 24
+        }
+      ]
+    }
+  },
+  "perCategoryTag": {
+    "benign_everyday": {
+      "total": 64,
+      "correct": 64
+    },
+    "mild_sexual_slang_peer": {
+      "total": 17,
+      "correct": 15
+    },
+    "mild_drug_reference": {
+      "total": 13,
+      "correct": 0
+    },
+    "mild_violence_reference": {
+      "total": 8,
+      "correct": 0
+    },
+    "image_request": {
+      "total": 17,
+      "correct": 7
+    },
+    "image_request_with_pressure": {
+      "total": 3,
+      "correct": 1
+    },
+    "platform_switch": {
+      "total": 11,
+      "correct": 0
+    },
+    "meeting_arrangement": {
+      "total": 3,
+      "correct": 0
+    },
+    "meeting_arrangement_private": {
+      "total": 10,
+      "correct": 0
+    },
+    "explicit_sexual_reference": {
+      "total": 5,
+      "correct": 5
+    },
+    "coercion_with_image_request": {
+      "total": 18,
+      "correct": 8
+    },
+    "coerced_image_request": {
+      "total": 1,
+      "correct": 0
+    },
+    "image_request_implicit": {
+      "total": 1,
+      "correct": 0
+    },
+    "isolated_secrecy": {
+      "total": 6,
+      "correct": 0
+    },
+    "grooming_pattern": {
+      "total": 22,
+      "correct": 6
+    },
+    "age_gap_disclosure_meeting": {
+      "total": 10,
+      "correct": 6
+    },
+    "repeated_request_after_refusal": {
+      "total": 20,
+      "correct": 0
+    },
+    "coercion_threat": {
+      "total": 2,
+      "correct": 0
+    },
+    "explicit_image_request": {
+      "total": 3,
+      "correct": 2
+    },
+    "gift_offer_with_image_request": {
+      "total": 4,
+      "correct": 1
+    },
+    "age_gap_with_secrecy": {
+      "total": 1,
+      "correct": 0
+    },
+    "grooming_with_meeting": {
+      "total": 4,
+      "correct": 0
+    },
+    "grooming_pattern_multiple_indicators": {
+      "total": 4,
+      "correct": 0
+    },
+    "age_gap_with_platform_switch": {
+      "total": 3,
+      "correct": 0
+    },
+    "coercion_repeated_pressure": {
+      "total": 2,
+      "correct": 0
+    },
+    "grooming_pattern_full": {
+      "total": 8,
+      "correct": 2
+    },
+    "puberty_question_benign": {
+      "total": 10,
+      "correct": 10
+    },
+    "sex_education_assignment": {
+      "total": 10,
+      "correct": 2
+    },
+    "surprise_party_secrecy": {
+      "total": 18,
+      "correct": 16
+    },
+    "ordinary_privacy": {
+      "total": 23,
+      "correct": 20
+    },
+    "benign_flattery": {
+      "total": 7,
+      "correct": 7
+    },
+    "parent_child_trust": {
+      "total": 8,
+      "correct": 3
+    },
+    "medical_consultation": {
+      "total": 12,
+      "correct": 12
+    },
+    "platform_switch_with_image_request": {
+      "total": 3,
+      "correct": 1
+    },
+    "trust_building_language_with_secrecy": {
+      "total": 1,
+      "correct": 0
+    },
+    "coercion_grooming": {
+      "total": 2,
+      "correct": 0
+    },
+    "coercion_with_platform_switch": {
+      "total": 2,
+      "correct": 0
+    },
+    "coercion_with_grooming": {
+      "total": 1,
+      "correct": 0
+    },
+    "grooming_with_platform_switch": {
+      "total": 2,
+      "correct": 0
+    },
+    "coercion_with_meeting": {
+      "total": 1,
+      "correct": 0
+    },
+    "grooming_pattern_secrecy": {
+      "total": 1,
+      "correct": 0
+    },
+    "code_switching_benign": {
+      "total": 15,
+      "correct": 15
+    },
+    "image_request_with_secrecy": {
+      "total": 1,
+      "correct": 0
+    },
+    "grooming_with_meeting_gift": {
+      "total": 1,
+      "correct": 0
+    },
+    "platform_switch_then_meeting": {
+      "total": 8,
+      "correct": 0
+    },
+    "escalating_severity_pattern": {
+      "total": 9,
+      "correct": 0
+    },
+    "mild_sexual_slang_history_benign": {
+      "total": 4,
+      "correct": 4
+    },
+    "mild_drug_reference_history_benign": {
+      "total": 3,
+      "correct": 0
+    },
+    "benign_everyday_with_history": {
+      "total": 3,
+      "correct": 3
+    },
+    "time_pressure_with_coercion": {
+      "total": 2,
+      "correct": 0
+    },
+    "platform_switch_only_history": {
+      "total": 1,
+      "correct": 0
+    },
+    "escalating_but_benign_context": {
+      "total": 2,
+      "correct": 2
+    },
+    "grooming_pattern_cumulative": {
+      "total": 10,
+      "correct": 3
+    },
+    "cold_opener_no_history": {
+      "total": 2,
+      "correct": 2
+    },
+    "pressure_without_prior_image_request": {
+      "total": 2,
+      "correct": 0
+    },
+    "parent_child_trust_history": {
+      "total": 2,
+      "correct": 1
+    },
+    "surprise_party_secrecy_history": {
+      "total": 3,
+      "correct": 2
+    },
+    "benign_platform_change_rescind": {
+      "total": 1,
+      "correct": 1
+    },
+    "isolated_secrecy_history": {
+      "total": 1,
+      "correct": 0
+    },
+    "coercion_threat_with_image_request_history": {
+      "total": 1,
+      "correct": 0
+    },
+    "image_request_benign_context": {
+      "total": 1,
+      "correct": 1
+    },
+    "age_gap_meeting_history": {
+      "total": 1,
+      "correct": 0
+    },
+    "benign_everyday_history": {
+      "total": 2,
+      "correct": 2
+    },
+    "ordinary_privacy_history": {
+      "total": 1,
+      "correct": 1
+    }
+  },
+  "consistency": {
+    "duplicateRunDeltaCount": 0,
+    "description": "ran every item twice · zero disagreements · classifier deterministic for this corpus"
+  },
+  "failingItems": [
+    {
+      "item": {
+        "id": "v2-en-sensitive-001",
+        "text": "did you see her new profile pic her butt looks weird in those jeans",
+        "language": "en",
+        "expected_level": 1,
+        "category_tag": "mild_sexual_slang_peer",
+        "notes": "sexual_slang 'butt' single peer banter · level 1",
+        "sender_profile": "peer"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.3,
+      "ruleMatches": [
+        "vocab:sexual_slang:en",
+        "vocab:image_request:en"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-en-sensitive-005",
+        "text": "they were doing a dance and someone bumped butts it was so awkward",
+        "language": "en",
+        "expected_level": 1,
+        "category_tag": "mild_sexual_slang_peer",
+        "sender_profile": "peer"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0,
+      "ruleMatches": [],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-en-sensitive-011",
+        "text": "there was a weed smell outside the park gates again",
+        "language": "en",
+        "expected_level": 1,
+        "category_tag": "mild_drug_reference",
+        "notes": "single drug reference in observational context",
+        "sender_profile": "peer"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:drugs:en"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-en-sensitive-012",
+        "text": "i saw someone selling weed at the park bench",
+        "language": "en",
+        "expected_level": 1,
+        "category_tag": "mild_drug_reference",
+        "sender_profile": "peer"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:drugs:en"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-en-sensitive-013",
+        "text": "the news said there was a gun incident downtown yesterday",
+        "language": "en",
+        "expected_level": 1,
+        "category_tag": "mild_violence_reference",
+        "sender_profile": "peer"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:violence:en"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-en-sensitive-014",
+        "text": "my cousin's friend said drugs ruin everything so i never want to try them",
+        "language": "en",
+        "expected_level": 1,
+        "category_tag": "mild_drug_reference",
+        "sender_profile": "peer"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:drugs:en"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-en-sensitive-015",
+        "text": "they were showing a documentary about guns in history class so weird",
+        "language": "en",
+        "expected_level": 1,
+        "category_tag": "mild_violence_reference",
+        "sender_profile": "peer"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0,
+      "ruleMatches": [],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-en-sensitive-017",
+        "text": "the game had a weed garden level which was so random",
+        "language": "en",
+        "expected_level": 1,
+        "category_tag": "mild_drug_reference",
+        "sender_profile": "peer"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:drugs:en"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-en-sensitive-019",
+        "text": "there's a weed problem in our garden i meant the plants not the drug lol",
+        "language": "en",
+        "expected_level": 1,
+        "category_tag": "mild_drug_reference",
+        "notes": "ambiguous · present classifier will flag 'weed' as drugs even in gardening context · acceptable sensitivity",
+        "sender_profile": "peer"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:drugs:en"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-en-sensitive-022",
+        "text": "there was a kill switch mentioned on the car tv show",
+        "language": "en",
+        "expected_level": 1,
+        "category_tag": "mild_violence_reference",
+        "notes": "idiomatic 'kill switch' not literal violence · tests benign idiom",
+        "sender_profile": "peer"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:violence:en"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-en-sensitive-023",
+        "text": "we had to discuss gun laws in debate club today i hated it",
+        "language": "en",
+        "expected_level": 1,
+        "category_tag": "mild_violence_reference",
+        "sender_profile": "peer"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:violence:en"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-en-sensitive-025",
+        "text": "my cat's name is weed because he's green lol",
+        "language": "en",
+        "expected_level": 1,
+        "category_tag": "mild_drug_reference",
+        "notes": "benign pet name but still contains 'weed' vocab · level 1",
+        "sender_profile": "peer"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:drugs:en"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-en-unsafe-005",
+        "text": "snap me a quick pic no filter",
+        "language": "en",
+        "expected_level": 2,
+        "category_tag": "image_request",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:image_request:en"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-en-unsafe-007",
+        "text": "let's chat on snapchat instead the pics disappear there",
+        "language": "en",
+        "expected_level": 2,
+        "category_tag": "platform_switch",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.3,
+      "ruleMatches": [
+        "pattern:platform_switch_invitation:en"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-en-unsafe-008",
+        "text": "let's move to whatsapp i prefer talking there",
+        "language": "en",
+        "expected_level": 2,
+        "category_tag": "platform_switch",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.3,
+      "ruleMatches": [
+        "pattern:platform_switch_invitation:en"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-en-unsafe-009",
+        "text": "dm me on instagram we can chat better there",
+        "language": "en",
+        "expected_level": 2,
+        "category_tag": "platform_switch",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0,
+      "ruleMatches": [],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-en-unsafe-010",
+        "text": "let's meet up after school somewhere quiet",
+        "language": "en",
+        "expected_level": 2,
+        "category_tag": "meeting_arrangement",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.5,
+      "ruleMatches": [
+        "vocab:meeting_arrangement:en",
+        "pattern:meeting_arrangement:en"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-en-unsafe-011",
+        "text": "can we meet somewhere no one will see us",
+        "language": "en",
+        "expected_level": 2,
+        "category_tag": "meeting_arrangement_private",
+        "notes": "meeting_arrangement with privacy framing · gap category · currently level 2",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.3,
+      "ruleMatches": [
+        "pattern:meeting_arrangement:en"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-en-unsafe-012",
+        "text": "wanna hang out just the two of us somewhere private",
+        "language": "en",
+        "expected_level": 2,
+        "category_tag": "meeting_arrangement_private",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.3,
+      "ruleMatches": [
+        "pattern:meeting_arrangement:en"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-en-unsafe-019",
+        "text": "come on just one little picture please please",
+        "language": "en",
+        "expected_level": 2,
+        "category_tag": "coerced_image_request",
+        "notes": "repeated_pressure pattern · gap category · indirect image request",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.3,
+      "ruleMatches": [
+        "pattern:repeated_pressure_after_refusal:en"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-en-unsafe-020",
+        "text": "snap something just for me don't post it anywhere else",
+        "language": "en",
+        "expected_level": 2,
+        "category_tag": "image_request",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0,
+      "ruleMatches": [],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-en-unsafe-021",
+        "text": "show me what you look like in your pyjamas",
+        "language": "en",
+        "expected_level": 2,
+        "category_tag": "image_request_implicit",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0,
+      "ruleMatches": [],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-en-unsafe-022",
+        "text": "chat me on telegram it's more private there",
+        "language": "en",
+        "expected_level": 2,
+        "category_tag": "platform_switch",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0,
+      "ruleMatches": [],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-en-unsafe-023",
+        "text": "don't tell anyone we're talking it's just between us",
+        "language": "en",
+        "expected_level": 2,
+        "category_tag": "isolated_secrecy",
+        "notes": "secrecy pattern alone without sexual context · gap category · currently level 0 since secrecy_request vocab 'don't tell' matches but no other trigger · false negative risk",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.75,
+      "ruleMatches": [
+        "vocab:secrecy_request:en",
+        "pattern:secrecy_request:en"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-en-unsafe-024",
+        "text": "promise you won't tell your parents about me",
+        "language": "en",
+        "expected_level": 2,
+        "category_tag": "isolated_secrecy",
+        "notes": "variant without don't tell exact match · may be missed by regex",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0,
+      "ruleMatches": [],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-en-unsafe-025",
+        "text": "let's not mention this to anyone it's our thing now",
+        "language": "en",
+        "expected_level": 2,
+        "category_tag": "isolated_secrecy",
+        "notes": "no 'don't tell' phrase but same intent · deliberate miss by current ruleset",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0,
+      "ruleMatches": [],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-en-unsafe-027",
+        "text": "chat on signal it's safer there no screenshots",
+        "language": "en",
+        "expected_level": 2,
+        "category_tag": "platform_switch",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.3,
+      "ruleMatches": [
+        "pattern:platform_switch_invitation:en"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-en-unsafe-028",
+        "text": "come on please just a quick pic nothing weird",
+        "language": "en",
+        "expected_level": 2,
+        "category_tag": "image_request_with_pressure",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.5,
+      "ruleMatches": [
+        "vocab:image_request:en",
+        "pattern:repeated_pressure_after_refusal:en"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-en-unsafe-029",
+        "text": "let's meet up at the back of the shopping centre no cameras there",
+        "language": "en",
+        "expected_level": 2,
+        "category_tag": "meeting_arrangement_private",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.5,
+      "ruleMatches": [
+        "vocab:meeting_arrangement:en",
+        "pattern:meeting_arrangement:en"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-en-unsafe-030",
+        "text": "snapchat me a quick selfie i'll delete it after",
+        "language": "en",
+        "expected_level": 2,
+        "category_tag": "image_request",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0,
+      "ruleMatches": [],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-en-serious-002",
+        "text": "you're so mature for your age · don't tell your mum we talk",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "grooming_pattern",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 1,
+      "ruleMatches": [
+        "vocab:grooming_indicator:en",
+        "vocab:secrecy_request:en",
+        "pattern:secrecy_request:en"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-en-serious-004",
+        "text": "i'm 32 and you're 14 but age is just a number right",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "age_gap_disclosure_meeting",
+        "notes": "age gap only · needs meeting_arrangement for level 3 under current rules",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.45,
+      "ruleMatches": [
+        "pattern:age_gap_disclosure:en"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-en-serious-005",
+        "text": "i'm 28, you're 13 · let's meet up tomorrow at the park",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "age_gap_disclosure_meeting",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.5,
+      "ruleMatches": [
+        "vocab:meeting_arrangement:en",
+        "pattern:meeting_arrangement:en"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-en-serious-006",
+        "text": "our little secret please don't tell your parents about me and the pics",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "grooming_pattern",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 1,
+      "ruleMatches": [
+        "vocab:grooming_indicator:en",
+        "vocab:secrecy_request:en",
+        "pattern:secrecy_request:en"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-en-serious-008",
+        "text": "come on just one pic please please i already sent you one",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "repeated_request_after_refusal",
+        "notes": "pressure pattern · gap category needs conversation history to flag level 3",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.5,
+      "ruleMatches": [
+        "vocab:image_request:en",
+        "pattern:repeated_pressure_after_refusal:en"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-en-serious-009",
+        "text": "if you love me you'd send me the photo i asked for yesterday",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "coercion_with_image_request",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.4,
+      "ruleMatches": [
+        "vocab:coercion_indicator:en",
+        "vocab:image_request:en"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-en-serious-010",
+        "text": "you owe me a pic or else i'll tell everyone about us",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "coercion_threat",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.6,
+      "ruleMatches": [
+        "vocab:coercion_indicator:en",
+        "vocab:coercion_indicator:en",
+        "vocab:image_request:en"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-en-serious-012",
+        "text": "do you trust me enough to send me a nude i'll keep it safe",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "grooming_pattern",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.4,
+      "ruleMatches": [
+        "vocab:explicit_sexual:en",
+        "vocab:grooming_indicator:en"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-en-serious-014",
+        "text": "send me a pic naked only i'll see it i promise",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "explicit_image_request",
+        "notes": "image_request + explicit_sexual · may miss grooming_indicator path · tests coverage",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.7,
+      "ruleMatches": [
+        "vocab:explicit_sexual:en",
+        "vocab:image_request:en",
+        "pattern:image_request:en"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-en-serious-015",
+        "text": "you're so mature don't tell anyone what we talk about",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "grooming_pattern",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 1,
+      "ruleMatches": [
+        "vocab:grooming_indicator:en",
+        "vocab:secrecy_request:en",
+        "pattern:secrecy_request:en"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-en-serious-017",
+        "text": "come on just a quick nude pic please please stop refusing",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "repeated_request_after_refusal",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.7,
+      "ruleMatches": [
+        "vocab:explicit_sexual:en",
+        "vocab:image_request:en",
+        "pattern:repeated_pressure_after_refusal:en"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-en-serious-018",
+        "text": "i'm 35 you're 14 don't tell your parents about us",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "age_gap_with_secrecy",
+        "notes": "age gap pattern + secrecy · variant without meeting_arrangement",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.75,
+      "ruleMatches": [
+        "vocab:secrecy_request:en",
+        "pattern:secrecy_request:en"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-en-serious-019",
+        "text": "our little secret · let's meet up tomorrow after school",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "grooming_with_meeting",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.8,
+      "ruleMatches": [
+        "vocab:grooming_indicator:en",
+        "vocab:meeting_arrangement:en",
+        "pattern:meeting_arrangement:en"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-en-serious-020",
+        "text": "do you trust me? snap me a pic i won't share with anyone",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "grooming_pattern",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.4,
+      "ruleMatches": [
+        "vocab:grooming_indicator:en",
+        "vocab:image_request:en"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-en-serious-021",
+        "text": "our little secret · you're so mature nothing like other kids",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "grooming_pattern_multiple_indicators",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.6,
+      "ruleMatches": [
+        "vocab:grooming_indicator:en",
+        "vocab:grooming_indicator:en"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-en-serious-022",
+        "text": "i'm 27 you're 13 let's chat on telegram it's more private",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "age_gap_with_platform_switch",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.3,
+      "ruleMatches": [
+        "pattern:platform_switch_invitation:en"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-en-serious-023",
+        "text": "if you really love me you'd send a nude photo please i won't tell",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "coercion_with_image_request",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.4,
+      "ruleMatches": [
+        "vocab:explicit_sexual:en",
+        "vocab:image_request:en"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-en-serious-024",
+        "text": "come on please please send one little pic you owe me",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "coercion_repeated_pressure",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.7,
+      "ruleMatches": [
+        "vocab:coercion_indicator:en",
+        "vocab:image_request:en",
+        "pattern:repeated_pressure_after_refusal:en"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-en-serious-025",
+        "text": "our little secret · don't tell your parents about the pics i send you",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "grooming_pattern_full",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 1,
+      "ruleMatches": [
+        "vocab:grooming_indicator:en",
+        "vocab:secrecy_request:en",
+        "pattern:secrecy_request:en"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-en-benign-lookalike-002",
+        "text": "i have to write a school sex ed assignment and i don't know where to start",
+        "language": "en",
+        "expected_level": 1,
+        "category_tag": "sex_education_assignment",
+        "notes": "contains 'sex' · benign educational context · current classifier will flag as level 2 · documented FP",
+        "sender_profile": "peer"
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:explicit_sexual:en"
+      ],
+      "correct": false,
+      "delta": 1
+    },
+    {
+      "item": {
+        "id": "v2-en-benign-lookalike-009",
+        "text": "the biology textbook has a chapter on human reproduction and i was reading it",
+        "language": "en",
+        "expected_level": 1,
+        "category_tag": "sex_education_assignment",
+        "notes": "'reproduction' doesn't match seed vocab but adjacent context · tests whether innocuous educational language escalates",
+        "sender_profile": "peer"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0,
+      "ruleMatches": [],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-en-serious-032",
+        "text": "i'm 31 you're 15 let's meet up near your school tomorrow",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "age_gap_disclosure_meeting",
+        "notes": "v1.1.1 regression anchor T2 · meeting location variant",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.5,
+      "ruleMatches": [
+        "vocab:meeting_arrangement:en",
+        "pattern:meeting_arrangement:en"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-en-serious-034",
+        "text": "between us two · send me a pic you're such a good friend",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "grooming_pattern",
+        "notes": "v1.1.1 expansion · 'only between us two' secrecy + image_request",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.5,
+      "ruleMatches": [
+        "vocab:image_request:en",
+        "pattern:image_request:en"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-en-serious-035",
+        "text": "no one else needs to know what we chat about send me a photo",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "grooming_pattern",
+        "notes": "v1.1.1 expansion · isolation_request + image_request",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.5,
+      "ruleMatches": [
+        "vocab:image_request:en",
+        "pattern:image_request:en"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-en-serious-036",
+        "text": "you're so beautiful please send me a pic you can trust me",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "grooming_pattern",
+        "notes": "v1.1.1 expansion · flattery + request + trust",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.5,
+      "ruleMatches": [
+        "vocab:image_request:en",
+        "pattern:image_request:en"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-en-serious-037",
+        "text": "no one gets me like you do · just between us ok show me a selfie",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "grooming_pattern",
+        "notes": "v1.1.1 expansion · grooming_indicator vocab + secrecy + image_request",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0,
+      "ruleMatches": [],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-en-serious-038",
+        "text": "i'll buy you a new iphone if you send me a photo of yourself",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "gift_offer_with_image_request",
+        "notes": "v1.1.1 expansion · gift offer paired with image request",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.5,
+      "ruleMatches": [
+        "vocab:image_request:en",
+        "pattern:image_request:en"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-en-serious-039",
+        "text": "come on just one little pic you owe me after everything",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "coercion_repeated_pressure",
+        "notes": "v1.1.1 expansion · coercion with image request pattern",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.7,
+      "ruleMatches": [
+        "vocab:coercion_indicator:en",
+        "vocab:image_request:en",
+        "pattern:repeated_pressure_after_refusal:en"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-en-serious-040",
+        "text": "let's move to snapchat it's more private send me a nude there",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "platform_switch_with_image_request",
+        "notes": "v1.1.1 expansion · platform switch paired with explicit image request",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.5,
+      "ruleMatches": [
+        "vocab:explicit_sexual:en",
+        "pattern:platform_switch_invitation:en"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-en-serious-041",
+        "text": "we really understand each other · don't tell your parents about me",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "trust_building_language_with_secrecy",
+        "notes": "v1.1.1 expansion · trust-building language + secrecy",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.75,
+      "ruleMatches": [
+        "vocab:secrecy_request:en",
+        "pattern:secrecy_request:en"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-en-serious-042",
+        "text": "you're such a special girl · if you cared you'd send me a photo",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "coercion_grooming",
+        "notes": "v1.1.1 expansion · grooming + coercion combination",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.5,
+      "ruleMatches": [
+        "vocab:image_request:en",
+        "pattern:image_request:en"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-en-serious-044",
+        "text": "come on please please don't be difficult send me the photo already",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "repeated_request_after_refusal",
+        "notes": "v1.1.1 expansion · repeated_pressure + coercion phrasing",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.5,
+      "ruleMatches": [
+        "vocab:image_request:en",
+        "pattern:repeated_pressure_after_refusal:en"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-en-serious-045",
+        "text": "i'm 33 you're 15 move to telegram we can chat more freely there",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "age_gap_with_platform_switch",
+        "notes": "v1.1.1 expansion · age_gap + platform switch variant",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.3,
+      "ruleMatches": [
+        "pattern:platform_switch_invitation:en"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-en-serious-046",
+        "text": "stop being difficult just send me a pic no one will see",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "coercion_with_image_request",
+        "notes": "v1.1.1 expansion · coercion_indicator vocab + image_request pattern",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.5,
+      "ruleMatches": [
+        "vocab:image_request:en",
+        "pattern:image_request:en"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-en-serious-047",
+        "text": "if you love me you'd move to whatsapp and send me a photo",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "coercion_with_platform_switch",
+        "notes": "v1.1.1 expansion · coercion vocab + platform switch + image_request",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 2,
+      "actualConfidence": 1,
+      "ruleMatches": [
+        "vocab:coercion_indicator:en",
+        "vocab:image_request:en",
+        "pattern:image_request:en",
+        "pattern:platform_switch_invitation:en"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-en-serious-049",
+        "text": "come on please just a quick photo you can trust me not to share",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "coercion_with_grooming",
+        "notes": "v1.1.1 expansion · repeated_pressure + trust + image_request",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.5,
+      "ruleMatches": [
+        "vocab:image_request:en",
+        "pattern:repeated_pressure_after_refusal:en"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-id-sensitive-001",
+        "text": "ganja itu jahat banget dari dulu guru selalu bilang jangan sampai nyoba",
+        "language": "id",
+        "expected_level": 1,
+        "category_tag": "mild_drug_reference",
+        "notes": "ganja matches drugs vocab · observational context",
+        "sender_profile": "peer"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:drugs:id"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-id-sensitive-002",
+        "text": "di berita tadi ada kasus narkoba di dekat sini serem",
+        "language": "id",
+        "expected_level": 1,
+        "category_tag": "mild_drug_reference",
+        "sender_profile": "peer"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:drugs:id"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-id-sensitive-003",
+        "text": "ada orang bawa pistol di berita kemarin bikin takut",
+        "language": "id",
+        "expected_level": 1,
+        "category_tag": "mild_violence_reference",
+        "sender_profile": "peer"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:violence:id"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-id-sensitive-004",
+        "text": "guru sejarah cerita soal perang zaman dulu yang banyak orang bunuh satu sama lain",
+        "language": "id",
+        "expected_level": 1,
+        "category_tag": "mild_violence_reference",
+        "notes": "bunuh vocab in historical narrative",
+        "sender_profile": "peer"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:violence:id"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-id-sensitive-005",
+        "text": "temen aku bilang ganja itu bahaya banget untuk otak",
+        "language": "id",
+        "expected_level": 1,
+        "category_tag": "mild_drug_reference",
+        "sender_profile": "peer"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:drugs:id"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-id-sensitive-006",
+        "text": "berita soal pistol di jalan raya kemarin bikin ortu khawatir",
+        "language": "id",
+        "expected_level": 1,
+        "category_tag": "mild_violence_reference",
+        "sender_profile": "peer"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:violence:id"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-id-sensitive-007",
+        "text": "narkoba udah jadi masalah besar di indonesia menurut guru",
+        "language": "id",
+        "expected_level": 1,
+        "category_tag": "mild_drug_reference",
+        "sender_profile": "peer"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:drugs:id"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-id-unsafe-001",
+        "text": "kirim foto kamu dong lagi apa sekarang",
+        "language": "id",
+        "expected_level": 2,
+        "category_tag": "image_request",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:image_request:id"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-id-unsafe-002",
+        "text": "mau liat foto kamu lagi di kamar",
+        "language": "id",
+        "expected_level": 2,
+        "category_tag": "image_request",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:image_request:id"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-id-unsafe-003",
+        "text": "foto kamu dong aku pengen liat",
+        "language": "id",
+        "expected_level": 2,
+        "category_tag": "image_request",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:image_request:id"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-id-unsafe-004",
+        "text": "ayo ketemuan nanti sore di tempat sepi",
+        "language": "id",
+        "expected_level": 2,
+        "category_tag": "meeting_arrangement_private",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.5,
+      "ruleMatches": [
+        "vocab:meeting_arrangement:id",
+        "pattern:meeting_arrangement:id"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-id-unsafe-005",
+        "text": "yuk ketemuan di belakang mall nggak ada orang disana",
+        "language": "id",
+        "expected_level": 2,
+        "category_tag": "meeting_arrangement_private",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.5,
+      "ruleMatches": [
+        "vocab:meeting_arrangement:id",
+        "pattern:meeting_arrangement:id"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-id-unsafe-006",
+        "text": "pindah ke whatsapp aja aku lebih enak chat disana",
+        "language": "id",
+        "expected_level": 2,
+        "category_tag": "platform_switch",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.3,
+      "ruleMatches": [
+        "pattern:platform_switch_invitation:id"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-id-unsafe-007",
+        "text": "pindah ke telegram yuk disana lebih aman",
+        "language": "id",
+        "expected_level": 2,
+        "category_tag": "platform_switch",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.3,
+      "ruleMatches": [
+        "pattern:platform_switch_invitation:id"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-id-unsafe-008",
+        "text": "pindah ke ig aja dm nya lebih enak",
+        "language": "id",
+        "expected_level": 2,
+        "category_tag": "platform_switch",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.3,
+      "ruleMatches": [
+        "pattern:platform_switch_invitation:id"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-id-unsafe-013",
+        "text": "foto nya sekarang dong jangan ditunda-tunda",
+        "language": "id",
+        "expected_level": 2,
+        "category_tag": "image_request",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:image_request:id"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-id-unsafe-014",
+        "text": "jangan bilang siapa-siapa ya kita ngobrol begini",
+        "language": "id",
+        "expected_level": 2,
+        "category_tag": "isolated_secrecy",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.75,
+      "ruleMatches": [
+        "vocab:secrecy_request:id",
+        "pattern:secrecy_request:id"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-id-unsafe-015",
+        "text": "jangan bilang mama kamu kita ngobrol ya ini antara kita",
+        "language": "id",
+        "expected_level": 2,
+        "category_tag": "isolated_secrecy",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.75,
+      "ruleMatches": [
+        "vocab:secrecy_request:id",
+        "pattern:secrecy_request:id"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-id-unsafe-016",
+        "text": "yuk ketemuan di parkiran mall belakang jam 9 malem",
+        "language": "id",
+        "expected_level": 2,
+        "category_tag": "meeting_arrangement_private",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.5,
+      "ruleMatches": [
+        "vocab:meeting_arrangement:id",
+        "pattern:meeting_arrangement:id"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-id-unsafe-019",
+        "text": "nyari tempat sepi buat ketemuan yang ga ada orang",
+        "language": "id",
+        "expected_level": 2,
+        "category_tag": "meeting_arrangement_private",
+        "notes": "no 'ayo/yuk' prefix · deliberate miss by current ID meeting regex · gap",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:meeting_arrangement:id"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-id-unsafe-020",
+        "text": "mencari kamu nanti malem di warung kopi deket rumah",
+        "language": "id",
+        "expected_level": 2,
+        "category_tag": "meeting_arrangement",
+        "notes": "variant without 'ketemuan' · will miss",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0,
+      "ruleMatches": [],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-id-serious-001",
+        "text": "rahasia kita ya · kirim foto kamu buat aku saja",
+        "language": "id",
+        "expected_level": 3,
+        "category_tag": "grooming_pattern",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.5,
+      "ruleMatches": [
+        "vocab:grooming_indicator:id",
+        "vocab:image_request:id"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-id-serious-002",
+        "text": "kamu dewasa banget nggak kayak anak lain · jangan bilang mama",
+        "language": "id",
+        "expected_level": 3,
+        "category_tag": "grooming_pattern",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.95,
+      "ruleMatches": [
+        "vocab:grooming_indicator:id",
+        "vocab:secrecy_request:id",
+        "pattern:secrecy_request:id"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-id-serious-003",
+        "text": "rahasia kita · kirim foto telanjang nya satu aja",
+        "language": "id",
+        "expected_level": 3,
+        "category_tag": "grooming_pattern",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.7,
+      "ruleMatches": [
+        "vocab:explicit_sexual:id",
+        "vocab:grooming_indicator:id",
+        "vocab:image_request:id"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-id-serious-004",
+        "text": "kalau cinta aku kirim foto bugil nya please jangan nolak",
+        "language": "id",
+        "expected_level": 3,
+        "category_tag": "coercion_with_image_request",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.6,
+      "ruleMatches": [
+        "vocab:explicit_sexual:id",
+        "vocab:coercion_indicator:id",
+        "vocab:image_request:id"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-id-serious-005",
+        "text": "kalau tidak kirim foto nanti aku upload yang lama",
+        "language": "id",
+        "expected_level": 3,
+        "category_tag": "coercion_threat",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.4,
+      "ruleMatches": [
+        "vocab:coercion_indicator:id",
+        "vocab:image_request:id"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-id-serious-006",
+        "text": "rahasia kita · kamu dewasa banget untuk umur segini",
+        "language": "id",
+        "expected_level": 3,
+        "category_tag": "grooming_pattern_multiple_indicators",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.5,
+      "ruleMatches": [
+        "vocab:grooming_indicator:id",
+        "vocab:grooming_indicator:id"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-id-serious-007",
+        "text": "ayo ketemuan rahasia kita jangan bilang siapa-siapa",
+        "language": "id",
+        "expected_level": 3,
+        "category_tag": "grooming_with_meeting",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 1,
+      "ruleMatches": [
+        "vocab:grooming_indicator:id",
+        "vocab:secrecy_request:id",
+        "vocab:meeting_arrangement:id",
+        "pattern:secrecy_request:id",
+        "pattern:meeting_arrangement:id"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-id-serious-008",
+        "text": "rahasia kita · pindah ke telegram ya biar aman",
+        "language": "id",
+        "expected_level": 3,
+        "category_tag": "grooming_with_platform_switch",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.6,
+      "ruleMatches": [
+        "vocab:grooming_indicator:id",
+        "pattern:platform_switch_invitation:id"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-id-serious-009",
+        "text": "kalau cinta aku ayo ketemuan nanti malam di hotel",
+        "language": "id",
+        "expected_level": 3,
+        "category_tag": "coercion_with_meeting",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.7,
+      "ruleMatches": [
+        "vocab:coercion_indicator:id",
+        "vocab:meeting_arrangement:id",
+        "pattern:meeting_arrangement:id"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-id-serious-010",
+        "text": "rahasia kita · aku kasih hadiah kalau kirim foto bugil",
+        "language": "id",
+        "expected_level": 3,
+        "category_tag": "gift_offer_with_image_request",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.7,
+      "ruleMatches": [
+        "vocab:explicit_sexual:id",
+        "vocab:grooming_indicator:id",
+        "vocab:image_request:id"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-id-serious-011",
+        "text": "kamu dewasa banget kirim foto telanjang ya aku jaga rahasia",
+        "language": "id",
+        "expected_level": 3,
+        "category_tag": "grooming_pattern_full",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.6,
+      "ruleMatches": [
+        "vocab:explicit_sexual:id",
+        "vocab:grooming_indicator:id",
+        "vocab:image_request:id"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-id-serious-012",
+        "text": "rahasia kita ya · jangan bilang teman kamu kita ngobrol",
+        "language": "id",
+        "expected_level": 3,
+        "category_tag": "grooming_pattern_secrecy",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 1,
+      "ruleMatches": [
+        "vocab:grooming_indicator:id",
+        "vocab:secrecy_request:id",
+        "pattern:secrecy_request:id"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-id-benign-lookalike-002",
+        "text": "aku harus bikin tugas sekolah tentang pendidikan seksual besok mau nanya ke bu guru",
+        "language": "id",
+        "expected_level": 1,
+        "category_tag": "sex_education_assignment",
+        "notes": "contains seks vocab · benign educational context · documented FP risk",
+        "sender_profile": "peer"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0,
+      "ruleMatches": [],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-id-benign-lookalike-004",
+        "text": "ini rahasia kita berdua aja ya aku malu kalau orang lain tau nilai aku jelek",
+        "language": "id",
+        "expected_level": 1,
+        "category_tag": "ordinary_privacy",
+        "notes": "rahasia kita grooming_indicator vocab fires in benign privacy context · documented FP risk",
+        "sender_profile": "peer"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.3,
+      "ruleMatches": [
+        "vocab:grooming_indicator:id"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-id-benign-lookalike-006",
+        "text": "mama aku kamu dewasa banget sekarang terima kasih uda jagain adik",
+        "language": "id",
+        "expected_level": 1,
+        "category_tag": "parent_child_trust",
+        "notes": "'kamu dewasa' grooming_indicator vocab fires in parent context · documented FP",
+        "sender_profile": "peer"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:grooming_indicator:id"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-id-serious-013",
+        "text": "rahasia kita berdua · ayo ketemuan di tempat sepi malam ini",
+        "language": "id",
+        "expected_level": 3,
+        "category_tag": "grooming_with_meeting",
+        "notes": "v1.1.1 expansion · ID grooming_indicator + meeting_arrangement pattern",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.8,
+      "ruleMatches": [
+        "vocab:grooming_indicator:id",
+        "vocab:meeting_arrangement:id",
+        "pattern:meeting_arrangement:id"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-id-serious-014",
+        "text": "kirim foto telanjang nya jangan bilang orang lain ya rahasia kita",
+        "language": "id",
+        "expected_level": 3,
+        "category_tag": "grooming_pattern_full",
+        "notes": "v1.1.1 expansion · ID explicit image + secrecy + grooming_indicator",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 2,
+      "actualConfidence": 1,
+      "ruleMatches": [
+        "vocab:explicit_sexual:id",
+        "vocab:grooming_indicator:id",
+        "vocab:image_request:id",
+        "vocab:secrecy_request:id",
+        "pattern:secrecy_request:id"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-id-serious-015",
+        "text": "kamu dewasa banget nggak kayak anak lain · kirim foto nya dong",
+        "language": "id",
+        "expected_level": 3,
+        "category_tag": "grooming_pattern",
+        "notes": "v1.1.1 expansion · ID grooming_indicator + image_request vocab",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.4,
+      "ruleMatches": [
+        "vocab:grooming_indicator:id",
+        "vocab:image_request:id"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-id-serious-016",
+        "text": "kalau cinta aku pindah ke whatsapp dulu baru kirim foto nya",
+        "language": "id",
+        "expected_level": 3,
+        "category_tag": "coercion_with_platform_switch",
+        "notes": "v1.1.1 expansion · ID coercion + platform switch + image_request",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.7,
+      "ruleMatches": [
+        "vocab:coercion_indicator:id",
+        "vocab:image_request:id",
+        "pattern:platform_switch_invitation:id"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-id-serious-017",
+        "text": "antara kita berdua aja · kamu istimewa buat aku kirim foto nya",
+        "language": "id",
+        "expected_level": 3,
+        "category_tag": "grooming_pattern",
+        "notes": "v1.1.1 expansion · ID isolation_request + flattery + image_request",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:image_request:id"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-id-serious-018",
+        "text": "jangan susah dong kirim foto bugil nya sekarang aja",
+        "language": "id",
+        "expected_level": 3,
+        "category_tag": "coercion_with_image_request",
+        "notes": "v1.1.1 expansion · ID coercion_indicator + explicit image",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.4,
+      "ruleMatches": [
+        "vocab:explicit_sexual:id",
+        "vocab:image_request:id"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-id-serious-019",
+        "text": "tidak ada yang mengerti aku seperti kamu · jangan bilang orang tua kamu",
+        "language": "id",
+        "expected_level": 3,
+        "category_tag": "grooming_pattern_full",
+        "notes": "v1.1.1 expansion · ID new grooming_indicator phrase + secrecy",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.75,
+      "ruleMatches": [
+        "vocab:secrecy_request:id",
+        "pattern:secrecy_request:id"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-id-serious-020",
+        "text": "kalau kamu sayang aku kirim foto nya aja yang berani",
+        "language": "id",
+        "expected_level": 3,
+        "category_tag": "coercion_with_image_request",
+        "notes": "v1.1.1 expansion · ID new coercion phrase",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:image_request:id"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-id-unsafe-021",
+        "text": "pindah ke snapchat aja chat nya lebih bebas",
+        "language": "id",
+        "expected_level": 2,
+        "category_tag": "platform_switch",
+        "notes": "v1.1.1 expansion · ID platform switch variant",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.3,
+      "ruleMatches": [
+        "pattern:platform_switch_invitation:id"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-id-unsafe-022",
+        "text": "kirim foto kamu dong aku pengen liat yang sekarang",
+        "language": "id",
+        "expected_level": 2,
+        "category_tag": "image_request",
+        "notes": "v1.1.1 expansion · ID image_request variant",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:image_request:id"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-id-unsafe-023",
+        "text": "yuk ketemuan di parkiran belakang mall nanti malam",
+        "language": "id",
+        "expected_level": 2,
+        "category_tag": "meeting_arrangement_private",
+        "notes": "v1.1.1 expansion · ID meeting arrangement variant",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.5,
+      "ruleMatches": [
+        "vocab:meeting_arrangement:id",
+        "pattern:meeting_arrangement:id"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-mix-sensitive-002",
+        "text": "ganja di park dekat sekolah smell nya kecium parah",
+        "language": "mixed",
+        "expected_level": 1,
+        "category_tag": "mild_drug_reference",
+        "sender_profile": "peer"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:drugs:id"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-mix-sensitive-003",
+        "text": "aku denger weed smell di parking lot sekolah tadi",
+        "language": "mixed",
+        "expected_level": 1,
+        "category_tag": "mild_drug_reference",
+        "sender_profile": "peer"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:drugs:en"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-mix-sensitive-004",
+        "text": "news tadi malam ada gun shooting di indonesia bikin shocked",
+        "language": "mixed",
+        "expected_level": 1,
+        "category_tag": "mild_violence_reference",
+        "sender_profile": "peer"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:violence:en"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-mix-sensitive-006",
+        "text": "pelajaran sejarah hari ini ngebahas drugs dan ganja di masa lampau",
+        "language": "mixed",
+        "expected_level": 1,
+        "category_tag": "mild_drug_reference",
+        "sender_profile": "peer"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.4,
+      "ruleMatches": [
+        "vocab:drugs:en",
+        "vocab:drugs:id"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-mix-unsafe-001",
+        "text": "kirim foto kamu lagi please i wanna see you",
+        "language": "mixed",
+        "expected_level": 2,
+        "category_tag": "image_request",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:image_request:id"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-mix-unsafe-003",
+        "text": "chat on whatsapp lebih enak jangan di sini",
+        "language": "mixed",
+        "expected_level": 2,
+        "category_tag": "platform_switch",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.3,
+      "ruleMatches": [
+        "pattern:platform_switch_invitation:en"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-mix-unsafe-004",
+        "text": "pindah ke snapchat the pics disappear there",
+        "language": "mixed",
+        "expected_level": 2,
+        "category_tag": "platform_switch",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.3,
+      "ruleMatches": [
+        "pattern:platform_switch_invitation:id"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-mix-unsafe-005",
+        "text": "let's meet up di tempat sepi nanti sore",
+        "language": "mixed",
+        "expected_level": 2,
+        "category_tag": "meeting_arrangement_private",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.5,
+      "ruleMatches": [
+        "vocab:meeting_arrangement:en",
+        "pattern:meeting_arrangement:en"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-mix-unsafe-006",
+        "text": "ayo ketemuan at the park nggak ada orang disana",
+        "language": "mixed",
+        "expected_level": 2,
+        "category_tag": "meeting_arrangement_private",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.5,
+      "ruleMatches": [
+        "vocab:meeting_arrangement:id",
+        "pattern:meeting_arrangement:id"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-mix-unsafe-007",
+        "text": "ngirim foto itu please don't tell anyone",
+        "language": "mixed",
+        "expected_level": 2,
+        "category_tag": "image_request_with_secrecy",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.95,
+      "ruleMatches": [
+        "vocab:secrecy_request:en",
+        "vocab:image_request:id",
+        "pattern:secrecy_request:en"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-mix-unsafe-010",
+        "text": "jangan bilang anyone we chat here it's between us",
+        "language": "mixed",
+        "expected_level": 2,
+        "category_tag": "isolated_secrecy",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.75,
+      "ruleMatches": [
+        "vocab:secrecy_request:id",
+        "pattern:secrecy_request:id"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-mix-unsafe-012",
+        "text": "snap me a pic sebelum tidur ya just a quick one",
+        "language": "mixed",
+        "expected_level": 2,
+        "category_tag": "image_request",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:image_request:en"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-mix-unsafe-013",
+        "text": "come on please please kirim satu foto doang nggak akan kasih siapa-siapa",
+        "language": "mixed",
+        "expected_level": 2,
+        "category_tag": "image_request_with_pressure",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.5,
+      "ruleMatches": [
+        "vocab:image_request:id",
+        "pattern:repeated_pressure_after_refusal:en"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-mix-serious-001",
+        "text": "our little secret kirim foto telanjang nya please",
+        "language": "mixed",
+        "expected_level": 3,
+        "category_tag": "grooming_pattern",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.7,
+      "ruleMatches": [
+        "vocab:grooming_indicator:en",
+        "vocab:explicit_sexual:id",
+        "vocab:image_request:id"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-mix-serious-003",
+        "text": "you're so mature kamu dewasa banget kirim foto bugil ya",
+        "language": "mixed",
+        "expected_level": 3,
+        "category_tag": "grooming_pattern_multiple_indicators",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.9,
+      "ruleMatches": [
+        "vocab:grooming_indicator:en",
+        "vocab:explicit_sexual:id",
+        "vocab:grooming_indicator:id",
+        "vocab:image_request:id"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-mix-serious-005",
+        "text": "do you trust me kirim foto telanjang jangan bilang orang lain",
+        "language": "mixed",
+        "expected_level": 3,
+        "category_tag": "grooming_pattern_full",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 2,
+      "actualConfidence": 1,
+      "ruleMatches": [
+        "vocab:grooming_indicator:en",
+        "vocab:explicit_sexual:id",
+        "vocab:image_request:id",
+        "vocab:secrecy_request:id",
+        "pattern:secrecy_request:id"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-mix-serious-006",
+        "text": "kalau cinta aku send me a nude pic please please",
+        "language": "mixed",
+        "expected_level": 3,
+        "category_tag": "coercion_with_image_request",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.9,
+      "ruleMatches": [
+        "vocab:explicit_sexual:en",
+        "vocab:image_request:en",
+        "vocab:coercion_indicator:id",
+        "pattern:repeated_pressure_after_refusal:en"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-mix-serious-007",
+        "text": "come on please please jangan nolak terus kirim foto nya",
+        "language": "mixed",
+        "expected_level": 3,
+        "category_tag": "repeated_request_after_refusal",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.5,
+      "ruleMatches": [
+        "vocab:image_request:id",
+        "pattern:repeated_pressure_after_refusal:en"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-mix-serious-008",
+        "text": "rahasia kita · let's meet up di hotel aku kasih hadiah",
+        "language": "mixed",
+        "expected_level": 3,
+        "category_tag": "grooming_with_meeting_gift",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.8,
+      "ruleMatches": [
+        "vocab:meeting_arrangement:en",
+        "vocab:grooming_indicator:id",
+        "pattern:meeting_arrangement:en"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-mix-serious-009",
+        "text": "our little secret kamu dewasa banget pindah ke telegram ya",
+        "language": "mixed",
+        "expected_level": 3,
+        "category_tag": "grooming_with_platform_switch",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.8,
+      "ruleMatches": [
+        "vocab:grooming_indicator:en",
+        "vocab:grooming_indicator:id",
+        "pattern:platform_switch_invitation:id"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-mix-serious-010",
+        "text": "you owe me a foto telanjang satu aja aku janji aman",
+        "language": "mixed",
+        "expected_level": 3,
+        "category_tag": "coercion_with_image_request",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.6,
+      "ruleMatches": [
+        "vocab:coercion_indicator:en",
+        "vocab:explicit_sexual:id",
+        "vocab:image_request:id"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-mix-benign-lookalike-004",
+        "text": "this is between us ya jangan bilang temen lain aku nilai jelek banget",
+        "language": "mixed",
+        "expected_level": 1,
+        "category_tag": "ordinary_privacy",
+        "notes": "jangan bilang · benign peer privacy",
+        "sender_profile": "peer"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.75,
+      "ruleMatches": [
+        "vocab:secrecy_request:id",
+        "pattern:secrecy_request:id"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-mix-benign-lookalike-005",
+        "text": "mum said kamu dewasa banget sekarang jadi bisa jagain adik",
+        "language": "mixed",
+        "expected_level": 1,
+        "category_tag": "parent_child_trust",
+        "notes": "'kamu dewasa' fires in parent context · documented FP",
+        "sender_profile": "peer"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:grooming_indicator:id"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-mix-serious-012",
+        "text": "i'm 28 you're 14 wanna meet up di parkiran belakang mall",
+        "language": "mixed",
+        "expected_level": 3,
+        "category_tag": "age_gap_disclosure_meeting",
+        "notes": "v1.1.1 regression anchor T2 · code-switched meeting",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.5,
+      "ruleMatches": [
+        "vocab:meeting_arrangement:en",
+        "pattern:meeting_arrangement:en"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-mix-serious-014",
+        "text": "come on please please jangan susah send me foto bugil nya",
+        "language": "mixed",
+        "expected_level": 3,
+        "category_tag": "coercion_with_image_request",
+        "notes": "v1.1.1 expansion · EN repeated_pressure + ID coercion + explicit image",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.7,
+      "ruleMatches": [
+        "vocab:explicit_sexual:id",
+        "vocab:image_request:id",
+        "pattern:repeated_pressure_after_refusal:en"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-mix-serious-015",
+        "text": "you can trust me kirim foto telanjang nya just between us two",
+        "language": "mixed",
+        "expected_level": 3,
+        "category_tag": "grooming_pattern_full",
+        "notes": "v1.1.1 expansion · EN trust_building + ID explicit image + EN isolation",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.4,
+      "ruleMatches": [
+        "vocab:explicit_sexual:id",
+        "vocab:image_request:id"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-mix-serious-016",
+        "text": "i'm 31 and you're 14 pindah ke whatsapp dulu baru kita ketemu",
+        "language": "mixed",
+        "expected_level": 3,
+        "category_tag": "age_gap_with_platform_switch",
+        "notes": "v1.1.1 expansion · age_gap + ID platform switch",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.75,
+      "ruleMatches": [
+        "pattern:platform_switch_invitation:id",
+        "pattern:age_gap_disclosure:en"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-mix-serious-017",
+        "text": "no one else needs to know kirim foto nya aja sekarang",
+        "language": "mixed",
+        "expected_level": 3,
+        "category_tag": "grooming_pattern",
+        "notes": "v1.1.1 expansion · EN isolation_request + ID image_request",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:image_request:id"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-mix-serious-018",
+        "text": "if you cared kirim foto nya we really understand each other",
+        "language": "mixed",
+        "expected_level": 3,
+        "category_tag": "coercion_grooming",
+        "notes": "v1.1.1 expansion · EN new coercion + ID image + EN trust_building",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:image_request:id"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-mix-serious-019",
+        "text": "our little secret ayo ketemuan nanti malam di tempat sepi",
+        "language": "mixed",
+        "expected_level": 3,
+        "category_tag": "grooming_with_meeting",
+        "notes": "v1.1.1 expansion · EN grooming_indicator + ID meeting",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.8,
+      "ruleMatches": [
+        "vocab:grooming_indicator:en",
+        "vocab:meeting_arrangement:id",
+        "pattern:meeting_arrangement:id"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-mix-serious-020",
+        "text": "stop being difficult kirim foto nya saja aku tunggu",
+        "language": "mixed",
+        "expected_level": 3,
+        "category_tag": "coercion_with_image_request",
+        "notes": "v1.1.1 expansion · EN new coercion + ID image_request",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:image_request:id"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-mix-serious-021",
+        "text": "you're so mature don't tell your mum ayo ketemuan sendiri",
+        "language": "mixed",
+        "expected_level": 3,
+        "category_tag": "grooming_pattern_multiple_indicators",
+        "notes": "v1.1.1 expansion · EN grooming + EN secrecy + ID meeting",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 1,
+      "ruleMatches": [
+        "vocab:grooming_indicator:en",
+        "vocab:secrecy_request:en",
+        "vocab:meeting_arrangement:id",
+        "pattern:secrecy_request:en",
+        "pattern:meeting_arrangement:id"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-mix-unsafe-022",
+        "text": "wanna meet up di cafe deket rumah nanti sore",
+        "language": "mixed",
+        "expected_level": 2,
+        "category_tag": "meeting_arrangement",
+        "notes": "v1.1.1 expansion · EN meeting pattern + ID context",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.5,
+      "ruleMatches": [
+        "vocab:meeting_arrangement:en",
+        "pattern:meeting_arrangement:en"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-mm-request-refusal-001",
+        "text": "come on just send me a pic please please",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "repeated_request_after_refusal",
+        "notes": "classic request → refusal → repeated · prior history has coercion vocab + image_request pattern · aggregator should flag repeated_pressure_after_refusal",
+        "priorMessages": [
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "pattern",
+                "signalType": "image_request",
+                "severity": 2,
+                "language": "en",
+                "matchedText": "send me a pic"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -30
+          },
+          {
+            "level": 0,
+            "ruleMatches": [],
+            "signals": {},
+            "timestamp_offset_minutes": -25
+          },
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "coercion_indicator",
+                "severity": 2,
+                "language": "en",
+                "term": "if you love me"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -20
+          }
+        ]
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.8,
+      "ruleMatches": [
+        "vocab:image_request:en",
+        "pattern:image_request:en",
+        "pattern:repeated_pressure_after_refusal:en"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-mm-request-refusal-002",
+        "text": "please please just one pic you're being unfair",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "repeated_request_after_refusal",
+        "priorMessages": [
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "pattern",
+                "signalType": "image_request",
+                "severity": 2,
+                "language": "en",
+                "matchedText": "send me a photo"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -45
+          },
+          {
+            "level": 0,
+            "ruleMatches": [],
+            "signals": {},
+            "timestamp_offset_minutes": -40
+          },
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "coercion_indicator",
+                "severity": 2,
+                "language": "en",
+                "term": "you owe me"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -35
+          }
+        ]
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.5,
+      "ruleMatches": [
+        "vocab:image_request:en",
+        "pattern:repeated_pressure_after_refusal:en"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-mm-request-refusal-003",
+        "text": "come on please send me a pic I asked twice already",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "repeated_request_after_refusal",
+        "priorMessages": [
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "pattern",
+                "signalType": "image_request",
+                "severity": 2,
+                "language": "en",
+                "matchedText": "send me a pic"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -50
+          },
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "coercion_indicator",
+                "severity": 2,
+                "language": "en",
+                "term": "or else"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -40
+          }
+        ]
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.8,
+      "ruleMatches": [
+        "vocab:image_request:en",
+        "pattern:image_request:en",
+        "pattern:repeated_pressure_after_refusal:en"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-mm-request-refusal-004",
+        "text": "kirim foto nya ya please jangan nolak terus",
+        "language": "id",
+        "expected_level": 3,
+        "category_tag": "repeated_request_after_refusal",
+        "priorMessages": [
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "image_request",
+                "severity": 2,
+                "language": "id",
+                "term": "foto"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -30
+          },
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "coercion_indicator",
+                "severity": 2,
+                "language": "id",
+                "term": "kalau tidak"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -20
+          }
+        ]
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:image_request:id"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-mm-request-refusal-005",
+        "text": "come on please you promised to send me a pic",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "repeated_request_after_refusal",
+        "priorMessages": [
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "pattern",
+                "signalType": "image_request",
+                "severity": 2,
+                "language": "en",
+                "matchedText": "send me a pic"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -60
+          },
+          {
+            "level": 0,
+            "ruleMatches": [],
+            "signals": {},
+            "timestamp_offset_minutes": -55
+          },
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "coercion_indicator",
+                "severity": 2,
+                "language": "en",
+                "term": "if you love me"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -50
+          }
+        ]
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.8,
+      "ruleMatches": [
+        "vocab:image_request:en",
+        "pattern:image_request:en",
+        "pattern:repeated_pressure_after_refusal:en"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-mm-request-refusal-006",
+        "text": "please just one picture it's not a big deal",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "repeated_request_after_refusal",
+        "notes": "coercion + image history · variant without explicit 'send me a pic' in current",
+        "priorMessages": [
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "pattern",
+                "signalType": "image_request",
+                "severity": 2,
+                "language": "en",
+                "matchedText": "send me a pic"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -20
+          },
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "coercion_indicator",
+                "severity": 2,
+                "language": "en",
+                "term": "you owe me"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -10
+          }
+        ]
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.3,
+      "ruleMatches": [
+        "pattern:repeated_pressure_after_refusal:en"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-mm-request-refusal-007",
+        "text": "kirim foto satu aja aku udah nanya berkali-kali",
+        "language": "id",
+        "expected_level": 3,
+        "category_tag": "repeated_request_after_refusal",
+        "priorMessages": [
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "image_request",
+                "severity": 2,
+                "language": "id",
+                "term": "foto"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -40
+          },
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "coercion_indicator",
+                "severity": 2,
+                "language": "id",
+                "term": "kalau cinta aku"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -30
+          }
+        ]
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:image_request:id"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-mm-request-refusal-008",
+        "text": "please please please just one quick photo",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "repeated_request_after_refusal",
+        "priorMessages": [
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "pattern",
+                "signalType": "image_request",
+                "severity": 2,
+                "language": "en",
+                "matchedText": "send me a photo"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -15
+          },
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "coercion_indicator",
+                "severity": 2,
+                "language": "en",
+                "term": "or else"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -5
+          }
+        ]
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.5,
+      "ruleMatches": [
+        "vocab:image_request:en",
+        "pattern:repeated_pressure_after_refusal:en"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-mm-request-refusal-009",
+        "text": "come on just a quick pic you said you would",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "repeated_request_after_refusal",
+        "priorMessages": [
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "pattern",
+                "signalType": "image_request",
+                "severity": 2,
+                "language": "en",
+                "matchedText": "send me a pic"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -25
+          },
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "coercion_indicator",
+                "severity": 2,
+                "language": "en",
+                "term": "if you love me"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -15
+          }
+        ]
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.5,
+      "ruleMatches": [
+        "vocab:image_request:en",
+        "pattern:repeated_pressure_after_refusal:en"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-mm-request-refusal-010",
+        "text": "foto nya mana kamu kemarin bilang mau ngirim",
+        "language": "id",
+        "expected_level": 3,
+        "category_tag": "repeated_request_after_refusal",
+        "priorMessages": [
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "image_request",
+                "severity": 2,
+                "language": "id",
+                "term": "foto"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -60
+          },
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "coercion_indicator",
+                "severity": 2,
+                "language": "id",
+                "term": "kalau tidak"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -45
+          }
+        ]
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:image_request:id"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-mm-platform-switch-meeting-001",
+        "text": "let's meet up at the park tomorrow afternoon",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "platform_switch_then_meeting",
+        "notes": "platform switch previously + current meeting arrangement · aggregator platform_switch flag + meeting pattern · gap category · current level 2 unless escalation applies",
+        "priorMessages": [
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "pattern",
+                "signalType": "platform_switch_invitation",
+                "severity": 2,
+                "language": "en",
+                "matchedText": "move to whatsapp"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -40
+          },
+          {
+            "level": 0,
+            "ruleMatches": [],
+            "signals": {},
+            "timestamp_offset_minutes": -30
+          }
+        ]
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.6,
+      "ruleMatches": [
+        "vocab:meeting_arrangement:en",
+        "pattern:meeting_arrangement:en"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-mm-platform-switch-meeting-002",
+        "text": "wanna meet up somewhere quiet after school",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "platform_switch_then_meeting",
+        "priorMessages": [
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "pattern",
+                "signalType": "platform_switch_invitation",
+                "severity": 2,
+                "language": "en",
+                "matchedText": "chat on telegram"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -60
+          }
+        ]
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.6,
+      "ruleMatches": [
+        "vocab:meeting_arrangement:en",
+        "pattern:meeting_arrangement:en"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-mm-platform-switch-meeting-003",
+        "text": "ayo ketemuan di belakang mall nanti malam",
+        "language": "id",
+        "expected_level": 3,
+        "category_tag": "platform_switch_then_meeting",
+        "priorMessages": [
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "pattern",
+                "signalType": "platform_switch_invitation",
+                "severity": 2,
+                "language": "id",
+                "matchedText": "pindah ke telegram"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -30
+          }
+        ]
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.6,
+      "ruleMatches": [
+        "vocab:meeting_arrangement:id",
+        "pattern:meeting_arrangement:id"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-mm-platform-switch-meeting-004",
+        "text": "can we meet after you finish school tomorrow",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "platform_switch_then_meeting",
+        "priorMessages": [
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "pattern",
+                "signalType": "platform_switch_invitation",
+                "severity": 2,
+                "language": "en",
+                "matchedText": "move to signal"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -20
+          },
+          {
+            "level": 0,
+            "ruleMatches": [],
+            "signals": {},
+            "timestamp_offset_minutes": -15
+          }
+        ]
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.4,
+      "ruleMatches": [
+        "pattern:meeting_arrangement:en"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-mm-platform-switch-meeting-005",
+        "text": "let's meet in person I know a quiet place",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "platform_switch_then_meeting",
+        "priorMessages": [
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "pattern",
+                "signalType": "platform_switch_invitation",
+                "severity": 2,
+                "language": "en",
+                "matchedText": "dm me on instagram"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -50
+          }
+        ]
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.4,
+      "ruleMatches": [
+        "pattern:meeting_arrangement:en"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-mm-platform-switch-meeting-006",
+        "text": "yuk ketemuan di hotel aku udah booking",
+        "language": "id",
+        "expected_level": 3,
+        "category_tag": "platform_switch_then_meeting",
+        "priorMessages": [
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "pattern",
+                "signalType": "platform_switch_invitation",
+                "severity": 2,
+                "language": "id",
+                "matchedText": "pindah ke whatsapp"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -40
+          }
+        ]
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.6,
+      "ruleMatches": [
+        "vocab:meeting_arrangement:id",
+        "pattern:meeting_arrangement:id"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-mm-platform-switch-meeting-007",
+        "text": "let's meet up this weekend somewhere no one knows us",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "platform_switch_then_meeting",
+        "priorMessages": [
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "pattern",
+                "signalType": "platform_switch_invitation",
+                "severity": 2,
+                "language": "en",
+                "matchedText": "move to snapchat"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -35
+          }
+        ]
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.6,
+      "ruleMatches": [
+        "vocab:meeting_arrangement:en",
+        "pattern:meeting_arrangement:en"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-mm-platform-switch-meeting-008",
+        "text": "ayo ketemuan di tempat sepi nanti sore ya",
+        "language": "id",
+        "expected_level": 3,
+        "category_tag": "platform_switch_then_meeting",
+        "priorMessages": [
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "pattern",
+                "signalType": "platform_switch_invitation",
+                "severity": 2,
+                "language": "id",
+                "matchedText": "pindah ke ig"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -25
+          }
+        ]
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.6,
+      "ruleMatches": [
+        "vocab:meeting_arrangement:id",
+        "pattern:meeting_arrangement:id"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-mm-escalation-001",
+        "text": "send me a pic now",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "escalating_severity_pattern",
+        "notes": "trailing 0 → 1 → 2 history + current level 2 message · escalation signal fires · gap category",
+        "priorMessages": [
+          {
+            "level": 0,
+            "ruleMatches": [],
+            "signals": {},
+            "timestamp_offset_minutes": -30
+          },
+          {
+            "level": 1,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "sexual_slang",
+                "severity": 1,
+                "language": "en",
+                "term": "boobs"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -20
+          },
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "pattern",
+                "signalType": "image_request",
+                "severity": 2,
+                "language": "en",
+                "matchedText": "send me a pic"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -10
+          }
+        ]
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.65,
+      "ruleMatches": [
+        "vocab:image_request:en",
+        "pattern:image_request:en"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-mm-escalation-002",
+        "text": "snap me a selfie",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "escalating_severity_pattern",
+        "priorMessages": [
+          {
+            "level": 1,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "sexual_slang",
+                "severity": 1,
+                "language": "en",
+                "term": "butt"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -40
+          },
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "pattern",
+                "signalType": "image_request",
+                "severity": 2,
+                "language": "en",
+                "matchedText": "show me your room"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -20
+          }
+        ]
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0,
+      "ruleMatches": [],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-mm-escalation-003",
+        "text": "foto nya ya please",
+        "language": "id",
+        "expected_level": 3,
+        "category_tag": "escalating_severity_pattern",
+        "priorMessages": [
+          {
+            "level": 0,
+            "ruleMatches": [],
+            "signals": {},
+            "timestamp_offset_minutes": -45
+          },
+          {
+            "level": 1,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "drugs",
+                "severity": 2,
+                "language": "id",
+                "term": "ganja"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -30
+          },
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "image_request",
+                "severity": 2,
+                "language": "id",
+                "term": "foto"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -15
+          }
+        ]
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.35,
+      "ruleMatches": [
+        "vocab:image_request:id"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-mm-escalation-004",
+        "text": "send me a nude pic please",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "escalating_severity_pattern",
+        "priorMessages": [
+          {
+            "level": 1,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "sexual_slang",
+                "severity": 1,
+                "language": "en",
+                "term": "boobs"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -60
+          },
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "explicit_sexual",
+                "severity": 2,
+                "language": "en",
+                "term": "nude"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -30
+          }
+        ]
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.4,
+      "ruleMatches": [
+        "vocab:explicit_sexual:en",
+        "vocab:image_request:en"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-mm-escalation-005",
+        "text": "let's meet up tomorrow",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "escalating_severity_pattern",
+        "priorMessages": [
+          {
+            "level": 0,
+            "ruleMatches": [],
+            "signals": {},
+            "timestamp_offset_minutes": -50
+          },
+          {
+            "level": 1,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "sexual_slang",
+                "severity": 1,
+                "language": "en",
+                "term": "butt"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -30
+          },
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "pattern",
+                "signalType": "platform_switch_invitation",
+                "severity": 2,
+                "language": "en",
+                "matchedText": "move to whatsapp"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -15
+          }
+        ]
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.75,
+      "ruleMatches": [
+        "vocab:meeting_arrangement:en",
+        "pattern:meeting_arrangement:en"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-mm-escalation-006",
+        "text": "pindah ke telegram ya",
+        "language": "id",
+        "expected_level": 3,
+        "category_tag": "escalating_severity_pattern",
+        "priorMessages": [
+          {
+            "level": 1,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "drugs",
+                "severity": 2,
+                "language": "id",
+                "term": "ganja"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -40
+          },
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "image_request",
+                "severity": 2,
+                "language": "id",
+                "term": "foto"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -20
+          }
+        ]
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.3,
+      "ruleMatches": [
+        "pattern:platform_switch_invitation:id"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-mm-not-escalation-002",
+        "text": "the song had a weed line in it that was weird",
+        "language": "en",
+        "expected_level": 1,
+        "category_tag": "mild_drug_reference_history_benign",
+        "priorMessages": [
+          {
+            "level": 0,
+            "ruleMatches": [],
+            "signals": {},
+            "timestamp_offset_minutes": -25
+          },
+          {
+            "level": 0,
+            "ruleMatches": [],
+            "signals": {},
+            "timestamp_offset_minutes": -15
+          }
+        ]
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:drugs:en"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-mm-not-escalation-003",
+        "text": "ganja itu bahaya banget kata guru",
+        "language": "id",
+        "expected_level": 1,
+        "category_tag": "mild_drug_reference_history_benign",
+        "priorMessages": [
+          {
+            "level": 0,
+            "ruleMatches": [],
+            "signals": {},
+            "timestamp_offset_minutes": -40
+          },
+          {
+            "level": 0,
+            "ruleMatches": [],
+            "signals": {},
+            "timestamp_offset_minutes": -20
+          }
+        ]
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:drugs:id"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-mm-time-pressure-001",
+        "text": "come on just send me a pic please please",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "time_pressure_with_coercion",
+        "notes": "10+ messages in window + coercion + image request · time_pressure + repeated_pressure signals",
+        "priorMessages": [
+          {
+            "level": 0,
+            "ruleMatches": [],
+            "signals": {},
+            "timestamp_offset_minutes": -55
+          },
+          {
+            "level": 0,
+            "ruleMatches": [],
+            "signals": {},
+            "timestamp_offset_minutes": -50
+          },
+          {
+            "level": 0,
+            "ruleMatches": [],
+            "signals": {},
+            "timestamp_offset_minutes": -48
+          },
+          {
+            "level": 1,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "sexual_slang",
+                "severity": 1,
+                "language": "en",
+                "term": "boobs"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -42
+          },
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "pattern",
+                "signalType": "image_request",
+                "severity": 2,
+                "language": "en",
+                "matchedText": "send me a pic"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -35
+          },
+          {
+            "level": 0,
+            "ruleMatches": [],
+            "signals": {},
+            "timestamp_offset_minutes": -30
+          },
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "coercion_indicator",
+                "severity": 2,
+                "language": "en",
+                "term": "if you love me"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -25
+          },
+          {
+            "level": 0,
+            "ruleMatches": [],
+            "signals": {},
+            "timestamp_offset_minutes": -20
+          },
+          {
+            "level": 0,
+            "ruleMatches": [],
+            "signals": {},
+            "timestamp_offset_minutes": -15
+          },
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "coercion_indicator",
+                "severity": 2,
+                "language": "en",
+                "term": "or else"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -10
+          }
+        ]
+      },
+      "actualLevel": 2,
+      "actualConfidence": 1,
+      "ruleMatches": [
+        "vocab:image_request:en",
+        "pattern:image_request:en",
+        "pattern:repeated_pressure_after_refusal:en"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-mm-time-pressure-002",
+        "text": "foto satu aja please jangan nolak",
+        "language": "id",
+        "expected_level": 3,
+        "category_tag": "time_pressure_with_coercion",
+        "priorMessages": [
+          {
+            "level": 0,
+            "ruleMatches": [],
+            "signals": {},
+            "timestamp_offset_minutes": -58
+          },
+          {
+            "level": 0,
+            "ruleMatches": [],
+            "signals": {},
+            "timestamp_offset_minutes": -55
+          },
+          {
+            "level": 1,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "drugs",
+                "severity": 2,
+                "language": "id",
+                "term": "ganja"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -50
+          },
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "image_request",
+                "severity": 2,
+                "language": "id",
+                "term": "foto"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -45
+          },
+          {
+            "level": 0,
+            "ruleMatches": [],
+            "signals": {},
+            "timestamp_offset_minutes": -40
+          },
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "coercion_indicator",
+                "severity": 2,
+                "language": "id",
+                "term": "kalau cinta aku"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -30
+          },
+          {
+            "level": 0,
+            "ruleMatches": [],
+            "signals": {},
+            "timestamp_offset_minutes": -25
+          },
+          {
+            "level": 0,
+            "ruleMatches": [],
+            "signals": {},
+            "timestamp_offset_minutes": -22
+          },
+          {
+            "level": 0,
+            "ruleMatches": [],
+            "signals": {},
+            "timestamp_offset_minutes": -18
+          },
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "coercion_indicator",
+                "severity": 2,
+                "language": "id",
+                "term": "kalau tidak"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -10
+          }
+        ]
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.45,
+      "ruleMatches": [
+        "vocab:image_request:id"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-mm-platform-switch-only-001",
+        "text": "chat on signal it's safer there",
+        "language": "en",
+        "expected_level": 2,
+        "category_tag": "platform_switch_only_history",
+        "notes": "platform switch mentioned twice in history + current message is a repeat · level 2 preserved",
+        "priorMessages": [
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "pattern",
+                "signalType": "platform_switch_invitation",
+                "severity": 2,
+                "language": "en",
+                "matchedText": "move to whatsapp"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -40
+          }
+        ]
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.4,
+      "ruleMatches": [
+        "pattern:platform_switch_invitation:en"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-mm-grooming-cumulative-001",
+        "text": "our little secret · let's meet up tomorrow",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "grooming_pattern_cumulative",
+        "notes": "prior platform_switch + current grooming + meeting",
+        "priorMessages": [
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "pattern",
+                "signalType": "platform_switch_invitation",
+                "severity": 2,
+                "language": "en",
+                "matchedText": "chat on telegram"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -45
+          },
+          {
+            "level": 1,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "sexual_slang",
+                "severity": 1,
+                "language": "en",
+                "term": "butt"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -30
+          },
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "pattern",
+                "signalType": "image_request",
+                "severity": 2,
+                "language": "en",
+                "matchedText": "send me a pic"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -15
+          }
+        ]
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.9,
+      "ruleMatches": [
+        "vocab:grooming_indicator:en",
+        "vocab:meeting_arrangement:en",
+        "pattern:meeting_arrangement:en"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-mm-grooming-cumulative-002",
+        "text": "rahasia kita · ayo ketemuan nanti sore",
+        "language": "id",
+        "expected_level": 3,
+        "category_tag": "grooming_pattern_cumulative",
+        "priorMessages": [
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "pattern",
+                "signalType": "platform_switch_invitation",
+                "severity": 2,
+                "language": "id",
+                "matchedText": "pindah ke whatsapp"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -40
+          },
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "image_request",
+                "severity": 2,
+                "language": "id",
+                "term": "foto"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -20
+          }
+        ]
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.9,
+      "ruleMatches": [
+        "vocab:grooming_indicator:id",
+        "vocab:meeting_arrangement:id",
+        "pattern:meeting_arrangement:id"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-mm-request-no-refusal-001",
+        "text": "come on please please answer me",
+        "language": "en",
+        "expected_level": 2,
+        "category_tag": "pressure_without_prior_image_request",
+        "notes": "pressure pattern but no prior image_request · should land level 2 not 3",
+        "priorMessages": [
+          {
+            "level": 0,
+            "ruleMatches": [],
+            "signals": {},
+            "timestamp_offset_minutes": -30
+          },
+          {
+            "level": 0,
+            "ruleMatches": [],
+            "signals": {},
+            "timestamp_offset_minutes": -15
+          }
+        ]
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.3,
+      "ruleMatches": [
+        "pattern:repeated_pressure_after_refusal:en"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-mm-request-no-refusal-002",
+        "text": "please please please i need your help",
+        "language": "en",
+        "expected_level": 2,
+        "category_tag": "pressure_without_prior_image_request",
+        "priorMessages": [
+          {
+            "level": 0,
+            "ruleMatches": [],
+            "signals": {},
+            "timestamp_offset_minutes": -20
+          }
+        ]
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.3,
+      "ruleMatches": [
+        "pattern:repeated_pressure_after_refusal:en"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-mm-mixed-escalation-001",
+        "text": "send me a nude pic please please",
+        "language": "mixed",
+        "expected_level": 3,
+        "category_tag": "escalating_severity_pattern",
+        "priorMessages": [
+          {
+            "level": 0,
+            "ruleMatches": [],
+            "signals": {},
+            "timestamp_offset_minutes": -45
+          },
+          {
+            "level": 1,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "sexual_slang",
+                "severity": 1,
+                "language": "en",
+                "term": "boobs"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -30
+          },
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "explicit_sexual",
+                "severity": 2,
+                "language": "en",
+                "term": "nude"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -15
+          }
+        ]
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.85,
+      "ruleMatches": [
+        "vocab:explicit_sexual:en",
+        "vocab:image_request:en",
+        "pattern:repeated_pressure_after_refusal:en"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-mm-mixed-escalation-002",
+        "text": "kirim foto telanjang nya please jangan tunda",
+        "language": "mixed",
+        "expected_level": 3,
+        "category_tag": "repeated_request_after_refusal",
+        "priorMessages": [
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "image_request",
+                "severity": 2,
+                "language": "id",
+                "term": "foto"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -40
+          },
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "coercion_indicator",
+                "severity": 2,
+                "language": "en",
+                "term": "or else"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -25
+          }
+        ]
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.4,
+      "ruleMatches": [
+        "vocab:explicit_sexual:id",
+        "vocab:image_request:id"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-mm-benign-flattery-history-002",
+        "text": "mama kamu dewasa banget sekarang kata tante",
+        "language": "id",
+        "expected_level": 1,
+        "category_tag": "parent_child_trust_history",
+        "notes": "'kamu dewasa' grooming_indicator vocab fires but context benign · FP risk",
+        "priorMessages": [
+          {
+            "level": 0,
+            "ruleMatches": [],
+            "signals": {},
+            "timestamp_offset_minutes": -50
+          },
+          {
+            "level": 0,
+            "ruleMatches": [],
+            "signals": {},
+            "timestamp_offset_minutes": -25
+          }
+        ]
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:grooming_indicator:id"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-mm-surprise-party-history-002",
+        "text": "jangan bilang papa ya kado ulang tahun nya rahasia",
+        "language": "id",
+        "expected_level": 1,
+        "category_tag": "surprise_party_secrecy_history",
+        "priorMessages": [
+          {
+            "level": 0,
+            "ruleMatches": [],
+            "signals": {},
+            "timestamp_offset_minutes": -30
+          },
+          {
+            "level": 0,
+            "ruleMatches": [],
+            "signals": {},
+            "timestamp_offset_minutes": -10
+          }
+        ]
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.75,
+      "ruleMatches": [
+        "vocab:secrecy_request:id",
+        "pattern:secrecy_request:id"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-mm-adult-contact-escalation-002",
+        "text": "jangan bilang orang tua kamu ya kita ngobrol",
+        "language": "id",
+        "expected_level": 3,
+        "category_tag": "grooming_pattern_cumulative",
+        "sender_profile": "adult_contact",
+        "priorMessages": [
+          {
+            "level": 1,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "grooming_indicator",
+                "severity": 2,
+                "language": "id",
+                "term": "kamu dewasa"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -45
+          },
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "pattern",
+                "signalType": "platform_switch_invitation",
+                "severity": 2,
+                "language": "id",
+                "matchedText": "pindah ke telegram"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -20
+          }
+        ]
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.85,
+      "ruleMatches": [
+        "vocab:secrecy_request:id",
+        "pattern:secrecy_request:id"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-mm-image-escalation-001",
+        "text": "come on please please just one quick pic",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "repeated_request_after_refusal",
+        "priorMessages": [
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "pattern",
+                "signalType": "image_request",
+                "severity": 2,
+                "language": "en",
+                "matchedText": "send me a pic"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -45
+          },
+          {
+            "level": 0,
+            "ruleMatches": [],
+            "signals": {},
+            "timestamp_offset_minutes": -40
+          },
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "pattern",
+                "signalType": "image_request",
+                "severity": 2,
+                "language": "en",
+                "matchedText": "send me a photo"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -30
+          },
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "coercion_indicator",
+                "severity": 2,
+                "language": "en",
+                "term": "or else"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -20
+          }
+        ]
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.65,
+      "ruleMatches": [
+        "vocab:image_request:en",
+        "pattern:repeated_pressure_after_refusal:en"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-mm-image-escalation-002",
+        "text": "foto nya sekarang please jangan tunggu lagi",
+        "language": "id",
+        "expected_level": 3,
+        "category_tag": "repeated_request_after_refusal",
+        "priorMessages": [
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "image_request",
+                "severity": 2,
+                "language": "id",
+                "term": "foto"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -60
+          },
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "coercion_indicator",
+                "severity": 2,
+                "language": "id",
+                "term": "kalau tidak"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -40
+          }
+        ]
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:image_request:id"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-mm-benign-with-single-sensitive-001",
+        "text": "lol my dog named weed is so cute",
+        "language": "en",
+        "expected_level": 1,
+        "category_tag": "mild_drug_reference_history_benign",
+        "priorMessages": [
+          {
+            "level": 0,
+            "ruleMatches": [],
+            "signals": {},
+            "timestamp_offset_minutes": -30
+          },
+          {
+            "level": 0,
+            "ruleMatches": [],
+            "signals": {},
+            "timestamp_offset_minutes": -20
+          }
+        ]
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:drugs:en"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-mm-grooming-indicator-only-001",
+        "text": "you're so mature compared to other kids your age",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "grooming_pattern_cumulative",
+        "sender_profile": "adult_contact",
+        "notes": "grooming indicator alone with escalation history + adult_contact · gap category",
+        "priorMessages": [
+          {
+            "level": 1,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "grooming_indicator",
+                "severity": 2,
+                "language": "en",
+                "term": "do you trust me"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -40
+          },
+          {
+            "level": 1,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "sexual_slang",
+                "severity": 1,
+                "language": "en",
+                "term": "butt"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -20
+          }
+        ]
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.3,
+      "ruleMatches": [
+        "vocab:grooming_indicator:en"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-mm-isolation-history-001",
+        "text": "let's keep this between us no one else needs to know",
+        "language": "en",
+        "expected_level": 2,
+        "category_tag": "isolated_secrecy_history",
+        "notes": "secrecy intent without 'don't tell' phrase · gap category",
+        "priorMessages": [
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "pattern",
+                "signalType": "platform_switch_invitation",
+                "severity": 2,
+                "language": "en",
+                "matchedText": "move to whatsapp"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -30
+          }
+        ]
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.1,
+      "ruleMatches": [],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "v2-mm-coercion-threat-history-001",
+        "text": "you owe me a pic after everything",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "coercion_threat_with_image_request_history",
+        "priorMessages": [
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "pattern",
+                "signalType": "image_request",
+                "severity": 2,
+                "language": "en",
+                "matchedText": "send me a pic"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -30
+          },
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "coercion_indicator",
+                "severity": 2,
+                "language": "en",
+                "term": "if you love me"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -15
+          }
+        ]
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.4,
+      "ruleMatches": [
+        "vocab:coercion_indicator:en",
+        "vocab:image_request:en"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-mm-adult-grooming-004",
+        "text": "do you trust me to keep this between us",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "grooming_pattern_cumulative",
+        "sender_profile": "adult_contact",
+        "priorMessages": [
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "pattern",
+                "signalType": "image_request",
+                "severity": 2,
+                "language": "en",
+                "matchedText": "send me a pic"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -40
+          },
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "pattern",
+                "signalType": "platform_switch_invitation",
+                "severity": 2,
+                "language": "en",
+                "matchedText": "move to telegram"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -20
+          }
+        ]
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.3,
+      "ruleMatches": [
+        "vocab:grooming_indicator:en"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-mm-slow-build-grooming-002",
+        "text": "please send me the photo you promised yesterday",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "repeated_request_after_refusal",
+        "sender_profile": "adult_contact",
+        "notes": "v1.1.1 expansion · pressure after multiple refusals",
+        "priorMessages": [
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "pattern",
+                "signalType": "image_request",
+                "severity": 2,
+                "language": "en",
+                "matchedText": "send me a pic"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -90
+          },
+          {
+            "level": 0,
+            "ruleMatches": [
+              {
+                "kind": "pattern",
+                "signalType": "refusal_language",
+                "severity": 1,
+                "language": "en",
+                "matchedText": "no stop"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -70
+          },
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "pattern",
+                "signalType": "image_request",
+                "severity": 2,
+                "language": "en",
+                "matchedText": "send me a pic"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -40
+          },
+          {
+            "level": 0,
+            "ruleMatches": [
+              {
+                "kind": "pattern",
+                "signalType": "refusal_language",
+                "severity": 1,
+                "language": "en",
+                "matchedText": "please stop"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -30
+          }
+        ]
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:image_request:en"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-mm-slow-build-grooming-003",
+        "text": "kirim foto nya sekarang please jangan tunda",
+        "language": "id",
+        "expected_level": 3,
+        "category_tag": "repeated_request_after_refusal",
+        "sender_profile": "adult_contact",
+        "notes": "v1.1.1 expansion · ID slow-build with refusal history",
+        "priorMessages": [
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "image_request",
+                "severity": 2,
+                "language": "id",
+                "term": "foto"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -100
+          },
+          {
+            "level": 0,
+            "ruleMatches": [
+              {
+                "kind": "pattern",
+                "signalType": "refusal_language",
+                "severity": 1,
+                "language": "id",
+                "matchedText": "tidak mau"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -80
+          },
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "image_request",
+                "severity": 2,
+                "language": "id",
+                "term": "foto"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -50
+          },
+          {
+            "level": 0,
+            "ruleMatches": [
+              {
+                "kind": "pattern",
+                "signalType": "refusal_language",
+                "severity": 1,
+                "language": "id",
+                "matchedText": "jangan"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -30
+          }
+        ]
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:image_request:id"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-mm-slow-build-grooming-004",
+        "text": "you're so beautiful please send me a nude pic",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "grooming_pattern_cumulative",
+        "sender_profile": "adult_contact",
+        "notes": "v1.1.1 expansion · 5-message slow build with flattery escalation",
+        "priorMessages": [
+          {
+            "level": 0,
+            "ruleMatches": [],
+            "signals": {},
+            "timestamp_offset_minutes": -120
+          },
+          {
+            "level": 1,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "grooming_indicator",
+                "severity": 2,
+                "language": "en",
+                "term": "you understand me"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -90
+          },
+          {
+            "level": 1,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "grooming_indicator",
+                "severity": 2,
+                "language": "en",
+                "term": "you're special"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -60
+          },
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "pattern",
+                "signalType": "flattery_followed_by_request",
+                "severity": 3,
+                "language": "en",
+                "matchedText": "you're so pretty share"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -40
+          },
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "pattern",
+                "signalType": "image_request",
+                "severity": 2,
+                "language": "en",
+                "matchedText": "send me a pic"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -20
+          }
+        ]
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.55,
+      "ruleMatches": [
+        "vocab:explicit_sexual:en",
+        "vocab:image_request:en"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-mm-slow-build-grooming-005",
+        "text": "let's meet up somewhere quiet after school",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "age_gap_meeting_history",
+        "sender_profile": "adult_contact",
+        "notes": "v1.1.1 regression anchor T2 variant · age gap in history, meeting invite now",
+        "priorMessages": [
+          {
+            "level": 1,
+            "ruleMatches": [
+              {
+                "kind": "pattern",
+                "signalType": "age_gap_disclosure",
+                "severity": 3,
+                "language": "en",
+                "matchedText": "i'm 31 you're 15"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -60
+          },
+          {
+            "level": 0,
+            "ruleMatches": [],
+            "signals": {},
+            "timestamp_offset_minutes": -40
+          },
+          {
+            "level": 1,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "grooming_indicator",
+                "severity": 2,
+                "language": "en",
+                "term": "do you trust me"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -20
+          }
+        ]
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.5,
+      "ruleMatches": [
+        "vocab:meeting_arrangement:en",
+        "pattern:meeting_arrangement:en"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-mm-platform-switch-image-001",
+        "text": "move to telegram and send me a nude there",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "platform_switch_with_image_request",
+        "sender_profile": "adult_contact",
+        "notes": "v1.1.1 expansion · platform switch and image request on same message with history",
+        "priorMessages": [
+          {
+            "level": 1,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "grooming_indicator",
+                "severity": 2,
+                "language": "en",
+                "term": "you're special"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -45
+          },
+          {
+            "level": 1,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "grooming_indicator",
+                "severity": 2,
+                "language": "en",
+                "term": "do you trust me"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -20
+          }
+        ]
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.5,
+      "ruleMatches": [
+        "vocab:explicit_sexual:en",
+        "pattern:platform_switch_invitation:en"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-mm-escalation-mixed-001",
+        "text": "kirim foto bugil nya sekarang don't be difficult",
+        "language": "mixed",
+        "expected_level": 3,
+        "category_tag": "escalating_severity_pattern",
+        "sender_profile": "adult_contact",
+        "notes": "v1.1.1 expansion · code-switched escalation",
+        "priorMessages": [
+          {
+            "level": 0,
+            "ruleMatches": [],
+            "signals": {},
+            "timestamp_offset_minutes": -60
+          },
+          {
+            "level": 1,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "sexual_slang",
+                "severity": 1,
+                "language": "en",
+                "term": "butt"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -40
+          },
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "image_request",
+                "severity": 2,
+                "language": "id",
+                "term": "foto"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -20
+          }
+        ]
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.55,
+      "ruleMatches": [
+        "vocab:explicit_sexual:id",
+        "vocab:image_request:id"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-mm-coerce-with-gift-001",
+        "text": "i'll buy you a new phone just send me one quick photo",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "gift_offer_with_image_request",
+        "sender_profile": "adult_contact",
+        "notes": "v1.1.1 expansion · gift offer paired with image request + history",
+        "priorMessages": [
+          {
+            "level": 1,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "grooming_indicator",
+                "severity": 2,
+                "language": "en",
+                "term": "you're special"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -45
+          }
+        ]
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:image_request:en"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-mm-pressure-with-prior-image-001",
+        "text": "come on please please just send me the photo",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "repeated_request_after_refusal",
+        "sender_profile": "adult_contact",
+        "notes": "v1.1.1 expansion · repeated pressure with image_request history and refusal",
+        "priorMessages": [
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "pattern",
+                "signalType": "image_request",
+                "severity": 2,
+                "language": "en",
+                "matchedText": "send me a pic"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -60
+          },
+          {
+            "level": 0,
+            "ruleMatches": [
+              {
+                "kind": "pattern",
+                "signalType": "refusal_language",
+                "severity": 1,
+                "language": "en",
+                "matchedText": "stop"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -40
+          },
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "pattern",
+                "signalType": "image_request",
+                "severity": 2,
+                "language": "en",
+                "matchedText": "send me a pic"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -20
+          }
+        ]
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.5,
+      "ruleMatches": [
+        "vocab:image_request:en",
+        "pattern:repeated_pressure_after_refusal:en"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-mm-escalation-six-message-001",
+        "text": "send me the photo now stop being difficult",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "escalating_severity_pattern",
+        "sender_profile": "adult_contact",
+        "notes": "v1.1.1 expansion · 6-message escalation building to coercion",
+        "priorMessages": [
+          {
+            "level": 0,
+            "ruleMatches": [],
+            "signals": {},
+            "timestamp_offset_minutes": -180
+          },
+          {
+            "level": 1,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "grooming_indicator",
+                "severity": 2,
+                "language": "en",
+                "term": "you understand me"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -150
+          },
+          {
+            "level": 1,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "grooming_indicator",
+                "severity": 2,
+                "language": "en",
+                "term": "do you trust me"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -120
+          },
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "pattern",
+                "signalType": "image_request",
+                "severity": 2,
+                "language": "en",
+                "matchedText": "send me a pic"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -60
+          },
+          {
+            "level": 0,
+            "ruleMatches": [
+              {
+                "kind": "pattern",
+                "signalType": "refusal_language",
+                "severity": 1,
+                "language": "en",
+                "matchedText": "no"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -40
+          },
+          {
+            "level": 2,
+            "ruleMatches": [
+              {
+                "kind": "pattern",
+                "signalType": "image_request",
+                "severity": 2,
+                "language": "en",
+                "matchedText": "send me a photo"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -20
+          }
+        ]
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:image_request:en"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "v2-mm-isolation-request-history-001",
+        "text": "just keep this to yourself ok send me a selfie",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "grooming_pattern_cumulative",
+        "sender_profile": "adult_contact",
+        "notes": "v1.1.1 expansion · isolation_request + image_request + prior grooming",
+        "priorMessages": [
+          {
+            "level": 1,
+            "ruleMatches": [
+              {
+                "kind": "vocabulary",
+                "category": "grooming_indicator",
+                "severity": 2,
+                "language": "en",
+                "term": "you're special"
+              }
+            ],
+            "signals": {},
+            "timestamp_offset_minutes": -45
+          }
+        ]
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.3,
+      "ruleMatches": [
+        "pattern:image_request:en"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-bl-sexed-001",
+        "text": "i'm asking for a school sex ed assignment on reproductive health",
+        "language": "en",
+        "expected_level": 1,
+        "category_tag": "sex_education_assignment",
+        "notes": "contains 'sex' explicit_sexual vocab · benign assignment context · currently level 2 · FP candidate",
+        "sender_profile": "peer"
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:explicit_sexual:en"
+      ],
+      "correct": false,
+      "delta": 1
+    },
+    {
+      "item": {
+        "id": "v2-bl-sexed-003",
+        "text": "i need help with my sex ed worksheet it's due tomorrow",
+        "language": "en",
+        "expected_level": 1,
+        "category_tag": "sex_education_assignment",
+        "notes": "contains 'sex' vocab · benign educational framing",
+        "sender_profile": "peer"
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:explicit_sexual:en"
+      ],
+      "correct": false,
+      "delta": 1
+    },
+    {
+      "item": {
+        "id": "v2-bl-sexed-004",
+        "text": "tugas pendidikan seksual nya susah tolong bantu dong",
+        "language": "id",
+        "expected_level": 1,
+        "category_tag": "sex_education_assignment",
+        "sender_profile": "peer"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0,
+      "ruleMatches": [],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-bl-sexed-005",
+        "text": "the health class syllabus mentions sex ed topics next semester",
+        "language": "en",
+        "expected_level": 1,
+        "category_tag": "sex_education_assignment",
+        "sender_profile": "peer"
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:explicit_sexual:en"
+      ],
+      "correct": false,
+      "delta": 1
+    },
+    {
+      "item": {
+        "id": "v2-bl-surprise-002",
+        "text": "jangan bilang papa tentang kado ulang tahun nya ya",
+        "language": "id",
+        "expected_level": 1,
+        "category_tag": "surprise_party_secrecy",
+        "notes": "'jangan bilang' pattern fires in benign context · documented FP",
+        "sender_profile": "peer"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.75,
+      "ruleMatches": [
+        "vocab:secrecy_request:id",
+        "pattern:secrecy_request:id"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-bl-surprise-004",
+        "text": "jangan bilang mama tentang hadiah ulang tahun nya ya ini kejutan",
+        "language": "id",
+        "expected_level": 1,
+        "category_tag": "surprise_party_secrecy",
+        "sender_profile": "peer"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.75,
+      "ruleMatches": [
+        "vocab:secrecy_request:id",
+        "pattern:secrecy_request:id"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-bl-privacy-002",
+        "text": "ini rahasia kita berdua ya aku malu kalau orang tau nilai jelek aku",
+        "language": "id",
+        "expected_level": 1,
+        "category_tag": "ordinary_privacy",
+        "notes": "'rahasia kita' grooming_indicator vocab fires in benign privacy · FP",
+        "sender_profile": "peer"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.3,
+      "ruleMatches": [
+        "vocab:grooming_indicator:id"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-bl-mature-002",
+        "text": "mama aku ngerasa dewasa sekarang kuliah tahun depan udah dekat",
+        "language": "id",
+        "expected_level": 1,
+        "category_tag": "parent_child_trust",
+        "notes": "'kamu dewasa' vocab doesn't match exactly but variants in context · benign",
+        "sender_profile": "peer"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0,
+      "ruleMatches": [],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-bl-mature-003",
+        "text": "my dad said i'm so mature for handling my own schedule now",
+        "language": "en",
+        "expected_level": 1,
+        "category_tag": "parent_child_trust",
+        "notes": "'so mature' close to 'you're so mature' grooming vocab · tests boundary",
+        "sender_profile": "peer"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0,
+      "ruleMatches": [],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-bl-mature-004",
+        "text": "tante bilang kamu dewasa banget sekarang bisa bantu bantu di rumah",
+        "language": "id",
+        "expected_level": 1,
+        "category_tag": "parent_child_trust",
+        "notes": "'kamu dewasa' vocab fires in benign aunt context · documented FP",
+        "sender_profile": "peer"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:grooming_indicator:id"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "v2-bl-med-sex-ed-001",
+        "text": "the sex ed teacher explained how to say no to pressure in the lesson",
+        "language": "en",
+        "expected_level": 1,
+        "category_tag": "sex_education_assignment",
+        "notes": "v1.1.1 expansion · sex-ed with consent context",
+        "sender_profile": "peer"
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:explicit_sexual:en"
+      ],
+      "correct": false,
+      "delta": 1
+    }
+  ],
+  "passingItems": [
+    {
+      "id": "v2-en-benign-001",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-en-benign-002",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-en-benign-003",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-en-benign-004",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-en-benign-005",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-en-benign-006",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-en-benign-007",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-en-benign-008",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-en-benign-009",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-en-benign-010",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-en-benign-011",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-en-benign-012",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-en-benign-013",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-en-benign-014",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-en-benign-015",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-en-benign-016",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-en-benign-017",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-en-benign-018",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-en-benign-019",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-en-benign-020",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-en-benign-021",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-en-benign-022",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-en-benign-023",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-en-benign-024",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-en-benign-025",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-en-benign-026",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-en-benign-027",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-en-benign-028",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-en-benign-029",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-en-benign-030",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-en-sensitive-002",
+      "expected_level": 1,
+      "actualLevel": 1
+    },
+    {
+      "id": "v2-en-sensitive-003",
+      "expected_level": 1,
+      "actualLevel": 1
+    },
+    {
+      "id": "v2-en-sensitive-004",
+      "expected_level": 1,
+      "actualLevel": 1
+    },
+    {
+      "id": "v2-en-sensitive-006",
+      "expected_level": 1,
+      "actualLevel": 1
+    },
+    {
+      "id": "v2-en-sensitive-007",
+      "expected_level": 1,
+      "actualLevel": 1
+    },
+    {
+      "id": "v2-en-sensitive-008",
+      "expected_level": 1,
+      "actualLevel": 1
+    },
+    {
+      "id": "v2-en-sensitive-009",
+      "expected_level": 1,
+      "actualLevel": 1
+    },
+    {
+      "id": "v2-en-sensitive-010",
+      "expected_level": 1,
+      "actualLevel": 1
+    },
+    {
+      "id": "v2-en-sensitive-016",
+      "expected_level": 1,
+      "actualLevel": 1
+    },
+    {
+      "id": "v2-en-sensitive-018",
+      "expected_level": 1,
+      "actualLevel": 1
+    },
+    {
+      "id": "v2-en-sensitive-020",
+      "expected_level": 1,
+      "actualLevel": 1
+    },
+    {
+      "id": "v2-en-sensitive-021",
+      "expected_level": 1,
+      "actualLevel": 1
+    },
+    {
+      "id": "v2-en-sensitive-024",
+      "expected_level": 1,
+      "actualLevel": 1
+    },
+    {
+      "id": "v2-en-unsafe-001",
+      "expected_level": 2,
+      "actualLevel": 2
+    },
+    {
+      "id": "v2-en-unsafe-002",
+      "expected_level": 2,
+      "actualLevel": 2
+    },
+    {
+      "id": "v2-en-unsafe-003",
+      "expected_level": 2,
+      "actualLevel": 2
+    },
+    {
+      "id": "v2-en-unsafe-004",
+      "expected_level": 2,
+      "actualLevel": 2
+    },
+    {
+      "id": "v2-en-unsafe-006",
+      "expected_level": 2,
+      "actualLevel": 2
+    },
+    {
+      "id": "v2-en-unsafe-013",
+      "expected_level": 2,
+      "actualLevel": 2
+    },
+    {
+      "id": "v2-en-unsafe-014",
+      "expected_level": 2,
+      "actualLevel": 2
+    },
+    {
+      "id": "v2-en-unsafe-015",
+      "expected_level": 2,
+      "actualLevel": 2
+    },
+    {
+      "id": "v2-en-unsafe-016",
+      "expected_level": 2,
+      "actualLevel": 2
+    },
+    {
+      "id": "v2-en-unsafe-017",
+      "expected_level": 2,
+      "actualLevel": 2
+    },
+    {
+      "id": "v2-en-unsafe-018",
+      "expected_level": 2,
+      "actualLevel": 2
+    },
+    {
+      "id": "v2-en-unsafe-026",
+      "expected_level": 2,
+      "actualLevel": 2
+    },
+    {
+      "id": "v2-en-serious-001",
+      "expected_level": 3,
+      "actualLevel": 3
+    },
+    {
+      "id": "v2-en-serious-003",
+      "expected_level": 3,
+      "actualLevel": 3
+    },
+    {
+      "id": "v2-en-serious-007",
+      "expected_level": 3,
+      "actualLevel": 3
+    },
+    {
+      "id": "v2-en-serious-011",
+      "expected_level": 3,
+      "actualLevel": 3
+    },
+    {
+      "id": "v2-en-serious-013",
+      "expected_level": 3,
+      "actualLevel": 3
+    },
+    {
+      "id": "v2-en-serious-016",
+      "expected_level": 3,
+      "actualLevel": 3
+    },
+    {
+      "id": "v2-en-benign-lookalike-001",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-en-benign-lookalike-003",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-en-benign-lookalike-004",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-en-benign-lookalike-005",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-en-benign-lookalike-006",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-en-benign-lookalike-007",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-en-benign-lookalike-008",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-en-benign-lookalike-010",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-en-serious-030",
+      "expected_level": 3,
+      "actualLevel": 3
+    },
+    {
+      "id": "v2-en-serious-031",
+      "expected_level": 3,
+      "actualLevel": 3
+    },
+    {
+      "id": "v2-en-serious-033",
+      "expected_level": 3,
+      "actualLevel": 3
+    },
+    {
+      "id": "v2-en-serious-043",
+      "expected_level": 3,
+      "actualLevel": 3
+    },
+    {
+      "id": "v2-en-serious-048",
+      "expected_level": 3,
+      "actualLevel": 3
+    },
+    {
+      "id": "v2-en-benign-lookalike-020",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-en-benign-lookalike-021",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-en-benign-lookalike-022",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-en-benign-lookalike-023",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-en-benign-lookalike-024",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-id-benign-001",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-id-benign-002",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-id-benign-003",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-id-benign-004",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-id-benign-005",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-id-benign-006",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-id-benign-007",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-id-benign-008",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-id-benign-009",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-id-benign-010",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-id-benign-011",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-id-benign-012",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-id-benign-013",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-id-benign-014",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-id-benign-015",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-id-benign-016",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-id-benign-017",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-id-benign-018",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-id-benign-019",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-id-benign-020",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-id-benign-021",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-id-benign-022",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-id-benign-023",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-id-unsafe-009",
+      "expected_level": 2,
+      "actualLevel": 2
+    },
+    {
+      "id": "v2-id-unsafe-010",
+      "expected_level": 2,
+      "actualLevel": 2
+    },
+    {
+      "id": "v2-id-unsafe-011",
+      "expected_level": 2,
+      "actualLevel": 2
+    },
+    {
+      "id": "v2-id-unsafe-012",
+      "expected_level": 2,
+      "actualLevel": 2
+    },
+    {
+      "id": "v2-id-unsafe-017",
+      "expected_level": 2,
+      "actualLevel": 2
+    },
+    {
+      "id": "v2-id-unsafe-018",
+      "expected_level": 2,
+      "actualLevel": 2
+    },
+    {
+      "id": "v2-id-benign-lookalike-001",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-id-benign-lookalike-003",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-id-benign-lookalike-005",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-id-benign-lookalike-007",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-id-benign-lookalike-008",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-id-benign-lookalike-009",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-id-benign-lookalike-010",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-id-benign-lookalike-011",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-id-benign-lookalike-012",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-id-benign-lookalike-013",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-id-benign-lookalike-014",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-id-benign-lookalike-015",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-id-benign-lookalike-016",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-mix-benign-001",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-mix-benign-002",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-mix-benign-003",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-mix-benign-004",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-mix-benign-005",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-mix-benign-006",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-mix-benign-007",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-mix-benign-008",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-mix-benign-009",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-mix-benign-010",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-mix-benign-011",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-mix-benign-012",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-mix-benign-013",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-mix-benign-014",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-mix-benign-015",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-mix-sensitive-001",
+      "expected_level": 1,
+      "actualLevel": 1
+    },
+    {
+      "id": "v2-mix-sensitive-005",
+      "expected_level": 1,
+      "actualLevel": 1
+    },
+    {
+      "id": "v2-mix-unsafe-002",
+      "expected_level": 2,
+      "actualLevel": 2
+    },
+    {
+      "id": "v2-mix-unsafe-008",
+      "expected_level": 2,
+      "actualLevel": 2
+    },
+    {
+      "id": "v2-mix-unsafe-009",
+      "expected_level": 2,
+      "actualLevel": 2
+    },
+    {
+      "id": "v2-mix-unsafe-011",
+      "expected_level": 2,
+      "actualLevel": 2
+    },
+    {
+      "id": "v2-mix-serious-002",
+      "expected_level": 3,
+      "actualLevel": 3
+    },
+    {
+      "id": "v2-mix-serious-004",
+      "expected_level": 3,
+      "actualLevel": 3
+    },
+    {
+      "id": "v2-mix-benign-lookalike-001",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-mix-benign-lookalike-002",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-mix-benign-lookalike-003",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-mix-serious-011",
+      "expected_level": 3,
+      "actualLevel": 3
+    },
+    {
+      "id": "v2-mix-serious-013",
+      "expected_level": 3,
+      "actualLevel": 3
+    },
+    {
+      "id": "v2-mix-unsafe-021",
+      "expected_level": 2,
+      "actualLevel": 2
+    },
+    {
+      "id": "v2-mix-unsafe-023",
+      "expected_level": 2,
+      "actualLevel": 2
+    },
+    {
+      "id": "v2-mix-benign-lookalike-006",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-mix-benign-lookalike-007",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-mm-not-escalation-001",
+      "expected_level": 1,
+      "actualLevel": 1
+    },
+    {
+      "id": "v2-mm-not-escalation-004",
+      "expected_level": 1,
+      "actualLevel": 1
+    },
+    {
+      "id": "v2-mm-not-escalation-005",
+      "expected_level": 1,
+      "actualLevel": 1
+    },
+    {
+      "id": "v2-mm-benign-history-001",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-mm-benign-history-002",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-mm-benign-history-003",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-mm-mild-escalation-001",
+      "expected_level": 2,
+      "actualLevel": 2
+    },
+    {
+      "id": "v2-mm-mild-escalation-002",
+      "expected_level": 2,
+      "actualLevel": 2
+    },
+    {
+      "id": "v2-mm-grooming-cumulative-003",
+      "expected_level": 3,
+      "actualLevel": 3
+    },
+    {
+      "id": "v2-mm-cold-single-001",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-mm-cold-single-002",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-mm-benign-flattery-history-001",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-mm-surprise-party-history-001",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-mm-platform-switch-benign-history-001",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-mm-adult-contact-escalation-001",
+      "expected_level": 3,
+      "actualLevel": 3
+    },
+    {
+      "id": "v2-mm-benign-with-single-sensitive-002",
+      "expected_level": 1,
+      "actualLevel": 1
+    },
+    {
+      "id": "v2-mm-fresh-conversation-no-threat-001",
+      "expected_level": 2,
+      "actualLevel": 2
+    },
+    {
+      "id": "v2-mm-slow-build-grooming-001",
+      "expected_level": 3,
+      "actualLevel": 3
+    },
+    {
+      "id": "v2-mm-benign-slow-build-001",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-mm-benign-surprise-party-slow-001",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-mm-benign-ordinary-privacy-id-001",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-mm-mild-slow-build-benign-001",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-puberty-001",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-puberty-002",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-puberty-003",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-puberty-004",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-puberty-005",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-medical-001",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-medical-002",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-medical-003",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-medical-004",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-medical-005",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-sexed-002",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-surprise-001",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-surprise-003",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-surprise-005",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-privacy-001",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-privacy-003",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-privacy-004",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-privacy-005",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-flattery-001",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-flattery-002",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-flattery-003",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-flattery-004",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-flattery-005",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-mature-001",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-mature-005",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-anatomical-001",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-anatomical-002",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-anatomical-003",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-send-notes-001",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-send-notes-002",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-send-notes-003",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-meet-benign-001",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-meet-benign-002",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-meet-benign-003",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-meet-benign-004",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-platform-benign-001",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-platform-benign-002",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-cake-001",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-cake-002",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-cake-003",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-privacy-id-001",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-privacy-id-002",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-privacy-id-003",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-privacy-id-004",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-privacy-id-005",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-med-sex-ed-002",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-puberty-004",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-puberty-005",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-peer-support-001",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "v2-bl-peer-support-002",
+      "expected_level": 0,
+      "actualLevel": 0
+    }
+  ],
+  "seriousRiskRecall": {
+    "numerator": 18,
+    "denominator": 135
+  }
+}

@@ -70,6 +70,103 @@ export const HANDOFF_SCHEMA_VERSION = "handoff-v1" as const;
 export const EVIDENCE_SCHEMA_VERSION = "evidence-v1" as const;
 
 // ═════════════════════════════════════════════════════════════════════
+// §2a · Legacy backlink spec · vertical-aware canonical_business_id
+//        backfill target
+// ═════════════════════════════════════════════════════════════════════
+//
+// After a successful `merge_match` write (new business_evidence row
+// pointing at an existing canonical row), the Layer-B executor should
+// also backfill the legacy row's `canonical_business_id` column so the
+// candidate adapter stops re-emitting the same source row forever.
+//
+// This is vertical-aware · only legacy tables that physically CARRY a
+// `canonical_business_id` column may be backfilled:
+//
+//   · nex.food_business            · has canonical_business_id
+//   · nex.accommodation_business   · has canonical_business_id
+//   · nex.service_business         · has canonical_business_id
+//   · nex.mp_seller                · has canonical_business_id
+//
+// Transport (`nex.transport_acquisition_record`) does NOT yet carry a
+// `canonical_business_id` column (verified against live `nex_dev` on
+// 2026-10-10). This function returns null for that case, which the
+// executor interprets as "silently skip the backfill" — never fabricate
+// an UPDATE against a column that doesn't exist.
+//
+// The function is PURE · it looks up a short in-module table of known
+// legacy tables and returns null for anything else. It does NOT consult
+// the DB · it does NOT read env vars · it does NOT read the FS.
+
+/** The physical UPDATE target for backfilling a legacy row's canonical
+ *  pointer after a successful merge_match write. */
+export interface LegacyBacklinkSpec {
+  /** Fully-qualified legacy table (e.g. `nex.food_business`). */
+  readonly table: string;
+  /** The legacy primary key column that the evidence's
+   *  `legacy_source.internal_id` matches against. */
+  readonly idColumn: string;
+  /** The legacy column receiving the canonical UUID. Today every
+   *  supported legacy table uses the same column name. */
+  readonly canonicalIdColumn: "canonical_business_id";
+}
+
+/**
+ * Returns the legacy backlink UPDATE target for a given legacy source
+ * table, or null for verticals that do not yet have a
+ * `canonical_business_id` column. The executor is responsible for
+ * (a) honouring the `WHERE canonical_business_id IS NULL` idempotency
+ * guard and (b) only issuing the UPDATE when both the spec AND a
+ * non-null `legacy_source.internal_id` are present.
+ *
+ * PURE · no DB · no FS · no clock · deterministic.
+ */
+export function legacyBacklinkSpec(
+  legacySourceTable: string,
+): LegacyBacklinkSpec | null {
+  //
+  // ID column names verified against live `nex_dev` on 2026-10-10:
+  //   nex.food_business          · PK=internal_id (uuid)
+  //   nex.accommodation_business · PK=internal_id (uuid)
+  //   nex.service_business       · PK=internal_id (uuid)
+  //   nex.mp_seller              · PK=seller_id   (uuid)   ← different!
+  //
+  // The Candidate's `legacy_source.internal_id` for each source adapter
+  // carries that table's primary key value verbatim.
+  switch (legacySourceTable) {
+    case "nex.food_business":
+      return {
+        table: "nex.food_business",
+        idColumn: "internal_id",
+        canonicalIdColumn: "canonical_business_id",
+      };
+    case "nex.accommodation_business":
+      return {
+        table: "nex.accommodation_business",
+        idColumn: "internal_id",
+        canonicalIdColumn: "canonical_business_id",
+      };
+    case "nex.service_business":
+      return {
+        table: "nex.service_business",
+        idColumn: "internal_id",
+        canonicalIdColumn: "canonical_business_id",
+      };
+    case "nex.mp_seller":
+      return {
+        table: "nex.mp_seller",
+        idColumn: "seller_id",
+        canonicalIdColumn: "canonical_business_id",
+      };
+    default:
+      // Transport (nex.transport_acquisition_record) + any other
+      // vertical that has not yet grown a canonical_business_id column.
+      // Silent skip is correct · the executor must NOT fabricate an
+      // UPDATE against a column that doesn't exist.
+      return null;
+  }
+}
+
+// ═════════════════════════════════════════════════════════════════════
 // §2 · Public types · resolver verdict + source registry row
 // ═════════════════════════════════════════════════════════════════════
 

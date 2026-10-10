@@ -6,7 +6,12 @@
 //              lands on /home, signed-out lands on /create-account)
 //   · Right · home icon       → /nex-native/home
 //            magnifying glass → /nex-native/search (Directory)
-//            gear             → /nex-native/settings
+//            gear / lock      → /nex-native/settings (gear) OR
+//                               account-gate modal (3D lock) when the
+//                               current viewer has no `nex_account` row
+//                               (Settings Header Account-Gate · sealed
+//                               2026-10-10 · see
+//                               docs/doctrine/nex-settings-account-gate-2026-10-10.md).
 //
 // Server Component · no hooks · uses inline styles keyed to the NEX
 // dark-navy palette. Signed-out pages that render the header link the
@@ -14,6 +19,12 @@
 // visitor to /sign-in, which is the correct behaviour.
 
 import Link from "next/link";
+// Account-gate · the Settings-slot client component is self-contained
+// and fetches the gate state via a lightweight route handler so this
+// header stays SYNC and importable by both Server and Client
+// components (`calls/_calls-client.tsx` still imports it today). See
+// `src/components/nex-native/account-gate/SettingsHeaderSlot.tsx`.
+import { SettingsHeaderSlot } from "@/components/nex-native/account-gate/SettingsHeaderSlot";
 
 const NEX = {
   textPrimary: "#F2F5F8",
@@ -77,14 +88,7 @@ export function NexPageHeader({ dataScope }: NexPageHeaderProps) {
         >
           <SearchIcon />
         </Link>
-        <Link
-          href="/nex-native/settings"
-          aria-label="Settings"
-          data-nex-page-header-settings
-          style={iconLinkStyle}
-        >
-          <GearIcon />
-        </Link>
+        <SettingsHeaderSlot iconLinkStyle={iconLinkStyle} />
       </div>
     </header>
   );

@@ -1,0 +1,173 @@
+[
+  {
+    "id": "mix-benign-001",
+    "text": "aku lagi di cafe mau order drinks dulu nanti balas ya",
+    "language": "mixed",
+    "expected_level": 0,
+    "category_tag": "code_switching",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "mix-benign-002",
+    "text": "pr nya due tomorrow aku belum selesai sama sekali",
+    "language": "mixed",
+    "expected_level": 0,
+    "category_tag": "code_switching",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "mix-benign-003",
+    "text": "aku lagi stressed banget sama ujian minggu depan",
+    "language": "mixed",
+    "expected_level": 0,
+    "category_tag": "code_switching",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "mix-benign-004",
+    "text": "mama aku so overprotective sampai nggak boleh nginep di rumah temen",
+    "language": "mixed",
+    "expected_level": 0,
+    "category_tag": "code_switching",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "mix-benign-005",
+    "text": "the teacher kasih test lagi hari ini aku nggak siap sama sekali",
+    "language": "mixed",
+    "expected_level": 0,
+    "category_tag": "code_switching",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "mix-benign-006",
+    "text": "besok ada field trip ke museum aku excited banget",
+    "language": "mixed",
+    "expected_level": 0,
+    "category_tag": "code_switching",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "mix-sensitive-001",
+    "text": "temen aku pake baju yang bikin boobs nya kelihatan banget tadi di sekolah awkward",
+    "language": "mixed",
+    "expected_level": 1,
+    "category_tag": "code_switching",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "mix-sensitive-002",
+    "text": "lagi di gym tadi aku kepleset dan jatuh langsung ke butt gue sakit banget",
+    "language": "mixed",
+    "expected_level": 1,
+    "category_tag": "code_switching",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "mix-sensitive-003",
+    "text": "guru biologi hari ini jelasin tentang puberty dan boobs semua pada ketawa",
+    "language": "mixed",
+    "expected_level": 1,
+    "category_tag": "code_switching",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "mix-unsafe-001",
+    "text": "send me a foto dong just one aja",
+    "language": "mixed",
+    "expected_level": 2,
+    "category_tag": "image_request_direct",
+    "notes": "mixes en 'send me a' pattern + id 'foto' vocab · tests whether classifier handles cross-language signal",
+    "sender_profile": "unknown"
+  },
+  {
+    "id": "mix-unsafe-002",
+    "text": "ayo meet up at the mall sabtu sore",
+    "language": "mixed",
+    "expected_level": 2,
+    "category_tag": "image_request_coded",
+    "notes": "en meeting pattern in id-leaning sentence",
+    "sender_profile": "unknown"
+  },
+  {
+    "id": "mix-unsafe-003",
+    "text": "pindah ke whatsapp dong this chat too public",
+    "language": "mixed",
+    "expected_level": 2,
+    "category_tag": "image_request_coded",
+    "notes": "id platform_switch pattern + en context · level 2",
+    "sender_profile": "unknown"
+  },
+  {
+    "id": "mix-unsafe-004",
+    "text": "if you love me kirim foto kamu sekarang",
+    "language": "mixed",
+    "expected_level": 2,
+    "category_tag": "coercion_pressure",
+    "notes": "en coercion vocab + id image vocab · 2 sensitive matches expected · level 2",
+    "sender_profile": "unknown"
+  },
+  {
+    "id": "mix-unsafe-005",
+    "text": "jangan bilang mama kamu please i'll be really nice",
+    "language": "mixed",
+    "expected_level": 2,
+    "category_tag": "secrecy_request",
+    "sender_profile": "unknown"
+  },
+  {
+    "id": "mix-serious-001",
+    "text": "our little secret ya · kirim foto kamu sekarang",
+    "language": "mixed",
+    "expected_level": 3,
+    "category_tag": "grooming_pattern",
+    "notes": "en grooming_indicator + id image_request vocab · classifier currently has no cross-language escalation to level 3 without an EN image_request pattern firing · documents gap",
+    "sender_profile": "adult_contact"
+  },
+  {
+    "id": "mix-serious-002",
+    "text": "rahasia kita · send me a pic now · don't tell anyone",
+    "language": "mixed",
+    "expected_level": 3,
+    "category_tag": "grooming_pattern",
+    "notes": "id grooming + en image_request + en secrecy · should hit level 3 via EN image_request pattern + ID grooming_indicator vocab",
+    "sender_profile": "adult_contact"
+  },
+  {
+    "id": "mix-serious-003",
+    "text": "i'm 32 and you're 13 ayo ketemuan di cafe nanti sore",
+    "language": "mixed",
+    "expected_level": 3,
+    "category_tag": "meeting_arrangement",
+    "notes": "en age_gap pattern + id meeting pattern · should hit level 3",
+    "sender_profile": "adult_contact"
+  },
+  {
+    "id": "mix-serious-004",
+    "text": "you're so mature banget untuk umur segini · send me a photo please",
+    "language": "mixed",
+    "expected_level": 3,
+    "category_tag": "grooming_pattern",
+    "notes": "en grooming_indicator vocab + en image_request pattern · should reach level 3",
+    "sender_profile": "adult_contact"
+  },
+  {
+    "id": "mix-serious-005",
+    "text": "come on please please kirim foto satu aja i promise won't ask again",
+    "language": "mixed",
+    "expected_level": 3,
+    "category_tag": "coercion_pressure",
+    "notes": "repeated_pressure_after_refusal pattern + id image_request vocab · classifier emits level 2 without conversation signal",
+    "conversation_context": "recipient previously refused image request",
+    "sender_profile": "adult_contact"
+  },
+  {
+    "id": "mix-fptrap-001",
+    "text": "besok ada study session di library mau join nggak ketemuan di depan",
+    "language": "mixed",
+    "expected_level": 0,
+    "category_tag": "false_positive_trap",
+    "notes": "benign study meetup in mixed language · meeting_arrangement vocab triggers level 2 incorrectly · documents FP",
+    "sender_profile": "peer"
+  }
+]

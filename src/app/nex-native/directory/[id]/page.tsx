@@ -49,6 +49,15 @@ import { NoImage } from "../_no-image";
 import { buildDirectoryDetailPath } from "../_routes";
 import { isVerifiedLifecycle } from "../_verified";
 import { DetailDistanceChip } from "./_detail-distance";
+// Client components · the detail page is server-rendered, but importing
+// a `"use client"` component from a server component is well-supported:
+// Next.js serialises props across the boundary. We mount them BELOW the
+// main listing content as additional entry points for related-businesses
+// discovery and owner-claim affordance. The existing panel-based flow in
+// `ListingDetailPanel.tsx` is untouched · this is a complementary
+// surface, not a replacement.
+import { RelatedBusinessesSectionClient } from "@/components/nex-native/directory/RelatedBusinessesSectionClient";
+import { OwnerClaimForm } from "@/components/nex-native/directory/OwnerClaimForm";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -255,6 +264,15 @@ function DetailShell(props: {
 }): React.ReactElement {
   const { listing, destination, hasEvidence } = props;
 
+  // Owner-claim affordance renders only when the destination is NOT the
+  // owner's own cover · for `nex_business` / `nex_user_profile` the
+  // earlier redirects have already left this component.
+  // destination.kind is now `claim_available` or `place_detail`.
+  // `place_detail` is intentionally read-only (public cultural / natural
+  // places have no owner-claim path) · gate claim affordance on
+  // `claim_available` only, matching the panel flow's `unclaimed` rule.
+  const canClaim = destination.kind === "claim_available";
+
   return (
     <PageFrame>
       <article
@@ -274,7 +292,129 @@ function DetailShell(props: {
         <LocationSection listing={listing} />
         <ContactSection listing={listing} />
       </article>
+      <RelatedBusinessesPageSection listing={listing} />
+      {canClaim ? <ClaimListingPageSection listing={listing} /> : null}
     </PageFrame>
+  );
+}
+
+// ─── "You may also need" · page-level mount ──────────────────────────
+//
+// Mounts the shared `RelatedBusinessesSectionClient` client component.
+// Honest empty states are already handled by the component itself (no
+// coords → renders nothing · empty response → muted microcopy).
+//
+// We wrap it in a labelled section so the detail page gets a stable
+// `data-nex-detail-page-related` selector and a visible heading. The
+// component renders its own inner list; this wrapper does NOT duplicate
+// or style its output.
+
+function RelatedBusinessesPageSection(props: {
+  readonly listing: DirectoryListingVM;
+}): React.ReactElement {
+  return (
+    <section
+      data-nex-detail-page-related
+      aria-labelledby="nex-detail-page-related-heading"
+      style={{
+        marginTop: 28,
+        background: NEX.surface,
+        border: `1px solid ${NEX.borderSoft}`,
+        borderRadius: 16,
+        padding: "18px 20px",
+      }}
+    >
+      <h2
+        id="nex-detail-page-related-heading"
+        style={{
+          margin: "0 0 10px 0",
+          color: NEX.textDim,
+          fontSize: 12,
+          fontWeight: 700,
+          letterSpacing: "0.08em",
+          textTransform: "uppercase",
+        }}
+      >
+        You may also need
+      </h2>
+      <RelatedBusinessesSectionClient listing={props.listing} />
+    </section>
+  );
+}
+
+// ─── "Claim this listing" · page-level mount ─────────────────────────
+//
+// The sealed `OwnerClaimForm` is a full-screen multi-step flow when
+// mounted directly. On the detail page we want a less intrusive entry
+// so the owner isn't dropped into a form before they're sure. We give
+// the surface a stable `data-nex-detail-page-claim` wrapper and use a
+// native `<details>` disclosure for the expand-on-click gate · no
+// client-side state wiring needed, keeps the server-rendered page a
+// simple scroll surface. The form itself remains the sealed client
+// component · we do NOT duplicate its logic.
+
+function ClaimListingPageSection(props: {
+  readonly listing: DirectoryListingVM;
+}): React.ReactElement {
+  return (
+    <section
+      data-nex-detail-page-claim
+      aria-labelledby="nex-detail-page-claim-heading"
+      style={{
+        marginTop: 20,
+        background: NEX.surface,
+        border: `1px solid ${NEX.borderSoft}`,
+        borderRadius: 16,
+        padding: "18px 20px",
+      }}
+    >
+      <h2
+        id="nex-detail-page-claim-heading"
+        style={{
+          margin: "0 0 10px 0",
+          color: NEX.textDim,
+          fontSize: 12,
+          fontWeight: 700,
+          letterSpacing: "0.08em",
+          textTransform: "uppercase",
+        }}
+      >
+        Claim this listing
+      </h2>
+      <details
+        data-nex-detail-page-claim-disclosure
+        style={{
+          color: NEX.textDim,
+          fontSize: 13.5,
+          lineHeight: 1.5,
+        }}
+      >
+        <summary
+          data-nex-detail-page-claim-open
+          style={{
+            cursor: "pointer",
+            padding: "10px 14px",
+            borderRadius: 999,
+            background: NEX.cyanFaint,
+            color: NEX.cyan,
+            border: `1px solid ${NEX.cyan}`,
+            fontSize: 14,
+            fontWeight: 600,
+            display: "inline-block",
+            width: "fit-content",
+            listStyle: "none",
+          }}
+        >
+          Open claim form
+        </summary>
+        <div style={{ marginTop: 14 }}>
+          <OwnerClaimForm
+            listing={props.listing}
+            canonicalId={props.listing.canonicalBusinessId}
+          />
+        </div>
+      </details>
+    </section>
   );
 }
 

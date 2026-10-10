@@ -1,0 +1,1273 @@
+{
+  "runAt": "2026-10-10T09:14:32.645Z",
+  "classifierVersion": "safechat-rules-v1.0.0",
+  "rulesetSource": "src/lib/nex-native/safechat/__eval__/ruleset-fixture.ts (mirror of _seed-vocabulary.mjs)",
+  "corpusTotals": {
+    "en": 60,
+    "id": 45,
+    "mixed": 20
+  },
+  "overall": {
+    "accuracy": 0.72,
+    "falsePositiveRateOnBenign": 0,
+    "falseNegativeRateOnSerious": 0.6
+  },
+  "perLanguage": {
+    "en": {
+      "accuracy": 0.7667,
+      "perClass": [
+        {
+          "level": 0,
+          "precision": 0.6389,
+          "recall": 1,
+          "f1": 0.7797,
+          "support": 23
+        },
+        {
+          "level": 1,
+          "precision": 1,
+          "recall": 0.8333,
+          "f1": 0.9091,
+          "support": 12
+        },
+        {
+          "level": 2,
+          "precision": 0.8889,
+          "recall": 0.5333,
+          "f1": 0.6667,
+          "support": 15
+        },
+        {
+          "level": 3,
+          "precision": 1,
+          "recall": 0.5,
+          "f1": 0.6667,
+          "support": 10
+        }
+      ]
+    },
+    "id": {
+      "accuracy": 0.6667,
+      "perClass": [
+        {
+          "level": 0,
+          "precision": 0.6,
+          "recall": 1,
+          "f1": 0.75,
+          "support": 21
+        },
+        {
+          "level": 1,
+          "precision": 0,
+          "recall": 0,
+          "f1": 0,
+          "support": 2
+        },
+        {
+          "level": 2,
+          "precision": 0.9,
+          "recall": 0.5294,
+          "f1": 0.6667,
+          "support": 17
+        },
+        {
+          "level": 3,
+          "precision": 0,
+          "recall": 0,
+          "f1": 0,
+          "support": 5
+        }
+      ]
+    },
+    "mixed": {
+      "accuracy": 0.7,
+      "perClass": [
+        {
+          "level": 0,
+          "precision": 0.5385,
+          "recall": 1,
+          "f1": 0.7,
+          "support": 7
+        },
+        {
+          "level": 1,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "support": 3
+        },
+        {
+          "level": 2,
+          "precision": 1,
+          "recall": 0.2,
+          "f1": 0.3333,
+          "support": 5
+        },
+        {
+          "level": 3,
+          "precision": 1,
+          "recall": 0.6,
+          "f1": 0.75,
+          "support": 5
+        }
+      ]
+    }
+  },
+  "perCategoryTag": {
+    "benign_everyday": {
+      "total": 33,
+      "correct": 33
+    },
+    "slang_joke_between_peers": {
+      "total": 13,
+      "correct": 12
+    },
+    "puberty_health_question": {
+      "total": 7,
+      "correct": 7
+    },
+    "image_request_direct": {
+      "total": 6,
+      "correct": 3
+    },
+    "image_request_coded": {
+      "total": 7,
+      "correct": 3
+    },
+    "coercion_pressure": {
+      "total": 12,
+      "correct": 5
+    },
+    "secrecy_request": {
+      "total": 6,
+      "correct": 0
+    },
+    "grooming_pattern": {
+      "total": 14,
+      "correct": 6
+    },
+    "meeting_arrangement": {
+      "total": 5,
+      "correct": 2
+    },
+    "false_positive_trap": {
+      "total": 13,
+      "correct": 10
+    },
+    "code_switching": {
+      "total": 9,
+      "correct": 9
+    }
+  },
+  "consistency": {
+    "duplicateRunDeltaCount": 0,
+    "description": "ran every item twice · zero disagreements · classifier deterministic for this corpus"
+  },
+  "failingItems": [
+    {
+      "item": {
+        "id": "en-sensitive-007",
+        "text": "the cheerleaders had a routine where they stuck their butts out it was so awkward",
+        "language": "en",
+        "expected_level": 1,
+        "category_tag": "slang_joke_between_peers",
+        "sender_profile": "peer"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0,
+      "ruleMatches": [],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "en-unsafe-005",
+        "text": "let's move to whatsapp this chat is too public",
+        "language": "en",
+        "expected_level": 2,
+        "category_tag": "image_request_coded",
+        "notes": "platform_switch_invitation signal",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.3,
+      "ruleMatches": [
+        "pattern:platform_switch_invitation:en"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "en-unsafe-006",
+        "text": "come on just one photo you can delete it after",
+        "language": "en",
+        "expected_level": 2,
+        "category_tag": "image_request_direct",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.5,
+      "ruleMatches": [
+        "vocab:image_request:en",
+        "pattern:repeated_pressure_after_refusal:en"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "en-unsafe-010",
+        "text": "don't tell your mum what we talked about ok",
+        "language": "en",
+        "expected_level": 2,
+        "category_tag": "secrecy_request",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.75,
+      "ruleMatches": [
+        "vocab:secrecy_request:en",
+        "pattern:secrecy_request:en"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "en-unsafe-011",
+        "text": "nobody understands you like i do you're so mature for your age",
+        "language": "en",
+        "expected_level": 2,
+        "category_tag": "coercion_pressure",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.3,
+      "ruleMatches": [
+        "vocab:grooming_indicator:en"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "en-unsafe-012",
+        "text": "can we meet up somewhere quiet after school",
+        "language": "en",
+        "expected_level": 2,
+        "category_tag": "coercion_pressure",
+        "notes": "meeting_arrangement pattern · level 2 alone, becomes 3 with age_gap_disclosure",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.5,
+      "ruleMatches": [
+        "vocab:meeting_arrangement:en",
+        "pattern:meeting_arrangement:en"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "en-unsafe-013",
+        "text": "switch to telegram so your parents can't read our chat",
+        "language": "en",
+        "expected_level": 2,
+        "category_tag": "secrecy_request",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.3,
+      "ruleMatches": [
+        "pattern:platform_switch_invitation:en"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "en-unsafe-014",
+        "text": "please please just one pic i promise i won't ask again",
+        "language": "en",
+        "expected_level": 2,
+        "category_tag": "coercion_pressure",
+        "notes": "repeated_pressure_after_refusal pattern · level 2 when standalone, 3 when conversation-level signal fires",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.5,
+      "ruleMatches": [
+        "vocab:image_request:en",
+        "pattern:repeated_pressure_after_refusal:en"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "en-serious-002",
+        "text": "i'm 32 and you're 13 but age is just a number right",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "grooming_pattern",
+        "notes": "age_gap_disclosure pattern · alone this does not reach 3 unless paired with meeting_arrangement",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.45,
+      "ruleMatches": [
+        "pattern:age_gap_disclosure:en"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "en-serious-005",
+        "text": "our little secret · can we meet up this weekend",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "grooming_pattern",
+        "notes": "grooming_indicator + meeting_arrangement · without image_request this is level 2 per rules",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.8,
+      "ruleMatches": [
+        "vocab:grooming_indicator:en",
+        "vocab:meeting_arrangement:en",
+        "pattern:meeting_arrangement:en"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "en-serious-007",
+        "text": "i know you said no but come on just one pic for me ok",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "coercion_pressure",
+        "notes": "pressure after prior refusal · depends on conversation signal · in isolation this is level 2",
+        "conversation_context": "recipient previously refused an image request · aggregator history would include coercion_indicator + image_request",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.5,
+      "ruleMatches": [
+        "vocab:image_request:en",
+        "pattern:repeated_pressure_after_refusal:en"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "en-serious-008",
+        "text": "you're so mature · can we meet up at the mall · don't tell anyone",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "grooming_pattern",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 1,
+      "ruleMatches": [
+        "vocab:grooming_indicator:en",
+        "vocab:secrecy_request:en",
+        "vocab:meeting_arrangement:en",
+        "pattern:secrecy_request:en",
+        "pattern:meeting_arrangement:en"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "en-serious-009",
+        "text": "i'm 35 and you're 13 · meet me by the bus station tonight",
+        "language": "en",
+        "expected_level": 3,
+        "category_tag": "meeting_arrangement",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.45,
+      "ruleMatches": [
+        "pattern:age_gap_disclosure:en"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "en-fptrap-005",
+        "text": "the health teacher said we're going to learn about sex education next semester",
+        "language": "en",
+        "expected_level": 1,
+        "category_tag": "false_positive_trap",
+        "notes": "explicit_sexual vocab 'sex' triggers level 2 in classifier · we EXPECT the test to fail · documents the ruleset gap",
+        "sender_profile": "peer"
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:explicit_sexual:en"
+      ],
+      "correct": false,
+      "delta": 1
+    },
+    {
+      "item": {
+        "id": "id-unsafe-001",
+        "text": "kirim foto kamu dong satu aja",
+        "language": "id",
+        "expected_level": 2,
+        "category_tag": "image_request_direct",
+        "notes": "image_request vocab 'foto' triggers level 2 · classifier has no 'kirim foto' pattern seeded",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:image_request:id"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "id-unsafe-002",
+        "text": "ayo ketemuan di cafe deket sekolah besok sore",
+        "language": "id",
+        "expected_level": 2,
+        "category_tag": "coercion_pressure",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.5,
+      "ruleMatches": [
+        "vocab:meeting_arrangement:id",
+        "pattern:meeting_arrangement:id"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "id-unsafe-003",
+        "text": "yuk ketemuan di taman besok pulang sekolah",
+        "language": "id",
+        "expected_level": 2,
+        "category_tag": "coercion_pressure",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.5,
+      "ruleMatches": [
+        "vocab:meeting_arrangement:id",
+        "pattern:meeting_arrangement:id"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "id-unsafe-004",
+        "text": "jangan bilang siapa-siapa ya tentang chat kita",
+        "language": "id",
+        "expected_level": 2,
+        "category_tag": "secrecy_request",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.75,
+      "ruleMatches": [
+        "vocab:secrecy_request:id",
+        "pattern:secrecy_request:id"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "id-unsafe-005",
+        "text": "pindah ke whatsapp aja biar lebih enak ngobrolnya",
+        "language": "id",
+        "expected_level": 2,
+        "category_tag": "image_request_coded",
+        "notes": "platform_switch_invitation pattern",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.3,
+      "ruleMatches": [
+        "pattern:platform_switch_invitation:id"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "id-unsafe-008",
+        "text": "pindah ke telegram biar ortu kamu nggak baca",
+        "language": "id",
+        "expected_level": 2,
+        "category_tag": "secrecy_request",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.3,
+      "ruleMatches": [
+        "pattern:platform_switch_invitation:id"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "id-unsafe-009",
+        "text": "jangan bilang mama kamu tentang obrolan kita ya",
+        "language": "id",
+        "expected_level": 2,
+        "category_tag": "secrecy_request",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.75,
+      "ruleMatches": [
+        "vocab:secrecy_request:id",
+        "pattern:secrecy_request:id"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "id-unsafe-010",
+        "text": "kamu dewasa kok umur segini · kirim foto kamu",
+        "language": "id",
+        "expected_level": 2,
+        "category_tag": "grooming_pattern",
+        "notes": "grooming_indicator + image_request vocab · classifier currently has NO 'kirim foto' pattern · may miss level 3 escalation",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.4,
+      "ruleMatches": [
+        "vocab:grooming_indicator:id",
+        "vocab:image_request:id"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "id-serious-001",
+        "text": "rahasia kita ya · ayo ketemuan di belakang sekolah",
+        "language": "id",
+        "expected_level": 3,
+        "category_tag": "grooming_pattern",
+        "notes": "grooming_indicator + meeting_arrangement · without an id image_request pattern this likely stays at level 2 · documents gap",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.8,
+      "ruleMatches": [
+        "vocab:grooming_indicator:id",
+        "vocab:meeting_arrangement:id",
+        "pattern:meeting_arrangement:id"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "id-serious-002",
+        "text": "rahasia kita · kirim foto kamu sekarang · jangan bilang siapa-siapa",
+        "language": "id",
+        "expected_level": 3,
+        "category_tag": "grooming_pattern",
+        "notes": "grooming + image_request vocab + secrecy pattern · may miss level 3 because id has no image_request pattern",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 1,
+      "ruleMatches": [
+        "vocab:grooming_indicator:id",
+        "vocab:image_request:id",
+        "vocab:secrecy_request:id",
+        "pattern:secrecy_request:id"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "id-serious-003",
+        "text": "ayo ketemuan di hotel · jangan bilang mama kamu",
+        "language": "id",
+        "expected_level": 3,
+        "category_tag": "meeting_arrangement",
+        "notes": "meeting pattern + secrecy pattern · no age_gap pattern · classifier emits level 2 · documents gap",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 1,
+      "ruleMatches": [
+        "vocab:secrecy_request:id",
+        "vocab:meeting_arrangement:id",
+        "pattern:secrecy_request:id",
+        "pattern:meeting_arrangement:id"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "id-serious-004",
+        "text": "aku umur 30 kamu umur 13 nggak papa kan · ayo ketemuan",
+        "language": "id",
+        "expected_level": 3,
+        "category_tag": "meeting_arrangement",
+        "notes": "classifier has age_gap_disclosure only in en · will miss here in id · documents gap",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.5,
+      "ruleMatches": [
+        "vocab:meeting_arrangement:id",
+        "pattern:meeting_arrangement:id"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "id-serious-005",
+        "text": "rahasia kita · pindah ke whatsapp aja · jangan bilang ke mama",
+        "language": "id",
+        "expected_level": 3,
+        "category_tag": "grooming_pattern",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 1,
+      "ruleMatches": [
+        "vocab:grooming_indicator:id",
+        "vocab:secrecy_request:id",
+        "pattern:secrecy_request:id",
+        "pattern:platform_switch_invitation:id"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "id-fptrap-001",
+        "text": "guru biologi bilang kita bakal belajar tentang seks di semester depan",
+        "language": "id",
+        "expected_level": 1,
+        "category_tag": "false_positive_trap",
+        "notes": "sex-ed context · classifier emits level 2 due to explicit_sexual · documents false positive",
+        "sender_profile": "peer"
+      },
+      "actualLevel": 2,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:explicit_sexual:id"
+      ],
+      "correct": false,
+      "delta": 1
+    },
+    {
+      "item": {
+        "id": "id-fptrap-003",
+        "text": "di berita ada orang bunuh diri sedih banget ya",
+        "language": "id",
+        "expected_level": 1,
+        "category_tag": "false_positive_trap",
+        "notes": "news-context self_harm vocab · classifier gap documented",
+        "sender_profile": "peer"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.5,
+      "ruleMatches": [
+        "vocab:violence:id",
+        "vocab:self_harm:id"
+      ],
+      "correct": false,
+      "delta": -1
+    },
+    {
+      "item": {
+        "id": "mix-unsafe-001",
+        "text": "send me a foto dong just one aja",
+        "language": "mixed",
+        "expected_level": 2,
+        "category_tag": "image_request_direct",
+        "notes": "mixes en 'send me a' pattern + id 'foto' vocab · tests whether classifier handles cross-language signal",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.5,
+      "ruleMatches": [
+        "vocab:image_request:id",
+        "pattern:repeated_pressure_after_refusal:en"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "mix-unsafe-002",
+        "text": "ayo meet up at the mall sabtu sore",
+        "language": "mixed",
+        "expected_level": 2,
+        "category_tag": "image_request_coded",
+        "notes": "en meeting pattern in id-leaning sentence",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.2,
+      "ruleMatches": [
+        "vocab:meeting_arrangement:en"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "mix-unsafe-003",
+        "text": "pindah ke whatsapp dong this chat too public",
+        "language": "mixed",
+        "expected_level": 2,
+        "category_tag": "image_request_coded",
+        "notes": "id platform_switch pattern + en context · level 2",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.3,
+      "ruleMatches": [
+        "pattern:platform_switch_invitation:id"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "mix-unsafe-005",
+        "text": "jangan bilang mama kamu please i'll be really nice",
+        "language": "mixed",
+        "expected_level": 2,
+        "category_tag": "secrecy_request",
+        "sender_profile": "unknown"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.75,
+      "ruleMatches": [
+        "vocab:secrecy_request:id",
+        "pattern:secrecy_request:id"
+      ],
+      "correct": false,
+      "delta": -2
+    },
+    {
+      "item": {
+        "id": "mix-serious-001",
+        "text": "our little secret ya · kirim foto kamu sekarang",
+        "language": "mixed",
+        "expected_level": 3,
+        "category_tag": "grooming_pattern",
+        "notes": "en grooming_indicator + id image_request vocab · classifier currently has no cross-language escalation to level 3 without an EN image_request pattern firing · documents gap",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.5,
+      "ruleMatches": [
+        "vocab:grooming_indicator:en",
+        "vocab:image_request:id"
+      ],
+      "correct": false,
+      "delta": -3
+    },
+    {
+      "item": {
+        "id": "mix-serious-005",
+        "text": "come on please please kirim foto satu aja i promise won't ask again",
+        "language": "mixed",
+        "expected_level": 3,
+        "category_tag": "coercion_pressure",
+        "notes": "repeated_pressure_after_refusal pattern + id image_request vocab · classifier emits level 2 without conversation signal",
+        "conversation_context": "recipient previously refused image request",
+        "sender_profile": "adult_contact"
+      },
+      "actualLevel": 0,
+      "actualConfidence": 0.5,
+      "ruleMatches": [
+        "vocab:image_request:id",
+        "pattern:repeated_pressure_after_refusal:en"
+      ],
+      "correct": false,
+      "delta": -3
+    }
+  ],
+  "passingItems": [
+    {
+      "id": "en-benign-001",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "en-benign-002",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "en-benign-003",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "en-benign-004",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "en-benign-005",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "en-benign-006",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "en-benign-007",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "en-benign-008",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "en-benign-009",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "en-benign-010",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "en-benign-011",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "en-benign-012",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "en-benign-013",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "en-benign-014",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "en-benign-015",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "en-benign-016",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "en-benign-017",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "en-benign-018",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "en-benign-019",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "en-benign-020",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "en-sensitive-001",
+      "expected_level": 1,
+      "actualLevel": 1
+    },
+    {
+      "id": "en-sensitive-002",
+      "expected_level": 1,
+      "actualLevel": 1
+    },
+    {
+      "id": "en-sensitive-003",
+      "expected_level": 1,
+      "actualLevel": 1
+    },
+    {
+      "id": "en-sensitive-004",
+      "expected_level": 1,
+      "actualLevel": 1
+    },
+    {
+      "id": "en-sensitive-005",
+      "expected_level": 1,
+      "actualLevel": 1
+    },
+    {
+      "id": "en-sensitive-006",
+      "expected_level": 1,
+      "actualLevel": 1
+    },
+    {
+      "id": "en-sensitive-008",
+      "expected_level": 1,
+      "actualLevel": 1
+    },
+    {
+      "id": "en-sensitive-009",
+      "expected_level": 1,
+      "actualLevel": 1
+    },
+    {
+      "id": "en-sensitive-010",
+      "expected_level": 1,
+      "actualLevel": 1
+    },
+    {
+      "id": "en-unsafe-001",
+      "expected_level": 2,
+      "actualLevel": 2
+    },
+    {
+      "id": "en-unsafe-002",
+      "expected_level": 2,
+      "actualLevel": 2
+    },
+    {
+      "id": "en-unsafe-003",
+      "expected_level": 2,
+      "actualLevel": 2
+    },
+    {
+      "id": "en-unsafe-004",
+      "expected_level": 2,
+      "actualLevel": 2
+    },
+    {
+      "id": "en-unsafe-007",
+      "expected_level": 2,
+      "actualLevel": 2
+    },
+    {
+      "id": "en-unsafe-008",
+      "expected_level": 2,
+      "actualLevel": 2
+    },
+    {
+      "id": "en-unsafe-009",
+      "expected_level": 2,
+      "actualLevel": 2
+    },
+    {
+      "id": "en-unsafe-015",
+      "expected_level": 2,
+      "actualLevel": 2
+    },
+    {
+      "id": "en-serious-001",
+      "expected_level": 3,
+      "actualLevel": 3
+    },
+    {
+      "id": "en-serious-003",
+      "expected_level": 3,
+      "actualLevel": 3
+    },
+    {
+      "id": "en-serious-004",
+      "expected_level": 3,
+      "actualLevel": 3
+    },
+    {
+      "id": "en-serious-006",
+      "expected_level": 3,
+      "actualLevel": 3
+    },
+    {
+      "id": "en-serious-010",
+      "expected_level": 3,
+      "actualLevel": 3
+    },
+    {
+      "id": "en-fptrap-001",
+      "expected_level": 1,
+      "actualLevel": 1
+    },
+    {
+      "id": "en-fptrap-002",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "en-fptrap-003",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "en-fptrap-004",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "id-benign-001",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "id-benign-002",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "id-benign-003",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "id-benign-004",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "id-benign-005",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "id-benign-006",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "id-benign-007",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "id-benign-008",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "id-benign-009",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "id-benign-010",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "id-benign-011",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "id-benign-012",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "id-benign-013",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "id-benign-014",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "id-benign-015",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "id-sensitive-001",
+      "expected_level": 2,
+      "actualLevel": 2
+    },
+    {
+      "id": "id-sensitive-002",
+      "expected_level": 2,
+      "actualLevel": 2
+    },
+    {
+      "id": "id-sensitive-003",
+      "expected_level": 2,
+      "actualLevel": 2
+    },
+    {
+      "id": "id-sensitive-004",
+      "expected_level": 2,
+      "actualLevel": 2
+    },
+    {
+      "id": "id-sensitive-005",
+      "expected_level": 2,
+      "actualLevel": 2
+    },
+    {
+      "id": "id-sensitive-006",
+      "expected_level": 2,
+      "actualLevel": 2
+    },
+    {
+      "id": "id-sensitive-007",
+      "expected_level": 2,
+      "actualLevel": 2
+    },
+    {
+      "id": "id-unsafe-006",
+      "expected_level": 2,
+      "actualLevel": 2
+    },
+    {
+      "id": "id-unsafe-007",
+      "expected_level": 2,
+      "actualLevel": 2
+    },
+    {
+      "id": "id-fptrap-002",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "id-fptrap-004",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "id-fptrap-005",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "id-fptrap-006",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "id-fptrap-007",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "id-benign-016",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "mix-benign-001",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "mix-benign-002",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "mix-benign-003",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "mix-benign-004",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "mix-benign-005",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "mix-benign-006",
+      "expected_level": 0,
+      "actualLevel": 0
+    },
+    {
+      "id": "mix-sensitive-001",
+      "expected_level": 1,
+      "actualLevel": 1
+    },
+    {
+      "id": "mix-sensitive-002",
+      "expected_level": 1,
+      "actualLevel": 1
+    },
+    {
+      "id": "mix-sensitive-003",
+      "expected_level": 1,
+      "actualLevel": 1
+    },
+    {
+      "id": "mix-unsafe-004",
+      "expected_level": 2,
+      "actualLevel": 2
+    },
+    {
+      "id": "mix-serious-002",
+      "expected_level": 3,
+      "actualLevel": 3
+    },
+    {
+      "id": "mix-serious-003",
+      "expected_level": 3,
+      "actualLevel": 3
+    },
+    {
+      "id": "mix-serious-004",
+      "expected_level": 3,
+      "actualLevel": 3
+    },
+    {
+      "id": "mix-fptrap-001",
+      "expected_level": 0,
+      "actualLevel": 0
+    }
+  ],
+  "seriousRiskRecall": {
+    "numerator": 8,
+    "denominator": 20
+  }
+}

@@ -34,6 +34,8 @@ import type {
   DirectoryDestination,
   DirectoryListingVM,
 } from "@/lib/nex-native/directory";
+import type { CategoryImageLibraryRow } from "@/lib/nex-native/directory/category-image-resolver";
+import { ListingDetailPanel } from "@/components/nex-native/directory/ListingDetailPanel";
 
 const PALETTE = {
   surface: "#0E1526",
@@ -54,6 +56,13 @@ export interface DirectoryResultsProps {
    *  the geolocation opt-in button only shows if there's a reason
    *  to enable distance. Avoids UI clutter in zero-coord states. */
   readonly anyListingHasCoords: boolean;
+  /** Curated category-image library (`nex.category_image_library` ·
+   *  migration 112). Fetched once per request in page.tsx and
+   *  threaded into each card so the pure resolver can select a
+   *  representative illustration (ADR-0022). Empty when the library
+   *  has not been seeded or the DB is unreachable · the cards then
+   *  render the honest no-image fallback. */
+  readonly categoryImageLibrary?: readonly CategoryImageLibraryRow[];
 }
 
 type GeoState =
@@ -63,8 +72,38 @@ type GeoState =
   | { kind: "denied" }
   | { kind: "unsupported" };
 
+interface PanelState {
+  readonly listing: DirectoryListingVM;
+  readonly destination: DirectoryDestination;
+  readonly mode: "details" | "chat";
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// Agent-A card integration slot
+//
+// Agent A extends DirectoryCard (via CardCtaStrip inside) to accept
+// `onOpenDetail` + `onOpenChat` callbacks. The base type in
+// _directory-card.tsx may not expose those yet, so this results
+// component types the card as a superset-tolerant component and
+// forwards the callbacks unconditionally. When Agent A's extension
+// lands the extra props are consumed; until then they are silently
+// ignored and the card's existing <Link>-based navigation remains
+// intact (no regression).
+// ─────────────────────────────────────────────────────────────────────
+
+type DirectoryCardWithCallbacks = React.ComponentType<
+  React.ComponentProps<typeof DirectoryCard> & {
+    readonly onOpenDetail?: () => void;
+    readonly onOpenChat?: () => void;
+  }
+>;
+
+const DirectoryCardWithCbs =
+  DirectoryCard as unknown as DirectoryCardWithCallbacks;
+
 export function DirectoryResults(props: DirectoryResultsProps): React.ReactElement {
   const [geo, setGeo] = useState<GeoState>({ kind: "idle" });
+  const [panelFor, setPanelFor] = useState<PanelState | null>(null);
 
   const requestLocation = useCallback(() => {
     if (typeof navigator === "undefined" || !navigator.geolocation) {
@@ -91,24 +130,56 @@ export function DirectoryResults(props: DirectoryResultsProps): React.ReactEleme
 
   const userCoords = geo.kind === "granted" ? geo.coords : null;
 
+  const openDetails = useCallback(
+    (listing: DirectoryListingVM, destination: DirectoryDestination) => {
+      setPanelFor({ listing, destination, mode: "details" });
+    },
+    [],
+  );
+
+  const openChat = useCallback(
+    (listing: DirectoryListingVM, destination: DirectoryDestination) => {
+      setPanelFor({ listing, destination, mode: "chat" });
+    },
+    [],
+  );
+
+  const closePanel = useCallback(() => {
+    setPanelFor(null);
+  }, []);
+
   return (
     <section
       aria-label="Directory results"
       data-nex-directory-results
       data-nex-directory-geo-state={geo.kind}
+      data-nex-directory-panel-open={panelFor !== null ? "true" : "false"}
       style={{ display: "flex", flexDirection: "column", gap: 12 }}
     >
       {props.anyListingHasCoords ? (
         <DistanceOptIn geo={geo} onEnable={requestLocation} />
       ) : null}
       {props.results.map(({ listing, destination }) => (
-        <DirectoryCard
+        <DirectoryCardWithCbs
           key={listing.canonicalBusinessId}
           listing={listing}
           destination={destination}
           userCoords={userCoords}
+          onOpenDetail={() => openDetails(listing, destination)}
+          onOpenChat={() => openChat(listing, destination)}
+          categoryImageLibrary={props.categoryImageLibrary}
         />
       ))}
+      {panelFor !== null ? (
+        <ListingDetailPanel
+          listing={panelFor.listing}
+          destination={panelFor.destination}
+          open={panelFor !== null}
+          onClose={closePanel}
+          initialMode={panelFor.mode}
+          categoryImageLibrary={props.categoryImageLibrary}
+        />
+      ) : null}
     </section>
   );
 }

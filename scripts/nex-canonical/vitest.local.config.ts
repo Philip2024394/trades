@@ -14,7 +14,10 @@ export default defineConfig({
   },
   test: {
     environment: "node",
-    include: ["scripts/nex-canonical/*.test.ts"],
+    include: [
+      "scripts/nex-canonical/*.test.ts",
+      "scripts/nex-canonical/__tests__/*.test.ts",
+    ],
     globals: true,
     root: path.join(root, "../.."),
   },

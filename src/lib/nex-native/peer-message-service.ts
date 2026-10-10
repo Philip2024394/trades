@@ -26,6 +26,13 @@ import {
   isValidReactionEmoji,
   type NexPeerMessageReactions,
 } from "./peer-message-reactions";
+// SafeChat Phase 1 · simulated detection · instrumentation only.
+// The hook is non-blocking · errors are swallowed · zero observable
+// effect on message delivery. ONLY wired into the plaintext send
+// path (sendPeerMessage); the encrypted fan-out path
+// (sendEncryptedPeerMessages) is NOT hooked by design.
+import { isSafeChatPhase1LoggingEnabled } from "./safechat/feature-flag";
+import { safechatClassifyAndLog } from "./safechat/_hook";
 
 export interface NexPeerMessageRow {
   id: NexUuid;
@@ -422,6 +429,23 @@ export async function sendPeerMessage(
   await touchPeerConversation(row.conversation_id, row.sent_at).catch(() => {
     // best-effort · leaving last_message_at stale won't break sends
   });
+  // SafeChat Phase 1 · simulated detection · non-blocking · errors swallowed.
+  // Encrypted messages (sendEncryptedPeerMessages) are a separate code path
+  // and are NOT hooked by design · see safechat doctrine.
+  if (isSafeChatPhase1LoggingEnabled()) {
+    void safechatClassifyAndLog({
+      messageText: body,
+      senderAccountId: input.sender_account_id,
+      recipientAccountId:
+        row.sender_account_id === conversation.participant_a_id
+          ? conversation.participant_b_id
+          : conversation.participant_a_id,
+      conversationId: row.conversation_id,
+      messageRef: row.id,
+    }).catch(() => {
+      /* swallow · SafeChat must never affect message delivery */
+    });
+  }
   return row;
 }
 
@@ -441,6 +465,29 @@ export async function listPeerMessages(
     throw new Error(`peer-message-service.listPeerMessages: ${error.message}`);
   }
   return (data as NexPeerMessageRow[]) ?? [];
+}
+
+/** Return the most recent message in a conversation, or null if the
+ *  conversation is empty. Used by the inbox + vault chat list views
+ *  for row-level previews. Doctrine #7 scoping: reads strictly by
+ *  conversation_id (two-party envelope); caller is responsible for
+ *  verifying the viewer participates in the conversation. */
+export async function getLastPeerMessageInConversation(
+  conversationId: NexUuid,
+): Promise<NexPeerMessageRow | null> {
+  const { data, error } = await nexSupabaseAdmin
+    .from("nex_peer_message")
+    .select("*")
+    .eq("conversation_id", conversationId)
+    .order("sent_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  if (error) {
+    throw new Error(
+      `peer-message-service.getLastPeerMessageInConversation: ${error.message}`,
+    );
+  }
+  return (data as NexPeerMessageRow) ?? null;
 }
 
 /** Mark every inbound (not-from-viewer) message in the conversation as

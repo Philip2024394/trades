@@ -47,7 +47,9 @@ import type {
   CanonicalWritePlan,
   HandoffEvidence,
   InsertCanonicalRow,
+  LegacyBacklinkSpec,
 } from "./canonical-handoff";
+import { legacyBacklinkSpec } from "./canonical-handoff";
 import { FINGERPRINT_QUERIES } from "./pg-fingerprint";
 import { isLifecycleWritable, type LifecycleState } from "./canonical-row";
 import {
@@ -136,6 +138,7 @@ export type StageLabel =
   | "precheck_osm_uniqueness"
   | "precheck_target_writable"
   | "write"
+  | "backfill_legacy_canonical_id"
   | "commit";
 
 // ═════════════════════════════════════════════════════════════════════
@@ -253,6 +256,35 @@ FOR UPDATE`,
       ),
       expects: "exactly_one",
     });
+
+    // §Legacy backlink backfill · idempotent + vertical-aware.
+    //
+    // When the resolver decided MERGE, the legacy row that the Candidate
+    // came from must be pointed at the target canonical row, otherwise
+    // the next ingestion sweep re-emits the same row forever (the
+    // adapter filters on `canonical_business_id IS NULL`).
+    //
+    // Guards:
+    //   · `legacyBacklinkSpec(legacy_source.table)` returns null for
+    //     verticals without the column (today: transport). Silent skip.
+    //   · `legacy_source.internal_id` must be non-null · without it we
+    //     cannot locate the row.
+    //   · `WHERE canonical_business_id IS NULL` makes the UPDATE a no-op
+    //     if the row was already backfilled by a prior wave · the stage
+    //     is marked `expects: "any"` because 0 rows affected is a valid
+    //     outcome (idempotent re-run).
+    //   · Runs INSIDE the same SERIALIZABLE transaction as the evidence
+    //     INSERT · a rollback for any other reason reverts both.
+    const spec = legacyBacklinkSpec(plan.evidence.legacy_source.table);
+    const legacyInternalId = plan.evidence.legacy_source.internal_id;
+    if (spec !== null && legacyInternalId !== null) {
+      stages.push({
+        label: "backfill_legacy_canonical_id",
+        sql: buildLegacyBacklinkUpdateSql(spec),
+        params: [plan.target_canonical_business_id, legacyInternalId],
+        expects: "any",
+      });
+    }
   }
 
   stages.push({
@@ -421,6 +453,28 @@ function buildEvidenceOnlyInsertSql(): string {
   $16, $17, $18
 )
 RETURNING evidence_id, canonical_business_id`;
+}
+
+/** SQL for the merge_match backlink backfill.
+ *
+ *  Vertical-aware: `spec.table`, `spec.idColumn`, `spec.canonicalIdColumn`
+ *  come from the sealed `legacyBacklinkSpec` whitelist (canonical-handoff.ts).
+ *  Only known legacy tables are ever interpolated · the identifiers are
+ *  not user-controlled and the shape is fully pinned by the switch in
+ *  `legacyBacklinkSpec`.
+ *
+ *  Parameter layout:
+ *    $1  canonical_business_id (= target of the merge)
+ *    $2  legacy internal id (= evidence.legacy_source.internal_id)
+ *
+ *  Idempotency: the `WHERE canonical_business_id IS NULL` guard makes
+ *  this UPDATE a safe no-op on rows that were already backfilled by a
+ *  previous wave (0 rows affected · `expects: "any"`). */
+function buildLegacyBacklinkUpdateSql(spec: LegacyBacklinkSpec): string {
+  return `UPDATE ${spec.table}
+   SET ${spec.canonicalIdColumn} = $1
+ WHERE ${spec.idColumn} = $2
+   AND ${spec.canonicalIdColumn} IS NULL`;
 }
 
 function buildEvidenceOnlyInsertParams(
@@ -616,6 +670,11 @@ export async function executeWritePlan(
           }
           break;
         }
+        case "backfill_legacy_canonical_id":
+          // Idempotent · 0 rows affected means the row was already
+          // backfilled by a previous wave. Nothing to validate · the
+          // guarantee is captured by the WHERE … IS NULL guard.
+          break;
         case "begin":
         case "set_statement_timeout":
         case "set_idle_timeout":

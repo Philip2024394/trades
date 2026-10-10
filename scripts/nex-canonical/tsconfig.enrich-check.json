@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.json",
+  "include": [
+    "enrich-osm-reference.ts",
+    "enrich-osm-reference.test.ts",
+    "enrich-wikidata-crossref.ts",
+    "enrich-wikidata-crossref.test.ts"
+  ],
+  "exclude": ["node_modules", ".next"]
+}

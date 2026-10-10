@@ -1,0 +1,502 @@
+[
+  {
+    "id": "en-benign-001",
+    "text": "hey what time is practice tomorrow?",
+    "language": "en",
+    "expected_level": 0,
+    "category_tag": "benign_everyday",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "en-benign-002",
+    "text": "did you finish the maths homework yet",
+    "language": "en",
+    "expected_level": 0,
+    "category_tag": "benign_everyday",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "en-benign-003",
+    "text": "my cat just knocked over my water bottle lol",
+    "language": "en",
+    "expected_level": 0,
+    "category_tag": "benign_everyday",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "en-benign-004",
+    "text": "can you send me the notes from history class",
+    "language": "en",
+    "expected_level": 0,
+    "category_tag": "benign_everyday",
+    "notes": "contains 'send me the notes' which is near send-image pattern but not an image request",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "en-benign-005",
+    "text": "see you at the bus stop at 8",
+    "language": "en",
+    "expected_level": 0,
+    "category_tag": "benign_everyday",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "en-benign-006",
+    "text": "my mum said i can come to your birthday party",
+    "language": "en",
+    "expected_level": 0,
+    "category_tag": "benign_everyday",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "en-benign-007",
+    "text": "do you want to study together on saturday",
+    "language": "en",
+    "expected_level": 0,
+    "category_tag": "benign_everyday",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "en-benign-008",
+    "text": "i think the teacher is going to give us a surprise quiz",
+    "language": "en",
+    "expected_level": 0,
+    "category_tag": "benign_everyday",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "en-benign-009",
+    "text": "which football club do you support",
+    "language": "en",
+    "expected_level": 0,
+    "category_tag": "benign_everyday",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "en-benign-010",
+    "text": "i'm so tired from running laps today",
+    "language": "en",
+    "expected_level": 0,
+    "category_tag": "benign_everyday",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "en-benign-011",
+    "text": "the new song by that band is amazing you should hear it",
+    "language": "en",
+    "expected_level": 0,
+    "category_tag": "benign_everyday",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "en-benign-012",
+    "text": "lol you're being so dramatic right now",
+    "language": "en",
+    "expected_level": 0,
+    "category_tag": "slang_joke_between_peers",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "en-benign-013",
+    "text": "that pizza place by school is so overrated honestly",
+    "language": "en",
+    "expected_level": 0,
+    "category_tag": "benign_everyday",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "en-benign-014",
+    "text": "i left my water bottle in the gym can you grab it tomorrow",
+    "language": "en",
+    "expected_level": 0,
+    "category_tag": "benign_everyday",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "en-benign-015",
+    "text": "the science teacher said we can retake the test next week",
+    "language": "en",
+    "expected_level": 0,
+    "category_tag": "benign_everyday",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "en-benign-016",
+    "text": "my little brother is being so annoying today",
+    "language": "en",
+    "expected_level": 0,
+    "category_tag": "benign_everyday",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "en-benign-017",
+    "text": "did you watch the match last night that was intense",
+    "language": "en",
+    "expected_level": 0,
+    "category_tag": "benign_everyday",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "en-benign-018",
+    "text": "i had a bad stomach ache this morning but i'm fine now",
+    "language": "en",
+    "expected_level": 0,
+    "category_tag": "puberty_health_question",
+    "notes": "ordinary health comment · classifier should not escalate on 'ache' / health context",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "en-benign-019",
+    "text": "do you want to come over and play minecraft after school",
+    "language": "en",
+    "expected_level": 0,
+    "category_tag": "benign_everyday",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "en-benign-020",
+    "text": "the library closes early on friday so we should go wednesday",
+    "language": "en",
+    "expected_level": 0,
+    "category_tag": "benign_everyday",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "en-sensitive-001",
+    "text": "haha the guy in the ad had massive boobs that was so weird",
+    "language": "en",
+    "expected_level": 1,
+    "category_tag": "slang_joke_between_peers",
+    "notes": "single sexual_slang term, no patterns · classifier should emit level 1",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "en-sensitive-002",
+    "text": "i slipped on the stairs and landed on my butt everyone laughed",
+    "language": "en",
+    "expected_level": 1,
+    "category_tag": "slang_joke_between_peers",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "en-sensitive-003",
+    "text": "my aunt kept pinching my butt at the family dinner it was so embarrassing",
+    "language": "en",
+    "expected_level": 1,
+    "category_tag": "slang_joke_between_peers",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "en-sensitive-004",
+    "text": "we were talking about boobs in biology today everyone was giggling",
+    "language": "en",
+    "expected_level": 1,
+    "category_tag": "puberty_health_question",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "en-sensitive-005",
+    "text": "that comedian did a whole bit about boobs it was actually funny",
+    "language": "en",
+    "expected_level": 1,
+    "category_tag": "slang_joke_between_peers",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "en-sensitive-006",
+    "text": "my brother keeps calling me butt-face when my parents aren't around",
+    "language": "en",
+    "expected_level": 1,
+    "category_tag": "slang_joke_between_peers",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "en-sensitive-007",
+    "text": "the cheerleaders had a routine where they stuck their butts out it was so awkward",
+    "language": "en",
+    "expected_level": 1,
+    "category_tag": "slang_joke_between_peers",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "en-sensitive-008",
+    "text": "the teacher said boobs by accident during the lesson everyone died",
+    "language": "en",
+    "expected_level": 1,
+    "category_tag": "slang_joke_between_peers",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "en-sensitive-009",
+    "text": "i swear my boobs started hurting out of nowhere today",
+    "language": "en",
+    "expected_level": 1,
+    "category_tag": "puberty_health_question",
+    "notes": "legitimate puberty comment · expected sensitive not unsafe",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "en-sensitive-010",
+    "text": "my mum says i'm growing boobs now and i hate it",
+    "language": "en",
+    "expected_level": 1,
+    "category_tag": "puberty_health_question",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "en-unsafe-001",
+    "text": "send me a pic of you in your pyjamas",
+    "language": "en",
+    "expected_level": 2,
+    "category_tag": "image_request_direct",
+    "sender_profile": "unknown"
+  },
+  {
+    "id": "en-unsafe-002",
+    "text": "can you send a photo of yourself just one",
+    "language": "en",
+    "expected_level": 2,
+    "category_tag": "image_request_direct",
+    "sender_profile": "unknown"
+  },
+  {
+    "id": "en-unsafe-003",
+    "text": "show me your room i want to see where you sleep",
+    "language": "en",
+    "expected_level": 2,
+    "category_tag": "image_request_coded",
+    "sender_profile": "unknown"
+  },
+  {
+    "id": "en-unsafe-004",
+    "text": "show me some skin come on it's just between us",
+    "language": "en",
+    "expected_level": 2,
+    "category_tag": "image_request_coded",
+    "sender_profile": "unknown"
+  },
+  {
+    "id": "en-unsafe-005",
+    "text": "let's move to whatsapp this chat is too public",
+    "language": "en",
+    "expected_level": 2,
+    "category_tag": "image_request_coded",
+    "notes": "platform_switch_invitation signal",
+    "sender_profile": "unknown"
+  },
+  {
+    "id": "en-unsafe-006",
+    "text": "come on just one photo you can delete it after",
+    "language": "en",
+    "expected_level": 2,
+    "category_tag": "image_request_direct",
+    "sender_profile": "unknown"
+  },
+  {
+    "id": "en-unsafe-007",
+    "text": "send a selfie i want to see how pretty you look today",
+    "language": "en",
+    "expected_level": 2,
+    "category_tag": "image_request_direct",
+    "sender_profile": "unknown"
+  },
+  {
+    "id": "en-unsafe-008",
+    "text": "you owe me after what i did for you last week",
+    "language": "en",
+    "expected_level": 2,
+    "category_tag": "coercion_pressure",
+    "sender_profile": "unknown"
+  },
+  {
+    "id": "en-unsafe-009",
+    "text": "if you love me you'd send a pic",
+    "language": "en",
+    "expected_level": 2,
+    "category_tag": "coercion_pressure",
+    "notes": "coercion_indicator vocab + image_request vocab",
+    "sender_profile": "unknown"
+  },
+  {
+    "id": "en-unsafe-010",
+    "text": "don't tell your mum what we talked about ok",
+    "language": "en",
+    "expected_level": 2,
+    "category_tag": "secrecy_request",
+    "sender_profile": "unknown"
+  },
+  {
+    "id": "en-unsafe-011",
+    "text": "nobody understands you like i do you're so mature for your age",
+    "language": "en",
+    "expected_level": 2,
+    "category_tag": "coercion_pressure",
+    "sender_profile": "unknown"
+  },
+  {
+    "id": "en-unsafe-012",
+    "text": "can we meet up somewhere quiet after school",
+    "language": "en",
+    "expected_level": 2,
+    "category_tag": "coercion_pressure",
+    "notes": "meeting_arrangement pattern · level 2 alone, becomes 3 with age_gap_disclosure",
+    "sender_profile": "unknown"
+  },
+  {
+    "id": "en-unsafe-013",
+    "text": "switch to telegram so your parents can't read our chat",
+    "language": "en",
+    "expected_level": 2,
+    "category_tag": "secrecy_request",
+    "sender_profile": "unknown"
+  },
+  {
+    "id": "en-unsafe-014",
+    "text": "please please just one pic i promise i won't ask again",
+    "language": "en",
+    "expected_level": 2,
+    "category_tag": "coercion_pressure",
+    "notes": "repeated_pressure_after_refusal pattern · level 2 when standalone, 3 when conversation-level signal fires",
+    "sender_profile": "unknown"
+  },
+  {
+    "id": "en-unsafe-015",
+    "text": "show me your bedroom it would make me feel closer to you",
+    "language": "en",
+    "expected_level": 2,
+    "category_tag": "image_request_coded",
+    "sender_profile": "unknown"
+  },
+  {
+    "id": "en-serious-001",
+    "text": "our little secret ok · send me a pic now",
+    "language": "en",
+    "expected_level": 3,
+    "category_tag": "grooming_pattern",
+    "notes": "image_request pattern + grooming_indicator vocab · classifier rule says level 3",
+    "sender_profile": "adult_contact"
+  },
+  {
+    "id": "en-serious-002",
+    "text": "i'm 32 and you're 13 but age is just a number right",
+    "language": "en",
+    "expected_level": 3,
+    "category_tag": "grooming_pattern",
+    "notes": "age_gap_disclosure pattern · alone this does not reach 3 unless paired with meeting_arrangement",
+    "sender_profile": "adult_contact"
+  },
+  {
+    "id": "en-serious-003",
+    "text": "i'm 28 and you're 14 · let's meet up at the park on sunday",
+    "language": "en",
+    "expected_level": 3,
+    "category_tag": "meeting_arrangement",
+    "notes": "age_gap_disclosure + meeting_arrangement patterns · reaches 3",
+    "sender_profile": "adult_contact"
+  },
+  {
+    "id": "en-serious-004",
+    "text": "you're so mature for your age · send me a pic please",
+    "language": "en",
+    "expected_level": 3,
+    "category_tag": "grooming_pattern",
+    "notes": "image_request pattern + grooming_indicator vocab",
+    "sender_profile": "adult_contact"
+  },
+  {
+    "id": "en-serious-005",
+    "text": "our little secret · can we meet up this weekend",
+    "language": "en",
+    "expected_level": 3,
+    "category_tag": "grooming_pattern",
+    "notes": "grooming_indicator + meeting_arrangement · without image_request this is level 2 per rules",
+    "sender_profile": "adult_contact"
+  },
+  {
+    "id": "en-serious-006",
+    "text": "send a pic now · don't tell your parents · our little secret",
+    "language": "en",
+    "expected_level": 3,
+    "category_tag": "grooming_pattern",
+    "sender_profile": "adult_contact"
+  },
+  {
+    "id": "en-serious-007",
+    "text": "i know you said no but come on just one pic for me ok",
+    "language": "en",
+    "expected_level": 3,
+    "category_tag": "coercion_pressure",
+    "notes": "pressure after prior refusal · depends on conversation signal · in isolation this is level 2",
+    "conversation_context": "recipient previously refused an image request · aggregator history would include coercion_indicator + image_request",
+    "sender_profile": "adult_contact"
+  },
+  {
+    "id": "en-serious-008",
+    "text": "you're so mature · can we meet up at the mall · don't tell anyone",
+    "language": "en",
+    "expected_level": 3,
+    "category_tag": "grooming_pattern",
+    "sender_profile": "adult_contact"
+  },
+  {
+    "id": "en-serious-009",
+    "text": "i'm 35 and you're 13 · meet me by the bus station tonight",
+    "language": "en",
+    "expected_level": 3,
+    "category_tag": "meeting_arrangement",
+    "sender_profile": "adult_contact"
+  },
+  {
+    "id": "en-serious-010",
+    "text": "our little secret · send a photo of you · i won't tell anyone",
+    "language": "en",
+    "expected_level": 3,
+    "category_tag": "grooming_pattern",
+    "sender_profile": "adult_contact"
+  },
+  {
+    "id": "en-fptrap-001",
+    "text": "the biology textbook has a whole chapter on puberty · boobs and all",
+    "language": "en",
+    "expected_level": 1,
+    "category_tag": "false_positive_trap",
+    "notes": "contains sexual_slang vocab in a sex-ed context · classifier correctly emits level 1",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "en-fptrap-002",
+    "text": "my dad gave me the talk about safety online · don't tell strangers your address he said",
+    "language": "en",
+    "expected_level": 0,
+    "category_tag": "false_positive_trap",
+    "notes": "parent-child safety conversation · 'don't tell' near 'strangers' not 'mum/parents' · may trip don't-tell-X pattern",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "en-fptrap-003",
+    "text": "we read in english class about a character who committed suicide it was really sad",
+    "language": "en",
+    "expected_level": 0,
+    "category_tag": "false_positive_trap",
+    "notes": "literary context for self_harm vocab · classifier currently has no literary-context sensitivity · documented as a gap",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "en-fptrap-004",
+    "text": "the museum has a huge gun collection from world war two it was fascinating",
+    "language": "en",
+    "expected_level": 0,
+    "category_tag": "false_positive_trap",
+    "notes": "benign reference to violence vocab · classifier gap documented",
+    "sender_profile": "peer"
+  },
+  {
+    "id": "en-fptrap-005",
+    "text": "the health teacher said we're going to learn about sex education next semester",
+    "language": "en",
+    "expected_level": 1,
+    "category_tag": "false_positive_trap",
+    "notes": "explicit_sexual vocab 'sex' triggers level 2 in classifier · we EXPECT the test to fail · documents the ruleset gap",
+    "sender_profile": "peer"
+  }
+]

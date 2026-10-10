@@ -315,9 +315,13 @@ export function createLegacyFoodBusinessSource(
         // than the cursor's last_internal_id, ordered by internal_id.
         // We fetch +1 to detect "another batch exists" without a
         // separate count.
+        // Skip rows already canonicalised (migration 169 FK column).
+        // Without this filter, the runner re-processes the same first
+        // batch on every invocation (checkpoint-log is observability-only,
+        // not resume-state · see directory-runner.ts:244 cursor=null init).
         const whereClause = isFoodCursor(cursor)
-          ? "WHERE internal_id > $1 ORDER BY internal_id ASC LIMIT $2"
-          : "ORDER BY internal_id ASC LIMIT $1";
+          ? "WHERE internal_id > $1 AND canonical_business_id IS NULL ORDER BY internal_id ASC LIMIT $2"
+          : "WHERE canonical_business_id IS NULL ORDER BY internal_id ASC LIMIT $1";
         const sql = `SELECT internal_id, public_listing_ref, business_name,
                             category, address, city, district,
                             coordinates_lng, coordinates_lat,

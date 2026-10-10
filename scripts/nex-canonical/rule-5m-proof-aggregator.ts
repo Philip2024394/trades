@@ -52,6 +52,8 @@ const PROOFS: readonly ProofEntry[] = [
     statement:
       "Seed cohort file exists, ≥50 records, every record approved_by=founder, R1-R10 ≥3 seeds each",
     prerequisites: ["tests/fixtures/canonical/seed-cohort-v1.jsonl"],
+    dedicated_test:
+      "scripts/nex-canonical/rule-5m-proof-1-seed-cohort-provenance.test.ts",
   },
   {
     id: 2,
@@ -59,10 +61,15 @@ const PROOFS: readonly ProofEntry[] = [
     statement:
       "Positive/negative/ambiguous corpus files exist, pair counts met, labelled_by sealed, append-only revisions",
     prerequisites: [
+      "tests/fixtures/canonical/eval-corpus-1.jsonl",
+      "tests/fixtures/canonical/eval-corpus-2.jsonl",
+      "tests/fixtures/canonical/eval-corpus-3.jsonl",
       "tests/fixtures/eval/positive-pairs-v1.jsonl",
       "tests/fixtures/eval/negative-pairs-v1.jsonl",
       "tests/fixtures/eval/ambiguous-pairs-v1.jsonl",
     ],
+    dedicated_test:
+      "scripts/nex-canonical/rule-5m-proof-2-eval-corpus-provenance.test.ts",
   },
   {
     id: 3,
@@ -81,8 +88,11 @@ const PROOFS: readonly ProofEntry[] = [
       "tests/fixtures/canonical/seed-cohort-v1.jsonl",
       "tests/fixtures/eval/positive-pairs-v1.jsonl",
       "tests/fixtures/eval/negative-pairs-v1.jsonl",
-      "scripts/nex-canonical/eval-measurement-runner.ts",
+      "tests/fixtures/eval/ambiguous-pairs-v1.jsonl",
+      "scripts/nex-canonical/rule-5m-measurement-runner.ts",
     ],
+    dedicated_test:
+      "scripts/nex-canonical/rule-5m-proof-4-rule5j-hard-gates.test.ts",
   },
   {
     id: 5,
@@ -93,8 +103,10 @@ const PROOFS: readonly ProofEntry[] = [
       "tests/fixtures/canonical/seed-cohort-v1.jsonl",
       "tests/fixtures/eval/positive-pairs-v1.jsonl",
       "tests/fixtures/eval/ambiguous-pairs-v1.jsonl",
-      "scripts/nex-canonical/eval-measurement-runner.ts",
+      "scripts/nex-canonical/rule-5m-measurement-runner.ts",
     ],
+    dedicated_test:
+      "scripts/nex-canonical/rule-5m-proof-5-rule5j-soft-gates.test.ts",
   },
   {
     id: 6,
@@ -111,6 +123,7 @@ const PROOFS: readonly ProofEntry[] = [
     statement:
       "Measurement artefact records corpus + resolver module hashes; re-running on same hashes is byte-identical",
     prerequisites: [
+      "scripts/nex-canonical/rule-5m-measurement-runner.ts",
       "scripts/nex-canonical/eval-measurement-runner.ts",
     ],
     dedicated_test:

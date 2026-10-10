@@ -149,6 +149,12 @@ export interface ListDirectoryOutcome {
   /** Optional diagnostic string the UI can surface in a non-fabricated
    *  way (e.g. a dev-only badge). Never a user-facing error. */
   readonly diagnostic: string | null;
+  /** Total matching rows across the ENTIRE result set (not just this
+   *  page). Driven by a COUNT(*) query against the same WHERE
+   *  predicate the SELECT uses, minus LIMIT/OFFSET. Zero when
+   *  systemReady is false. Used by the UI to render page counts and
+   *  Prev/Next controls. */
+  readonly total: number;
 }
 
 /**
@@ -420,6 +426,33 @@ export function buildCanonicalSql(
   return { sql, params };
 }
 
+/** Build the COUNT(*) companion to `buildCanonicalSql`. Same WHERE
+ *  predicate · no LIMIT · no OFFSET · no ORDER BY. Used by `listDirectory`
+ *  to populate `ListDirectoryOutcome.total` so the UI can render page
+ *  counts and Prev/Next controls accurately.
+ *
+ *  Pure · deterministic · zero fabrication: the count is produced by
+ *  the DB, not by the service. */
+export function buildCanonicalCountSql(
+  inputs: Omit<CanonicalQueryInputs, "limit" | "offset">,
+): BuiltCanonicalSql {
+  const whereClauses: string[] = ["country = $1"];
+  const params: unknown[] = [inputs.country];
+  if (inputs.entityTypes !== null && inputs.entityTypes.length > 0) {
+    params.push([...inputs.entityTypes]);
+    whereClauses.push(`entity_type = ANY($${params.length}::text[])`);
+  }
+  if (inputs.q !== null && inputs.q.length > 0) {
+    params.push(`%${inputs.q}%`);
+    whereClauses.push(`name_norm ILIKE $${params.length}`);
+  }
+  const sql =
+    `SELECT COUNT(*)::int AS n ` +
+    `FROM nex.${DIRECTORY_PUBLICATION_VIEW} ` +
+    `WHERE ${whereClauses.join(" AND ")}`;
+  return { sql, params };
+}
+
 /** Minimal credential-safe redactor for diagnostic strings. Strips
  *  connection URLs and password=... fragments before a pg error
  *  surfaces through the service's diagnostic field. Belt-and-braces ·
@@ -468,30 +501,39 @@ export async function listDirectory(
           ? PLACE_ENTITY_TYPES
           : null;
 
-  const { sql, params } = buildCanonicalSql({
+  const sharedWhere = {
     country: args.country,
     q: args.q && args.q.length > 0 ? args.q : null,
     entityTypes,
+  };
+  const { sql, params } = buildCanonicalSql({
+    ...sharedWhere,
     limit: args.limit ?? DEFAULT_LIMIT,
     offset: args.offset ?? 0,
   });
+  const countBuilt = buildCanonicalCountSql(sharedWhere);
 
   let rows: RawCanonicalRow[] = [];
+  let total = 0;
   let systemReady = true;
   let diagnostic: string | null = null;
 
   try {
-    const queryResult = await withClient(async (client) => {
-      return client.query(sql, params as unknown[]);
-    });
-    if (queryResult === null) {
-      // withClient returns null when NEX_POSTGRES_URL is unset / empty.
-      // This is the honest "not configured" state. The UI renders
-      // "being prepared" — no fabrication.
+    // Run the SELECT and the COUNT(*) in parallel against the same
+    // pool · one connection acquisition per client call via withClient.
+    const [pageResult, countResult] = await Promise.all([
+      withClient(async (client) => client.query(sql, params as unknown[])),
+      withClient(async (client) =>
+        client.query(countBuilt.sql, countBuilt.params as unknown[]),
+      ),
+    ]);
+    if (pageResult === null || countResult === null) {
       systemReady = false;
       diagnostic = "directory-service: NEX_POSTGRES_URL not set";
     } else {
-      rows = (queryResult.rows ?? []) as unknown as RawCanonicalRow[];
+      rows = (pageResult.rows ?? []) as unknown as RawCanonicalRow[];
+      const countRow = (countResult.rows?.[0] ?? null) as { n?: number } | null;
+      total = typeof countRow?.n === "number" ? countRow.n : 0;
     }
   } catch (err) {
     systemReady = false;
@@ -500,7 +542,7 @@ export async function listDirectory(
   }
 
   if (!systemReady) {
-    return { results: [], systemReady, diagnostic };
+    return { results: [], systemReady, diagnostic, total: 0 };
   }
 
   // Adapt raw rows → DirectoryCanonicalRow[]. Rows that fail the
@@ -532,7 +574,7 @@ export async function listDirectory(
     results.push({ listing: listings[i], destination: destinations[i] });
   }
 
-  return { results, systemReady: true, diagnostic: null };
+  return { results, systemReady: true, diagnostic: null, total };
 }
 
 const EMPTY_MEDIA_MAP: ReadonlyMap<string, DirectoryListingMedia> = new Map();
