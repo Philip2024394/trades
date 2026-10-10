@@ -74,14 +74,39 @@ export default async function FamilyManagePage(): Promise<React.JSX.Element> {
 
   return (
     <LocalFamilySafetyShell
-      title="Family Safety · Manage"
+      title="Manage guardian partners"
       activeNav="dashboard"
-      subtitle="Pending, active, and recently revoked family links."
+      subtitle="Guardian-to-guardian links. To manage child accounts under 16, use Custody."
     >
+      <div
+        role="status"
+        data-nex-family-safety-manage-disambiguation="true"
+        data-testid="nex-fs-manage-disambiguation"
+        style={{
+          padding: "10px 12px",
+          background: P.cyanMuted,
+          border: `1px solid ${P.cyanBorder}`,
+          borderRadius: 10,
+          color: P.textPrimary,
+          fontSize: 13,
+          lineHeight: 1.5,
+          marginBottom: 12,
+        }}
+      >
+        <strong>Guardian-to-guardian links only.</strong> Child accounts under
+        16 you created live under{" "}
+        <a
+          href="/nex-native/family-safety/custody"
+          style={{ color: P.cyan }}
+        >
+          Custody
+        </a>
+        .
+      </div>
       {all.length === 0 ? (
         <LocalEmptyState
-          title="No family links yet"
-          body="Send an invitation or accept one to create your first family link."
+          title="No guardian partners yet"
+          body="To add a secondary guardian, send a guardian-to-guardian invitation. To create a NEX account for a child under 16, use Create a child account."
           actions={
             <a
               href="/nex-native/family-safety/invite"
@@ -94,7 +119,7 @@ export default async function FamilyManagePage(): Promise<React.JSX.Element> {
                 fontWeight: 600,
               }}
             >
-              Send an invitation
+              Invite a secondary guardian
             </a>
           }
         />

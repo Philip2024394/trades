@@ -427,3 +427,259 @@ export async function listDashboardEntriesForGuardian(
     simulatedPhase1: true,
   };
 }
+
+// ═════════════════════════════════════════════════════════════════════
+// §6 · Custody-based child list (CC-3 · dashboard always-active)
+// ═════════════════════════════════════════════════════════════════════
+//
+// Founder decision F (2026-10-10): the dashboard is always active and
+// surfaces the REAL children in the parent's custody. The sealed
+// `parent-custody-service` from CC-1 ships `listCustodiesForParent` ·
+// in this wave the typed service may not yet be present, so we read
+// `nex.parent_custody_link` directly. All prior privacy invariants
+// are preserved: SELECT-only · no raw message content · relationship
+// structure only · audit row on every outcome.
+//
+// TODO swap: replace the inline SELECT with
+//   import { listCustodiesForParent } from "./custody/parent-custody-service"
+// once CC-1 lands.
+
+export interface DashboardCustodyEntry {
+  readonly custodyId: string;
+  readonly parentAccountId: string;
+  readonly childAccountId: string;
+  readonly linkType: "created_minor" | "transferred_at_16" | "manual_grant";
+  readonly autoTransferAt: string | null;
+  readonly transferredAt: string | null;
+  readonly revokedAt: string | null;
+  readonly simulated: boolean;
+  readonly createdAt: string;
+}
+
+export interface DashboardCustodyRootResult {
+  readonly viewerAccountId: string;
+  readonly entries: readonly DashboardCustodyEntry[];
+  readonly simulatedPhase1: true;
+}
+
+/**
+ * List the ACTIVE custody rows for the parent viewer (both children
+ * created inside the Family Safety flow and any manual grants).
+ *
+ * Active definition for this reader: `transferred_at IS NULL AND
+ * revoked_at IS NULL`. Transferred and revoked custodies are omitted
+ * so a 16-year-old who completed their transition no longer appears
+ * on the parent's dashboard (invariant #14).
+ *
+ * Writes a `dashboard_root` audit row with outcome `granted` on
+ * success · `denied_other` when the viewer id is invalid. NEVER
+ * reads child content.
+ */
+export async function listActiveCustodiesForParent(
+  viewerAccountId: string,
+): Promise<DashboardCustodyRootResult> {
+  if (!viewerAccountId || typeof viewerAccountId !== "string") {
+    await logDashboardAccess({
+      viewerAccountId: viewerAccountId ?? "",
+      viewedChildAccountId: null,
+      surface: "dashboard_root",
+      outcome: "denied_other",
+    });
+    return {
+      viewerAccountId: viewerAccountId ?? "",
+      entries: [],
+      simulatedPhase1: true,
+    };
+  }
+
+  const rows = await withClient(async (client) => {
+    const r = await client.query(
+      `SELECT
+         custody_id,
+         parent_account_id,
+         child_account_id,
+         link_type,
+         auto_transfer_at,
+         transferred_at,
+         revoked_at,
+         simulated,
+         created_at
+       FROM nex.parent_custody_link
+       WHERE parent_account_id = $1
+         AND transferred_at IS NULL
+         AND revoked_at IS NULL
+       ORDER BY created_at DESC`,
+      [viewerAccountId],
+    );
+    return r.rows;
+  });
+
+  const entries: DashboardCustodyEntry[] = (rows ?? []).map((raw) => ({
+    custodyId: String(raw.custody_id),
+    parentAccountId: String(raw.parent_account_id),
+    childAccountId: String(raw.child_account_id),
+    linkType: String(raw.link_type) as DashboardCustodyEntry["linkType"],
+    autoTransferAt:
+      raw.auto_transfer_at == null ? null : String(raw.auto_transfer_at),
+    transferredAt:
+      raw.transferred_at == null ? null : String(raw.transferred_at),
+    revokedAt: raw.revoked_at == null ? null : String(raw.revoked_at),
+    simulated: raw.simulated === true,
+    createdAt: String(raw.created_at),
+  }));
+
+  await logDashboardAccess({
+    viewerAccountId,
+    viewedChildAccountId: null,
+    surface: "dashboard_root",
+    outcome: "granted",
+  });
+
+  return {
+    viewerAccountId,
+    entries,
+    simulatedPhase1: true,
+  };
+}
+
+// ═════════════════════════════════════════════════════════════════════
+// §7 · Per-custody gate (CC-3 · child detail page)
+// ═════════════════════════════════════════════════════════════════════
+
+export interface CustodyGateResult {
+  readonly ok: boolean;
+  readonly outcome: DashboardOutcome;
+  readonly reason: DashboardDenialReason | null;
+  readonly custody: DashboardCustodyEntry | null;
+}
+
+/**
+ * Resolve "is `viewer` the parent custodian of this custody row right
+ * now?". Server-authoritative. Writes a `child_dashboard` audit row.
+ *
+ * Deny posture:
+ *   · custody not found · denied_not_guardian + NOT_GUARDIAN
+ *     (deliberate · we never 404 or echo existence)
+ *   · parent on the row does not match viewer · denied_not_guardian
+ *   · custody transferred or revoked · denied_revoked
+ *
+ * On grant, returns the SELECTed row (relationship structure only).
+ */
+export async function resolveParentCustodyAccess(args: {
+  readonly viewerAccountId: string;
+  readonly custodyId: string;
+}): Promise<CustodyGateResult> {
+  if (
+    !args.viewerAccountId ||
+    typeof args.viewerAccountId !== "string" ||
+    !args.custodyId ||
+    typeof args.custodyId !== "string"
+  ) {
+    await logDashboardAccess({
+      viewerAccountId: args.viewerAccountId ?? "",
+      viewedChildAccountId: null,
+      surface: "child_dashboard",
+      outcome: "denied_other",
+    });
+    return {
+      ok: false,
+      outcome: "denied_other",
+      reason: DASHBOARD_DENIAL_REASONS.INVALID_INPUT,
+      custody: null,
+    };
+  }
+
+  const row = await withClient(async (client) => {
+    const r = await client.query(
+      `SELECT
+         custody_id,
+         parent_account_id,
+         child_account_id,
+         link_type,
+         auto_transfer_at,
+         transferred_at,
+         revoked_at,
+         simulated,
+         created_at
+       FROM nex.parent_custody_link
+       WHERE custody_id = $1
+       LIMIT 1`,
+      [args.custodyId],
+    );
+    if ((r.rowCount ?? 0) === 0) return null;
+    return r.rows[0]!;
+  });
+
+  if (!row) {
+    await logDashboardAccess({
+      viewerAccountId: args.viewerAccountId,
+      viewedChildAccountId: null,
+      surface: "child_dashboard",
+      outcome: "denied_not_guardian",
+    });
+    return {
+      ok: false,
+      outcome: "denied_not_guardian",
+      reason: DASHBOARD_DENIAL_REASONS.NOT_GUARDIAN,
+      custody: null,
+    };
+  }
+
+  if (String(row.parent_account_id) !== args.viewerAccountId) {
+    await logDashboardAccess({
+      viewerAccountId: args.viewerAccountId,
+      viewedChildAccountId: null,
+      surface: "child_dashboard",
+      outcome: "denied_not_guardian",
+    });
+    return {
+      ok: false,
+      outcome: "denied_not_guardian",
+      reason: DASHBOARD_DENIAL_REASONS.NOT_GUARDIAN,
+      custody: null,
+    };
+  }
+
+  if (row.transferred_at != null || row.revoked_at != null) {
+    await logDashboardAccess({
+      viewerAccountId: args.viewerAccountId,
+      viewedChildAccountId: String(row.child_account_id),
+      surface: "child_dashboard",
+      outcome: "denied_revoked",
+    });
+    return {
+      ok: false,
+      outcome: "denied_revoked",
+      reason: DASHBOARD_DENIAL_REASONS.LINK_REVOKED,
+      custody: null,
+    };
+  }
+
+  const custody: DashboardCustodyEntry = {
+    custodyId: String(row.custody_id),
+    parentAccountId: String(row.parent_account_id),
+    childAccountId: String(row.child_account_id),
+    linkType: String(row.link_type) as DashboardCustodyEntry["linkType"],
+    autoTransferAt:
+      row.auto_transfer_at == null ? null : String(row.auto_transfer_at),
+    transferredAt:
+      row.transferred_at == null ? null : String(row.transferred_at),
+    revokedAt: row.revoked_at == null ? null : String(row.revoked_at),
+    simulated: row.simulated === true,
+    createdAt: String(row.created_at),
+  };
+
+  await logDashboardAccess({
+    viewerAccountId: args.viewerAccountId,
+    viewedChildAccountId: custody.childAccountId,
+    surface: "child_dashboard",
+    outcome: "granted",
+  });
+
+  return {
+    ok: true,
+    outcome: "granted",
+    reason: null,
+    custody,
+  };
+}

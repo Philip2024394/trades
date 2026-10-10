@@ -45,10 +45,35 @@ export default async function FamilyInvitePage(): Promise<React.JSX.Element> {
 
   return (
     <LocalFamilySafetyShell
-      title="Family Safety · Invite"
+      title="Invite a secondary guardian"
       activeNav="setup"
-      subtitle="Three short steps. You can review and change your answers before sending."
+      subtitle="This flow is for inviting a secondary guardian. To add a child under 16, use Create a child account instead."
     >
+      <div
+        role="status"
+        data-nex-family-safety-invite-disambiguation="true"
+        data-testid="nex-fs-invite-disambiguation"
+        style={{
+          padding: "10px 12px",
+          background: P.cyanMuted,
+          border: `1px solid ${P.cyanBorder}`,
+          borderRadius: 10,
+          color: P.textPrimary,
+          fontSize: 13,
+          lineHeight: 1.5,
+          marginBottom: 12,
+        }}
+      >
+        <strong>Guardian-to-guardian invitation only.</strong> If you want to
+        create a NEX account for a family member under 16, go to{" "}
+        <a
+          href="/nex-native/family-safety/create-child"
+          style={{ color: P.cyan }}
+        >
+          Create a child account
+        </a>
+        .
+      </div>
       <InviteClient
         actorAccountId={session.account.id}
         hasWebAuthn={hasWebAuthn}

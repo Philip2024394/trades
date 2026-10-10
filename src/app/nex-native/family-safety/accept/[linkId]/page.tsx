@@ -99,9 +99,34 @@ export default async function FamilyAcceptPage({
 
   return (
     <LocalFamilySafetyShell
-      title="Family Safety · Review invitation"
-      subtitle="Review carefully. You can accept, decline, or report pressure."
+      title="Review a guardian invitation"
+      subtitle="This is a guardian-to-guardian invitation. To create an account for a child under 16, use Create a child account instead. Review carefully: you can accept, decline, or report pressure."
     >
+      <div
+        role="status"
+        data-nex-family-safety-accept-disambiguation="true"
+        data-testid="nex-fs-accept-disambiguation"
+        style={{
+          padding: "10px 12px",
+          background: P.cyanMuted,
+          border: `1px solid ${P.cyanBorder}`,
+          borderRadius: 10,
+          color: P.textPrimary,
+          fontSize: 13,
+          lineHeight: 1.5,
+          marginBottom: 12,
+        }}
+      >
+        <strong>Guardian-to-guardian invitation only.</strong> If you expected
+        a child-account invitation, that flow lives under{" "}
+        <a
+          href="/nex-native/family-safety/create-child"
+          style={{ color: P.cyan }}
+        >
+          Create a child account
+        </a>
+        .
+      </div>
       <AcceptClient
         link={{
           linkId: link.linkId,

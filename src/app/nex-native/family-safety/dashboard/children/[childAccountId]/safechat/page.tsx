@@ -1,14 +1,19 @@
 // src/app/nex-native/family-safety/dashboard/children/[childAccountId]/safechat/page.tsx
 //
-// NEX Family Safety · FS-3 · PER-CHILD · SafeChat summary.
+// NEX Family Safety · CC-3 · PER-CHILD SafeChat panel · ALWAYS ACTIVE.
 //
-// Phase 1 behaviour: UNCONDITIONAL "not available". The sealed
-// `safechat-status-reader.readSafeChatGuardianSummaryForChild()`
-// returns `{available: false}` ALWAYS. This page honours that by
-// rendering an honest "no summaries available" state.
+// Behaviour:
+//   · If the child is a minor (SafeChat is enforced-on), render the
+//     sealed `MinorSafeChatStatusPanel` with the classifier version
+//     and the simulated/live chip.
+//   · If the child is NOT a minor (post-transition OR profile absent),
+//     keep the Phase 1 "not available" honest state.
 //
-// Server-side guardianship gate runs FIRST so a non-guardian receives
-// the same "Access denied" state as the overview page.
+// Preserved invariants:
+//   · Server-side gate · must be a custodian OR an active guardian.
+//   · Audit row written per outcome.
+//   · NO per-message classification data is read or displayed.
+//   · The classifier source files are NEVER imported here.
 
 import * as React from "react";
 import { redirect } from "next/navigation";
@@ -18,11 +23,17 @@ import { FamilySafetyShell } from "@/components/nex-native/family-safety/FamilyS
 import { EmptyState } from "@/components/nex-native/family-safety/EmptyState";
 import { ParentDashboardShell } from "@/components/nex-native/family-safety/ParentDashboardShell";
 import { PrivacyExplanationPanel } from "@/components/nex-native/family-safety/PrivacyExplanationPanel";
+import { MinorSafeChatStatusPanel } from "@/components/nex-native/family-safety/MinorSafeChatStatusPanel";
 import {
-  resolveChildDashboardAccess,
+  listActiveCustodiesForParent,
   logDashboardAccess,
+  resolveChildDashboardAccess,
 } from "@/lib/nex-native/family-safety/dashboard-service";
-import { readSafeChatGuardianSummaryForChild } from "@/lib/nex-native/family-safety/safechat-status-reader";
+import {
+  readSafeChatFeatureStatus,
+  readSafeChatGuardianSummaryForChild,
+} from "@/lib/nex-native/family-safety/safechat-status-reader";
+import { isSafeChatEnforcedForAccount } from "@/lib/nex-native/family-safety/minor-safechat-enforcer";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -49,13 +60,19 @@ export default async function PerChildSafeChatPage({ params }: PageProps) {
   const session = await resolveNexAppSessionFromContext();
   if (!session) redirect("/nex-native/sign-in");
 
-  const gate = await resolveChildDashboardAccess({
+  const custodyResult = await listActiveCustodiesForParent(session.account.id);
+  const custody =
+    custodyResult.entries.find((e) => e.childAccountId === childAccountId) ??
+    null;
+
+  const familyLinkGate = await resolveChildDashboardAccess({
     viewerAccountId: session.account.id,
     childAccountId,
     surface: "child_safechat",
   });
 
-  if (!gate.ok || !gate.link) {
+  const hasAccess = custody !== null || familyLinkGate.ok;
+  if (!hasAccess) {
     return (
       <FamilySafetyShell activeNav="dashboard">
         <EmptyState
@@ -70,14 +87,50 @@ export default async function PerChildSafeChatPage({ params }: PageProps) {
     );
   }
 
-  const displayLabel = await resolveDisplayLabel(gate.link.childAccountId);
-  // Record the flag-off attempt in the audit log · the summary reader
-  // itself is a pure function and does not log.
+  const displayLabel = await resolveDisplayLabel(childAccountId);
+  const resolvedLinkState = custody ? "active" : (familyLinkGate.link?.state ?? "active");
+
+  const safechatEnforced = await isSafeChatEnforcedForAccount(childAccountId);
+  const featureStatus = readSafeChatFeatureStatus();
+
+  if (safechatEnforced) {
+    await logDashboardAccess({
+      viewerAccountId: session.account.id,
+      viewedChildAccountId: childAccountId,
+      surface: "child_safechat",
+      outcome: "granted",
+    });
+    return (
+      <FamilySafetyShell activeNav="dashboard">
+        <ParentDashboardShell
+          childAccountId={childAccountId}
+          displayLabel={displayLabel}
+          linkState={resolvedLinkState}
+          activeSubNav="safechat"
+        >
+          <div
+            data-nex-family-safety-child-safechat="true"
+            data-nex-family-safety-child-safechat-mode="minor-enforced"
+            style={{ display: "flex", flexDirection: "column", gap: 14 }}
+          >
+            <PrivacyExplanationPanel variant="inline" />
+            <MinorSafeChatStatusPanel
+              classifierVersion={featureStatus.classifierVersion}
+              enforcedForMinor
+              simulated={featureStatus.simulated}
+            />
+          </div>
+        </ParentDashboardShell>
+      </FamilySafetyShell>
+    );
+  }
+
+  // Non-minor path · keep the Phase 1 "not available" honest state.
   const summary = readSafeChatGuardianSummaryForChild();
   if (!summary.available) {
     await logDashboardAccess({
       viewerAccountId: session.account.id,
-      viewedChildAccountId: gate.link.childAccountId,
+      viewedChildAccountId: childAccountId,
       surface: "child_safechat",
       outcome: "denied_flag_off",
     });
@@ -86,13 +139,14 @@ export default async function PerChildSafeChatPage({ params }: PageProps) {
   return (
     <FamilySafetyShell activeNav="dashboard">
       <ParentDashboardShell
-        childAccountId={gate.link.childAccountId}
+        childAccountId={childAccountId}
         displayLabel={displayLabel}
-        linkState={gate.link.state}
+        linkState={resolvedLinkState}
         activeSubNav="safechat"
       >
         <div
           data-nex-family-safety-child-safechat="true"
+          data-nex-family-safety-child-safechat-mode="phase-1-ceiling"
           style={{ display: "flex", flexDirection: "column", gap: 14 }}
         >
           <PrivacyExplanationPanel variant="inline" />

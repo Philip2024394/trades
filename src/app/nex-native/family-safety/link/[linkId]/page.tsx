@@ -95,7 +95,36 @@ export default async function FamilyLinkDetailPage({
   const viewerIsGuardianSide = session.account.id === link.guardianAccountId;
 
   return (
-    <LocalFamilySafetyShell title="Family Safety · Link" activeNav="dashboard">
+    <LocalFamilySafetyShell
+      title="Guardian partner link"
+      subtitle="This is a guardian-to-guardian link. Child-under-16 accounts are managed under Custody."
+      activeNav="dashboard"
+    >
+      <div
+        role="status"
+        data-nex-family-safety-link-disambiguation="true"
+        data-testid="nex-fs-link-disambiguation"
+        style={{
+          padding: "10px 12px",
+          background: P.cyanMuted,
+          border: `1px solid ${P.cyanBorder}`,
+          borderRadius: 10,
+          color: P.textPrimary,
+          fontSize: 13,
+          lineHeight: 1.5,
+          marginBottom: 12,
+        }}
+      >
+        <strong>Guardian-to-guardian link.</strong> To manage a child account
+        under 16 you created, open{" "}
+        <a
+          href="/nex-native/family-safety/custody"
+          style={{ color: P.cyan }}
+        >
+          Custody
+        </a>
+        .
+      </div>
       <LinkDetailClient
         link={{
           linkId: link.linkId,

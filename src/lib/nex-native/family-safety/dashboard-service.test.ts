@@ -47,9 +47,11 @@ import {
   DASHBOARD_DENIAL_REASONS,
   DASHBOARD_OUTCOMES,
   DASHBOARD_SURFACES,
+  listActiveCustodiesForParent,
   listDashboardEntriesForGuardian,
   logDashboardAccess,
   resolveChildDashboardAccess,
+  resolveParentCustodyAccess,
   resolvePermissionFlag,
 } from "./dashboard-service";
 
@@ -626,5 +628,172 @@ describe("dashboard-service.ts source · privacy invariants", () => {
     expect(safechatSrc).not.toMatch(/safechat\/retention-sweep/i);
     // The only sealed import permitted is the feature-flag module.
     expect(safechatSrc).toMatch(/safechat\/feature-flag/);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────
+// §10 · listActiveCustodiesForParent (CC-3 · custody-based list)
+// ─────────────────────────────────────────────────────────────────────
+
+const CUSTODY = "cccccccc-cccc-4ccc-8ccc-cccccccccccc";
+
+function custodyRow(overrides: Record<string, unknown> = {}) {
+  return {
+    custody_id: CUSTODY,
+    parent_account_id: G,
+    child_account_id: C,
+    link_type: "created_minor",
+    auto_transfer_at: "2027-04-01T00:00:00.000Z",
+    transferred_at: null,
+    revoked_at: null,
+    simulated: true,
+    created_at: "2026-10-10T00:00:00.000Z",
+    ...overrides,
+  };
+}
+
+describe("listActiveCustodiesForParent", () => {
+  it("returns an empty entries array when the parent has no custodies", async () => {
+    withClientResponder = () => ({ rows: [], rowCount: 0 });
+    const r = await listActiveCustodiesForParent(G);
+    expect(r.viewerAccountId).toBe(G);
+    expect(r.entries).toEqual([]);
+    expect(r.simulatedPhase1).toBe(true);
+    const inserts = withClientCalls.filter((c) =>
+      /INSERT INTO nex\.family_safety_dashboard_access_log/i.test(c.sql),
+    );
+    expect(inserts.length).toBeGreaterThanOrEqual(1);
+  });
+
+  it("surfaces active custodies via nex.parent_custody_link SELECT", async () => {
+    withClientResponder = (sql) => {
+      if (sql.toUpperCase().includes("INSERT INTO NEX.FAMILY_SAFETY_DASHBOARD")) {
+        return { rows: [], rowCount: 1 };
+      }
+      if (sql.toUpperCase().includes("PARENT_CUSTODY_LINK")) {
+        return { rows: [custodyRow()], rowCount: 1 };
+      }
+      return { rows: [], rowCount: 0 };
+    };
+    const r = await listActiveCustodiesForParent(G);
+    expect(r.entries.length).toBe(1);
+    expect(r.entries[0]!.childAccountId).toBe(C);
+    expect(r.entries[0]!.custodyId).toBe(CUSTODY);
+  });
+
+  it("excludes transferred and revoked custodies via SQL (clause present)", async () => {
+    withClientResponder = () => ({ rows: [], rowCount: 0 });
+    await listActiveCustodiesForParent(G);
+    const read = withClientCalls.find((c) =>
+      /PARENT_CUSTODY_LINK/i.test(c.sql),
+    );
+    expect(read).toBeTruthy();
+    expect(read!.sql).toMatch(/transferred_at IS NULL/i);
+    expect(read!.sql).toMatch(/revoked_at IS NULL/i);
+  });
+
+  it("returns empty when viewer id is empty · logging is skipped", async () => {
+    const r = await listActiveCustodiesForParent("");
+    expect(r.entries).toEqual([]);
+    expect(withClientCalls.length).toBe(0);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────
+// §11 · resolveParentCustodyAccess (CC-3 · per-child gate)
+// ─────────────────────────────────────────────────────────────────────
+
+describe("resolveParentCustodyAccess", () => {
+  it("grants when viewer is the parent on the row", async () => {
+    withClientResponder = (sql) => {
+      if (/PARENT_CUSTODY_LINK/i.test(sql)) {
+        return { rows: [custodyRow()], rowCount: 1 };
+      }
+      return { rows: [], rowCount: 1 };
+    };
+    const r = await resolveParentCustodyAccess({
+      viewerAccountId: G,
+      custodyId: CUSTODY,
+    });
+    expect(r.ok).toBe(true);
+    expect(r.outcome).toBe("granted");
+    expect(r.custody?.childAccountId).toBe(C);
+  });
+
+  it("denies when custody row not found · never 404 · never echoes id", async () => {
+    withClientResponder = () => ({ rows: [], rowCount: 0 });
+    const r = await resolveParentCustodyAccess({
+      viewerAccountId: G,
+      custodyId: CUSTODY,
+    });
+    expect(r.ok).toBe(false);
+    expect(r.outcome).toBe("denied_not_guardian");
+    expect(r.custody).toBeNull();
+  });
+
+  it("denies when the row's parent does not match the viewer", async () => {
+    withClientResponder = (sql) => {
+      if (/PARENT_CUSTODY_LINK/i.test(sql)) {
+        return {
+          rows: [custodyRow({ parent_account_id: G2 })],
+          rowCount: 1,
+        };
+      }
+      return { rows: [], rowCount: 1 };
+    };
+    const r = await resolveParentCustodyAccess({
+      viewerAccountId: G,
+      custodyId: CUSTODY,
+    });
+    expect(r.ok).toBe(false);
+    expect(r.outcome).toBe("denied_not_guardian");
+  });
+
+  it("denies when custody is transferred (invariant #14 · stops appearing immediately)", async () => {
+    withClientResponder = (sql) => {
+      if (/PARENT_CUSTODY_LINK/i.test(sql)) {
+        return {
+          rows: [
+            custodyRow({ transferred_at: "2027-04-02T00:00:00.000Z" }),
+          ],
+          rowCount: 1,
+        };
+      }
+      return { rows: [], rowCount: 1 };
+    };
+    const r = await resolveParentCustodyAccess({
+      viewerAccountId: G,
+      custodyId: CUSTODY,
+    });
+    expect(r.ok).toBe(false);
+    expect(r.outcome).toBe("denied_revoked");
+  });
+
+  it("denies when custody is revoked", async () => {
+    withClientResponder = (sql) => {
+      if (/PARENT_CUSTODY_LINK/i.test(sql)) {
+        return {
+          rows: [custodyRow({ revoked_at: "2027-01-01T00:00:00.000Z" })],
+          rowCount: 1,
+        };
+      }
+      return { rows: [], rowCount: 1 };
+    };
+    const r = await resolveParentCustodyAccess({
+      viewerAccountId: G,
+      custodyId: CUSTODY,
+    });
+    expect(r.ok).toBe(false);
+    expect(r.outcome).toBe("denied_revoked");
+  });
+
+  it("denies with INVALID_INPUT on empty custodyId", async () => {
+    const r = await resolveParentCustodyAccess({
+      viewerAccountId: G,
+      custodyId: "",
+    });
+    expect(r.ok).toBe(false);
+    expect(r.outcome).toBe("denied_other");
+    expect(r.reason).toBe(DASHBOARD_DENIAL_REASONS.INVALID_INPUT);
   });
 });

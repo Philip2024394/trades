@@ -1,19 +1,26 @@
 // src/app/nex-native/family-safety/dashboard/children/[childAccountId]/page.tsx
 //
-// NEX Family Safety · FS-3 · PER-CHILD dashboard overview.
+// NEX Family Safety · CC-3 · PER-CHILD dashboard overview · ALWAYS ACTIVE.
+//
+// This page is the "live" dashboard view for a child the viewer is in
+// custody of (via `nex.parent_custody_link`) OR a guardian of (via
+// the sealed family_link primitive). It composes:
+//   · ChildAccountDashboardPanel (sealed · CC-3)
+//   · AgeTransitionCountdownChip  (sealed · CC-3)
+//   · (future) CustodyActionLog slot from CC-2
+//   · (future) VerificationStatusChip slot from CC-2
 //
 // Server-side gates:
-//   · session · 302 → sign-in when absent (sealed layout already
-//     covers this but we assert again defensively)
-//   · guardianship · the sealed dashboard-service returns 403-equivalent
-//     when the viewer is NOT an active guardian of the child in the
-//     URL · we render a sealed "Access denied" surface (NOT a 404 ·
-//     doing 404 would leak account existence).
+//   · session · 302 → sign-in when absent
+//   · custody OR family link · the viewer must be either the parent
+//     custodian of this child OR an active guardian · we try both
+//     paths before denying.
+//   · On any failure render the sealed "Access denied" surface.
 //
-// Load-bearing: THIS PAGE QUERIES NO CHILD CONTENT. It shows link
-// status, role, and nav into the two Phase-1-ceiling sub-pages
-// (contacts + safechat), both of which render honest "not available"
-// shells.
+// Preserved invariants:
+//   · Audit row written per outcome.
+//   · No child content read.
+//   · No account id echoed in error copy.
 
 import * as React from "react";
 import { redirect } from "next/navigation";
@@ -23,8 +30,14 @@ import { FamilySafetyShell } from "@/components/nex-native/family-safety/FamilyS
 import { EmptyState } from "@/components/nex-native/family-safety/EmptyState";
 import { ParentDashboardShell } from "@/components/nex-native/family-safety/ParentDashboardShell";
 import { PrivacyExplanationPanel } from "@/components/nex-native/family-safety/PrivacyExplanationPanel";
-import { FAMILY_SAFETY_PALETTE } from "@/components/nex-native/family-safety/_palette";
-import { resolveChildDashboardAccess } from "@/lib/nex-native/family-safety/dashboard-service";
+import { ChildAccountDashboardPanel } from "@/components/nex-native/family-safety/ChildAccountDashboardPanel";
+import {
+  listActiveCustodiesForParent,
+  logDashboardAccess,
+  resolveChildDashboardAccess,
+  type DashboardCustodyEntry,
+} from "@/lib/nex-native/family-safety/dashboard-service";
+import { isSafeChatEnforcedForAccount } from "@/lib/nex-native/family-safety/minor-safechat-enforcer";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -46,21 +59,40 @@ async function resolveDisplayLabel(accountId: string): Promise<string> {
   return "Linked child";
 }
 
+async function findActiveCustodyForChild(
+  parentAccountId: string,
+  childAccountId: string,
+): Promise<DashboardCustodyEntry | null> {
+  const result = await listActiveCustodiesForParent(parentAccountId);
+  return (
+    result.entries.find((e) => e.childAccountId === childAccountId) ?? null
+  );
+}
+
 export default async function PerChildDashboardPage({ params }: PageProps) {
   const { childAccountId } = await params;
   const session = await resolveNexAppSessionFromContext();
   if (!session) redirect("/nex-native/sign-in");
 
-  const gate = await resolveChildDashboardAccess({
+  const nowIso = new Date().toISOString();
+
+  // First try the custody path (always-active · new wave).
+  const custody = await findActiveCustodyForChild(
+    session.account.id,
+    childAccountId,
+  );
+
+  // Also run the sealed family-link gate · surfaces an audit row + a
+  // link row when the viewer is a guardian via the prior wave.
+  const familyLinkGate = await resolveChildDashboardAccess({
     viewerAccountId: session.account.id,
     childAccountId,
     surface: "child_dashboard",
   });
 
-  if (!gate.ok || !gate.link) {
-    // Deliberate posture: do NOT redirect, do NOT 404. Render an
-    // honest denial that doesn't echo the child account id back and
-    // doesn't reveal whether the child exists.
+  const hasAccess = custody !== null || familyLinkGate.ok;
+
+  if (!hasAccess) {
     return (
       <FamilySafetyShell activeNav="dashboard">
         <EmptyState
@@ -75,18 +107,69 @@ export default async function PerChildDashboardPage({ params }: PageProps) {
     );
   }
 
-  const displayLabel = await resolveDisplayLabel(gate.link.childAccountId);
+  const displayLabel = await resolveDisplayLabel(childAccountId);
+  const safechatEnforced = await isSafeChatEnforcedForAccount(childAccountId);
 
+  // Record the live-view audit event so a future audit can distinguish
+  // the always-active dashboard surface from the Phase 1 feature-flagged
+  // paths. Non-blocking · fire-and-safe-swallow.
+  await logDashboardAccess({
+    viewerAccountId: session.account.id,
+    viewedChildAccountId: childAccountId,
+    surface: "child_dashboard",
+    outcome: "granted",
+  });
+
+  // Branch 1 · custody-based (preferred · new wave).
+  if (custody) {
+    return (
+      <FamilySafetyShell activeNav="dashboard">
+        <ParentDashboardShell
+          childAccountId={custody.childAccountId}
+          displayLabel={displayLabel}
+          linkState={"active"}
+          activeSubNav="overview"
+        >
+          <section
+            data-nex-family-safety-child-dashboard-overview="true"
+            data-nex-family-safety-child-dashboard-source="custody"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 14,
+            }}
+          >
+            <PrivacyExplanationPanel variant="inline" />
+            <ChildAccountDashboardPanel
+              childDisplayLabel={displayLabel}
+              linkType={custody.linkType}
+              autoTransferAt={custody.autoTransferAt}
+              transferredAt={custody.transferredAt}
+              nowIso={nowIso}
+              simulated={custody.simulated}
+              safechatEnforced={safechatEnforced}
+              ageTransitionHref={`/nex-native/family-safety/age-transition/${custody.childAccountId}`}
+              safeChatHref={`/nex-native/family-safety/dashboard/children/${custody.childAccountId}/safechat`}
+            />
+          </section>
+        </ParentDashboardShell>
+      </FamilySafetyShell>
+    );
+  }
+
+  // Branch 2 · family-link fallback (prior wave guardian relationships).
+  const link = familyLinkGate.link!;
   return (
     <FamilySafetyShell activeNav="dashboard">
       <ParentDashboardShell
-        childAccountId={gate.link.childAccountId}
+        childAccountId={link.childAccountId}
         displayLabel={displayLabel}
-        linkState={gate.link.state}
+        linkState={link.state}
         activeSubNav="overview"
       >
         <section
           data-nex-family-safety-child-dashboard-overview="true"
+          data-nex-family-safety-child-dashboard-source="family_link"
           style={{
             display: "flex",
             flexDirection: "column",
@@ -94,115 +177,17 @@ export default async function PerChildDashboardPage({ params }: PageProps) {
           }}
         >
           <PrivacyExplanationPanel variant="inline" />
-          <div
-            style={{
-              padding: "16px 18px",
-              background: FAMILY_SAFETY_PALETTE.surface,
-              border: `1px solid ${FAMILY_SAFETY_PALETTE.divider}`,
-              borderRadius: 12,
-            }}
-          >
-            <h3
-              style={{
-                margin: 0,
-                marginBottom: 10,
-                fontSize: 14,
-                fontWeight: 600,
-                color: FAMILY_SAFETY_PALETTE.textPrimary,
-              }}
-            >
-              Link overview
-            </h3>
-            <dl
-              style={{
-                margin: 0,
-                display: "grid",
-                gridTemplateColumns: "minmax(0, auto) minmax(0, 1fr)",
-                rowGap: 8,
-                columnGap: 14,
-                fontSize: 13,
-              }}
-            >
-              <dt style={{ color: FAMILY_SAFETY_PALETTE.textDim }}>Role</dt>
-              <dd
-                style={{
-                  margin: 0,
-                  color: FAMILY_SAFETY_PALETTE.textPrimary,
-                }}
-              >
-                {gate.link.role.replace(/_/g, " ")}
-              </dd>
-              <dt style={{ color: FAMILY_SAFETY_PALETTE.textDim }}>State</dt>
-              <dd
-                style={{
-                  margin: 0,
-                  color: FAMILY_SAFETY_PALETTE.textPrimary,
-                }}
-              >
-                {gate.link.state}
-              </dd>
-              <dt style={{ color: FAMILY_SAFETY_PALETTE.textDim }}>
-                Confirmed
-              </dt>
-              <dd
-                style={{
-                  margin: 0,
-                  color: FAMILY_SAFETY_PALETTE.textPrimary,
-                }}
-              >
-                {gate.link.confirmedAt
-                  ? new Date(gate.link.confirmedAt).toISOString().slice(0, 10)
-                  : "—"}
-              </dd>
-              <dt style={{ color: FAMILY_SAFETY_PALETTE.textDim }}>Mode</dt>
-              <dd
-                style={{
-                  margin: 0,
-                  color: FAMILY_SAFETY_PALETTE.textPrimary,
-                }}
-              >
-                {gate.link.simulated ? "Simulated · Pilot" : "Live"}
-              </dd>
-            </dl>
-          </div>
-          <div
-            style={{
-              padding: "14px 16px",
-              background: FAMILY_SAFETY_PALETTE.surfaceMuted,
-              border: `1px dashed ${FAMILY_SAFETY_PALETTE.divider}`,
-              borderRadius: 12,
-              fontSize: 12,
-              lineHeight: 1.6,
-              color: FAMILY_SAFETY_PALETTE.textSecondary,
-            }}
-          >
-            <strong style={{ color: FAMILY_SAFETY_PALETTE.textPrimary }}>
-              What you can see on the Contacts tab
-            </strong>
-            <br />
-            Nothing yet. In the current pilot a family link does not grant
-            visibility into your child's contact list. A dedicated
-            permission flag plus both-party consent is required and is not
-            available yet.
-          </div>
-          <div
-            style={{
-              padding: "14px 16px",
-              background: FAMILY_SAFETY_PALETTE.surfaceMuted,
-              border: `1px dashed ${FAMILY_SAFETY_PALETTE.divider}`,
-              borderRadius: 12,
-              fontSize: 12,
-              lineHeight: 1.6,
-              color: FAMILY_SAFETY_PALETTE.textSecondary,
-            }}
-          >
-            <strong style={{ color: FAMILY_SAFETY_PALETTE.textPrimary }}>
-              What you can see on the SafeChat tab
-            </strong>
-            <br />
-            Nothing yet. SafeChat classification is simulated in Phase 1
-            and no summaries are produced for guardians at this time.
-          </div>
+          <ChildAccountDashboardPanel
+            childDisplayLabel={displayLabel}
+            linkType={"manual_grant"}
+            autoTransferAt={null}
+            transferredAt={null}
+            nowIso={nowIso}
+            simulated={link.simulated}
+            safechatEnforced={safechatEnforced}
+            ageTransitionHref={`/nex-native/family-safety/age-transition/${link.childAccountId}`}
+            safeChatHref={`/nex-native/family-safety/dashboard/children/${link.childAccountId}/safechat`}
+          />
         </section>
       </ParentDashboardShell>
     </FamilySafetyShell>

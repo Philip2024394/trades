@@ -111,14 +111,30 @@ interface CtaDef {
 function buildCtas(snapshot: FamilyHomeSnapshot): readonly CtaDef[] {
   return [
     {
+      key: "create-child",
+      href: "/nex-native/family-safety/create-child",
+      glyph: "👶",
+      title: "Create a child account",
+      body: "Create a safe NEX account for your family member under 16.",
+      enabled: true,
+    },
+    {
+      key: "custody",
+      href: "/nex-native/family-safety/custody",
+      glyph: "🧷",
+      title: "Custody",
+      body: "View children in your custody · reset passwords · audit log.",
+      enabled: true,
+    },
+    {
       key: "setup",
-      href: "/nex-native/family-safety/setup",
+      href: "/nex-native/family-safety/invite",
       glyph: "🪪",
-      title: "Setup",
+      title: "Guardian partner setup",
       body:
         snapshot.familyMembershipState === "pending_invitation"
-          ? "Review your waiting invitation."
-          : "Invite a family member or accept an invitation.",
+          ? "Review your waiting invitation (secondary guardian)."
+          : "Invite a secondary guardian or accept an invitation.",
       enabled: true,
     },
     {
@@ -202,10 +218,10 @@ export default async function FamilySafetyHomePage() {
             lineHeight: 1.55,
           }}
         >
-          Set up a family link between a parent/guardian and a child, and
-          configure a few safety defaults. Nothing happens automatically ·
-          there's no silent monitoring, no biometric capture, no ID uploads.
-          Pilot build.
+          Create a safe NEX account for your family member under 16. You
+          enter their name, their age, and upload their government ID so NEX
+          can confirm the account is for a minor. You stay in custody of the
+          account until they turn 16.
         </p>
       </section>
 
@@ -460,9 +476,9 @@ export default async function FamilySafetyHomePage() {
         <EmptyState
           glyph="👨‍👩‍👧"
           title="Start when you're ready"
-          description="Setup walks you through one invitation at a time. You can stop at any point · nothing is sent until you confirm."
-          ctaHref="/nex-native/family-safety/setup"
-          ctaLabel="Open Setup"
+          description="Create a safe NEX account for your family member under 16. You can also invite a secondary guardian · nothing is sent until you confirm."
+          ctaHref="/nex-native/family-safety/create-child"
+          ctaLabel="Create a child account"
           testId="nex-family-safety-home-empty"
         />
       ) : null}
