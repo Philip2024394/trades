@@ -149,6 +149,109 @@ async function fetchOverpass(query, walkerId = "acquisition:overpass") {
   }
 }
 
+// Chunked Overpass fetcher · pass 9 · 2026-10-12.
+//
+// Why: the single-query path (buildQuery with full amenities+shops+tourism+
+// extendedTagPairs) produces a query body that is too wide for several
+// public mirrors to serve inside the engine's 60-second timeout. On
+// 2026-10-12 maps.mail.ru 504'd on the 69-part food query consistently.
+// The engine's own fallback then fell through to a broken osm.ch mirror
+// response and emitted zero candidates for cities with real OSM data
+// (Jembrana, Bandar Lampung reproduced).
+//
+// How: split the amenity / shop / tourism / extended-pair catalogue into
+// chunks (default 2 types per chunk). For each chunk, build a focused
+// query, fetch via the sealed fetchOverpass (which carries the response-
+// integrity guard from pass 8). Dedup elements across chunks by
+// `${type}/${id}`. Return a combined response with the SAME shape as a
+// single-query response (same cache compatibility, same downstream
+// handling).
+//
+// If every chunk fails → throw (so the source's fallback-cache path
+// still triggers). If any chunk succeeds → return the combined set;
+// partial failure is logged but non-fatal because each chunk is an
+// independent slice of the catalogue.
+//
+// Chunk size is intentionally small (2) · trades more roundtrips for
+// mirror-friendliness and lets the provider rate governor pace them.
+const OVERPASS_CHUNK_SIZE = Number(process.env.NEX_OVERPASS_CHUNK_SIZE || 2);
+
+function chunkArray(arr, size) {
+  const out = [];
+  for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size));
+  return out;
+}
+
+async function fetchOverpassChunked({ amenities, shopTypes, tourismTypes, extendedTagPairs, bbox, log }) {
+  const groups = [];
+  for (const chunk of chunkArray(amenities ?? [], OVERPASS_CHUNK_SIZE)) {
+    groups.push({ amenities: chunk, shopTypes: [], tourismTypes: [], extendedTagPairs: [] });
+  }
+  for (const chunk of chunkArray(shopTypes ?? [], OVERPASS_CHUNK_SIZE)) {
+    groups.push({ amenities: [], shopTypes: chunk, tourismTypes: [], extendedTagPairs: [] });
+  }
+  for (const chunk of chunkArray(tourismTypes ?? [], OVERPASS_CHUNK_SIZE)) {
+    groups.push({ amenities: [], shopTypes: [], tourismTypes: chunk, extendedTagPairs: [] });
+  }
+  for (const chunk of chunkArray(extendedTagPairs ?? [], OVERPASS_CHUNK_SIZE)) {
+    groups.push({ amenities: [], shopTypes: [], tourismTypes: [], extendedTagPairs: chunk });
+  }
+  if (groups.length === 0) {
+    return { version: 0.6, generator: "nex-chunked-noop", osm3s: { timestamp_osm_base: new Date().toISOString().replace(/\.\d+Z$/, "Z"), copyright: "no-op · no tag groups configured" }, elements: [] };
+  }
+
+  const combinedElements = [];
+  const seen = new Set();
+  let firstTs = null;
+  const chunkErrors = [];
+  let successCount = 0;
+
+  log?.(`  osm_overpass: chunked fetch · ${groups.length} chunks · chunk_size=${OVERPASS_CHUNK_SIZE}`);
+  for (let i = 0; i < groups.length; i++) {
+    const group = groups[i];
+    const query = buildQuery({ ...group, bbox });
+    try {
+      const resp = await fetchOverpass(query);
+      successCount++;
+      if (!firstTs && resp.osm3s?.timestamp_osm_base) firstTs = resp.osm3s.timestamp_osm_base;
+      for (const el of resp.elements ?? []) {
+        const key = `${el.type}/${el.id}`;
+        if (seen.has(key)) continue;
+        seen.add(key);
+        combinedElements.push(el);
+      }
+    } catch (err) {
+      chunkErrors.push({ chunk_index: i + 1, label: labelForChunk(group), error: err.message });
+    }
+  }
+
+  if (successCount === 0) {
+    const firstErr = chunkErrors[0]?.error ?? "unknown";
+    throw new Error(`all ${groups.length} chunks failed · first_error=${firstErr}`);
+  }
+  if (chunkErrors.length > 0) {
+    log?.(`  osm_overpass: ${successCount}/${groups.length} chunks succeeded · ${chunkErrors.length} failed (partial coverage this cycle)`);
+    for (const e of chunkErrors.slice(0, 3)) log?.(`    chunk ${e.chunk_index} (${e.label}) · ${e.error}`);
+  }
+  return {
+    version: 0.6,
+    generator: "nex-chunked",
+    osm3s: {
+      timestamp_osm_base: firstTs ?? new Date().toISOString().replace(/\.\d+Z$/, "Z"),
+      copyright: "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+    },
+    elements: combinedElements,
+  };
+}
+
+function labelForChunk(group) {
+  if ((group.amenities ?? []).length > 0) return `amenities:${group.amenities.join(",")}`;
+  if ((group.shopTypes ?? []).length > 0) return `shops:${group.shopTypes.join(",")}`;
+  if ((group.tourismTypes ?? []).length > 0) return `tourism:${group.tourismTypes.join(",")}`;
+  if ((group.extendedTagPairs ?? []).length > 0) return `extended:${group.extendedTagPairs.map((p) => p.join("=")).join(",")}`;
+  return "unknown";
+}
+
 function extractCandidate(el, categoryMapping, classifier) {
   const tags = el.tags ?? {};
   const name = tags.name ?? tags["name:en"] ?? tags["name:id"];
@@ -268,14 +371,13 @@ export function osmOverpassSource() {
       if (osmResp) {
         log(`  osm_overpass: cache HIT (v2) · ${osmResp.elements?.length ?? 0} raw elements`);
       } else {
-        const query = buildQuery({ amenities, shopTypes, tourismTypes, extendedTagPairs, bbox });
-        log(`  osm_overpass: fetching Overpass · bbox ${JSON.stringify(bbox)} · amenities [${amenities.join(",")}] · shopTypes [${shopTypes.join(",")}] · tourismTypes [${tourismTypes.join(",")}] · extendedTagPairs [${extendedTagPairs.map((p) => p.join("=")).join(",")}]`);
+        log(`  osm_overpass: fetching Overpass (chunked) · bbox ${JSON.stringify(bbox)} · amenities [${amenities.join(",")}] · shopTypes [${shopTypes.join(",")}] · tourismTypes [${tourismTypes.join(",")}] · extendedTagPairs [${extendedTagPairs.map((p) => p.join("=")).join(",")}]`);
         try {
-          osmResp = await fetchOverpass(query);
+          osmResp = await fetchOverpassChunked({ amenities, shopTypes, tourismTypes, extendedTagPairs, bbox, log });
           writeCache(cacheName, osmResp);
-          log(`  osm_overpass: fetched ${osmResp.elements?.length ?? 0} raw elements`);
+          log(`  osm_overpass: fetched ${osmResp.elements?.length ?? 0} raw elements (combined across chunks)`);
         } catch (err) {
-          log(`  osm_overpass: live fetch failed (${err.message}) · trying fallback cache`);
+          log(`  osm_overpass: live chunked fetch failed (${err.message}) · trying fallback cache`);
           osmResp = tryFallbackCache(bbox, log);
           if (!osmResp) throw err;
         }
