@@ -45,15 +45,23 @@
 //   99 · unexpected internal error
 
 import { spawnSync } from "node:child_process";
-import { readFileSync, writeFileSync, existsSync, mkdirSync, unlinkSync, statSync } from "node:fs";
+import { readFileSync, writeFileSync, existsSync, mkdirSync, unlinkSync, statSync, readdirSync } from "node:fs";
 import { randomUUID } from "node:crypto";
 
 const CATALOGUE_PATH = "data/nex-city-catalogue.json";
 const CURSOR_PATH = "data/nex-acquisition/city-rotation-cursor.json";
 const LOCK_PATH = "data/nex-acquisition/rotation.lock";
+const AUDIT_DIR = "scripts/nex-acquisition/.cache/runs";
 const COOLDOWN_HOURS = Number(process.env.NEX_ROTATION_COOLDOWN_HOURS || 72);
 const LOCK_MAX_AGE_MIN = Number(process.env.NEX_ROTATION_LOCK_MAX_AGE_MIN || 90);
-const BACKOFF_HOURS = [1, 2, 4, 8];
+// Backoff: shorter when the provider is simply empty (next bbox may differ) ·
+// longer when the provider is unhealthy (give mirrors time to recover).
+const BACKOFF_HOURS_UNHEALTHY = [1, 2, 4, 8];
+const BACKOFF_HOURS_EMPTY = [24, 48, 96, 168];
+// Health alert threshold · after this many consecutive cycles across the
+// whole catalogue produce zero valid source records, write a HEALTH_ALERT
+// line so the host scheduler can escalate.
+const HEALTH_ALERT_CONSECUTIVE_EMPTY = Number(process.env.NEX_HEALTH_ALERT_THRESHOLD || 5);
 
 function nowIso() { return new Date().toISOString(); }
 function logJson(obj) { console.log(JSON.stringify({ ts: nowIso(), ...obj })); }
@@ -122,31 +130,109 @@ function pickNextCity(cursor, override) {
   return eligible[0];
 }
 
+// Classify the engine's audit JSON into one of five operational states.
+// This is the key fix from pass 8 · exit code 0 alone is not success.
+//   success_with_candidates · engine fetched + persisted ≥1 record
+//   valid_zero_results      · engine fetched successfully, provider truly
+//                             returned 0 elements (e.g. remote rural bbox)
+//   provider_empty          · all mirrors returned 0 or broken responses
+//                             (NOT a real zero · retry sooner)
+//   provider_unhealthy      · all mirrors threw / 5xx
+//   query_failed            · engine threw before fetch (config / bbox / env)
+//   insert_failed           · engine fetched but downstream write failed
+function classifyEngineOutcome(exitCode, auditJson) {
+  if (exitCode !== 0) {
+    if (!auditJson) return "query_failed";
+    if (auditJson.cycle_outcome === "PROVIDER_UNHEALTHY") return "provider_unhealthy";
+    if (auditJson.counts?.persist_errors > 0) return "insert_failed";
+    return "query_failed";
+  }
+  if (!auditJson) return "query_failed";
+  const srcs = auditJson.sources ?? [];
+  const anyFound = srcs.some((s) => (s.discovered ?? 0) > 0);
+  const persisted = auditJson.counts?.records_persisted ?? 0;
+  if (persisted > 0) return "success_with_candidates";
+  if (anyFound) return "valid_zero_results"; // engine fetched, downstream gates rejected all
+  // No source produced any discovered elements. Could be:
+  //  (a) genuinely rural bbox with no OSM food · valid_zero
+  //  (b) all mirrors failing but engine fell through gracefully
+  // The engine's `errors` field distinguishes. Any errors recorded → unhealthy.
+  const anyErr = srcs.some((s) => Array.isArray(s.errors) && s.errors.length > 0);
+  if (anyErr) return "provider_unhealthy";
+  // Zero errors AND zero discovered. Could be truly rural, OR broken-mirror
+  // was accepted (post-fix in osm-overpass.mjs this is prevented). Default
+  // to provider_empty · if it recurs the health alert fires.
+  return "provider_empty";
+}
+
+function latestAuditJson() {
+  if (!existsSync(AUDIT_DIR)) return null;
+  const files = readdirSync(AUDIT_DIR).filter((f) => f.endsWith(".json"));
+  if (files.length === 0) return null;
+  files.sort((a, b) => statSync(`${AUDIT_DIR}/${b}`).mtimeMs - statSync(`${AUDIT_DIR}/${a}`).mtimeMs);
+  try { return JSON.parse(readFileSync(`${AUDIT_DIR}/${files[0]}`, "utf8")); }
+  catch { return null; }
+}
+
 function recordCycleResult(cursor, city, result) {
-  const h = cursor.cycles[city.canonical] || { backoff_index: 0 };
+  const h = cursor.cycles[city.canonical] || { backoff_index_unhealthy: 0, backoff_index_empty: 0 };
   const now = new Date();
   h.last_attempt_at = now.toISOString();
-  if (result.ok) {
+  const outcome = result.outcome;
+  const treatedAsSuccess = outcome === "success_with_candidates" || outcome === "valid_zero_results";
+
+  if (treatedAsSuccess) {
     h.last_success_at = now.toISOString();
-    h.backoff_index = 0;
+    h.last_outcome = outcome;
+    h.backoff_index_unhealthy = 0;
+    h.backoff_index_empty = 0;
     delete h.next_eligible_at;
-    h.last_result = { ok: true, exit_code: result.exit_code, duration_ms: result.duration_ms };
+    h.last_result = { outcome, exit_code: result.exit_code, duration_ms: result.duration_ms, candidates: result.counts?.records_persisted ?? 0 };
   } else {
-    h.backoff_index = Math.min(BACKOFF_HOURS.length - 1, (h.backoff_index ?? 0) + 1);
-    const hours = BACKOFF_HOURS[h.backoff_index];
+    // Pick backoff schedule based on outcome · unhealthy retries faster.
+    const schedule = outcome === "provider_empty" ? BACKOFF_HOURS_EMPTY : BACKOFF_HOURS_UNHEALTHY;
+    const idxKey = outcome === "provider_empty" ? "backoff_index_empty" : "backoff_index_unhealthy";
+    h[idxKey] = Math.min(schedule.length - 1, (h[idxKey] ?? 0) + 1);
+    const hours = schedule[h[idxKey]];
     h.next_eligible_at = new Date(now.getTime() + hours * 3600 * 1000).toISOString();
-    h.last_result = { ok: false, exit_code: result.exit_code, duration_ms: result.duration_ms, error: result.error ?? null };
+    h.last_outcome = outcome;
+    h.last_result = { outcome, exit_code: result.exit_code, duration_ms: result.duration_ms, error: result.error ?? null };
   }
   cursor.cycles[city.canonical] = h;
+
+  // Rolling health history (last 20 cycles across all cities).
+  cursor.health_history = (cursor.health_history ?? []).slice(-19);
+  cursor.health_history.push({ city: city.canonical, outcome, at: now.toISOString(), candidates: result.counts?.records_persisted ?? 0 });
+}
+
+function emitHealthAlertIfStuck(cursor) {
+  const h = cursor.health_history ?? [];
+  if (h.length < HEALTH_ALERT_CONSECUTIVE_EMPTY) return;
+  const recent = h.slice(-HEALTH_ALERT_CONSECUTIVE_EMPTY);
+  const allEmpty = recent.every((r) => r.outcome !== "success_with_candidates" && (r.candidates ?? 0) === 0);
+  if (!allEmpty) return;
+  const unhealthyCount = recent.filter((r) => r.outcome === "provider_unhealthy").length;
+  const emptyCount = recent.filter((r) => r.outcome === "provider_empty").length;
+  logJson({
+    event: "HEALTH_ALERT",
+    reason: "no_publications_in_last_N_cycles",
+    threshold: HEALTH_ALERT_CONSECUTIVE_EMPTY,
+    unhealthy_cycles: unhealthyCount,
+    empty_cycles: emptyCount,
+    cities_scanned: recent.map((r) => r.city),
+    action: "investigate provider mirrors + check for broken-mirror cache poisoning",
+  });
 }
 
 function runEngineForCity(city, dryRun) {
   const started = Date.now();
   if (dryRun) {
     logJson({ event: "would-run", city: city.canonical, province: city.province });
-    return { ok: true, exit_code: 0, duration_ms: 0 };
+    return { ok: true, outcome: "dry_run", exit_code: 0, duration_ms: 0 };
   }
   logJson({ event: "spawn-engine", city: city.canonical, province: city.province, priority: city.priority });
+  const beforeAuditFile = latestAuditJson();
+  const beforeAt = Date.now();
   const result = spawnSync(
     process.execPath,
     [
@@ -158,9 +244,33 @@ function runEngineForCity(city, dryRun) {
     { env: process.env, stdio: "inherit" },
   );
   const duration_ms = Date.now() - started;
-  if (result.error) return { ok: false, exit_code: 99, duration_ms, error: result.error.message };
+  if (result.error) {
+    return { ok: false, outcome: "query_failed", exit_code: 99, duration_ms, error: result.error.message };
+  }
   const code = result.status ?? 99;
-  return { ok: code === 0, exit_code: code, duration_ms, error: code === 0 ? null : `exit ${code}` };
+  // Read the audit JSON produced by the engine (newest file post-start).
+  let audit = null;
+  if (existsSync(AUDIT_DIR)) {
+    const files = readdirSync(AUDIT_DIR).filter((f) => f.endsWith(".json"));
+    for (const f of files) {
+      const p = `${AUDIT_DIR}/${f}`;
+      try {
+        const st = statSync(p);
+        if (st.mtimeMs < beforeAt - 2000) continue;
+        const j = JSON.parse(readFileSync(p, "utf8"));
+        if (j.city === city.canonical) { audit = j; break; }
+      } catch {}
+    }
+  }
+  const outcome = classifyEngineOutcome(code, audit);
+  return {
+    ok: outcome === "success_with_candidates" || outcome === "valid_zero_results",
+    outcome,
+    exit_code: code,
+    duration_ms,
+    error: code === 0 ? null : `exit ${code}`,
+    counts: audit?.counts ?? null,
+  };
 }
 
 function main() {
@@ -200,6 +310,7 @@ function main() {
     // next real run would skip it incorrectly).
     if (!dryRun) {
       recordCycleResult(cursor, city, result);
+      emitHealthAlertIfStuck(cursor);
       writeCursor(cursor);
     }
     logJson({ event: "cycle-complete", run_id: runId, city: city.canonical, dry_run: dryRun, result });

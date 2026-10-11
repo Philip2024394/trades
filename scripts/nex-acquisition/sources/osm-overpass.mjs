@@ -102,6 +102,22 @@ out center tags meta;
 // Never bypass · governor is authoritative.
 import { acquireProviderLease, releaseProviderLease } from "./_provider-lease-helper.mjs";
 
+// Response-integrity guard · pass 8 · 2026-10-12.
+// A healthy Overpass response carries `osm3s.timestamp_osm_base` as an
+// ISO-8601 timestamp (e.g. "2026-10-11T20:19:01Z"). On 2026-10-12 the
+// overpass.osm.ch mirror was observed returning 200 with
+// `timestamp_osm_base: "117660"` (a sequence number) AND an empty
+// `elements` array · a broken-mirror signature. The engine previously
+// cached that response for 24h, poisoning the city's bbox. Reject
+// such responses here so the fetch loop keeps trying real mirrors.
+const ISO_TS_RE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/;
+function responseIsHealthy(json) {
+  const ts = json?.osm3s?.timestamp_osm_base;
+  if (typeof ts !== "string" || !ISO_TS_RE.test(ts)) return false;
+  if (!Array.isArray(json?.elements)) return false;
+  return true;
+}
+
 async function fetchOverpass(query, walkerId = "acquisition:overpass") {
   const leaseId = await acquireProviderLease("overpass", walkerId);
   try {
@@ -117,10 +133,17 @@ async function fetchOverpass(query, walkerId = "acquisition:overpass") {
           body: "data=" + encodeURIComponent(query),
         });
         if (!resp.ok) { lastErr = new Error(`${endpoint}: ${resp.status}`); continue; }
-        return await resp.json();
+        const json = await resp.json();
+        if (!responseIsHealthy(json)) {
+          const ts = json?.osm3s?.timestamp_osm_base ?? "null";
+          const elems = Array.isArray(json?.elements) ? json.elements.length : "non-array";
+          lastErr = new Error(`${endpoint}: broken-mirror · ts=${ts} · elements=${elems}`);
+          continue;
+        }
+        return json;
       } catch (err) { lastErr = err; }
     }
-    throw lastErr ?? new Error("all Overpass endpoints failed");
+    throw lastErr ?? new Error("all Overpass endpoints failed or returned broken responses");
   } finally {
     await releaseProviderLease(leaseId);
   }
