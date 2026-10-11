@@ -1,0 +1,111 @@
+# NEX Directory · recurring acquisition rotation
+#
+# Deliverable from execution-pass 7 · 2026-10-12. Scheduled worker for
+# the standalone acquisition engine (scripts/nex-acquisition/run-live-cycle.mjs).
+#
+# This workflow replaces the misconception that /api/cron/nex-continuous-tick
+# (Vercel cron, committed in c16d9f67) somehow runs the acquisition engine.
+# It does not · they are two different code paths. This workflow IS the
+# scheduled driver for the acquisition engine.
+#
+# Prerequisites to go live:
+#   1. `NEX_POSTGRES_URL` added to repository secrets.
+#   2. A self-hosted runner labelled `nex-dev-host` registered on the
+#      machine where nex_dev Postgres is reachable (the acquisition
+#      engine opens a localhost:5433 pg connection by default · hosted
+#      GitHub runners cannot reach that).
+#   3. Repository must have the runner-token and permission for Actions.
+#
+# While those prerequisites are unmet the workflow remains inert · the
+# `cron` trigger alone does nothing without a working runner.
+
+name: nex-acquisition-rotation
+
+on:
+  schedule:
+    # Every 3 hours · 8 cities/day · 56 cities/week · catches every
+    # Bali/capital/major in roughly a week before cycling back.
+    - cron: "17 */3 * * *"
+  workflow_dispatch:
+    inputs:
+      city:
+        description: "Override · run a specific catalogued city once (leaves rotation state alone unless completed)"
+        required: false
+        type: string
+      dry_run:
+        description: "Dry-run · pick the next city but do not run the engine"
+        required: false
+        type: boolean
+        default: false
+
+concurrency:
+  group: nex-acquisition-rotation
+  cancel-in-progress: false
+
+jobs:
+  rotate:
+    # Requires a self-hosted runner on the machine with nex_dev access.
+    # Fall back to `ubuntu-latest` is NOT an option · GitHub-hosted
+    # runners cannot reach localhost Postgres.
+    runs-on: [self-hosted, nex-dev-host]
+    timeout-minutes: 25
+    permissions:
+      contents: write
+    env:
+      NEX_POSTGRES_URL: ${{ secrets.NEX_POSTGRES_URL }}
+      NEX_ROTATION_COOLDOWN_HOURS: "72"
+      NEX_ROTATION_LOCK_MAX_AGE_MIN: "90"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Guard · verify secret is wired
+        run: |
+          if [ -z "$NEX_POSTGRES_URL" ]; then
+            echo "::error::NEX_POSTGRES_URL secret is not configured. Set it in repository Settings → Secrets → Actions."
+            exit 1
+          fi
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies (production only)
+        run: npm ci --omit=dev
+
+      - name: Run acquisition rotation
+        id: rotate
+        run: |
+          set -o pipefail
+          if [ -n "${{ inputs.city }}" ] && [ "${{ inputs.dry_run }}" = "true" ]; then
+            node scripts/nex-acquisition/rotate-and-run-live-cycle.mjs --dry-run --city='${{ inputs.city }}'
+          elif [ -n "${{ inputs.city }}" ]; then
+            node scripts/nex-acquisition/rotate-and-run-live-cycle.mjs --city='${{ inputs.city }}'
+          elif [ "${{ inputs.dry_run }}" = "true" ]; then
+            node scripts/nex-acquisition/rotate-and-run-live-cycle.mjs --dry-run
+          else
+            node scripts/nex-acquisition/rotate-and-run-live-cycle.mjs
+          fi
+
+      - name: Commit rotation cursor
+        if: success()
+        run: |
+          if git diff --quiet data/nex-acquisition/city-rotation-cursor.json; then
+            echo "cursor unchanged · nothing to commit"
+          else
+            git config user.name "nex-acquisition-bot"
+            git config user.email "nex-acquisition-bot@users.noreply.github.com"
+            git add data/nex-acquisition/city-rotation-cursor.json
+            git commit -m "chore(nex-acquisition): rotation cursor update [skip ci]"
+            git push
+          fi
+
+      - name: Upload engine audit JSONs (if produced)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nex-acquisition-audit-${{ github.run_id }}
+          path: scripts/nex-acquisition/.cache/runs/*.json
+          if-no-files-found: ignore
+          retention-days: 14
