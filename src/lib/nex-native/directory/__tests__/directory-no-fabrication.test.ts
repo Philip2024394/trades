@@ -262,13 +262,29 @@ describe("Phase B · projector has no content-fabricating fallbacks", () => {
     expect(matches).toEqual([]);
   });
 
-  it("project-canonical-row.ts allows exactly one `?? null` for the media attachment default", () => {
+  it("project-canonical-row.ts constrains `?? null` to the sealed overlay-fallback set", () => {
     const src = stripComments(read("project-canonical-row.ts"));
     const nullCoalesce = src.match(/\?\?\s*null/g) ?? [];
-    // One occurrence in the batch form `map.get(id) ?? null`. The
-    // single-row form uses a strict ternary (media === null ? …) and
-    // introduces no additional ?? null.
-    expect(nullCoalesce.length).toBe(1);
+    // The projector permits `?? null` ONLY for:
+    //   · media / enrichment overlay default-to-null lookups (×2
+    //     from the batch form `map.get(id) ?? null`)
+    //   · the single-row enrichment default (`args.enrichment ?? null`)
+    //   · and the enrichment-overlay fallback chain on three fields
+    //     that are populated by the vertical table but not re-projected
+    //     into business_canonical today: phoneE164, websiteApex,
+    //     streetLine. Each produces exactly one trailing `?? null`
+    //     at the end of its ?? chain (the chain never substitutes a
+    //     fabricated literal · only chains to a legitimate alternate-
+    //     source field recorded in business_evidence.
+    //     legacy_source_table).
+    // Total expected: 6. If a future field needs to be enrichment-
+    // fallback-aware, update this expectation deliberately · do NOT
+    // silently relax the invariant.
+    // WhatsApp is deliberately NOT in this set · NEX is the messaging
+    // product (the WhatsApp replacement) · OSM WhatsApp numbers stay
+    // out of the public enrichment overlay entirely and live in
+    // `nex.food_business.whatsapp_number` for HQ marketing use only.
+    expect(nullCoalesce.length).toBe(6);
   });
 });
 

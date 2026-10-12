@@ -1028,13 +1028,19 @@ describe("getCanonicalBusinessById · row present", () => {
       evidence: { rows: [], rowCount: 0 },
     };
     await getCanonicalBusinessById(SAMPLE_UUID);
-    expect(queryLog.length).toBe(2);
+    // Pass-10: a vertical-enrichment lookup against nex.food_business
+    // runs AFTER the canonical+evidence pair · the strict-order
+    // invariant for canonical→evidence is still enforced here; the
+    // enrichment query appends as queryLog[2] when the canonical row
+    // exists. Total query count is therefore 3 for the found path.
+    expect(queryLog.length).toBe(3);
     expect(queryLog[0].sql).toContain("FROM nex.business_directory_v");
     expect(queryLog[0].sql).toContain("WHERE canonical_business_id = $1");
     expect(queryLog[0].params[0]).toBe(SAMPLE_UUID);
     expect(queryLog[1].sql).toContain("FROM nex.business_evidence");
     expect(queryLog[1].sql).toContain("WHERE canonical_business_id = $1");
     expect(queryLog[1].params[0]).toBe(SAMPLE_UUID);
+    expect(queryLog[2].sql).toContain("FROM nex.food_business");
   });
 
   it("reuses the sealed SELECT_COLUMNS for the canonical query", async () => {

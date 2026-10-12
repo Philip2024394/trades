@@ -131,6 +131,15 @@ export function DirectoryCard(props: DirectoryCardProps): React.ReactElement {
   const distanceChipKind: "known" | "unconfirmed" =
     distanceLabel !== null ? "known" : "unconfirmed";
   const place = joinPlace(listing.city, listing.district);
+  // Pass-10 enrichment overlay surfaced from `nex.food_business`
+  // (phone / whatsapp / website / street line). Each chip renders only
+  // when the underlying field is non-null · the "no fabrication"
+  // contract from Phase B carries through verbatim.
+  const streetSnippet =
+    listing.streetLine !== null && listing.streetLine.trim().length > 0
+      ? truncateSnippet(listing.streetLine.trim(), 72)
+      : null;
+  const contactChips = buildContactChips(listing);
 
   // Keywords = aliases (variants of the name the user might search).
   // Deliberately NOT fabricated from `name_canonical` or
@@ -297,6 +306,22 @@ export function DirectoryCard(props: DirectoryCardProps): React.ReactElement {
             {place}
           </p>
         ) : null}
+        {streetSnippet !== null ? (
+          <p
+            data-nex-directory-card-street
+            style={{
+              margin: 0,
+              color: PALETTE.textSoft,
+              fontSize: 12,
+              lineHeight: 1.35,
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {streetSnippet}
+          </p>
+        ) : null}
         {categories.length > 0 ? (
           <ul
             aria-label="Categories"
@@ -342,6 +367,38 @@ export function DirectoryCard(props: DirectoryCardProps): React.ReactElement {
           >
             Also known as: {keywords.slice(0, 3).join(" · ")}
           </p>
+        ) : null}
+        {contactChips.length > 0 ? (
+          <ul
+            aria-label="Contact"
+            data-nex-directory-card-contact
+            style={{
+              margin: "4px 0 0 0",
+              padding: 0,
+              listStyle: "none",
+              display: "flex",
+              gap: 6,
+              flexWrap: "wrap",
+            }}
+          >
+            {contactChips.map((chip) => (
+              <li
+                key={chip.key}
+                data-nex-directory-card-contact-chip={chip.key}
+                style={{
+                  fontSize: 11,
+                  fontWeight: 500,
+                  padding: "2px 8px",
+                  background: PALETTE.surfaceHi,
+                  color: PALETTE.textDim,
+                  borderRadius: 999,
+                  border: `1px solid ${PALETTE.borderSoft}`,
+                }}
+              >
+                {chip.label}
+              </li>
+            ))}
+          </ul>
         ) : null}
         <CardAction destination={destination} actionLabel={actionLabel} />
         {/* Data-conditional CTA strip. Buttons appear only when the
@@ -591,6 +648,39 @@ function joinPlace(
   if (district !== null && district.length > 0) parts.push(district);
   if (city !== null && city.length > 0) parts.push(city);
   return parts.length === 0 ? null : parts.join(" · ");
+}
+
+interface ContactChip {
+  readonly key: "phone" | "website";
+  readonly label: string;
+}
+
+/** Build the per-card contact chip set from the projected VM. Pure,
+ *  deterministic. Returns an empty array when the listing has neither
+ *  enrichment contact field set. Never fabricates. WhatsApp is
+ *  intentionally NOT surfaced here: NEX is the messaging product (the
+ *  WhatsApp replacement), so handing a visitor off to WhatsApp would
+ *  send them to a competitor. OSM WhatsApp numbers stay in
+ *  `nex.food_business.whatsapp_number` for HQ marketing outreach only
+ *  — they never render on any public NEX surface. */
+function buildContactChips(listing: DirectoryListingVM): readonly ContactChip[] {
+  const chips: ContactChip[] = [];
+  if (listing.phoneE164 !== null && listing.phoneE164.trim().length > 0) {
+    chips.push({ key: "phone", label: "Phone" });
+  }
+  if (listing.websiteApex !== null && listing.websiteApex.trim().length > 0) {
+    chips.push({ key: "website", label: "Website" });
+  }
+  return chips;
+}
+
+/** Shorten a snippet to a visual-length budget using Array.from length
+ *  (code-point count · stable across emoji / combining marks) and
+ *  append a trailing ellipsis when truncation occurred. Pure. */
+function truncateSnippet(value: string, maxChars: number): string {
+  const chars = Array.from(value);
+  if (chars.length <= maxChars) return value;
+  return chars.slice(0, Math.max(1, maxChars - 1)).join("") + "…";
 }
 
 /** Build the full-card href for every renderable destination kind.

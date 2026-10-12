@@ -793,16 +793,20 @@ function LocationSection(props: {
 function ContactSection(props: {
   readonly listing: DirectoryListingVM;
 }): React.ReactElement | null {
+  // Deliberately NO WhatsApp action here. NEX is the messaging product
+  // (NEX chat with NEX ID is the WhatsApp replacement) · sending a
+  // visitor to WhatsApp would hand them to a competitor. Phone-only
+  // tel: + Website are the two real actions when the business is
+  // unclaimed; once an owner claims the listing the destination becomes
+  // nex_business and this page redirects to the owner's /nex-native/
+  // {slug} cover (which carries the real Message-on-NEX action).
   const { phoneE164, websiteApex } = props.listing;
-  const haveAny =
-    (phoneE164 !== null && phoneE164.length > 0) ||
-    (websiteApex !== null && websiteApex.length > 0);
-  if (!haveAny) {
-    // No real contact information available for this listing. The
-    // detail page does NOT render a dead button, a "coming soon"
-    // placeholder, or a disabled "Message" affordance. When a
-    // Message Business subsystem lands as a separate authorisation,
-    // it will slot in here as a real action.
+  const phoneHref = phoneHrefOrNull(phoneE164);
+  const websiteHref =
+    websiteApex !== null && websiteApex.trim().length > 0
+      ? buildWebsiteHref(websiteApex)
+      : null;
+  if (phoneHref === null && websiteHref === null) {
     return null;
   }
   return (
@@ -814,9 +818,9 @@ function ContactSection(props: {
           flexWrap: "wrap",
         }}
       >
-        {phoneE164 !== null && phoneE164.length > 0 ? (
+        {phoneHref !== null ? (
           <a
-            href={`tel:${phoneE164}`}
+            href={phoneHref}
             data-nex-directory-detail-action="call"
             style={{
               display: "inline-flex",
@@ -835,9 +839,9 @@ function ContactSection(props: {
             Call
           </a>
         ) : null}
-        {websiteApex !== null && websiteApex.length > 0 ? (
+        {websiteHref !== null ? (
           <a
-            href={buildWebsiteHref(websiteApex)}
+            href={websiteHref}
             target="_blank"
             rel="noopener noreferrer"
             data-nex-directory-detail-action="website"
@@ -862,6 +866,20 @@ function ContactSection(props: {
       </div>
     </SectionBlock>
   );
+}
+
+/** Build a safe `tel:` href. Strips spaces · the canonical column is
+ *  already E.164 when non-null, but we accept the enrichment-overlay
+ *  value which may be a raw OSM phone string with spaces or dashes.
+ *  Returns null when the value is empty after trimming. Pure. */
+function phoneHrefOrNull(phone: string | null): string | null {
+  if (phone === null) return null;
+  const trimmed = phone.trim();
+  if (trimmed.length === 0) return null;
+  // Keep "+" for international prefixes; strip whitespace. Everything
+  // else (digits, dashes, parens) is tel:-safe per RFC 3966.
+  const compact = trimmed.replace(/\s+/g, "");
+  return `tel:${compact}`;
 }
 
 /** Build a safe https:// href from a `website_apex` value. The canonical

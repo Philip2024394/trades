@@ -42,6 +42,52 @@ import type {
 // §1 · projectDirectoryListing · the one authoritative projector
 // ═════════════════════════════════════════════════════════════════════
 
+/**
+ * Pass-10 enrichment overlay (2026-10-12).
+ *
+ * The sealed canonical row contains the identity-level fields
+ * (name, city, country, coordinates, lifecycle). The source vertical
+ * table (`nex.food_business` today) holds richer presentation fields
+ * (phone, whatsapp, website, legacy category label, street address)
+ * that are NOT re-projected into business_canonical by the sealed
+ * resolver. For OSM-origin rows, canonical.phone_e164 / website_apex /
+ * category_ids / address are null · the vertical table still has
+ * them.
+ *
+ * The projector accepts an optional per-row `enrichment` overlay
+ * (analogous to `media`) with fallback semantics: canonical column
+ * wins when present, enrichment fills the gap when canonical is null.
+ *
+ * This is NOT fabrication. The vertical row is the canonical's
+ * upstream evidence (business_evidence.legacy_source_table =
+ * 'nex.food_business'). Projecting its fields is projecting the same
+ * business's existing truth, not synthesising a value.
+ */
+export interface DirectoryVerticalEnrichment {
+  /** Formatted phone number as recorded in the vertical source row.
+   *  Not necessarily E.164 · see `phoneE164Normalised` for the
+   *  normalised form when the source value could be parsed. */
+  readonly phoneRaw: string | null;
+  // WhatsApp numbers are DELIBERATELY NOT part of the public enrichment
+  // overlay. NEX is the messaging product (NEX chat with NEX ID is the
+  // WhatsApp replacement) · surfacing a WhatsApp link on the public
+  // directory would send visitors to a competitor. OSM WhatsApp numbers
+  // stay in `nex.food_business.whatsapp_number` for HQ marketing use
+  // only. If a future HQ marketing read-path needs it, it opens its own
+  // service module · the public directory never carries it.
+  /** Website as recorded in the vertical row · bare host or full URL. */
+  readonly websiteRaw: string | null;
+  /** Vertical-local category label (e.g. "coffee-cafe", "restaurant",
+   *  "fast-food") that the vertical classifier assigned at ingestion. */
+  readonly verticalCategory: string | null;
+  /** Secondary category tokens from the vertical classifier
+   *  (e.g. `["cafe","ice-cream"]`). */
+  readonly verticalCategories: readonly string[];
+  /** Street-line as the vertical row holds it (e.g.
+   *  "Jalan Bypass Gatot Subroto, Denpasar"). */
+  readonly streetLineRaw: string | null;
+}
+
 export interface ProjectDirectoryListingArgs {
   readonly row: DirectoryCanonicalRow;
   /** Optional media attachment. Pass `null` when no media resolver
@@ -50,6 +96,12 @@ export interface ProjectDirectoryListingArgs {
    *  will be `null` in that case. The projector NEVER synthesises
    *  an image from any other field. */
   readonly media: DirectoryListingMedia | null;
+  /** Optional per-row vertical enrichment overlay. See
+   *  DirectoryVerticalEnrichment comment above. Pass `null` when
+   *  no vertical row is available · the VM's enrichment fields
+   *  fall back to their canonical counterparts (null if those are
+   *  also null). */
+  readonly enrichment?: DirectoryVerticalEnrichment | null;
 }
 
 /**
@@ -70,6 +122,30 @@ export function projectDirectoryListing(
   args: ProjectDirectoryListingArgs,
 ): DirectoryListingVM {
   const { row, media } = args;
+  const enrichment = args.enrichment ?? null;
+
+  // Enrichment-fallback: canonical column wins when non-null. The
+  // enrichment field is only consulted when the canonical slot is
+  // null, which matches the "no fabrication" contract — the vertical
+  // table is a legitimate alternate source for the SAME business, not
+  // a synthetic default. The vertical row is the canonical row's
+  // upstream evidence per business_evidence.legacy_source_table.
+  const phoneE164 = row.phone_e164 ?? enrichment?.phoneRaw ?? null;
+  const websiteApex = row.website_apex ?? enrichment?.websiteRaw ?? null;
+  // categoryIds: canonical array wins when non-empty. Otherwise fall
+  // back to the vertical primary + secondary labels.
+  const canonicalHasCategories = row.category_ids && row.category_ids.length > 0;
+  const verticalCategoryList = canonicalHasCategories
+    ? row.category_ids
+    : enrichment
+      ? [
+          ...(enrichment.verticalCategory ? [enrichment.verticalCategory] : []),
+          ...enrichment.verticalCategories.filter(
+            (c) => c !== enrichment.verticalCategory,
+          ),
+        ]
+      : [];
+  const streetLine = row.street_line ?? enrichment?.streetLineRaw ?? null;
 
   return {
     canonicalBusinessId: row.canonical_business_id,
@@ -83,18 +159,18 @@ export function projectDirectoryListing(
     country: row.country,
     city: row.city,
     district: row.district,
-    streetLine: row.street_line,
+    streetLine,
     neighbourhood: row.neighbourhood,
     address: row.address,
     coordinates: row.coordinates,
 
-    phoneE164: row.phone_e164,
-    websiteApex: row.website_apex,
+    phoneE164,
+    websiteApex,
 
     osmId: row.osm_id,
     wikidataQid: row.wikidata_qid,
 
-    categoryIds: row.category_ids,
+    categoryIds: verticalCategoryList,
     verticalPayload: row.services_products,
 
     primaryImage: media === null ? null : media.primaryImage,
@@ -122,13 +198,23 @@ export function projectDirectoryListing(
 export function projectDirectoryListings(args: {
   readonly rows: readonly DirectoryCanonicalRow[];
   readonly mediaByCanonicalId?: ReadonlyMap<string, DirectoryListingMedia>;
+  /** Optional per-row vertical enrichment lookup · see
+   *  DirectoryVerticalEnrichment. When present, rows whose canonical
+   *  phone/website/category/street are null fall back to the vertical
+   *  values. Rows with no enrichment entry keep their canonical nulls. */
+  readonly enrichmentByCanonicalId?: ReadonlyMap<string, DirectoryVerticalEnrichment>;
 }): DirectoryListingVM[] {
   const map = args.mediaByCanonicalId;
+  const enrichmentMap = args.enrichmentByCanonicalId;
   const out: DirectoryListingVM[] = [];
   for (const row of args.rows) {
     const media =
       map === undefined ? null : (map.get(row.canonical_business_id) ?? null);
-    out.push(projectDirectoryListing({ row, media }));
+    const enrichment =
+      enrichmentMap === undefined
+        ? null
+        : (enrichmentMap.get(row.canonical_business_id) ?? null);
+    out.push(projectDirectoryListing({ row, media, enrichment }));
   }
   return out;
 }

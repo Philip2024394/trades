@@ -1180,10 +1180,53 @@ function ResultBusinessCard({
     : typeLabel && typeLabel.toLowerCase().includes("manufactur")
       ? "View company →"
       : "View shop →";
+  // Defensive slug guard. The `[businessSlug]/page.tsx` route matches any
+  // non-reserved path and the commerce launch gate redirects to /home
+  // when `NEX_COMMERCE_ENABLED` is falsy. If the row carries a UUID-
+  // shaped slug (seeded, defective, or legacy) the generated link would
+  // land on the commerce gate and bounce the user to home. The
+  // navigation is already broken for every business shop today while
+  // commerce is gated · the UUID case is the loudest symptom. For now
+  // we fall through to the shop route only when the slug is a real
+  // human slug; UUID-shaped slugs render as non-clickable informational
+  // cards. The real fix lives in the commerce launch and is tracked
+  // separately. Pure · no network · no DB.
+  const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  const slug = typeof business.slug === "string" ? business.slug.trim() : "";
+  const slugIsUsable = slug.length > 0 && !UUID_RE.test(slug);
+  if (!slugIsUsable) {
+    return (
+      <div>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "stretch",
+            gap: 16,
+            padding: "4px 4px 20px",
+            textDecoration: "none",
+            color: NEX.text,
+            opacity: 0.7,
+          }}
+        >
+          <ResultThumb src={business.logo_url ?? null} alt={business.display_name} />
+          <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 6 }}>
+            <div style={{ fontSize: 16, fontWeight: 700, color: NEX.text, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+              {business.display_name}
+            </div>
+            {metaParts.length > 0 ? (
+              <div style={{ fontSize: 12.5, color: NEX.textDim }}>{metaParts.join(" · ")}</div>
+            ) : null}
+            <div style={{ fontSize: 11.5, color: NEX.textDim }}>Profile unavailable</div>
+          </div>
+        </div>
+        {!isLastInSection ? <hr style={{ margin: 0, border: "none", borderTop: `1px solid ${NEX.border}` }} /> : null}
+      </div>
+    );
+  }
   return (
     <div>
       <Link
-        href={`/nex-native/${business.slug}`}
+        href={`/nex-native/${slug}`}
         style={{
           display: "flex",
           alignItems: "stretch",

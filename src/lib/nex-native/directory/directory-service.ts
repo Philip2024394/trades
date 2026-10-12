@@ -64,7 +64,10 @@
 
 import "server-only";
 import { withClient } from "@/lib/nex/db";
-import { projectDirectoryListings } from "./project-canonical-row";
+import {
+  projectDirectoryListings,
+  type DirectoryVerticalEnrichment,
+} from "./project-canonical-row";
 import { resolveDirectoryDestinations } from "./resolve-destination";
 import type {
   DirectoryCanonicalRow,
@@ -339,6 +342,94 @@ function isSealedLifecycleState(v: string): v is LifecycleState {
 }
 
 // ═════════════════════════════════════════════════════════════════════
+// §3b · Vertical enrichment lookup · nex.food_business
+// ═════════════════════════════════════════════════════════════════════
+
+/**
+ * Fetch per-canonical-row enrichment from the sealed vertical table
+ * `nex.food_business` for a batch of canonical IDs. The vertical row
+ * holds presentation fields (phone, whatsapp, website, legacy category
+ * label, street address) that the resolver does NOT re-project into
+ * `business_canonical`.
+ *
+ * This is a projection-time fallback, not a fabrication. The vertical
+ * row is the canonical row's upstream evidence (recorded in
+ * `business_evidence.legacy_source_table`). Reading its fields for
+ * display is reading the same business's existing truth.
+ *
+ * SELECT-only. Owner-scoped data (claim_status / owner_status) is NOT
+ * surfaced here · it is operational metadata, not visitor information.
+ *
+ * Returns an empty map when:
+ *   · the canonicalIds list is empty (short-circuits · no query), OR
+ *   · the DB connection cannot be opened (withClient returns null), OR
+ *   · the query throws (table missing, auth error, etc.) · the service
+ *     continues with canonical-only projection.
+ */
+export async function fetchFoodEnrichmentByCanonicalId(
+  canonicalIds: readonly string[],
+): Promise<ReadonlyMap<string, DirectoryVerticalEnrichment>> {
+  const map = new Map<string, DirectoryVerticalEnrichment>();
+  if (canonicalIds.length === 0) return map;
+
+  // Deduplicate the input list defensively · the caller may hold
+  // duplicates when the canonical page itself has duplicates (should
+  // not happen, but the SQL $1::uuid[] handles arrays uniformly).
+  const uniqueIds = Array.from(new Set(canonicalIds));
+
+  // WhatsApp number is intentionally NOT selected into the public
+  // enrichment overlay. NEX is the messaging product (NEX chat with
+  // NEX ID is the WhatsApp replacement) · surfacing a WhatsApp link
+  // on the public directory would hand the visitor to a competitor.
+  // OSM WhatsApp numbers stay in `nex.food_business.whatsapp_number`
+  // for HQ marketing use only · a separate service module reads them
+  // for outbound outreach.
+  const sql =
+    "SELECT canonical_business_id, phone, website, " +
+    "category, categories, address " +
+    "FROM nex.food_business " +
+    "WHERE canonical_business_id = ANY($1::uuid[])";
+
+  try {
+    const result = await withClient(async (client) =>
+      client.query(sql, [uniqueIds]),
+    );
+    if (result === null) return map;
+    for (const row of result.rows as readonly {
+      canonical_business_id: string;
+      phone: string | null;
+      website: string | null;
+      category: string | null;
+      categories: string[] | null;
+      address: string | null;
+    }[]) {
+      map.set(row.canonical_business_id, {
+        phoneRaw: nonEmpty(row.phone),
+        websiteRaw: nonEmpty(row.website),
+        verticalCategory: nonEmpty(row.category),
+        verticalCategories: row.categories ?? [],
+        streetLineRaw: nonEmpty(row.address),
+      });
+    }
+  } catch {
+    // Enrichment is a projection-time overlay · when it fails the
+    // service degrades gracefully to canonical-only projection. The
+    // outer listDirectory outcome is unaffected.
+    return map;
+  }
+  return map;
+}
+
+/** Treat the empty string as absent · the DB may hold `''` where the
+ *  OSM feed had no value. The projector's enrichment-fallback semantics
+ *  need a true null to recognise "no vertical value either". */
+function nonEmpty(v: string | null): string | null {
+  if (v === null) return null;
+  const trimmed = v.trim();
+  return trimmed.length === 0 ? null : trimmed;
+}
+
+// ═════════════════════════════════════════════════════════════════════
 // §4 · Owner-link lookup stub
 // ═════════════════════════════════════════════════════════════════════
 
@@ -554,16 +645,23 @@ export async function listDirectory(
     if (a !== null) adapted.push(a);
   }
 
+  // Fetch vertical enrichment (phone / whatsapp / website / legacy
+  // category / street) for the page. Enrichment is a projection-time
+  // overlay · when a canonical column is non-null it still wins; the
+  // enrichment only fills gaps for OSM-origin rows where the resolver
+  // did not populate presentation fields.
+  const canonicalIdsOnPage = adapted.map((a) => a.canonical_business_id);
+  const [enrichment, claims] = await Promise.all([
+    fetchFoodEnrichmentByCanonicalId(canonicalIdsOnPage),
+    fetchOwnerClaimsByCanonicalId(canonicalIdsOnPage),
+  ]);
+
   // Project → VMs. Media is null today (migration 173 deferred).
   const listings = projectDirectoryListings({
     rows: adapted,
     mediaByCanonicalId: EMPTY_MEDIA_MAP,
+    enrichmentByCanonicalId: enrichment,
   });
-
-  // Resolve destinations. Owner claims are empty today (stub).
-  const claims = await fetchOwnerClaimsByCanonicalId(
-    adapted.map((a) => a.canonical_business_id),
-  );
   const destinations = resolveDirectoryDestinations({
     listings,
     claimsByCanonicalId: claims,
@@ -689,13 +787,15 @@ export async function getCanonicalBusinessById(
     return { result: null, systemReady: true, diagnostic: null };
   }
 
+  const [enrichment, claims] = await Promise.all([
+    fetchFoodEnrichmentByCanonicalId([adapted.canonical_business_id]),
+    fetchOwnerClaimsByCanonicalId([adapted.canonical_business_id]),
+  ]);
   const listings = projectDirectoryListings({
     rows: [adapted],
     mediaByCanonicalId: EMPTY_MEDIA_MAP,
+    enrichmentByCanonicalId: enrichment,
   });
-  const claims = await fetchOwnerClaimsByCanonicalId([
-    adapted.canonical_business_id,
-  ]);
   const destinations = resolveDirectoryDestinations({
     listings,
     claimsByCanonicalId: claims,
